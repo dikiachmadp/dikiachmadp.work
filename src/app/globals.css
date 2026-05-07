@@ -39,6 +39,14 @@
     --border-width: 2px;
     --shadow-flat: 4px 4px 0px 0px rgba(255, 255, 255, 0.1);
     --container-max: 1280px;
+
+    --shadow-color: var(--accent); /* Menggunakan accent #6366f1 dari file Anda */
+    --logo-bg: var(--foreground);  /* Inverse: Background logo pakai warna teks */
+    --logo-text: var(--background);
+
+    --button-radius: var(--radius-lg); /* Rounded lebih besar sesuai permintaan */
+    --button-outline: var(--foreground); /* Garis tepi mengikuti warna teks utama */
+    --button-bg: var(--background);    /* Warna atas logo */
   }
 
   /* 6. Color Tokens - Light Mode Override */

@@ -23,7 +23,7 @@ export default function Navbar({ navData, locale }: NavbarProps) {
   return (
     <>
       <nav className="sticky top-0 z-50 w-full border-b-2 border-(--border) bg-(--background)/90 backdrop-blur-md">
-        <div className="main-container h-16 flex items-center justify-between gap-8">
+        <div className="main-container h-20 flex items-center justify-between gap-8">
 
           {/* Logo */}
           <Logo />
@@ -85,7 +85,7 @@ export default function Navbar({ navData, locale }: NavbarProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-[65px] z-40 border-b-2 border-(--border) bg-(--background) md:hidden"
+            className="fixed inset-x-0 top-16 z-40 border-b-2 border-(--border) bg-(--background) md:hidden"
           >
             <div className="main-container py-6 flex flex-col gap-2">
               {navData.main.map((item, i) => {
