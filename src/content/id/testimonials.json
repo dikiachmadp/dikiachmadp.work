@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "id": "t1",
+      "clientName": "Budi Santoso",
+      "role": "Founder, Tukang Tools",
+      "content": "Diki berhasil menerjemahkan visi kami menjadi identitas visual yang utilitarian dan sangat kuat.",
+      "avatarUrl": "/testimonials/budi-avatar.webp",
+      "projectRef": "hardware-identity"
+    }
+  ]
+}

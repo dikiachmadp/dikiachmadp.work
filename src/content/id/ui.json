@@ -1,0 +1,18 @@
+{
+  "buttons": {
+    "viewAllWork": "View All Work",
+    "viewAllServices": "View All Services",
+    "contactMe": "Contact Me",
+    "submit": "Send Message",
+    "loading": "Please wait...",
+    "success": "Message Sent!",
+    "download": "Download CV"
+  },
+  "states": {
+    "empty": "No items found.",
+    "error": "Something went wrong.",
+    "loading": "Loading...",
+    "notFound": "Page not found.",
+    "comingSoon": "Coming Soon"
+  }
+}

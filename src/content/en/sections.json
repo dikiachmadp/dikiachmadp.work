@@ -1,0 +1,25 @@
+{
+  "featuredProjects": {
+    "title": "Featured Projects",
+    "description": "A selection of my best work in design and 3D visualization.",
+    "showButton": true,
+    "buttonLabel": "viewAllWork" 
+  },
+  "services": {
+    "title": "Services",
+    "description": "Comprehensive design solutions tailored to your brand needs.",
+    "showButton": true,
+    "buttonLabel": "viewAllServices"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "description": "What clients says about me.",
+    "showButton": false
+  },
+  "cta": {
+    "title": "Do you have a project in mind?",
+    "description": "Let's work together.",
+    "showButton": true,
+    "buttonLabel": "contactMe"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "form": {
+    "id": "main-contact-form",
+    "fields": [
+      {
+        "id": "field-name",
+        "name": "name",
+        "type": "text",
+        "label": "Name",
+        "placeholder": "Your name",
+        "required": true
+      },
+      {
+        "id": "field-email",
+        "name": "email",
+        "type": "email",
+        "label": "Email",
+        "placeholder": "hello@example.com",
+        "required": true
+      },
+      {
+        "id": "field-inquiry",
+        "name": "inquiryType",
+        "type": "select",
+        "label": "What are you looking for?",
+        "placeholder": "Select an option",
+        "options": [
+          { "value": "web-development", "label": "Web Development" },
+          { "value": "brand-identity", "label": "Brand Identity" },
+          { "value": "3d-design", "label": "3D Design" },
+          { "value": "ui-ux-design", "label": "UI/UX Design" },
+          { "value": "other", "label": "Other" }
+        ],
+        "required": true
+      },
+      {
+        "id": "field-message",
+        "name": "message",
+        "type": "textarea",
+        "label": "Message",
+        "placeholder": "Tell me about your project...",
+        "required": true
+      }
+    ],
+    "submitAction": {
+      "uiKey": "submit" 
+    }
+  }
+}

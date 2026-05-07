@@ -1,0 +1,22 @@
+{
+  "title": "Privacy Policy",
+  "lastUpdated": "2025-01-01",
+  "description": "Your privacy is important to us. This policy outlines how we handle your data.",
+  "points": [
+    {
+      "id": "data-collection",
+      "title": "Data Collection",
+      "content": "We only collect information that you voluntarily provide via the contact form."
+    },
+    {
+      "id": "data-usage",
+      "title": "Data Usage",
+      "content": "Your data is used solely for communication purposes related to your inquiries."
+    },
+    {
+      "id": "cookies",
+      "title": "Cookies",
+      "content": "This site may use cookies to enhance your browsing experience."
+    }
+  ]
+}

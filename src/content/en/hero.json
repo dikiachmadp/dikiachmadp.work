@@ -1,0 +1,34 @@
+{
+  "title": {
+    "top": "Welcome to My",
+    "bottom": "Studio"
+  },
+  "description": "Crafting idea with value as a Graphic Designer, UI/UX Designer, 3D Designer & Animation.",
+  "availability": {
+    "status": "Available for work",
+    "isAvailable": true
+  },
+  "socialProof": {
+    "rating": 5,
+    "score": "5.0/5",
+    "totalClients": "10+",
+    "platform": "Freelancer"
+  },
+  "stats": [
+    {
+      "id": "stat-1",
+      "value": "20+",
+      "label": "projects completed"
+    },
+    {
+      "id": "stat-2",
+      "value": "6+",
+      "label": "years of experience"
+    },
+    {
+      "id": "stat-3",
+      "value": "10+",
+      "label": "clients repeat order"
+    }
+  ]
+}

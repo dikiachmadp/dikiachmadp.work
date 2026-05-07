@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* 1. Color Tokens - Dark Mode (Now Default) */
+    /* Menggunakan Off-Black agar lebih lembut */
+    --background: #121212; 
+    --foreground: #ececec;
+    --card: #1e1e1e;
+    --border: #333333;
+    /* Aksen Muted Slate Blue: Unik tapi tetap profesional */
+    --accent: #6366f1; 
+    
+    /* Neutral Colors - Grays */
+    --gray-soft: #2a2a2a;
+    --gray-medium: #71717a;
+    
+    /* 2. Typography Tokens */
+    --font-main: var(--font-inter);
+    --font-display: var(--font-modak);
+    
+    /* 3. Spacing Tokens (Scale 4px) */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+
+    /* 4. Radius Tokens */
+    --radius-none: 0px;
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 8px;
+    --radius-full: 9999px;
+
+    /* 5. Brutalist & Layout Tokens */
+    --border-width: 2px;
+    --shadow-flat: 4px 4px 0px 0px rgba(255, 255, 255, 0.1);
+    --container-max: 1280px;
+  }
+
+  /* 6. Color Tokens - Light Mode Override */
+  .light {
+    /* Menggunakan Off-White agar tidak menyilaukan */
+    --background: #fdfdfd;
+    --foreground: #1a1a1a;
+    --card: #f3f4f6;
+    --border: #e5e7eb;
+    /* Aksen yang sedikit lebih dalam untuk kontras di mode terang */
+    --accent: #4f46e5;
+    --shadow-flat: 4px 4px 0px 0px rgba(0, 0, 0, 0.05);
+    
+    --gray-soft: #f9fafb;
+    --gray-medium: #9ca3af;
+  }
+
+  /* 7. Base Element Styles */
+  * {
+    border-color: var(--border);
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-main), sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    @apply antialiased min-h-screen;
+  }
+
+  /* Heading Standarisasi */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), cursive;
+    @apply uppercase tracking-wide leading-[0.9] mb-(--space-md);
+  }
+
+  /* Scrollbar Custom Minimalist */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--gray-medium);
+    border-radius: var(--radius-full);
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+}
+
+@layer utilities {
+  /* 8. Professional Utility Classes */
+  
+  .main-container {
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+    width: 100%;
+  }
+
+  .brutalist-border {
+    border: var(--border-width) solid var(--border);
+  }
+  
+  .brutalist-shadow {
+    box-shadow: var(--shadow-flat);
+  }
+
+  .rounded-sm { border-radius: var(--radius-sm); }
+  .rounded-md { border-radius: var(--radius-md); }
+  .rounded-lg { border-radius: var(--radius-lg); }
+}

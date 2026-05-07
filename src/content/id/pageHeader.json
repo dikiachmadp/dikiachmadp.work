@@ -1,0 +1,27 @@
+{
+  "projects": {
+    "topTitle": "Archive of Recent Projects",
+    "title": "All Work",
+    "description": "A running archive of recent projects across branding, UI/UX, packaging, 3D, and illustration."
+  },
+  "services": {
+    "topTitle": "Services Offered",
+    "title": "What I Can Do For You",
+    "description": "A curated selection of core services across branding, UI/UX, packaging, 3D, and illustration."
+  },
+  "about": {
+    "topTitle": "About Me",
+    "title": "Hello, I'm Diki Achmad Prasetya",
+    "description": "Graphic Designer, UI/UX Designer, 3D Artist & Animator based in Bandung, Indonesia."
+  },
+  "studio": {
+    "topTitle": "Studio & Play",
+    "title": "Welcome to my Studio",
+    "description": "Experiments, thoughts, and digital products."
+  },
+  "contact": {
+    "topTitle": "Get In Touch",
+    "title": "Let's Work Together.",
+    "description": "Drop me a message and I'll get back to you as soon as possible."
+  }
+}

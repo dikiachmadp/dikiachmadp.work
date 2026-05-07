@@ -1,0 +1,14 @@
+{
+  "main": [
+    { "label": "Home", "path": "/" },
+    { "label": "Projects", "path": "/projects" },
+    { "label": "About", "path": "/about" },
+    { "label": "Services", "path": "/services" },
+    { "label": "Studio", "path": "/studio" },
+    { "label": "Contact", "path": "/contact" }
+  ],
+  "footer": [
+    { "label": "Legal", "path": "/legal" },
+    { "label": "Privacy", "path": "/privacy" }
+  ]
+}

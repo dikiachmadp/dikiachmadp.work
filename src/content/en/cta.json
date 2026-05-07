@@ -1,0 +1,15 @@
+{
+  "id": "main-cta",
+  "title": "Do you have a project in mind?",
+  "description": "Let's work together to bring your ideas to life.",
+  "primaryButton": {
+    "label": "Contact Me",
+    "link": "/contact",
+    "uiKey": "contactMe"
+  },
+  "secondaryButton": {
+    "label": "View Services",
+    "link": "/services",
+    "uiKey": "viewAllServices"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "items": [
+    {
+"id": "brand-identity",
+"order": 1,
+"title": "Brand Identity",
+"summary": "Logos, identity systems, and brand guidelines built to last.",
+"deliverables": [
+"Logo design & variants",
+"Typography & color systems",
+"Brand guidelines (PDF)",
+"Stationery & social kit"
+]
+},
+{
+"id": "ui-ux",
+"order": 2,
+"title": "UI/UX Design",
+"summary": "Digital product design from wireframes to pixel-perfect interfaces.",
+"deliverables": [
+"UX research & user flows",
+"Wireframes & prototypes",
+"UI design systems",
+"Design handoff & dev support"
+]
+},
+{
+"id": "packaging",
+"order": 3,
+"title": "Packaging Design",
+"summary": "Structural and graphic packaging that stands out on the shelf.",
+"deliverables": [
+"Structural packaging design",
+"Label & surface graphics",
+"Dieline production files",
+"3D packaging mockups"
+]
+},
+{
+"id": "3d-modeling",
+"order": 4,
+"title": "3D Modeling & Animation",
+"summary": "Product visualization, environments, and motion for brands.",
+"deliverables": [
+"3D product visualization",
+"Environment & prop modeling",
+"Animation & motion graphics",
+"Render passes & compositing"
+]
+},
+{
+"id": "illustration",
+"order": 5,
+"title": "Illustration",
+"summary": "Custom illustration for editorial, brand, and product contexts.",
+"deliverables": [
+"Editorial illustration",
+"Spot & hero illustrations",
+"Isometric & technical art",
+"Character design"
+]
+},
+{
+"id": "web-design",
+"order": 6,
+"title": "Web Design",
+"summary": "Marketing sites and product pages with refined, considered design.",
+"deliverables": [
+"Landing page design",
+"Marketing site design",
+"Responsive design systems",
+"CMS-ready templates"
+]
+}
+  ]
+}
