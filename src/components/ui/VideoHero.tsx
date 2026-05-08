@@ -4,7 +4,7 @@
  */
 export default function VideoHero() {
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="relative h-full overflow-hidden">
       <video
         autoPlay
         muted

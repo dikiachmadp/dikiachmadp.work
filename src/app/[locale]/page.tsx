@@ -15,9 +15,10 @@ interface PageProps {
 
 export default async function HomePage({ params }: PageProps) {
   const resolvedParams = await params;
-  const validLocale = (resolvedParams.locale === "id" || resolvedParams.locale === "en")
-    ? (resolvedParams.locale as Locale)
-    : "en";
+  const validLocale =
+    resolvedParams.locale === "id" || resolvedParams.locale === "en"
+      ? (resolvedParams.locale as Locale)
+      : "en";
 
   const dict = await getDictionary(validLocale);
 
@@ -25,14 +26,7 @@ export default async function HomePage({ params }: PageProps) {
     <PageWrapper>
       <Hero heroData={dict.hero} locale={validLocale} />
 
-      <ServicesPreview
-        servicesData={dict.services}
-        sectionsData={dict.sections}
-        uiLabels={dict.ui}
-        locale={validLocale}
-      />
-
-      <SectionWrapper id="featured-projects" className="border-t-2 border-(--border)">
+      <SectionWrapper id="featured-projects">
         <ProjectsGallery
           projectsData={dict.projects}
           sectionsData={dict.sections}
@@ -42,16 +36,19 @@ export default async function HomePage({ params }: PageProps) {
         />
       </SectionWrapper>
 
+      <ServicesPreview
+        servicesData={dict.services}
+        sectionsData={dict.sections}
+        uiLabels={dict.ui}
+        locale={validLocale}
+      />
+
       <TestimonialsSection
         testimonialsData={dict.testimonials}
         sectionsData={dict.sections}
       />
 
-      <CTASection
-        ctaData={dict.cta}
-        uiLabels={dict.ui}
-        locale={validLocale}
-      />
+      <CTASection ctaData={dict.cta} uiLabels={dict.ui} locale={validLocale} />
     </PageWrapper>
   );
 }

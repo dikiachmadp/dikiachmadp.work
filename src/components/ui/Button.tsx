@@ -1,8 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-
-type ButtonVariant = "primary" | "outline" | "ghost";
 
 interface ButtonProps {
   children: ReactNode;
@@ -11,36 +11,66 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   className?: string;
-  variant?: ButtonVariant;
+  variant?: "primary" | "outline" | "ghost";
 }
-
-const variantClasses: Record<ButtonVariant, string> = {
-  primary:
-    "bg-(--accent) text-white border-2 border-(--accent) hover:bg-transparent hover:text-(--accent)",
-  outline:
-    "bg-transparent text-(--foreground) border-2 border-(--border) hover:border-(--accent) hover:text-(--accent)",
-  ghost:
-    "bg-transparent text-(--foreground) border-2 border-transparent hover:border-(--border)",
-};
-
-const baseClasses =
-  "inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-black uppercase tracking-widest transition-all duration-150 cursor-pointer select-none active:translate-x-[2px] active:translate-y-[2px] disabled:opacity-40 disabled:cursor-not-allowed";
 
 export default function Button({
   children,
   onClick,
   href,
   type = "button",
-  disabled = false,
-  className = "",
+  disabled,
+  className,
   variant = "primary",
 }: ButtonProps) {
-  const combinedClasses = cn(baseClasses, variantClasses[variant], className);
+  const shadowColors = {
+    primary: "bg-[var(--accent)]",
+    outline: "bg-[var(--foreground)]",
+    ghost: "bg-[var(--gray-soft)]",
+  };
+
+  const variantStyles = {
+    primary:
+      "bg-[var(--foreground)] text-[var(--background)] border-2 border-[var(--foreground)]",
+    outline:
+      "bg-[var(--background)] text-[var(--foreground)] border-2 border-[var(--foreground)]",
+    ghost:
+      "bg-transparent text-[var(--foreground)] border-2 border-transparent hover:border-[var(--border)]",
+  };
+
+  const content = (
+    /* LAPISAN BAWAH (Shadow Layer) */
+    <div
+      className={cn(
+        "relative inline-block w-full sm:w-fit transition-all duration-200 rounded-(--button-radius)",
+        shadowColors[variant],
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          "flex items-center justify-center px-8 py-2 tracking-wide transition-all duration-200 rounded-(--button-radius)",
+          variantStyles[variant],
+          "translate-x-0 translate-y-0",
+          !disabled &&
+            "group-hover:-translate-x-1.5 group-hover:-translate-y-1.5",
+          disabled && "opacity-50 cursor-not-allowed",
+        )}
+        /* Penerapan Font Display dan Fluid Size */
+        style={{
+          fontFamily: "var(--font-modak), var(--font-display), cursive",
+          fontSize: "var(--text-ui-button)",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
 
   if (href) {
     return (
-      <Link href={href} className={combinedClasses}>
-        {children}
+      <Link href={href} className="group block sm:inline-block outline-none">
+        {content}
       </Link>
     );
   }
@@ -50,9 +80,9 @@ export default function Button({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={combinedClasses}
+      className="group block w-full sm:w-fit outline-none"
     >
-      {children}
+      {content}
     </button>
   );
 }

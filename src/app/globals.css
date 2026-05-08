@@ -2,23 +2,29 @@
 
 @layer base {
   :root {
-    /* 1. Color Tokens - Dark Mode (Now Default) */
-    /* Menggunakan Off-Black agar lebih lembut */
-    --background: #121212; 
+    /* 1. Font Tokens */
+    --font-main: "Inter", sans-serif;
+    --font-display: "Playfair Display", serif;
+
+    /* Typography Scale */
+    --text-hero-bottom: clamp(5.5rem, 18vw, 10rem);
+    --text-hero-top: clamp(1rem, 8vw, 4rem);
+    --text-stats-num: clamp(2.5rem, 4vw, 4rem);
+    --text-desc: clamp(1rem, 2vw, 2rem);
+    --text-section-title: clamp(3rem, 6vw, 4.5rem);
+    --text-ui-label: clamp(0.7rem, 1vw, 1rem);
+    --text-services-desc: clamp(1rem, 1.6vw, 1.2rem);
+    --text-ui-button: clamp(1.5rem, 2vw, 1.8rem);
+
+    /* 2. Color Tokens - Dark Mode (Default) */
+    --background: #121212;
     --foreground: #ececec;
     --card: #1e1e1e;
     --border: #333333;
-    /* Aksen Muted Slate Blue: Unik tapi tetap profesional */
-    --accent: #6366f1; 
-    
-    /* Neutral Colors - Grays */
+    --accent: #6366f1;
     --gray-soft: #2a2a2a;
     --gray-medium: #71717a;
-    
-    /* 2. Typography Tokens */
-    --font-main: var(--font-inter);
-    --font-display: var(--font-modak);
-    
+
     /* 3. Spacing Tokens (Scale 4px) */
     --space-xs: 4px;
     --space-sm: 8px;
@@ -40,66 +46,74 @@
     --shadow-flat: 4px 4px 0px 0px rgba(255, 255, 255, 0.1);
     --container-max: 1280px;
 
-    --shadow-color: var(--accent); /* Menggunakan accent #6366f1 dari file Anda */
-    --logo-bg: var(--foreground);  /* Inverse: Background logo pakai warna teks */
+    /* 6. Component Variables */
+    --shadow-color: var(--accent);
+    --logo-bg: var(--foreground);
     --logo-text: var(--background);
-
-    --button-radius: var(--radius-lg); /* Rounded lebih besar sesuai permintaan */
-    --button-outline: var(--foreground); /* Garis tepi mengikuti warna teks utama */
-    --button-bg: var(--background);    /* Warna atas logo */
+    --button-radius: var(--radius-lg);
+    --button-outline: var(--foreground);
+    --button-bg: var(--background);
   }
 
-  /* 6. Color Tokens - Light Mode Override */
+  /* 7. Color Tokens - Light Mode Override */
   .light {
-    /* Menggunakan Off-White agar tidak menyilaukan */
     --background: #fdfdfd;
     --foreground: #1a1a1a;
     --card: #f3f4f6;
     --border: #e5e7eb;
-    /* Aksen yang sedikit lebih dalam untuk kontras di mode terang */
     --accent: #4f46e5;
     --shadow-flat: 4px 4px 0px 0px rgba(0, 0, 0, 0.05);
-    
     --gray-soft: #f9fafb;
     --gray-medium: #9ca3af;
   }
 
-  /* 7. Base Element Styles */
-  * {
-    border-color: var(--border);
-    box-sizing: border-box;
-  }
-
+  /* 8. Global Transition Target (Sesuai analisis) */
+  html,
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-main), sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: var(--font-main), ui-sans-serif, system-ui;
+
+    /* Transisi utama untuk background dan teks halaman */
+    transition:
+      background-color 0.5s ease-in-out,
+      color 0.5s ease-in-out,
+      border-color 0.5s ease-in-out;
+    scroll-behavior: smooth;
     @apply antialiased min-h-screen;
   }
 
-  /* Heading Standarisasi */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display), cursive;
-    @apply uppercase tracking-wide leading-[0.9] mb-(--space-md);
+  /* 9. Element Transition & Reset (Sesuai analisis) */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--border);
+
+    /* Memastikan elemen anak dan SVG icon ikut bertransisi */
+    transition:
+      border-color 0.5s ease-in-out,
+      background-color 0.5s ease-in-out,
+      color 0.5s ease-in-out,
+      fill 0.5s ease-in-out,
+      stroke 0.5s ease-in-out;
   }
 
-  /* Scrollbar Custom Minimalist */
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--gray-medium);
-    border-radius: var(--radius-full);
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--background);
+  /* 10. Headings Standar */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-display {
+    font-family: var(--font-modak), cursive !important;
+    @apply uppercase tracking-wide leading-[0.9] mb-(--space-md);
   }
 }
 
 @layer utilities {
-  /* 8. Professional Utility Classes */
-  
+  /* 11. Professional Utility Classes */
   .main-container {
     max-width: var(--container-max);
     margin-left: auto;
@@ -112,12 +126,18 @@
   .brutalist-border {
     border: var(--border-width) solid var(--border);
   }
-  
+
   .brutalist-shadow {
     box-shadow: var(--shadow-flat);
   }
 
-  .rounded-sm { border-radius: var(--radius-sm); }
-  .rounded-md { border-radius: var(--radius-md); }
-  .rounded-lg { border-radius: var(--radius-lg); }
+  .rounded-sm {
+    border-radius: var(--radius-sm);
+  }
+  .rounded-md {
+    border-radius: var(--radius-md);
+  }
+  .rounded-lg {
+    border-radius: var(--radius-lg);
+  }
 }

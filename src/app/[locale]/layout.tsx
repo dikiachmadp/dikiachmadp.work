@@ -29,13 +29,13 @@ export async function generateMetadata({
       default: `${siteConfig.siteName} | ${siteConfig.fullName}`,
       template: `%s | ${siteConfig.siteName}`,
     },
-    description: "Graphic Designer, UI/UX Designer, 3D Artist & Animator based in Bandung, Indonesia.",
+    description: "siteConfig.description",
     metadataBase: new URL(siteConfig.url),
     openGraph: {
       type: "website",
       url: siteConfig.url,
       title: `${siteConfig.siteName} | ${siteConfig.fullName}`,
-      description: "Graphic Designer, UI/UX Designer, 3D Artist & Animator based in Bandung, Indonesia.",
+      description: "siteConfig.description",
       images: [{ url: "/kid-studio-image.jpg", width: 1200, height: 630 }],
     },
     icons: {

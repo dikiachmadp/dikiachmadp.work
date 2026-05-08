@@ -2,13 +2,14 @@
 
 import { motion } from "framer-motion";
 import { AboutData } from "@/types/content";
-import { cn } from "@/lib/utils";
 
 interface ExperienceSectionProps {
   aboutData: AboutData;
 }
 
-export default function ExperienceSection({ aboutData }: ExperienceSectionProps) {
+export default function ExperienceSection({
+  aboutData,
+}: ExperienceSectionProps) {
   return (
     <section className="w-full py-16 md:py-24 border-t-2 border-(--border) bg-(--background)">
       <div className="main-container">
@@ -33,8 +34,12 @@ export default function ExperienceSection({ aboutData }: ExperienceSectionProps)
                     <span className="text-xs font-black uppercase tracking-widest text-(--gray-medium) block mb-1">
                       {item.year}
                     </span>
-                    <h3 className="text-lg font-black uppercase leading-tight">{item.role}</h3>
-                    <p className="text-sm font-medium text-(--gray-medium) mt-1">{item.place}</p>
+                    <h3 className="text-lg font-black uppercase leading-tight">
+                      {item.role}
+                    </h3>
+                    <p className="text-sm font-medium text-(--gray-medium) mt-1">
+                      {item.place}
+                    </p>
                   </div>
                 </motion.div>
               ))}
