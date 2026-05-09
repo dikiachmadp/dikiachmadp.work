@@ -29,14 +29,14 @@ export async function generateMetadata({
       default: `${siteConfig.siteName} | ${siteConfig.fullName}`,
       template: `%s | ${siteConfig.siteName}`,
     },
-    description: "siteConfig.description",
+    description: siteConfig.description,
     metadataBase: new URL(siteConfig.url),
     openGraph: {
       type: "website",
       url: siteConfig.url,
       title: `${siteConfig.siteName} | ${siteConfig.fullName}`,
-      description: "siteConfig.description",
-      images: [{ url: "/kid-studio-image.jpg", width: 1200, height: 630 }],
+      description: siteConfig.description,
+      images: [{ url: "/public/ogImage.wbm", width: 1200, height: 628 }],
     },
     icons: {
       icon: "/favicon.webp",

@@ -23,6 +23,7 @@ export const SiteConfigSchema = z.object({
   siteName: z.string(),
   author: z.string(),
   fullName: z.string(),
+  description: z.string(),
   email: z.string().email(),
   location: z.string(),
   url: z.string().url(),
