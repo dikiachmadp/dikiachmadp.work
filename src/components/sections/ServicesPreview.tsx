@@ -18,9 +18,12 @@ export default function ServicesPreview({
   locale,
 }: ServicesPreviewProps) {
   const section = sectionsData.services;
-  const buttonLabel = section.buttonLabel
-    ? uiLabels.buttons[section.buttonLabel] || section.buttonLabel
-    : "";
+  const buttonLabel =
+    section?.buttonLabel && uiLabels
+      ? uiLabels.buttons[
+          section.buttonLabel as keyof typeof uiLabels.buttons
+        ] || section.buttonLabel
+      : "";
 
   return (
     <section className="w-full py-16 md:py-20 bg-(--background)">

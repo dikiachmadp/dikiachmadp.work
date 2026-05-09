@@ -11,7 +11,6 @@ interface ExperienceSectionProps {
 
 export default function ExperienceSection({
   aboutData,
-  uiLabels,
 }: ExperienceSectionProps) {
   // Shared Brutalist Classes untuk Skill Tags
   const skillTagShadow =
