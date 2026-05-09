@@ -4,9 +4,7 @@ import PageWrapper from "@/components/layout/PageWrapper";
 import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import ContactForm from "@/components/interactive/ContactForm";
-import Social from "@/components/ui/Social";
 import { Locale } from "@/types/content";
-import { Mail } from "lucide-react";
 
 export default async function ContactPage({
   params,
@@ -31,10 +29,21 @@ export default async function ContactPage({
       />
 
       <SectionWrapper id="contact-content">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
-          {/* Right: Form */}
-          <div className="border-2 border-(--border) p-6 md:p-10 bg-(--card)">
-            <ContactForm contactData={dict.contact} uiLabels={dict.ui} />
+        <div className="flex flex-col gap-12">
+          {/* Separator Border - Matching ProjectsGallery */}
+          <div className="border-b-2 border-(--border) pb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+              {/* Form Area - Span 7 for focus */}
+              <div className="lg:col-span-7">
+                <ContactForm contactData={dict.contact} uiLabels={dict.ui} />
+              </div>
+
+              {/* Optional: Info Sidebar - Span 5 */}
+              <div className="lg:col-span-5 flex flex-col gap-8">
+                {/* Anda bisa menambahkan info kantor atau email di sini 
+                     dengan style yang sama (Content Layer + Shadow Layer) jika diperlukan */}
+              </div>
+            </div>
           </div>
         </div>
       </SectionWrapper>

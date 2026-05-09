@@ -23,7 +23,7 @@ export default function PageHeader({
   return (
     <div
       className={cn(
-        "w-full border-b-2 border-(--border) bg-(--background) pt-16 pb-12 md:pt-20 md:pb-16",
+        "w-full border-b-2 border-(--border) bg-(--background) pt-8 pb-8 md:pt-10 md:pb-10",
         className,
         themeTransition,
       )}
@@ -34,7 +34,8 @@ export default function PageHeader({
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="text-xs font-black uppercase tracking-[0.2em] text-(--gray-medium) mb-4"
+            className="font-black uppercase tracking-[0.2em] text-(--gray-medium) mb-4 text-center md:text-left"
+            style={{ fontSize: "var(--text-ui-label)" }}
           >
             {topTitle}
           </motion.p>
@@ -43,7 +44,8 @@ export default function PageHeader({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
-          className="text-5xl md:text-7xl lg:text-8xl leading-[0.85] tracking-wide uppercase mb-6"
+          className="leading-[0.85] tracking-wide uppercase text-center md:text-left"
+          style={{ fontSize: "var(--text-section-title)" }}
         >
           {title}
         </motion.h1>
@@ -52,7 +54,8 @@ export default function PageHeader({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
-            className="max-w-2xl text-base md:text-lg font-medium text-(--gray-medium) leading-relaxed"
+            className="font-medium text-(--gray-medium) leading-relaxed text-center md:text-left"
+            style={{ fontSize: "var(--text-services-desc)" }}
           >
             {description}
           </motion.p>

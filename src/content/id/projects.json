@@ -58,7 +58,7 @@
 "coverImage": "/projects/covers/cover-placeholder.webp",
 "logoUrl": "/projects/logos/logo-placeholder.webp",
 "accent": "#c39a2c",
-"featured": true,
+"featured": false,
 "slug": "3d-product-viz"
 },
 {
@@ -73,7 +73,7 @@
 "coverImage": "/projects/covers/cover-placeholder.webp",
 "logoUrl": "/projects/logos/logo-placeholder.webp",
 "accent": "#6b2a4a",
-"featured": true,
+"featured": false,
 "slug": "ecommerce-web"
 },
 {
@@ -88,7 +88,7 @@
 "coverImage": "/projects/covers/cover-placeholder.webp",
 "logoUrl": "/projects/logos/logo-placeholder.webp",
 "accent": "#b8a88a",
-"featured": true,
+"featured": false,
 "slug": "skincare-packaging"
 },
 {

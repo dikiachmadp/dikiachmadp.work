@@ -4,6 +4,7 @@ import PageWrapper from "@/components/layout/PageWrapper";
 import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import CTASection from "@/components/sections/CTASection";
+import ServicesCard from "@/components/ui/ServicesCard";
 import { Locale } from "@/types/content";
 
 export default async function ServicesPage({
@@ -29,39 +30,59 @@ export default async function ServicesPage({
       />
 
       <SectionWrapper id="services-list">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        {/* Menggunakan grid yang sama dengan preview namun tetap optimal untuk halaman list */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10">
           {dict.services.items.map((service) => (
-            <div
-              key={service.id}
-              className="flex flex-col border-2 border-(--border) p-6 md:p-8 hover:border-(--accent) transition-all duration-200 bg-(--card) group"
-            >
-              <div className="flex justify-between items-start mb-6 pb-4 border-b-2 border-(--border)">
-                <h2 className="text-2xl md:text-3xl font-black uppercase leading-tight w-3/4">
-                  {service.title}
-                </h2>
-                <span className="text-2xl font-black font-mono text-(--accent) opacity-50 group-hover:opacity-100 transition-opacity">
-                  {String(service.order).padStart(2, "0")}
-                </span>
-              </div>
-              <p className="text-base font-medium text-(--gray-medium) mb-8 leading-relaxed">
-                {service.summary}
-              </p>
-              <div className="mt-auto">
-                <ul className="flex flex-col gap-3">
-                  {service.deliverables.map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-start gap-3 text-sm font-medium"
+            <ServicesCard key={service.id}>
+              <div className="flex flex-col gap-6 h-full">
+                {/* Header: Order Number & Title */}
+                <div className="flex flex-col gap-2">
+                  <div className="flex justify-between items-center">
+                    <span
+                      className="text-(--accent) opacity-40 group-hover:opacity-100 transition-opacity"
+                      style={{
+                        fontSize: "var(--text-stats-num)",
+                        fontFamily:
+                          "var(--font-modak), var(--font-display), cursive",
+                      }}
                     >
-                      <span className="text-(--accent) mt-0.5 shrink-0 text-base">
-                        ✦
-                      </span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                      {String(service.order).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <h2
+                    className="leading-tight"
+                    style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
+                  >
+                    {service.title}
+                  </h2>
+                </div>
+
+                {/* Summary */}
+                <p
+                  className="font-medium text-(--gray-medium) leading-relaxed"
+                  style={{ fontSize: "var(--text-services-desc)" }}
+                >
+                  {service.summary}
+                </p>
+
+                {/* Deliverables - Menjaga detail tetap ada namun dengan style yang lebih bersih */}
+                <div className="mt-auto pt-6 border-t-2 border-(--border) border-dashed">
+                  <ul className="grid grid-cols-1 gap-3">
+                    {service.deliverables.map((item, index) => (
+                      <li
+                        key={index}
+                        className="flex items-start gap-3 text-[10px] font-bold uppercase tracking-widest text-(--foreground)"
+                      >
+                        <span className="text-(--accent) shrink-0 text-xs">
+                          ✦
+                        </span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
+            </ServicesCard>
           ))}
         </div>
       </SectionWrapper>

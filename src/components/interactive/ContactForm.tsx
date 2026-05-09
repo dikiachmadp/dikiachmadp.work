@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ContactData, UiLabels } from "@/types/content";
 import { cn, themeTransition } from "@/lib/utils";
-import { CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { CheckCircle, AlertCircle, Loader2, Send } from "lucide-react";
 
 interface ContactFormProps {
   contactData: ContactData;
@@ -47,132 +47,178 @@ export default function ContactForm({
     }
   };
 
-  const fieldBaseClasses =
-    "w-full bg-(--background) border-2 border-(--border) px-4 py-3 text-sm font-medium text-(--foreground) placeholder:text-(--gray-medium) focus:outline-none focus:border-(--accent) transition-colors duration-150";
+  const labelClasses =
+    "text-[10px] font-bold uppercase tracking-[0.2em] text-(--foreground) mb-3 ml-1 flex items-center gap-1";
 
   const submitLabel =
     status === "loading"
       ? uiLabels.buttons.loading || "Please wait..."
       : status === "success"
         ? uiLabels.buttons.success || "Message Sent!"
-        : uiLabels.buttons[form.submitAction.uiKey] || "Send Message";
+        : uiLabels.buttons[
+            form.submitAction.uiKey as keyof typeof uiLabels.buttons
+          ] || "Send Message";
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      {form.fields.map((field) => {
-        if (field.type === "textarea") {
-          return (
-            <div key={field.id} className="flex flex-col gap-2">
-              <label
-                htmlFor={field.id}
-                className="text-xs font-black uppercase tracking-widest text-(--gray-medium)"
-              >
-                {field.label}{" "}
-                {field.required && <span className="text-(--accent)">*</span>}
-              </label>
-              <textarea
-                id={field.id}
-                name={field.name}
-                placeholder={field.placeholder}
-                required={field.required}
-                rows={5}
-                value={formData[field.name] || ""}
-                onChange={(e) => handleChange(field.name, e.target.value)}
-                className={cn(fieldBaseClasses, "resize-none")}
-              />
-            </div>
-          );
-        }
+    <div className="relative w-full max-w-2xl">
+      {/* Form Container Shadow */}
+      <div className="absolute inset-0 bg-(--foreground) rounded-2xl transition-all duration-200" />
 
-        if (field.type === "select" && field.options) {
-          return (
-            <div key={field.id} className="flex flex-col gap-2">
-              <label
-                htmlFor={field.id}
-                className="text-xs font-black uppercase tracking-widest text-(--gray-medium)"
-              >
-                {field.label}{" "}
-                {field.required && <span className="text-(--accent)">*</span>}
-              </label>
-              <select
-                id={field.id}
-                name={field.name}
-                required={field.required}
-                value={formData[field.name] || ""}
-                onChange={(e) => handleChange(field.name, e.target.value)}
-                className={cn(
-                  fieldBaseClasses,
-                  "cursor-pointer appearance-none",
-                  themeTransition,
-                )}
-              >
-                <option value="" disabled>
-                  {field.placeholder}
-                </option>
-                {field.options.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          );
-        }
-
-        return (
-          <div key={field.id} className="flex flex-col gap-2">
-            <label
-              htmlFor={field.id}
-              className="text-xs font-black uppercase tracking-widest text-(--gray-medium)"
-            >
-              {field.label}{" "}
-              {field.required && <span className="text-(--accent)">*</span>}
-            </label>
-            <input
-              id={field.id}
-              type={field.type}
-              name={field.name}
-              placeholder={field.placeholder}
-              required={field.required}
-              value={formData[field.name] || ""}
-              onChange={(e) => handleChange(field.name, e.target.value)}
-              className={fieldBaseClasses}
-            />
-          </div>
-        );
-      })}
-
-      {/* Status Messages */}
-      {status === "success" && (
-        <div className="flex items-center gap-3 p-4 border-2 border-green-500 bg-green-500/10 text-green-500">
-          <CheckCircle className="w-5 h-5 shrink-0" />
-          <p className="text-sm font-bold">
-            {uiLabels.buttons.success || "Message sent successfully!"}
-          </p>
-        </div>
-      )}
-      {status === "error" && (
-        <div className="flex items-center gap-3 p-4 border-2 border-red-500 bg-red-500/10 text-red-500">
-          <AlertCircle className="w-5 h-5 shrink-0" />
-          <p className="text-sm font-bold">
-            {uiLabels.states.error || "Something went wrong. Please try again."}
-          </p>
-        </div>
-      )}
-
-      <button
-        type="submit"
-        disabled={status === "loading" || status === "success"}
+      {/* Form Container Content */}
+      <div
         className={cn(
-          "mt-2 w-full flex items-center justify-center gap-2 px-6 py-4 text-sm font-black uppercase tracking-widest transition-all duration-150 border-2",
-          status === "success"
-            ? "bg-green-500 border-green-500 text-white cursor-default"
-            : "bg-(--accent) border-(--accent) text-white hover:bg-transparent hover:text-(--accent) disabled:opacity-60 disabled:cursor-not-allowed active:translate-x-0.5 active:translate-y-0.5",
+          "relative bg-(--background) border-2 border-(--foreground) rounded-2xl p-8 md:p-12",
+          themeTransition,
         )}
       >
-        {status === "loading" && <Loader2 className="w-4 h-4 animate-spin" />}
-        {submitLabel}
-      </button>
-    </form>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+          <div className="grid grid-cols-1 gap-8">
+            {form.fields.map((field) => (
+              <div key={field.id} className="flex flex-col w-full">
+                <label htmlFor={field.id} className={labelClasses}>
+                  {field.label}
+                  {field.required && (
+                    <span className="text-(--accent) text-sm leading-none">
+                      *
+                    </span>
+                  )}
+                </label>
+
+                {/* Input Layer Container - Group for input focus effect */}
+                <div className="relative group w-full">
+                  <div className="absolute inset-0 bg-(--foreground) rounded-lg transition-all duration-200" />
+                  <div
+                    className={cn(
+                      "relative bg-(--background) border-2 border-(--foreground) rounded-lg transition-all duration-200 px-4",
+                      "group-focus-within:-translate-x-1 group-focus-within:-translate-y-1",
+                      themeTransition,
+                    )}
+                  >
+                    {field.type === "textarea" ? (
+                      <textarea
+                        id={field.id}
+                        name={field.name}
+                        placeholder={field.placeholder}
+                        required={field.required}
+                        rows={4}
+                        value={formData[field.name] || ""}
+                        onChange={(e) =>
+                          handleChange(field.name, e.target.value)
+                        }
+                        className="w-full bg-transparent py-4 outline-none text-[10px] font-bold uppercase tracking-widest text-(--foreground) placeholder:text-(--gray-medium) resize-none"
+                      />
+                    ) : field.type === "select" && field.options ? (
+                      <div className="relative w-full">
+                        <select
+                          id={field.id}
+                          name={field.name}
+                          required={field.required}
+                          value={formData[field.name] || ""}
+                          onChange={(e) =>
+                            handleChange(field.name, e.target.value)
+                          }
+                          className="w-full bg-transparent py-4 outline-none text-[10px] font-bold uppercase tracking-widest text-(--foreground) appearance-none cursor-pointer"
+                        >
+                          <option
+                            value=""
+                            disabled
+                            className="bg-(--background)"
+                          >
+                            {field.placeholder}
+                          </option>
+                          {field.options.map((opt) => (
+                            <option
+                              key={opt.value}
+                              value={opt.value}
+                              className="bg-(--background)"
+                            >
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">
+                          <div className="w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[5px] border-t-(--foreground)" />
+                        </div>
+                      </div>
+                    ) : (
+                      <input
+                        id={field.id}
+                        type={field.type}
+                        name={field.name}
+                        placeholder={field.placeholder}
+                        required={field.required}
+                        value={formData[field.name] || ""}
+                        onChange={(e) =>
+                          handleChange(field.name, e.target.value)
+                        }
+                        className="w-full bg-transparent py-4 outline-none text-[10px] font-bold uppercase tracking-widest text-(--foreground) placeholder:text-(--gray-medium)"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Status Messages */}
+          {(status === "success" || status === "error") && (
+            <div
+              className={cn(
+                "p-6 border-2 border-dashed rounded-lg text-center transition-all",
+                status === "success"
+                  ? "border-green-500/50 bg-green-500/5"
+                  : "border-red-500/50 bg-red-500/5",
+              )}
+            >
+              <p
+                className={cn(
+                  "font-bold uppercase text-xs tracking-widest flex items-center justify-center gap-3",
+                  status === "success" ? "text-green-600" : "text-red-600",
+                )}
+              >
+                {status === "success" ? (
+                  <CheckCircle className="w-4 h-4" />
+                ) : (
+                  <AlertCircle className="w-4 h-4" />
+                )}
+                {status === "success"
+                  ? uiLabels.buttons.success || "Message sent successfully!"
+                  : uiLabels.states.error || "Something went wrong."}
+              </p>
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <div className="flex justify-start">
+            {/* Button Layer Container - Group scoped only to the button */}
+            <button
+              type="submit"
+              disabled={status === "loading" || status === "success"}
+              className="group relative outline-none disabled:opacity-60"
+            >
+              <div className="absolute inset-0 rounded-lg bg-(--foreground) transition-all duration-200" />
+              <div
+                className={cn(
+                  "relative flex h-12 px-10 items-center justify-center rounded-lg uppercase transition-all duration-200 text-[10px] font-bold tracking-[0.2em] border-2",
+                  themeTransition,
+                  // Success State
+                  status === "success"
+                    ? "bg-green-500 text-white border-green-500"
+                    : // Normal State with scoped hover effect
+                      "bg-(--background) text-(--foreground) border-(--foreground) group-hover:-translate-x-1 group-hover:-translate-y-1 group-active:translate-x-0 group-active:translate-y-0",
+                )}
+              >
+                {status === "loading" ? (
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                ) : (
+                  <Send className="w-3.5 h-3.5 mr-2" />
+                )}
+                {submitLabel}
+              </div>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }

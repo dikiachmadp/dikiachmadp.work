@@ -1,25 +1,35 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AboutData } from "@/types/content";
+import { AboutData, UiLabels } from "@/types/content";
+import { cn, themeTransition } from "@/lib/utils";
 
 interface ExperienceSectionProps {
   aboutData: AboutData;
+  uiLabels: UiLabels; // Menambahkan uiLabels untuk menghindari hardcode
 }
 
 export default function ExperienceSection({
   aboutData,
+  uiLabels,
 }: ExperienceSectionProps) {
+  // Shared Brutalist Classes untuk Skill Tags
+  const skillTagShadow =
+    "absolute inset-0 bg-(--foreground) rounded-lg transition-all duration-200";
+  const skillTagContent = cn(
+    "relative bg-(--background) border-2 border-(--foreground) rounded-lg px-4 py-2",
+    "text-[10px] font-bold uppercase tracking-widest text-(--foreground)",
+    "group-hover:-translate-x-1 group-hover:-translate-y-1 transition-all duration-200",
+    themeTransition,
+  );
+
   return (
     <section className="w-full py-16 md:py-24 border-t-2 border-(--border) bg-(--background)">
       <div className="main-container">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Experience Timeline */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-10 pb-4 border-b-2 border-(--border)">
-              Experience
-            </h2>
-            <div className="flex flex-col gap-0">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          {/* 1. Experience Timeline (Span 7) */}
+          <div className="lg:col-span-7">
+            <div className="flex flex-col">
               {aboutData.experience.map((item, index) => (
                 <motion.div
                   key={index}
@@ -27,17 +37,19 @@ export default function ExperienceSection({
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
-                  className="flex gap-6 py-6 border-b border-(--border) group"
+                  className="group relative flex gap-6 py-8 border-b-2 border-(--border) border-dashed last:border-none"
                 >
-                  <div className="shrink-0 w-2 h-2 rounded-full bg-(--accent) mt-2 group-hover:scale-150 transition-transform" />
-                  <div className="flex-1">
-                    <span className="text-xs font-black uppercase tracking-widest text-(--gray-medium) block mb-1">
+                  {/* Indicator Dot with Modak Style if needed */}
+                  <div className="shrink-0 w-3 h-3 rounded-full bg-(--foreground) mt-2 group-hover:bg-(--accent) transition-colors duration-300" />
+
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-(--accent)">
                       {item.year}
                     </span>
-                    <h3 className="text-lg font-black uppercase leading-tight">
+                    <h3 className="text-xl md:text-2xl uppercase leading-tight tracking-wide">
                       {item.role}
                     </h3>
-                    <p className="text-sm font-medium text-(--gray-medium) mt-1">
+                    <p className="text-sm font-medium text-(--gray-medium) uppercase tracking-wide">
                       {item.place}
                     </p>
                   </div>
@@ -46,12 +58,9 @@ export default function ExperienceSection({
             </div>
           </div>
 
-          {/* Skills */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-10 pb-4 border-b-2 border-(--border)">
-              Skills
-            </h2>
-            <div className="flex flex-col gap-8">
+          {/* 2. Skills (Span 5) */}
+          <div className="lg:col-span-5">
+            <div className="flex flex-col gap-10">
               {aboutData.skills.map((group, index) => (
                 <motion.div
                   key={index}
@@ -60,17 +69,18 @@ export default function ExperienceSection({
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <h3 className="text-xs font-black uppercase tracking-widest text-(--gray-medium) mb-4">
+                  <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-(--gray-medium) mb-5 ml-1">
                     {group.category}
                   </h3>
-                  <div className="flex flex-wrap gap-2">
+
+                  <div className="flex flex-wrap gap-4">
                     {group.items.map((item, idx) => (
-                      <span
-                        key={idx}
-                        className="px-4 py-2 border-2 border-(--border) text-sm font-bold uppercase tracking-wide hover:bg-(--accent) hover:text-white hover:border-(--accent) transition-all duration-150 cursor-default"
-                      >
-                        {item}
-                      </span>
+                      <div key={idx} className="relative group cursor-default">
+                        {/* Shadow Layer */}
+                        <div className={skillTagShadow} />
+                        {/* Content Layer */}
+                        <div className={skillTagContent}>{item}</div>
+                      </div>
                     ))}
                   </div>
                 </motion.div>
