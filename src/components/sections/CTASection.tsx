@@ -20,7 +20,7 @@ export default function CTASection({
     ctaData.primaryButton.label;
 
   return (
-    <section className="w-full bg-(--background) py-10 md:py-16">
+    <section className="w-full bg-(--background) py-10 md:py-12">
       <div className="main-container">
         {/* PEMBUNGKUS KARTU (MOTION WRAPPER) */}
         <motion.div
@@ -29,15 +29,15 @@ export default function CTASection({
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           /* Menghilangkan efek hover dan shadow luar, fokus pada bentuk kartu tunggal */
-          className="relative bg-(--accent) rounded-4xl"
+          className="relative bg-(--foreground) rounded-4xl"
         >
           {/* LAPISAN KONTEN (Posisinya CENTER di semua layar) */}
           <div
             className="
             relative w-full h-full 
-            p-12 md:p-20
+            p-12 md:p-12
             flex flex-col items-center text-center 
-            gap-10
+            gap-8
           "
           >
             {/* Bagian Teks */}

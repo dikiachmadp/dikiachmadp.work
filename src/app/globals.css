@@ -17,11 +17,11 @@
     --text-ui-button: clamp(1.5rem, 2vw, 1.8rem);
 
     /* 2. Color Tokens - Dark Mode (Default) */
-    --background: #121212;
+    --background: #141415;
     --foreground: #ececec;
     --card: #1e1e1e;
     --border: #333333;
-    --accent: #6366f1;
+    --accent: #0d7c6f;
     --gray-soft: #2a2a2a;
     --gray-medium: #71717a;
 
@@ -58,10 +58,10 @@
   /* 7. Color Tokens - Light Mode Override */
   .light {
     --background: #fdfdfd;
-    --foreground: #1a1a1a;
+    --foreground: #141415;
     --card: #f3f4f6;
     --border: #e5e7eb;
-    --accent: #4f46e5;
+    --accent: #0d7c6f;
     --shadow-flat: 4px 4px 0px 0px rgba(0, 0, 0, 0.05);
     --gray-soft: #f9fafb;
     --gray-medium: #9ca3af;
@@ -73,30 +73,16 @@
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-main), ui-sans-serif, system-ui;
-
-    /* Transisi utama untuk background dan teks halaman */
-    transition:
-      background-color 0.5s ease-in-out,
-      color 0.5s ease-in-out,
-      border-color 0.5s ease-in-out;
     scroll-behavior: smooth;
     @apply antialiased min-h-screen;
   }
 
-  /* 9. Element Transition & Reset (Sesuai analisis) */
+  /* 9. Element Reset */
   *,
   *::before,
   *::after {
     box-sizing: border-box;
     border-color: var(--border);
-
-    /* Memastikan elemen anak dan SVG icon ikut bertransisi */
-    transition:
-      border-color 0.5s ease-in-out,
-      background-color 0.5s ease-in-out,
-      color 0.5s ease-in-out,
-      fill 0.5s ease-in-out,
-      stroke 0.5s ease-in-out;
   }
 
   /* 10. Headings Standar */

@@ -9,20 +9,23 @@ export default function Logo() {
   const locale = (params?.locale as string) || "en";
 
   return (
-    <Link 
-      href={`/${locale}`} 
-      aria-label="Back to home" 
+    <Link
+      href={`/${locale}`}
+      aria-label="Back to home"
       className="group inline-block outline-none"
     >
       {/* LAPISAN BAWAH (Warna Aksen / Bayangan Solid) */}
-      <div className="
+      <div
+        className="
         relative
-        bg-(--accent) 
+        bg-(--foreground)
         rounded-(--button-radius)
         p-0
-      ">
+      "
+      >
         {/* LAPISAN ATAS (Kontainer Logo Utama) */}
-        <div className="
+        <div
+          className="
           flex items-center justify-center
           bg-(--background)
           border-2 border-(--foreground)
@@ -39,7 +42,8 @@ export default function Logo() {
           /* HOVER: Terangkat ke kiri-atas agar bayangan muncul di kanan-bawah */
           group-hover:-translate-x-1
           group-hover:-translate-y-1
-        ">
+        "
+        >
           <div className="relative w-10 h-10">
             <Image
               src="/logo.webp"

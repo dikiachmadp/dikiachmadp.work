@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { ReactNode } from "react";
-import { cn } from "@/lib/utils";
+import { cn, themeTransition } from "@/lib/utils";
+
+export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 interface ButtonProps {
   children: ReactNode;
@@ -12,6 +14,7 @@ interface ButtonProps {
   disabled?: boolean;
   className?: string;
   variant?: "primary" | "outline" | "ghost";
+  size?: ButtonSize;
 }
 
 export default function Button({
@@ -22,45 +25,65 @@ export default function Button({
   disabled,
   className,
   variant = "primary",
+  size = "md",
 }: ButtonProps) {
+  // Mapping warna bayangan (Lapis Bawah)
   const shadowColors = {
-    primary: "bg-[var(--accent)]",
-    outline: "bg-[var(--foreground)]",
-    ghost: "bg-[var(--gray-soft)]",
+    primary: "bg-[var(--foreground)]",
+    outline: "bg-[var(--background)]",
+    ghost: "bg-transparent",
   };
 
   const variantStyles = {
     primary:
-      "bg-[var(--foreground)] text-[var(--background)] border-2 border-[var(--foreground)]",
+      "bg-[var(--foreground)] text-[var(--background)] border-2 border-[var(--background)]",
     outline:
       "bg-[var(--background)] text-[var(--foreground)] border-2 border-[var(--foreground)]",
     ghost:
-      "bg-transparent text-[var(--foreground)] border-2 border-transparent hover:border-[var(--border)]",
+      "bg-transparent text-[var(--foreground)] border-2 border-transparent hover:bg-[var(--gray-soft)] hover:border-[var(--border)]",
+  };
+
+  const sizeStyles = {
+    xs: "px-3 py-1 text-[9px] tracking-[0.2em]",
+    sm: "px-5 py-1.5 text-[10px] tracking-widest",
+    md: "px-8 py-2 text-xs tracking-wide",
+    lg: "px-10 py-3 text-sm tracking-wide",
+    xl: "px-12 py-4 text-base tracking-wider",
   };
 
   const content = (
-    /* LAPISAN BAWAH (Shadow Layer) */
     <div
       className={cn(
         "relative inline-block w-full sm:w-fit transition-all duration-200 rounded-(--button-radius)",
         shadowColors[variant],
         className,
+        themeTransition,
       )}
     >
       <div
         className={cn(
-          "flex items-center justify-center px-8 py-2 tracking-wide transition-all duration-200 rounded-(--button-radius)",
+          "flex items-center justify-center transition-all duration-200 rounded-(--button-radius) uppercase",
           variantStyles[variant],
+          sizeStyles[size],
           "translate-x-0 translate-y-0",
+          // Animasi "loncat" dinonaktifkan untuk Ghost agar lebih smooth
           !disabled &&
+            variant !== "ghost" &&
             "group-hover:-translate-x-1.5 group-hover:-translate-y-1.5",
+          // Untuk Ghost, cukup gunakan efek opacity atau scale mikro
+          !disabled && variant === "ghost" && "group-hover:opacity-80",
           disabled && "opacity-50 cursor-not-allowed",
         )}
-        /* Penerapan Font Display dan Fluid Size */
-        style={{
-          fontFamily: "var(--font-modak), var(--font-display), cursive",
-          fontSize: "var(--text-ui-button)",
-        }}
+        style={
+          size === "md" || size === "lg" || size === "xl"
+            ? {
+                fontFamily: "var(--font-modak), var(--font-display), cursive",
+                fontSize: size === "md" ? "var(--text-ui-button)" : undefined,
+              }
+            : {
+                fontFamily: "var(--font-main), sans-serif",
+              }
+        }
       >
         {children}
       </div>

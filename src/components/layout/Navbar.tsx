@@ -3,33 +3,69 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Navigation, Locale } from "@/types/content";
 import { cn } from "@/lib/utils";
 import Logo from "@/components/ui/Logo";
 import LanguageToggle from "@/components/interactive/LanguageToggle";
 import DarkModeToggle from "@/components/interactive/DarkModeToggle";
-import { Menu, X } from "lucide-react";
+import MobileMenu from "./MobileMenu";
 
 interface NavbarProps {
   navData: Navigation;
   locale: Locale;
 }
 
+// Variants untuk animasi hamburger kustom
+const hamburgerVariants: Variants = {
+  opened: { rotate: 0 },
+  closed: { rotate: 0 },
+};
+
+const lineTopVariants: Variants = {
+  closed: { rotate: 0, y: 0 },
+  opened: { rotate: 45, y: 6 },
+};
+
+const lineMiddleVariants: Variants = {
+  closed: { opacity: 1, x: 0 },
+  opened: { opacity: 0, x: 10 },
+};
+
+const lineBottomVariants: Variants = {
+  closed: { rotate: 0, y: 0 },
+  opened: { rotate: -45, y: -6 },
+};
+
 export default function Navbar({ navData, locale }: NavbarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Fungsi untuk toggle menu mobile
+  const toggleMobileMenu = () => {
+    setMobileOpen((v) => !v);
+  };
+
   return (
     <>
-      <nav className="sticky top-0 z-50 w-full border-b-2 border-(--border) bg-(--background)/90 backdrop-blur-md">
-        <div className="main-container h-20 flex items-center justify-between gap-8">
-
+      <nav
+        className={cn(
+          /* PERBAIKAN: Navbar kini Z-110 permanen agar SELALU di atas overlay (Z-100).
+            Lebar border-b-2 dipertahankan agar tidak ada lompatan ukuran saat berubah.
+          */
+          "sticky top-0 z-110 w-full border-b-2 transition-all duration-500",
+          mobileOpen
+            ? "border-transparent bg-transparent backdrop-blur-none"
+            : "border-(--border) bg-(--background)/90 backdrop-blur-md",
+        )}
+      >
+        {/* PERBAIKAN: Menambahkan kembali justify-between yang sebelumnya hilang */}
+        <div className="main-container relative flex h-20 items-center justify-between gap-8">
           {/* Logo */}
           <Logo />
 
           {/* Desktop Menu */}
-          <ul className="hidden md:flex items-center gap-6 flex-1 justify-center">
+          <ul className="hidden flex-1 items-center justify-center gap-6 md:flex">
             {navData.main.map((item) => {
               const fullPath = `/${locale}${item.path === "/" ? "" : item.path}`;
               const isActive =
@@ -41,10 +77,8 @@ export default function Navbar({ navData, locale }: NavbarProps) {
                   <Link
                     href={fullPath}
                     className={cn(
-                      "text-xs font-black uppercase tracking-widest transition-colors hover:text-(--accent) relative py-1",
-                      isActive
-                        ? "text-(--accent)"
-                        : "text-(--foreground)"
+                      "relative py-1 text-xs font-black uppercase tracking-widest transition-colors hover:text-(--accent)",
+                      isActive ? "text-(--accent)" : "text-(--foreground)",
                     )}
                   >
                     {item.label}
@@ -62,64 +96,53 @@ export default function Navbar({ navData, locale }: NavbarProps) {
 
           {/* Controls */}
           <div className="flex items-center gap-3">
+            {/* Tombol Dark Mode tetap muncul dan bisa di-klik saat menu terbuka */}
             <DarkModeToggle />
-            <LanguageToggle />
 
-            {/* Mobile hamburger */}
-            <button
-              className="md:hidden w-10 h-10 flex items-center justify-center border-2 border-(--border) bg-(--card) hover:bg-(--accent) hover:text-white transition-colors"
-              onClick={() => setMobileOpen((v) => !v)}
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            {/* Language toggle disembunyikan di mobile karena sudah ada di MobileMenu */}
+            <div className="hidden md:block">
+              <LanguageToggle />
+            </div>
+
+            <div className="md:hidden">
+              {/* Mobile hamburger kustom */}
+              <motion.button
+                className="flex h-10 w-10 flex-col items-center rounded-lg justify-center gap-1 border-2 border-(--foreground) bg-(--card) cursor-pointer outline-none transition-colors hover:border-(--foreground)"
+                onClick={toggleMobileMenu}
+                aria-label="Toggle menu"
+                animate={mobileOpen ? "opened" : "closed"}
+                variants={hamburgerVariants}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {/* Garis-garis hamburger */}
+                {[lineTopVariants, lineMiddleVariants, lineBottomVariants].map(
+                  (variants, i) => (
+                    <motion.span
+                      key={i}
+                      className="h-0.5 w-5 bg-(--foreground)"
+                      variants={variants}
+                      transition={{
+                        duration: 0.4,
+                        ease: [0.65, 0, 0.35, 1],
+                      }}
+                    />
+                  ),
+                )}
+              </motion.button>
+            </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-40 border-b-2 border-(--border) bg-(--background) md:hidden"
-          >
-            <div className="main-container py-6 flex flex-col gap-2">
-              {navData.main.map((item, i) => {
-                const fullPath = `/${locale}${item.path === "/" ? "" : item.path}`;
-                const isActive =
-                  pathname === fullPath ||
-                  (item.path !== "/" && pathname.startsWith(fullPath));
-
-                return (
-                  <motion.div
-                    key={item.path}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link
-                      href={fullPath}
-                      onClick={() => setMobileOpen(false)}
-                      className={cn(
-                        "block py-3 px-4 text-sm font-black uppercase tracking-widest border-l-4 transition-all",
-                        isActive
-                          ? "border-(--accent) text-(--accent) bg-(--card)"
-                          : "border-transparent text-(--foreground) hover:border-(--border)"
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Komponen Mobile Menu Terpisah */}
+      <MobileMenu
+        isOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        navData={navData}
+        locale={locale}
+        pathname={pathname}
+      />
     </>
   );
 }

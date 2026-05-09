@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Project } from "@/types/content";
-import { cn } from "@/lib/utils";
+import { cn, themeTransition } from "@/lib/utils";
 
 interface ProjectCardProps {
   project: Project;
@@ -28,8 +28,9 @@ export default function ProjectCard({
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
       className={cn(
-        "group relative bg-(--accent) rounded-(--button-radius)",
+        "group relative bg-(--foreground) rounded-(--button-radius)",
         className,
+        themeTransition,
       )}
     >
       <Link
@@ -76,7 +77,7 @@ export default function ProjectCard({
 
               {/* Judul Project: Menggunakan Title Scale yang lebih kecil dari Hero */}
               <h3
-                className="leading-[1.1] mt-1 group-hover:text-(--accent) transition-colors"
+                className="leading-[1.1] mt-1 group-hover:text-(--accent)"
                 style={{
                   fontSize: "clamp(1.25rem, 3vw, 1.75rem)", // Fluid khusus untuk title card
                   fontFamily: "var(--font-modak)",

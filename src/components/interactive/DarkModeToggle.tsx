@@ -8,15 +8,14 @@ export default function DarkModeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
-  // Penting: Hanya aktifkan mounted setelah komponen di client
+  // Mencegah hydration mismatch
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Selama belum mounted, tampilkan placeholder dengan ukuran yang sesuai
   if (!mounted) {
     return (
-      <div className="h-8.5 w-16 rounded-[30px] border border-(--border) bg-(--gray-soft) opacity-20" />
+      <div className="h-8.5 w-16 rounded-full border-2 border-(--border)" />
     );
   }
 
@@ -24,7 +23,6 @@ export default function DarkModeToggle() {
 
   return (
     <>
-      {/* Definisi keyframes animasi secara lokal agar tidak perlu mengubah tailwind.config.js */}
       <style>{`
         @keyframes rotate-sun {
           0% { transform: rotate(0); }
@@ -49,22 +47,20 @@ export default function DarkModeToggle() {
         onClick={() => setTheme(isDark ? "light" : "dark")}
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
         className={cn(
-          "relative inline-block h-[34px] w-[64px] rounded-[30px] outline-none cursor-pointer",
-          "transition-colors duration-400 ease-in-out",
+          "relative inline-block h-8.5 w-16 rounded-full outline-none cursor-pointer",
+          // Menggunakan variabel tema alih-alih warna statis
+          "border-2 border-(--foreground) bg-(--gray-soft)",
+          "transition-colors duration-500 ease-in-out",
         )}
-        style={{
-          // Background berubah sesuai state
-          backgroundColor: isDark ? "#183153" : "#73C0FC",
-        }}
       >
         <span className="sr-only">Toggle theme</span>
 
-        {/* MOON ICON (Kiri) - Tampil saat Dark Mode karena tidak tertutup Knob */}
-        <span className="absolute left-[5px] top-[5px] z-10 flex h-[24px] w-[24px] items-center justify-center text-[#73C0FC]">
+        {/* MOON ICON (Kiri) - Tampil saat Dark Mode */}
+        <span className="absolute left-1 top-1 z-10 flex h-5.5 w-5.5 items-center justify-center text-(--foreground)">
           <svg
             className="animate-tilt-moon"
-            width="24"
-            height="24"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -72,16 +68,16 @@ export default function DarkModeToggle() {
           </svg>
         </span>
 
-        {/* SUN ICON (Kanan) - Tampil saat Light Mode karena tidak tertutup Knob */}
-        <span className="absolute left-[36px] top-[6px] z-10 flex h-[24px] w-[24px] items-center justify-center text-white">
+        {/* SUN ICON (Kanan) - Tampil saat Light Mode */}
+        <span className="absolute right-1 top-1 z-10 flex h-5.5 w-5.5 items-center justify-center text-(--foreground)">
           <svg
             className="animate-rotate-sun"
-            width="24"
-            height="24"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="3"
+            strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
@@ -90,11 +86,11 @@ export default function DarkModeToggle() {
           </svg>
         </span>
 
-        {/* KNOB: Lapisan bulat yang bergeser ke kiri dan kanan untuk menutupi/membuka icon */}
+        {/* KNOB */}
         <span
-          className="absolute bottom-[2px] left-[2px] z-20 h-[30px] w-[30px] rounded-[20px] bg-[#e8e8e8]"
+          className="absolute bottom-0.5 left-0.5 z-20 h-6.5 w-6.5 rounded-full bg-(--foreground)"
           style={{
-            transition: "transform 0.4s",
+            transition: "transform 0.5s cubic-bezier(0.65, 0, 0.35, 1)",
             transform: isDark ? "translateX(30px)" : "translateX(0px)",
             willChange: "transform",
           }}

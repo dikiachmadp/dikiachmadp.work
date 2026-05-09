@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cn, themeTransition } from "@/lib/utils";
 
 interface ServicesCardProps {
   children: React.ReactNode;
@@ -26,8 +26,9 @@ export default function ServicesCard({
       transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
       /* LAPISAN BAWAH (Shadow) */
       className={cn(
-        "group relative bg-(--accent) rounded-(--button-radius)",
+        "group relative bg-(--foreground) rounded-(--button-radius)",
         className,
+        themeTransition,
       )}
     >
       {/* LAPISAN ATAS (Body Container) */}

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Star } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, themeTransition } from "@/lib/utils";
 import { HeroData } from "@/types/content";
 
 // Mengambil interface langsung dari struktur data Hero
@@ -20,7 +20,11 @@ export default function SocialProof({ data, className }: SocialProofProps) {
       href={freelancerLink}
       target="_blank"
       rel="noopener noreferrer"
-      className={cn("group relative inline-block outline-none", className)}
+      className={cn(
+        "group relative inline-block outline-none",
+        className,
+        themeTransition,
+      )}
     >
       {/* LAPISAN BAWAH (Shadow Accent) */}
       <div className="absolute inset-0 bg-(--accent) rounded-full translate-x-0 translate-y-0 transition-transform duration-200" />

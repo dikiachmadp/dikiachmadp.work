@@ -59,19 +59,18 @@ export default async function RootLayout({
   return (
     <html lang={validLocale} suppressHydrationWarning>
       <body className={`${inter.variable} ${modak.variable} antialiased`}>
+        {/* Atribut disableTransitionOnChange telah dihapus dari sini */}
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem={false}
-          disableTransitionOnChange
         >
           <Navbar navData={dict.navigation} locale={validLocale} />
-          <main className="min-h-screen">
-            {children}
-          </main>
+          <main className="min-h-screen">{children}</main>
           <Footer
             footerData={dict.footer}
             siteConfig={dict.siteConfig}
+            heroData={dict.hero}
             locale={validLocale}
           />
         </ThemeProvider>

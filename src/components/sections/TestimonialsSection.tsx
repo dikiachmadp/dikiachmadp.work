@@ -148,7 +148,7 @@ function NavButton({
         bg-(--background) text-(--foreground) 
         border-2 border-(--foreground) rounded-full
         transition-transform duration-150 ease-out
-        md:group-hover:-translate-x-1 md:group-hover:-translate-y-1
+        group-hover:-translate-x-1 group-hover:-translate-y-1
         active:translate-x-0 active:translate-y-0
       "
       >

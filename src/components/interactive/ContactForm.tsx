@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ContactData, UiLabels } from "@/types/content";
-import { cn } from "@/lib/utils";
+import { cn, themeTransition } from "@/lib/utils";
 import { CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
 interface ContactFormProps {
@@ -12,7 +12,10 @@ interface ContactFormProps {
 
 type FormStatus = "idle" | "loading" | "success" | "error";
 
-export default function ContactForm({ contactData, uiLabels }: ContactFormProps) {
+export default function ContactForm({
+  contactData,
+  uiLabels,
+}: ContactFormProps) {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [formData, setFormData] = useState<Record<string, string>>({});
 
@@ -51,8 +54,8 @@ export default function ContactForm({ contactData, uiLabels }: ContactFormProps)
     status === "loading"
       ? uiLabels.buttons.loading || "Please wait..."
       : status === "success"
-      ? uiLabels.buttons.success || "Message Sent!"
-      : uiLabels.buttons[form.submitAction.uiKey] || "Send Message";
+        ? uiLabels.buttons.success || "Message Sent!"
+        : uiLabels.buttons[form.submitAction.uiKey] || "Send Message";
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -60,8 +63,12 @@ export default function ContactForm({ contactData, uiLabels }: ContactFormProps)
         if (field.type === "textarea") {
           return (
             <div key={field.id} className="flex flex-col gap-2">
-              <label htmlFor={field.id} className="text-xs font-black uppercase tracking-widest text-(--gray-medium)">
-                {field.label} {field.required && <span className="text-(--accent)">*</span>}
+              <label
+                htmlFor={field.id}
+                className="text-xs font-black uppercase tracking-widest text-(--gray-medium)"
+              >
+                {field.label}{" "}
+                {field.required && <span className="text-(--accent)">*</span>}
               </label>
               <textarea
                 id={field.id}
@@ -80,8 +87,12 @@ export default function ContactForm({ contactData, uiLabels }: ContactFormProps)
         if (field.type === "select" && field.options) {
           return (
             <div key={field.id} className="flex flex-col gap-2">
-              <label htmlFor={field.id} className="text-xs font-black uppercase tracking-widest text-(--gray-medium)">
-                {field.label} {field.required && <span className="text-(--accent)">*</span>}
+              <label
+                htmlFor={field.id}
+                className="text-xs font-black uppercase tracking-widest text-(--gray-medium)"
+              >
+                {field.label}{" "}
+                {field.required && <span className="text-(--accent)">*</span>}
               </label>
               <select
                 id={field.id}
@@ -89,11 +100,19 @@ export default function ContactForm({ contactData, uiLabels }: ContactFormProps)
                 required={field.required}
                 value={formData[field.name] || ""}
                 onChange={(e) => handleChange(field.name, e.target.value)}
-                className={cn(fieldBaseClasses, "cursor-pointer appearance-none")}
+                className={cn(
+                  fieldBaseClasses,
+                  "cursor-pointer appearance-none",
+                  themeTransition,
+                )}
               >
-                <option value="" disabled>{field.placeholder}</option>
+                <option value="" disabled>
+                  {field.placeholder}
+                </option>
                 {field.options.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -102,8 +121,12 @@ export default function ContactForm({ contactData, uiLabels }: ContactFormProps)
 
         return (
           <div key={field.id} className="flex flex-col gap-2">
-            <label htmlFor={field.id} className="text-xs font-black uppercase tracking-widest text-(--gray-medium)">
-              {field.label} {field.required && <span className="text-(--accent)">*</span>}
+            <label
+              htmlFor={field.id}
+              className="text-xs font-black uppercase tracking-widest text-(--gray-medium)"
+            >
+              {field.label}{" "}
+              {field.required && <span className="text-(--accent)">*</span>}
             </label>
             <input
               id={field.id}
@@ -123,13 +146,17 @@ export default function ContactForm({ contactData, uiLabels }: ContactFormProps)
       {status === "success" && (
         <div className="flex items-center gap-3 p-4 border-2 border-green-500 bg-green-500/10 text-green-500">
           <CheckCircle className="w-5 h-5 shrink-0" />
-          <p className="text-sm font-bold">{uiLabels.buttons.success || "Message sent successfully!"}</p>
+          <p className="text-sm font-bold">
+            {uiLabels.buttons.success || "Message sent successfully!"}
+          </p>
         </div>
       )}
       {status === "error" && (
         <div className="flex items-center gap-3 p-4 border-2 border-red-500 bg-red-500/10 text-red-500">
           <AlertCircle className="w-5 h-5 shrink-0" />
-          <p className="text-sm font-bold">{uiLabels.states.error || "Something went wrong. Please try again."}</p>
+          <p className="text-sm font-bold">
+            {uiLabels.states.error || "Something went wrong. Please try again."}
+          </p>
         </div>
       )}
 
@@ -140,7 +167,7 @@ export default function ContactForm({ contactData, uiLabels }: ContactFormProps)
           "mt-2 w-full flex items-center justify-center gap-2 px-6 py-4 text-sm font-black uppercase tracking-widest transition-all duration-150 border-2",
           status === "success"
             ? "bg-green-500 border-green-500 text-white cursor-default"
-            : "bg-(--accent) border-(--accent) text-white hover:bg-transparent hover:text-(--accent) disabled:opacity-60 disabled:cursor-not-allowed active:translate-x-[2px] active:translate-y-[2px]"
+            : "bg-(--accent) border-(--accent) text-white hover:bg-transparent hover:text-(--accent) disabled:opacity-60 disabled:cursor-not-allowed active:translate-x-0.5 active:translate-y-0.5",
         )}
       >
         {status === "loading" && <Loader2 className="w-4 h-4 animate-spin" />}

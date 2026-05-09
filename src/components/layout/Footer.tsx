@@ -1,83 +1,118 @@
 "use client";
 
-import Link from "next/link";
-import { FooterData, SiteConfig, Locale } from "@/types/content";
-import Logo from "@/components/ui/Logo";
+import { FooterData, SiteConfig, HeroData, Locale } from "@/types/content";
 import Social from "@/components/ui/Social";
+import { cn, themeTransition } from "@/lib/utils";
+import Link from "next/link";
 
 interface FooterProps {
   footerData: FooterData;
   siteConfig: SiteConfig;
+  heroData: HeroData;
   locale: Locale;
 }
 
-export default function Footer({ footerData, siteConfig, locale }: FooterProps) {
+export default function Footer({
+  footerData,
+  siteConfig,
+  heroData,
+  locale,
+}: FooterProps) {
   const socialEntries = Object.entries(siteConfig.socials);
 
+  const footerLinkContainer = cn(
+    "relative inline-block transition-all duration-200 rounded-lg bg-[var(--foreground)]", // Layer bawah (Shadow)
+    themeTransition,
+  );
+
+  const footerLinkContent = cn(
+    "flex h-10 w-24 items-center justify-center rounded-lg uppercase transition-all duration-200",
+    "bg-[var(--background)] text-[var(--foreground)] border-2 border-[var(--border)]", // Style Outline
+    "text-[10px] font-bold tracking-widest",
+    "group-hover:-translate-x-1 group-hover:-translate-y-1", // Efek loncat yang sama dengan Button
+  );
+
   return (
-    <footer className="w-full border-t-2 border-(--border) bg-(--background) pt-14 pb-8 mt-0">
+    <footer
+      className={cn(
+        "w-full border-t-2 border-(--border) bg-(--background) pb-8 pt-12 md:pt-8",
+        themeTransition,
+      )}
+    >
       <div className="main-container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        {/* BARIS ATAS: KONTEN UTAMA */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-4 mb-10 md:mb-10">
+          {/* SISI KIRI: BRANDING & STATUS */}
+          <div className="flex flex-col items-center md:items-start space-y-5">
+            {/* Status Available berada paling atas */}
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-(--border) bg-(--card)">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--accent) opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-(--accent)"></span>
+              </span>
+              <span className="text-[8px] font-black uppercase tracking-[0.15em] text-(--foreground)">
+                {heroData.availability.status}
+              </span>
+            </div>
 
-          {/* Brand */}
-          <div className="flex flex-col gap-4">
-            <Logo />
-            <p className="text-xs font-medium text-(--gray-medium) max-w-[200px] leading-relaxed">
-              {siteConfig.fullName} — Graphic Designer, UI/UX Designer & 3D Artist.
-            </p>
-          </div>
-
-          {/* Social Links */}
-          <div className="flex flex-col gap-4">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-(--gray-medium)">
-              {footerData.socialLabel}
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {socialEntries.map(([platform, url]) => (
-                <Social
-                  key={platform}
-                  platform={platform}
-                  url={url}
-                  showLabel={true}
-                  size="sm"
-                  className="text-xs font-bold uppercase tracking-wide"
-                />
-              ))}
+            <div className="flex flex-col items-center md:items-start leading-none">
+              <h2 className="font-display text-5xl md:text-7xl tracking-wide text-(--accent) uppercase">
+                {siteConfig.siteName}
+              </h2>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.4em] text-(--gray)">
+                {siteConfig.location}
+              </p>
             </div>
           </div>
 
-          {/* Email CTA */}
-          <div className="flex flex-col gap-4 md:items-end">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-(--gray-medium)">
-              Let&apos;s connect
-            </p>
-            <a
-              href={`mailto:${siteConfig.email}`}
-              className="text-sm font-black uppercase hover:text-(--accent) transition-colors underline underline-offset-4"
-            >
-              {siteConfig.email}
-            </a>
-            <Link
-              href={`/${locale}/contact`}
-              className="text-xs font-black uppercase tracking-widest px-4 py-2 border-2 border-(--border) hover:bg-(--accent) hover:border-(--accent) hover:text-white transition-all duration-150"
-            >
-              Start a Project →
-            </Link>
+          {/* SISI KANAN: SOCIALS */}
+          <div className="flex flex-col items-center md:items-end justify-center">
+            <div className="flex flex-col items-center md:items-end gap-3">
+              <span className="text-xs font-bold tracking-widest text-(--gray) uppercase">
+                {footerData.socialLabel}
+              </span>
+              <div className="flex items-center gap-2">
+                {socialEntries.map(([platform, url]) => (
+                  <Social
+                    key={platform}
+                    platform={platform}
+                    url={url}
+                    size="md"
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t-2 border-(--border) flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <p className="text-xs font-medium text-(--gray-medium)">
-            {footerData.copyright}
-          </p>
-          <div className="flex items-center gap-6">
-            <Link href={`/${locale}/legal`} className="text-xs font-bold uppercase tracking-widest text-(--gray-medium) hover:text-(--accent) transition-colors">
-              Legal
-            </Link>
-            <Link href={`/${locale}/privacy`} className="text-xs font-bold uppercase tracking-widest text-(--gray-medium) hover:text-(--accent) transition-colors">
-              Privacy
-            </Link>
+        {/* GARIS PEMISAH FULL WIDTH */}
+        <div className="w-full border-t-2 border-(--border) pt-4">
+          {/* BARIS BAWAH: COPYRIGHT & LEGAL */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            {/* Copyright di kiri bawah */}
+            <p className="text-[9px] font-semibold uppercase tracking-wider text-(--gray-medium) order-2 md:order-1">
+              {footerData.copyright}
+            </p>
+
+            {/* Legal & Privacy di kanan bawah (sejajar copyright) */}
+            <div className="flex gap-4 order-1 md:order-2">
+              {[
+                { label: "Legal", path: "/legal" },
+                { label: "Privacy", path: "/privacy" },
+              ].map((item) => (
+                <Link
+                  key={item.label}
+                  href={`/${locale}${item.path}`}
+                  className="group relative outline-none"
+                >
+                  {/* Container ini berfungsi sebagai bayangan (Layer Bawah) */}
+                  <div className={footerLinkContainer}>
+                    {/* Div ini adalah konten utama yang akan bergeser (Layer Atas) */}
+                    <div className={footerLinkContent}>{item.label}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>

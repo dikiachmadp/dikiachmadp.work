@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cn, themeTransition } from "@/lib/utils";
 
 interface PageHeaderProps {
   topTitle?: string;
@@ -14,9 +14,20 @@ interface PageHeaderProps {
 /**
  * Brutalist-styled page header with staggered reveal animations.
  */
-export default function PageHeader({ topTitle, title, description, className }: PageHeaderProps) {
+export default function PageHeader({
+  topTitle,
+  title,
+  description,
+  className,
+}: PageHeaderProps) {
   return (
-    <div className={cn("w-full border-b-2 border-(--border) bg-(--background) pt-16 pb-12 md:pt-20 md:pb-16", className)}>
+    <div
+      className={cn(
+        "w-full border-b-2 border-(--border) bg-(--background) pt-16 pb-12 md:pt-20 md:pb-16",
+        className,
+        themeTransition,
+      )}
+    >
       <div className="main-container">
         {topTitle && (
           <motion.p

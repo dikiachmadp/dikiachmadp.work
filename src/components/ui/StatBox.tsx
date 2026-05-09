@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, themeTransition } from "@/lib/utils";
 
 interface StatBoxProps {
   label: string;
@@ -15,8 +15,9 @@ export default function StatBox({ label, value, className }: StatBoxProps) {
   return (
     <div
       className={cn(
-        "group relative bg-(--accent) rounded-(--button-radius)",
+        "group relative bg-(--foreground) rounded-(--button-radius)",
         className,
+        themeTransition,
       )}
     >
       <div

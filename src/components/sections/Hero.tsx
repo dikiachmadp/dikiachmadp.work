@@ -20,8 +20,8 @@ export default function Hero({ heroData }: HeroProps) {
         <div className="flex justify-start mb-12">
           <div className="flex items-center gap-3 px-4 py-2 border-2 border-(--border) bg-(--card) rounded-full shadow-flat">
             <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--accent) opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-(--accent)"></span>
             </span>
             {/* Menggunakan variabel UI label untuk teks kecil */}
             <span
