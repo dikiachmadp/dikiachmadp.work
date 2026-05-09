@@ -242,8 +242,24 @@ export const PolicySchema = z.object({
     .optional(),
 });
 
-// ui.json (General UI Labels/Strings)
+// Tambahkan atau perbarui bagian ini di src/schemas/content.ts
 export const UiSchema = z.object({
-  buttons: z.record(z.string(), z.string()), // Memvalidasi objek di dalam 'buttons'
-  states: z.record(z.string(), z.string()), // Memvalidasi objek di dalam 'states'
+  buttons: z.object({
+    viewAllWork: z.string(),
+    viewAllServices: z.string(),
+    contactMe: z.string(),
+    submit: z.string(),
+    loading: z.string(),
+    success: z.string(),
+    download: z.string(),
+  }),
+  states: z.object({
+    empty: z.string(),
+    error: z.string(),
+    loading: z.string(),
+    notFound: z.string(),
+    comingSoon: z.string(),
+    allCategories: z.string(), // Tambahkan ini
+    searchPlaceholder: z.string(), // Tambahkan ini
+  }),
 });

@@ -15,9 +15,11 @@ export default function CTASection({
   uiLabels,
   locale,
 }: CTASectionProps) {
+  // PERBAIKAN: Tambahkan casting 'as keyof typeof uiLabels.buttons'
   const primaryLabel =
-    uiLabels.buttons[ctaData.primaryButton.uiKey] ||
-    ctaData.primaryButton.label;
+    uiLabels.buttons[
+      ctaData.primaryButton.uiKey as keyof typeof uiLabels.buttons
+    ] || ctaData.primaryButton.label;
 
   return (
     <section className="w-full bg-(--background) py-10 md:py-12">

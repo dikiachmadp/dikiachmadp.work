@@ -43,7 +43,7 @@ export default function PageHeader({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
-          className="text-5xl md:text-7xl lg:text-8xl leading-[0.85] tracking-tighter uppercase mb-6"
+          className="text-5xl md:text-7xl lg:text-8xl leading-[0.85] tracking-wide uppercase mb-6"
         >
           {title}
         </motion.h1>

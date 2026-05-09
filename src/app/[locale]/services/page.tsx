@@ -12,9 +12,10 @@ export default async function ServicesPage({
   params: Promise<{ locale: string }>;
 }) {
   const resolvedParams = await params;
-  const validLocale = (resolvedParams.locale === "en" || resolvedParams.locale === "id")
-    ? (resolvedParams.locale as Locale)
-    : "en";
+  const validLocale =
+    resolvedParams.locale === "en" || resolvedParams.locale === "id"
+      ? (resolvedParams.locale as Locale)
+      : "en";
 
   const dict = await getDictionary(validLocale);
   const header = dict.pageHeader.services;
@@ -46,13 +47,15 @@ export default async function ServicesPage({
                 {service.summary}
               </p>
               <div className="mt-auto">
-                <p className="text-xs font-black uppercase tracking-widest text-(--gray-medium) mb-4">
-                  Deliverables
-                </p>
                 <ul className="flex flex-col gap-3">
                   {service.deliverables.map((item, index) => (
-                    <li key={index} className="flex items-start gap-3 text-sm font-medium">
-                      <span className="text-(--accent) mt-0.5 shrink-0 text-base">✦</span>
+                    <li
+                      key={index}
+                      className="flex items-start gap-3 text-sm font-medium"
+                    >
+                      <span className="text-(--accent) mt-0.5 shrink-0 text-base">
+                        ✦
+                      </span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -63,11 +66,7 @@ export default async function ServicesPage({
         </div>
       </SectionWrapper>
 
-      <CTASection
-        ctaData={dict.cta}
-        uiLabels={dict.ui}
-        locale={validLocale}
-      />
+      <CTASection ctaData={dict.cta} uiLabels={dict.ui} locale={validLocale} />
     </PageWrapper>
   );
 }

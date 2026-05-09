@@ -3,8 +3,8 @@
     { "label": "Projects", "path": "/projects" },
     { "label": "About", "path": "/about" },
     { "label": "Services", "path": "/services" },
-    { "label": "Studio", "path": "/studio" },
-    { "label": "Contact", "path": "/contact" }
+    { "label": "Contact", "path": "/contact" },
+    { "label": "Studio", "path": "/studio" }
   ],
   "footer": [
     { "label": "Legal", "path": "/legal" },
