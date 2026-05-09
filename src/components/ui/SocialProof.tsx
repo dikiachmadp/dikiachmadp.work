@@ -27,7 +27,7 @@ export default function SocialProof({ data, className }: SocialProofProps) {
       )}
     >
       {/* LAPISAN BAWAH (Shadow Accent) */}
-      <div className="absolute inset-0 bg-(--accent) rounded-full translate-x-0 translate-y-0 transition-transform duration-200" />
+      <div className="absolute inset-0 bg-(--foreground) rounded-full translate-x-0 translate-y-0 transition-transform duration-200" />
 
       {/* LAPISAN ATAS (Body) */}
       <div
@@ -44,7 +44,7 @@ export default function SocialProof({ data, className }: SocialProofProps) {
           {[...Array(Math.floor(data.rating))].map((_, i) => (
             <Star
               key={i}
-              className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400"
+              className="w-3.5 h-3.5 fill-(--accent) text-(--accent)"
             />
           ))}
         </div>
