@@ -26,9 +26,10 @@ export default async function StudioPage({
   params: Promise<{ locale: string }>;
 }) {
   const resolvedParams = await params;
-  const validLocale = (resolvedParams.locale === "en" || resolvedParams.locale === "id")
-    ? (resolvedParams.locale as Locale)
-    : "en";
+  const validLocale =
+    resolvedParams.locale === "en" || resolvedParams.locale === "id"
+      ? (resolvedParams.locale as Locale)
+      : "en";
 
   const dict = await getDictionary(validLocale);
   const header = dict.pageHeader.studio;
@@ -58,12 +59,16 @@ export default async function StudioPage({
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex items-center gap-2">
                     <config.Icon className={`w-4 h-4 ${config.color}`} />
-                    <span className={`text-xs font-black uppercase tracking-widest ${config.color}`}>
+                    <span
+                      className={`text-xs font-black uppercase tracking-widest ${config.color}`}
+                    >
                       {config.label}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-black font-mono text-(--gray-medium)">{item.id}</span>
+                    <span className="text-sm font-black font-mono text-(--gray-medium)">
+                      {item.id}
+                    </span>
                     <ArrowUpRight className="w-5 h-5 text-(--gray-medium) group-hover:text-(--accent) group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
                   </div>
                 </div>

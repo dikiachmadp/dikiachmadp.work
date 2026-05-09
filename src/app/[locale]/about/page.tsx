@@ -85,7 +85,7 @@ export default async function AboutPage({
             {/* Download CV Button - Styled like Filter Button */}
             <div className="pt-4">
               <a
-                href="/cv-diki.pdf" // Sesuaikan path file CV Anda
+                href="/CV_Diki_2026.pdf" // Sesuaikan path file CV Anda
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block group relative outline-none"
