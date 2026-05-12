@@ -24,20 +24,35 @@ export async function generateMetadata({
   const dict = await getDictionary(validLocale);
   const { siteConfig } = dict;
 
+  // 1. Mendefinisikan URL dasar dan URL spesifik bahasa
+  const baseUrl = siteConfig.url || "https://dikiachmadp.work";
+  const currentUrl = `${baseUrl}/${validLocale}`;
+
   return {
+    // --- Primary Meta Tags ---
     title: {
       default: `${siteConfig.siteName} | ${siteConfig.fullName}`,
       template: `%s | ${siteConfig.siteName}`,
     },
     description: siteConfig.description,
-    metadataBase: new URL(siteConfig.url),
+    metadataBase: new URL(baseUrl),
+
+    // --- Open Graph / Facebook ---
     openGraph: {
       type: "website",
-      url: siteConfig.url,
+      url: currentUrl,
       title: `${siteConfig.siteName} | ${siteConfig.fullName}`,
       description: siteConfig.description,
-      images: [{ url: "/ogImage.png", width: 1200, height: 628 }],
     },
+
+    // --- X (Twitter) ---
+    twitter: {
+      card: "summary_large_image",
+      title: `${siteConfig.siteName} | ${siteConfig.fullName}`,
+      description: siteConfig.description,
+    },
+
+    // --- Favicon & Icons ---
     icons: {
       icon: "/favicon.webp",
       shortcut: "/favicon.webp",
@@ -59,7 +74,6 @@ export default async function RootLayout({
   return (
     <html lang={validLocale} suppressHydrationWarning>
       <body className={`${inter.variable} ${modak.variable} antialiased`}>
-        {/* Atribut disableTransitionOnChange telah dihapus dari sini */}
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
