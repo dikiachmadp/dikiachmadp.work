@@ -1,15 +1,41 @@
 {
   "biography": [
-    "Creative and detail-oriented Graphic Designer with over 5 years of experience in visual design, specializing in product packaging, marketing materials, and 3D assets.",
+    "Creative and detail-oriented Graphic Designer with more than 5 years of experience in graphic design, specializing in packaging design, ui/ux design, and 3D assets.",
     "Proven track record of delivering high-quality designs that align with brand identity. Experienced in working with international clients, with a strong commitment to meeting deadlines and ensuring client satisfaction."
   ],
   "experience": [
-    { "year": "2016 — Present", "role": "Publishing Staff", "place": "FEB UNPAS (Bandung)" },
-    { "year": "2019 — Present", "role": "Graphic Designer", "place": "Freelancer (Remote)" },
-    { "year": "2019 — Present", "role": "Freelance 3D Artist", "place":"(Remote)" }
+    {
+      "year": "2016 — Present",
+      "role": "Publishing Staff",
+      "place": "FEB UNPAS (Bandung)"
+    },
+    {
+      "year": "2019 — Present",
+      "role": "Graphic Designer",
+      "place": "Freelancer (Remote)"
+    },
+    {
+      "year": "2019 — Present",
+      "role": "Freelance 3D Artist",
+      "place": "(Remote)"
+    }
   ],
   "skills": [
-    { "category": "Design", "items": ["Brand Identity", "UI/UX Design", "Product Packaging"] },
-    { "category": "Tools", "items": ["Adobe Creative Suite", "Next.js", "Blender"] }
+    {
+      "category": "Design",
+      "items": [
+        "Brand Identity",
+        "UI/UX Design",
+        "Product Packaging"
+      ]
+    },
+    {
+      "category": "Tools",
+      "items": [
+        "Adobe Creative Suite",
+        "Next.js",
+        "Blender"
+      ]
+    }
   ]
 }
