@@ -1,76 +1,76 @@
 {
   "items": [
     {
-"id": "brand-identity",
-"order": 1,
-"title": "Brand Identity",
-"summary": "Logos, identity systems, and brand guidelines built to last.",
-"deliverables": [
-"Logo design & variants",
-"Typography & color systems",
-"Brand guidelines (PDF)",
-"Stationery & social kit"
-]
-},
-{
-"id": "ui-ux",
-"order": 2,
-"title": "UI/UX Design",
-"summary": "Digital product design from wireframes to pixel-perfect interfaces.",
-"deliverables": [
-"UX research & user flows",
-"Wireframes & prototypes",
-"UI design systems",
-"Design handoff & dev support"
-]
-},
-{
-"id": "packaging",
-"order": 3,
-"title": "Packaging Design",
-"summary": "Structural and graphic packaging that stands out on the shelf.",
-"deliverables": [
-"Structural packaging design",
-"Label & surface graphics",
-"Dieline production files",
-"3D packaging mockups"
-]
-},
-{
-"id": "3d-modeling",
-"order": 4,
-"title": "3D Modeling & Animation",
-"summary": "Product visualization, environments, and motion for brands.",
-"deliverables": [
-"3D product visualization",
-"Environment & prop modeling",
-"Animation & motion graphics",
-"Render passes & compositing"
-]
-},
-{
-"id": "illustration",
-"order": 5,
-"title": "Illustration",
-"summary": "Custom illustration for editorial, brand, and product contexts.",
-"deliverables": [
-"Editorial illustration",
-"Spot & hero illustrations",
-"Isometric & technical art",
-"Character design"
-]
-},
-{
-"id": "web-design",
-"order": 6,
-"title": "Web Design",
-"summary": "Marketing sites and product pages with refined, considered design.",
-"deliverables": [
-"Landing page design",
-"Marketing site design",
-"Responsive design systems",
-"CMS-ready templates"
-]
-}
+      "id": "brand-identity",
+      "order": 1,
+      "title": "Identitas Merek",
+      "summary": "Logo, sistem identitas, dan pedoman merek yang dirancang untuk jangka panjang.",
+      "deliverables": [
+        "Desain logo & varian",
+        "Sistem tipografi & warna",
+        "Pedoman merek (PDF)",
+        "Alat tulis & perlengkapan media sosial"
+      ]
+    },
+    {
+      "id": "ui-ux",
+      "order": 2,
+      "title": "Desain UI/UX",
+      "summary": "Desain produk digital mulai dari wireframe hingga antarmuka yang sempurna.",
+      "deliverables": [
+        "Riset UX & alur pengguna",
+        "Wireframe & prototipe",
+        "Sistem desain UI",
+        "Serah terima desain & dukungan pengembang"
+      ]
+    },
+    {
+      "id": "packaging",
+      "order": 3,
+      "title": "Desain Pengemasan",
+      "summary": "Kemasan struktural dan grafis yang menonjol di rak pajangan.",
+      "deliverables": [
+        "Desain kemasan struktural",
+        "Grafis label & permukaan",
+        "File produksi dieline",
+        "Mockup kemasan 3D"
+      ]
+    },
+    {
+      "id": "3d-modeling",
+      "order": 4,
+      "title": "Pemodelan & Animasi 3D",
+      "summary": "Visualisasi produk, lingkungan, dan gerak untuk merek.",
+      "deliverables": [
+        "Visualisasi produk 3D",
+        "Pemodelan lingkungan & properti",
+        "Animasi & grafis gerak",
+        "Render passes & komposit"
+      ]
+    },
+    {
+      "id": "illustration",
+      "order": 5,
+      "title": "Ilustrasi",
+      "summary": "Ilustrasi khusus untuk konteks editorial, merek, dan produk.",
+      "deliverables": [
+        "Ilustrasi editorial",
+        "Ilustrasi spot & hero",
+        "Seni isometrik & teknis",
+        "Desain karakter"
+      ]
+    },
+    {
+      "id": "web-design",
+      "order": 6,
+      "title": "Desain Web",
+      "summary": "Situs pemasaran dan halaman produk dengan desain yang halus dan terencana.",
+      "deliverables": [
+        "Desain landing page",
+        "Desain situs pemasaran",
+        "Sistem desain responsif",
+        "Templat siap CMS"
+      ]
+    }
   ]
 }

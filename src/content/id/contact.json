@@ -6,8 +6,8 @@
         "id": "field-name",
         "name": "name",
         "type": "text",
-        "label": "Name",
-        "placeholder": "Your name",
+        "label": "Nama",
+        "placeholder": "Nama Anda",
         "required": true
       },
       {
@@ -15,21 +15,21 @@
         "name": "email",
         "type": "email",
         "label": "Email",
-        "placeholder": "hello@example.com",
+        "placeholder": "halo@contoh.com",
         "required": true
       },
       {
         "id": "field-inquiry",
         "name": "inquiryType",
         "type": "select",
-        "label": "What are you looking for?",
-        "placeholder": "Select an option",
+        "label": "Apa yang sedang Anda cari?",
+        "placeholder": "Pilih opsi",
         "options": [
-          { "value": "web-development", "label": "Web Development" },
-          { "value": "brand-identity", "label": "Brand Identity" },
-          { "value": "3d-design", "label": "3D Design" },
-          { "value": "ui-ux-design", "label": "UI/UX Design" },
-          { "value": "other", "label": "Other" }
+          { "value": "web-development", "label": "Pengembangan Web" },
+          { "value": "brand-identity", "label": "Identitas Merek" },
+          { "value": "3d-design", "label": "Desain 3D" },
+          { "value": "ui-ux-design", "label": "Desain UI/UX" },
+          { "value": "other", "label": "Lainnya" }
         ],
         "required": true
       },
@@ -37,13 +37,13 @@
         "id": "field-message",
         "name": "message",
         "type": "textarea",
-        "label": "Message",
-        "placeholder": "Tell me about your project...",
+        "label": "Pesan",
+        "placeholder": "Ceritakan tentang proyek Anda...",
         "required": true
       }
     ],
     "submitAction": {
-      "uiKey": "submit" 
+      "uiKey": "kirim" 
     }
   }
 }

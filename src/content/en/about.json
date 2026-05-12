@@ -1,15 +1,15 @@
 {
   "biography": [
-    "I started in graphic design almost by accident. What began as experiments in Photoshop late at night turned into a career built on curiosity — always chasing the next medium, the next problem to solve.",
-    "Over the last six years I've worked with independent founders...",
-    "My approach is equal parts research and craft."
+    "Creative and detail-oriented Graphic Designer with over 5 years of experience in visual design, specializing in product packaging, marketing materials, and 3D assets.",
+    "Proven track record of delivering high-quality designs that align with brand identity. Experienced in working with international clients, with a strong commitment to meeting deadlines and ensuring client satisfaction."
   ],
   "experience": [
-    { "year": "2020 — Present", "role": "Solo Freelance Designer", "place": "Freelancer (Remote)" },
-    { "year": "2016 — present", "role": "Editorial Designer", "place": "FEB UNPAS (Bandung)" }
+    { "year": "2016 — Present", "role": "Publishing Staff", "place": "FEB UNPAS (Bandung)" },
+    { "year": "2019 — Present", "role": "Graphic Designer", "place": "Freelancer (Remote)" },
+    { "year": "2019 — Present", "role": "Freelance 3D Artist", "place":"(Remote)" }
   ],
   "skills": [
-    { "category": "Design", "items": ["Brand Identity", "UI/UX Design"] },
-    { "category": "Tools", "items": ["Adobe Creative Suite", "Framer"] }
+    { "category": "Design", "items": ["Brand Identity", "UI/UX Design", "Product Packaging"] },
+    { "category": "Tools", "items": ["Adobe Creative Suite", "Next.js", "Blender"] }
   ]
 }

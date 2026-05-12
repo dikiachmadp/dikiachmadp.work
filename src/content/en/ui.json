@@ -9,10 +9,10 @@
     "download": "Download CV"
   },
   "states": {
-    "empty": "No projects found matching your search.",
-    "error": "Something went wrong.",
+    "empty": "No projects found matching your search",
+    "error": "Something went wrong",
     "loading": "Loading...",
-    "notFound": "Page not found.",
+    "notFound": "Page not found",
     "comingSoon": "Coming Soon",
     "allCategories": "All Projects",
     "searchPlaceholder": "Search projects..."

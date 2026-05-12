@@ -1,14 +1,14 @@
 {
   "id": "main-cta",
-  "title": "Do you have a project in mind?",
-  "description": "Let's work together to bring your ideas to life.",
+  "title": "Punya ide yang ingin Anda kerjakan?",
+  "description": "Mari bekerja sama untuk mewujudkan ide Anda menjadi nyata.",
   "primaryButton": {
-    "label": "Contact Me",
+    "label": "Hubungi Saya",
     "link": "/contact",
     "uiKey": "contactMe"
   },
   "secondaryButton": {
-    "label": "View Services",
+    "label": "Lihat Layanan",
     "link": "/services",
     "uiKey": "viewAllServices"
   }

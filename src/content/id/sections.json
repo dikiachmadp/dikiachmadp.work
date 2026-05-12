@@ -1,24 +1,24 @@
 {
   "featuredProjects": {
-    "title": "Featured Projects",
-    "description": "A selection of my best work in design and 3D visualization.",
+    "title": "Proyek Terbaru",
+    "description": "Berikut adalah beberapa proyek terbaik saya saat ini.",
     "showButton": true,
-    "buttonLabel": "viewAllWork" 
+    "buttonLabel": "viewAllWork"
   },
   "services": {
-    "title": "Services",
-    "description": "Comprehensive design solutions tailored to your brand needs.",
+    "title": "Layanan",
+    "description": "Solusi desain komprehensif yang disesuaikan dengan kebutuhan merek Anda.",
     "showButton": true,
     "buttonLabel": "viewAllServices"
   },
   "testimonials": {
-    "title": "Testimonials",
-    "description": "What clients says about me.",
+    "title": "Testimoni",
+    "description": "apa yang klien katakan tentang saya.",
     "showButton": false
   },
   "cta": {
-    "title": "Do you have a project in mind?",
-    "description": "Let's work together.",
+    "title": "Punya ide yang ingin Anda kerjakan?",
+    "description": "Mari bekerja sama untuk mewujudkan ide Anda menjadi nyata.",
     "showButton": true,
     "buttonLabel": "contactMe"
   }

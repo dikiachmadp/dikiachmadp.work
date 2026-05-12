@@ -1,20 +1,20 @@
 {
   "buttons": {
-    "viewAllWork": "View All Work",
-    "viewAllServices": "View All Services",
-    "contactMe": "Contact Me",
-    "submit": "Send Message",
-    "loading": "Please wait...",
-    "success": "Message Sent!",
-    "download": "Download CV"
+    "viewAllWork": "Lihat Semua Proyek",
+    "viewAllServices": "Lihat Semua Layanan",
+    "contactMe": "Hubungi Saya",
+    "submit": "Kirim Pesan",
+    "loading": "Mohon tunggu...",
+    "success": "Pesan terkirim!",
+    "download": "Unduh CV"
   },
   "states": {
-    "empty": "No projects found matching your search.",
-    "error": "Something went wrong.",
-    "loading": "Loading...",
-    "notFound": "Page not found.",
-    "comingSoon": "Coming Soon",
-    "allCategories": "All Projects",
-    "searchPlaceholder": "Search projects..."
+    "empty": "Tidak ada data",
+    "error": "Sesuatu yang salah terjadi. Silakan coba lagi nanti.",
+    "loading": "Memuat...",
+    "notFound": "Halaman tidak ditemukan",
+    "comingSoon": "Segera",
+    "allCategories": "Semua Kategori",
+    "searchPlaceholder": "Cari proyek..."
   }
 }

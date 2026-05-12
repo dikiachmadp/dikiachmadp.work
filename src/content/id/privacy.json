@@ -1,22 +1,22 @@
 {
-  "title": "Privacy Policy",
+  "title": "Kebijakan Privasi",
   "lastUpdated": "2025-01-01",
-  "description": "Your privacy is important to us. This policy outlines how we handle your data.",
+  "description": "Privasi Anda penting bagi kami. Kebijakan ini menguraikan bagaimana kami menangani data Anda.",
   "points": [
     {
       "id": "data-collection",
-      "title": "Data Collection",
-      "content": "We only collect information that you voluntarily provide via the contact form."
+      "title": "Pengumpulan Data",
+      "content": "Kami hanya mengumpulkan informasi yang Anda berikan secara sukarela melalui formulir kontak."
     },
     {
       "id": "data-usage",
-      "title": "Data Usage",
-      "content": "Your data is used solely for communication purposes related to your inquiries."
+      "title": "Penggunaan Data",
+      "content": "Data Anda digunakan semata-mata untuk keperluan komunikasi terkait pertanyaan Anda."
     },
     {
       "id": "cookies",
-      "title": "Cookies",
-      "content": "This site may use cookies to enhance your browsing experience."
+      "title": "Cookie",
+      "content": "Situs ini mungkin menggunakan cookie untuk meningkatkan pengalaman penjelajahan Anda."
     }
   ]
 }

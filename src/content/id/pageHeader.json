@@ -1,27 +1,27 @@
 {
   "projects": {
-    "topTitle": "Archive of Recent Projects",
-    "title": "All Work",
-    "description": "A running archive of recent projects across branding, UI/UX, packaging, 3D, and illustration."
+    "topTitle": "Arsip Proyek Terbaru",
+    "title": "Semua Karya",
+    "description": "Arsip berjalan untuk proyek terbaru di bidang branding, UI/UX, pengemasan, 3D, dan ilustrasi."
   },
   "services": {
-    "topTitle": "Services Offered",
-    "title": "What I Can Do For You",
-    "description": "A curated selection of core services across branding, UI/UX, packaging, 3D, and illustration."
+    "topTitle": "Layanan yang Ditawarkan",
+    "title": "Apa yang Bisa Saya Lakukan Untuk Anda",
+    "description": "Pilihan layanan inti yang dikurasi di bidang branding, UI/UX, pengemasan, 3D, dan ilustrasi."
   },
   "about": {
-    "topTitle": "Hello, I'm",
+    "topTitle": "Halo, Saya",
     "title": "Diki Achmad Prasetya",
-    "description": "Graphic Designer, UI/UX Designer, 3D Artist & Animator based in Bandung, Indonesia."
+    "description": "Desainer Grafis, Desainer UI/UX, 3D Artist & Animator yang berbasis di Bandung, Indonesia."
   },
   "studio": {
-    "topTitle": "Studio & Play",
-    "title": "Welcome to my Studio",
-    "description": "Experiments, thoughts, and digital products."
+    "topTitle": "Studio & Eksperimen",
+    "title": "Selamat Datang di Studio Saya",
+    "description": "Eksperimen, pemikiran, dan produk digital."
   },
   "contact": {
-    "topTitle": "Get In Touch",
-    "title": "Let's Work Together.",
-    "description": "Drop me a message and I'll get back to you as soon as possible."
+    "topTitle": "Hubungi Saya",
+    "title": "Mari Bekerja Sama.",
+    "description": "Kirimkan pesan dan saya akan membalas Anda sesegera mungkin."
   }
 }

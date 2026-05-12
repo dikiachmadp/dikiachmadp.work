@@ -1,12 +1,12 @@
 {
-  "siteName": "Kid-Studio",
+  "siteName": "Kid-Studio | Freelance Graphic Designer based in Bandung, Indonesia.",
   "author": "dikiachmadp",
   "fullName": "Diki Achmad Prasetya",
-  "description": "Freelance Graphic Designer based in Bandung, Indonesia.",
+  "description": "Creative and detail-oriented Graphic Designer with more than 5 years of experience in graphic design, specializing in packaging design, ui/ux design, and 3D assets.",
   "email": "dikiachmadp123@gmail.com",
   "url": "https://dikiachmadp.work",
   "location": "Bandung, Indonesia",
-  "ogImage": "/public/ogImage.webp",
+  "ogImage": "/ogImage.png",
   "socials": {
     "instagram": "https://instagram.com/dikiachmadp",
     "github": "https://github.com/dikiachmadp",

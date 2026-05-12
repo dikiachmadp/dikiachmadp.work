@@ -2,27 +2,43 @@
   "items": [
     {
       "id": "t1",
-      "clientName": "Budi Santoso",
-      "role": "Founder, Tukang Tools",
-      "content": "Diki berhasil menerjemahkan visi kami menjadi identitas visual yang utilitarian dan sangat kuat.",
+      "clientName": "David B.",
+      "role": "Client from Australia",
+      "content": "Great to work with. He is awesome, great skills, followed brief. A pleasure to work with, we are happy to keep working with you as your work is amazing!!!",
       "avatarUrl": "/testimonials/budi-avatar.webp",
-      "projectRef": "hardware-identity"
+      "projectRef": "holroyd-packaging"
     },
     {
       "id": "t2",
-      "clientName": "Budi Santoso",
-      "role": "Founder, Tukang Tools",
-      "content": "Diki berhasil menerjemahkan visi kami menjadi identitas visual yang utilitarian dan sangat kuat.",
+      "clientName": "David B.",
+      "role": "Client from Australia",
+      "content": "Our number one freelancer. Couldn't recommend highly enough. Always understands the brief and communication is A+",
       "avatarUrl": "/testimonials/budi-avatar.webp",
-      "projectRef": "hardware-identity"
+      "projectRef": "bmpro-brochure"
     },
-{
+    {
       "id": "t3",
-      "clientName": "Budi Santoso",
-      "role": "Founder, Tukang Tools",
-      "content": "Diki berhasil menerjemahkan visi kami menjadi identitas visual yang utilitarian dan sangat kuat.",
+      "clientName": "David B.",
+      "role": "Client from Australia",
+      "content": "Our number one freelancer never fails to disappoint. Delivered on time and very well designed, couldn't recommend highly enough",
       "avatarUrl": "/testimonials/budi-avatar.webp",
-      "projectRef": "hardware-identity"
+      "projectRef": "holroyd-brochure"
+    },
+    {
+      "id": "t4",
+      "clientName": "Abas B.",
+      "role": "Client from Indonesia",
+      "content": "Submission on time. Easy to work with, understanding and always happy to help. Very patient and accomodating with any changes",
+      "avatarUrl": "/testimonials/budi-avatar.webp",
+      "projectRef": "branding-eatbread"
+    },
+    {
+      "id": "t5",
+      "clientName": "Eric S.",
+      "role": "Client from Canada",
+      "content": "Very great jobs, thanks again",
+      "avatarUrl": "/testimonials/budi-avatar.webp",
+      "projectRef": "trader-packaging"
     }
   ]
 }

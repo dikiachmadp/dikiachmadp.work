@@ -2,27 +2,43 @@
   "items": [
     {
       "id": "t1",
-      "clientName": "Budi Santoso",
-      "role": "Founder, Tukang Tools",
-      "content": "Diki berhasil menerjemahkan visi kami menjadi identitas visual yang utilitarian dan sangat kuat.",
+      "clientName": "David B.",
+      "role": "Klien dari Australia",
+      "content": "Sangat menyenangkan bisa bekerja sama. Dia luar biasa, memiliki keahlian yang hebat, dan mengikuti arahan dengan baik. Benar-benar mudah untuk bekerja sama, kami senang untuk terus bekerja sama dengan Anda karena hasil karya Anda menakjubkan!!!",
       "avatarUrl": "/testimonials/budi-avatar.webp",
-      "projectRef": "hardware-identity"
+      "projectRef": "holroyd-packaging"
     },
     {
       "id": "t2",
-      "clientName": "Budi Santoso",
-      "role": "Founder, Tukang Tools",
-      "content": "Diki berhasil menerjemahkan visi kami menjadi identitas visual yang utilitarian dan sangat kuat.",
+      "clientName": "David B.",
+      "role": "Klien dari Australia",
+      "content": "Freelancer nomor satu kami. Sangat direkomendasikan. Selalu memahami arahan dan komunikasinya sangat luar biasa (A+)",
       "avatarUrl": "/testimonials/budi-avatar.webp",
-      "projectRef": "hardware-identity"
+      "projectRef": "bmpro-brochure"
     },
-{
+    {
       "id": "t3",
-      "clientName": "Budi Santoso",
-      "role": "Founder, Tukang Tools",
-      "content": "Diki berhasil menerjemahkan visi kami menjadi identitas visual yang utilitarian dan sangat kuat.",
+      "clientName": "David B.",
+      "role": "Klien dari Australia",
+      "content": "Freelancer nomor satu kami yang tidak pernah mengecewakan. Selalu tepat waktu dan hasil desain sangat baik, sangat direkomendasikan",
       "avatarUrl": "/testimonials/budi-avatar.webp",
-      "projectRef": "hardware-identity"
+      "projectRef": "holroyd-brochure"
+    },
+    {
+      "id": "t4",
+      "clientName": "Abas B.",
+      "role": "Klien dari Indonesia",
+      "content": "Pengiriman tepat waktu. Mudah untuk diajak bekerja sama, penuh pengertian, dan selalu senang membantu. Sangat sabar dan akomodatif terhadap setiap perubahan",
+      "avatarUrl": "/testimonials/budi-avatar.webp",
+      "projectRef": "branding-eatbread"
+    },
+    {
+      "id": "t5",
+      "clientName": "Eric S.",
+      "role": "Klien dari Kanada",
+      "content": "Hasil kerja yang sangat bagus, terima kasih banyak",
+      "avatarUrl": "/testimonials/budi-avatar.webp",
+      "projectRef": "trader-packaging"
     }
   ]
 }

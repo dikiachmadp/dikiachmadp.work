@@ -1,15 +1,15 @@
 {
   "biography": [
-    "I started in graphic design almost by accident. What began as experiments in Photoshop late at night turned into a career built on curiosity — always chasing the next medium, the next problem to solve.",
-    "Over the last six years I've worked with independent founders...",
-    "My approach is equal parts research and craft."
+    "Desainer Grafis yang kreatif dan detail-orientasi dengan pengalaman lebih dari 5 tahun dalam desain visual, spesialis dalam pengemasan produk, materi pemasaran, dan aset 3D.",
+    "Rekam jejak terbukti dalam menghasilkan desain berkualitas tinggi yang selaras dengan identitas merek. Berpengalaman bekerja dengan klien internasional, dengan komitmen kuat untuk memenuhi tenggat waktu dan memastikan kepuasan klien."
   ],
   "experience": [
-    { "year": "2020 — Present", "role": "Solo Freelance Designer", "place": "Freelancer (Remote)" },
-    { "year": "2016 — present", "role": "Editorial Designer", "place": "FEB UNPAS (Bandung)" }
+    { "year": "2016 — Sekarang", "role": "Staf Publikasi", "place": "FEB UNPAS (Bandung)" },
+    { "year": "2019 — Sekarang", "role": "Desainer Grafis", "place": "Freelancer (Remote)" },
+    { "year": "2019 — Sekarang", "role": "Freelance 3D Artist", "place":"(Remote)" }
   ],
   "skills": [
-    { "category": "Design", "items": ["Brand Identity", "UI/UX Design"] },
-    { "category": "Tools", "items": ["Adobe Creative Suite", "Framer"] }
+    { "category": "Desain", "items": ["Identitas Merek", "UI/UX Design", "Desain Kemasan Produk"] },
+    { "category": "Tools", "items": ["Adobe Creative Suite", "Next.js", "Blender"] }
   ]
 }

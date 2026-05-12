@@ -36,7 +36,7 @@ export async function generateMetadata({
       url: siteConfig.url,
       title: `${siteConfig.siteName} | ${siteConfig.fullName}`,
       description: siteConfig.description,
-      images: [{ url: "/public/ogImage.webp", width: 1200, height: 628 }],
+      images: [{ url: "/ogImage.png", width: 1200, height: 628 }],
     },
     icons: {
       icon: "/favicon.webp",

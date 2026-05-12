@@ -3,7 +3,7 @@
     "top": "Welcome to My",
     "bottom": "Studio"
   },
-  "description": "Crafting idea with value as a Graphic Designer, UI/UX Designer, 3D Designer & Animation.",
+  "description": "Mewujudkan ide yang bernilai sebagai Desainer Grafis, UI/UX Desainer, Desainer 3D & Animasi.",
   "availability": {
     "status": "Available for work",
     "isAvailable": true
@@ -11,24 +11,24 @@
   "socialProof": {
     "rating": 5,
     "score": "5.0/5",
-    "totalClients": "from 10+ clients",
-    "platform": "on Freelancer"
+    "totalClients": "dari 10+ klien",
+    "platform": "di Freelancer"
   },
   "stats": [
     {
       "id": "stat-1",
       "value": "20+",
-      "label": "projects completed"
+      "label": "proyek selesai"
     },
     {
       "id": "stat-2",
       "value": "6+",
-      "label": "years of experience"
+      "label": "tahun pengalaman"
     },
     {
       "id": "stat-3",
       "value": "10+",
-      "label": "clients repeat order"
+      "label": "klien repeat order"
     }
   ]
 }

@@ -1,9 +1,9 @@
 {
   "featuredProjects": {
     "title": "Featured Projects",
-    "description": "A selection of my best work in design and 3D visualization.",
+    "description": "A selection of my best current projects.",
     "showButton": true,
-    "buttonLabel": "viewAllWork" 
+    "buttonLabel": "viewAllWork"
   },
   "services": {
     "title": "Services",
