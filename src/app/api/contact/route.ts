@@ -1,16 +1,13 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-// Initialize Resend with the API Key from your .env.local file
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: Request) {
   try {
-    // 1. Extract data from the incoming request body
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     const body = await request.json();
     const { name, email, subject, message } = body;
 
-    // 2. Perform basic validation
     if (!name || !email || !message) {
       return NextResponse.json(
         { error: "Name, email, and message are required fields." },
@@ -18,10 +15,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3. Send the email using Resend (Content completely in English)
     const data = await resend.emails.send({
-      from: "Portfolio Contact Form <onboarding@resend.dev>", // Default Resend testing email
-      to: process.env.CONTACT_EMAIL as string, // Your email address from .env.local
+      from: "Portfolio Contact Form <onboarding@resend.dev>",
+      to: process.env.CONTACT_EMAIL as string,
       subject: `New Contact Inquiry: ${subject || "No Subject"}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -59,14 +55,12 @@ export async function POST(request: Request) {
       `,
     });
 
-    // 4. Return success response to the frontend
     return NextResponse.json(
       { message: "Message sent successfully!", data },
       { status: 200 },
     );
   } catch (error) {
     console.error("Failed to send email:", error);
-    // Return error response to the frontend
     return NextResponse.json(
       { error: "An unexpected error occurred while sending the message." },
       { status: 500 },
