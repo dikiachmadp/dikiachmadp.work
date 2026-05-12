@@ -77,7 +77,7 @@ export default function Footer({
                     key={platform}
                     platform={platform}
                     url={url}
-                    size="md"
+                    size="sm"
                   />
                 ))}
               </div>

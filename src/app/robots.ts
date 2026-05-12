@@ -7,10 +7,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: [
-        "/api/", // Jangan indeks rute API
-        "/_next/", // Jangan indeks file internal Next.js
-      ],
+      disallow: ["/api/", "/_next/"],
     },
     sitemap: `${BASE_URL}/sitemap.xml`,
   };

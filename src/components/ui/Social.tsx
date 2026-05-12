@@ -2,7 +2,12 @@
 
 import { cn, themeTransition } from "@/lib/utils";
 import { FiInstagram, FiGithub, FiLinkedin } from "react-icons/fi";
-import { SiDribbble, SiUpwork, SiFreelancer } from "react-icons/si";
+import {
+  SiDribbble,
+  SiUpwork,
+  SiFreelancer,
+  SiGooglescholar,
+} from "react-icons/si";
 
 interface SocialProps {
   platform: string;
@@ -18,12 +23,13 @@ const icons: Record<string, React.ComponentType<{ className?: string }>> = {
   dribbble: SiDribbble,
   upwork: SiUpwork,
   freelancer: SiFreelancer,
+  scholar: SiGooglescholar,
 };
 
 const sizeClasses = {
-  sm: "w-4 h-4",
-  md: "w-6 h-6",
-  lg: "w-8 h-8",
+  sm: "w-4 h-4 md:w-6 h-6",
+  md: "w-5 h-5 md:w-7 h-7",
+  lg: "w-8 h-8 md:w-9 h-9",
 };
 
 export default function Social({

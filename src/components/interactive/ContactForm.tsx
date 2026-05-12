@@ -105,7 +105,7 @@ export default function ContactForm({
                         onChange={(e) =>
                           handleChange(field.name, e.target.value)
                         }
-                        className="w-full bg-transparent py-4 outline-none text-[10px] font-bold uppercase tracking-widest text-(--foreground) placeholder:text-(--gray-medium) resize-none"
+                        className="w-full bg-transparent py-4 outline-none text-[10px] font-bold tracking-widest text-(--foreground) placeholder:text-(--gray-medium) resize-none"
                       />
                     ) : field.type === "select" && field.options ? (
                       <div className="relative w-full">
@@ -117,7 +117,7 @@ export default function ContactForm({
                           onChange={(e) =>
                             handleChange(field.name, e.target.value)
                           }
-                          className="w-full bg-transparent py-4 outline-none text-[10px] font-bold uppercase tracking-widest text-(--foreground) appearance-none cursor-pointer"
+                          className="w-full bg-transparent py-4 outline-none text-[10px] font-bold tracking-widest text-(--foreground) appearance-none cursor-pointer"
                         >
                           <option
                             value=""
@@ -151,7 +151,7 @@ export default function ContactForm({
                         onChange={(e) =>
                           handleChange(field.name, e.target.value)
                         }
-                        className="w-full bg-transparent py-4 outline-none text-[10px] font-bold uppercase tracking-widest text-(--foreground) placeholder:text-(--gray-medium)"
+                        className="w-full bg-transparent py-4 outline-none text-[10px] font-bold tracking-widest text-(--foreground) placeholder:text-(--gray-medium)"
                       />
                     )}
                   </div>
