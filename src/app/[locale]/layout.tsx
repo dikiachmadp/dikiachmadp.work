@@ -43,6 +43,14 @@ export async function generateMetadata({
       url: currentUrl,
       title: `${siteConfig.siteName} | ${siteConfig.fullName}`,
       description: siteConfig.description,
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: siteConfig.siteName,
+        },
+      ],
     },
 
     // --- X (Twitter) ---
@@ -50,6 +58,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: `${siteConfig.siteName} | ${siteConfig.fullName}`,
       description: siteConfig.description,
+      images: "/og-image.png",
     },
 
     // --- Favicon & Icons ---
