@@ -68,7 +68,7 @@ export default function ExperienceSection({
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-(--gray-medium) mb-5 ml-1">
+                  <h3 className="text-(--text-ui-label) uppercase tracking-wide mb-5 ml-1">
                     {group.category}
                   </h3>
 

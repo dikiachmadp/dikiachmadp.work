@@ -57,7 +57,7 @@ export default function Footer({
 
             <div className="flex flex-col items-center md:items-start leading-none">
               <h2 className="font-display text-5xl md:text-7xl tracking-wide text-(--accent) uppercase">
-                {siteConfig.siteName}
+                {siteConfig.author}
               </h2>
               <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.4em] text-(--gray)">
                 {siteConfig.location}
