@@ -8,7 +8,6 @@ export default function DarkModeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
-  // Mencegah hydration mismatch
   React.useEffect(() => {
     setMounted(true);
   }, []);
@@ -48,14 +47,12 @@ export default function DarkModeToggle() {
         aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
         className={cn(
           "relative inline-block h-8.5 w-16 rounded-full outline-none cursor-pointer",
-          // Menggunakan variabel tema alih-alih warna statis
           "border-2 border-(--foreground) bg-(--gray-soft)",
           "transition-colors duration-500 ease-in-out",
         )}
       >
         <span className="sr-only">Toggle theme</span>
 
-        {/* MOON ICON (Kiri) - Tampil saat Dark Mode */}
         <span className="absolute left-1 top-1 z-10 flex h-5.5 w-5.5 items-center justify-center text-(--foreground)">
           <svg
             className="animate-tilt-moon"
@@ -68,7 +65,6 @@ export default function DarkModeToggle() {
           </svg>
         </span>
 
-        {/* SUN ICON (Kanan) - Tampil saat Light Mode */}
         <span className="absolute right-1 top-1 z-10 flex h-5.5 w-5.5 items-center justify-center text-(--foreground)">
           <svg
             className="animate-rotate-sun"
@@ -86,7 +82,6 @@ export default function DarkModeToggle() {
           </svg>
         </span>
 
-        {/* KNOB */}
         <span
           className="absolute bottom-0.5 left-0.5 z-20 h-6.5 w-6.5 rounded-full bg-(--foreground)"
           style={{

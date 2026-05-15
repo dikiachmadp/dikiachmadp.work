@@ -15,7 +15,6 @@ export default function CTASection({
   uiLabels,
   locale,
 }: CTASectionProps) {
-  // PERBAIKAN: Tambahkan casting 'as keyof typeof uiLabels.buttons'
   const primaryLabel =
     uiLabels.buttons[
       ctaData.primaryButton.uiKey as keyof typeof uiLabels.buttons
@@ -24,16 +23,13 @@ export default function CTASection({
   return (
     <section className="w-full bg-(--background) py-10 md:py-12">
       <div className="main-container">
-        {/* PEMBUNGKUS KARTU (MOTION WRAPPER) */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          /* Menghilangkan efek hover dan shadow luar, fokus pada bentuk kartu tunggal */
           className="relative bg-(--foreground) rounded-4xl"
         >
-          {/* LAPISAN KONTEN (Posisinya CENTER di semua layar) */}
           <div
             className="
             relative w-full h-full 
@@ -42,9 +38,7 @@ export default function CTASection({
             gap-8
           "
           >
-            {/* Bagian Teks */}
             <div className="max-w-3xl">
-              {/* Title: Murni Font Display */}
               <h2
                 className="leading-[0.85] tracking-wide text-(--background)"
                 style={{
@@ -55,7 +49,6 @@ export default function CTASection({
                 {ctaData.title}
               </h2>
 
-              {/* Description: Fluid Desc */}
               <p
                 className="text-(--background) font-medium mt-6 leading-relaxed opacity-90"
                 style={{ fontSize: "var(--text-desc)" }}
@@ -64,7 +57,6 @@ export default function CTASection({
               </p>
             </div>
 
-            {/* Bagian Tombol (Hanya Satu: Primary/Contact Me) */}
             <div className="flex justify-center">
               <Button
                 href={`/${locale}${ctaData.primaryButton.link}`}

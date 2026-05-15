@@ -54,7 +54,6 @@ export default function ProjectsGallery({
 
   return (
     <div className="flex flex-col gap-12 -mt-4 md:-mt-12">
-      {/* 1. Header Section - Tetap Original */}
       {section && (
         <div className="flex flex-col text-center md:text-start max-w-3xl">
           <h2
@@ -75,12 +74,9 @@ export default function ProjectsGallery({
         </div>
       )}
 
-      {/* 2. SEARCH & FILTER */}
       {!featuredOnly && uiLabels && (
         <div className="flex flex-col md:row-end-2 gap-8 justify-between md:justify-start items-center md:items-start border-b-2 border-(--border) pb-12">
-          {/* Bagian yang diubah: Category Filter dengan Dropdown di Mobile */}
           <div className="w-full md:w-auto order-2 md:order-1">
-            {/* Mobile: Dropdown Filter */}
             <div className="block md:hidden relative group">
               <div className="absolute inset-0 bg-(--foreground) rounded-lg transition-all duration-200" />
               <div
@@ -114,7 +110,6 @@ export default function ProjectsGallery({
               </div>
             </div>
 
-            {/* Desktop: Horizontal List (Tetap Original) */}
             <div className="hidden md:flex flex-wrap gap-4 items-center justify-center md:justify-start">
               {[
                 "All",
@@ -154,7 +149,6 @@ export default function ProjectsGallery({
             </div>
           </div>
 
-          {/* Search Bar - Tetap Original */}
           <div className="relative w-full md:w-96 group order-1 md:order-2">
             <div className="absolute inset-0 bg-(--foreground) rounded-lg transition-all duration-200" />
             <div
@@ -176,7 +170,6 @@ export default function ProjectsGallery({
         </div>
       )}
 
-      {/* 3. Grid Projects - Tetap Original */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredItems.length > 0 ? (
           filteredItems.map((project, index) => (
@@ -191,7 +184,6 @@ export default function ProjectsGallery({
         )}
       </div>
 
-      {/* 4. Home CTA Button - Tetap Original */}
       {featuredOnly && (
         <div className="flex justify-center">
           <Button

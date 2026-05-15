@@ -16,7 +16,6 @@ interface NavbarProps {
   locale: Locale;
 }
 
-// Variants untuk animasi hamburger kustom
 const hamburgerVariants: Variants = {
   opened: { rotate: 0 },
   closed: { rotate: 0 },
@@ -41,7 +40,6 @@ export default function Navbar({ navData, locale }: NavbarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Fungsi untuk toggle menu mobile
   const toggleMobileMenu = () => {
     setMobileOpen((v) => !v);
   };
@@ -50,21 +48,14 @@ export default function Navbar({ navData, locale }: NavbarProps) {
     <>
       <nav
         className={cn(
-          /* PERBAIKAN: Navbar kini Z-110 permanen agar SELALU di atas overlay (Z-100).
-            Lebar border-b-2 dipertahankan agar tidak ada lompatan ukuran saat berubah.
-          */
           "sticky top-0 z-110 w-full border-b-2 transition-all duration-500",
           mobileOpen
             ? "border-transparent bg-transparent backdrop-blur-none"
             : "border-(--border) bg-(--background)/90 backdrop-blur-md",
         )}
       >
-        {/* PERBAIKAN: Menambahkan kembali justify-between yang sebelumnya hilang */}
         <div className="main-container relative flex h-20 items-center justify-between gap-8">
-          {/* Logo */}
           <Logo />
-
-          {/* Desktop Menu */}
           <ul className="hidden flex-1 items-center justify-center gap-6 md:flex">
             {navData.main.map((item) => {
               const fullPath = `/${locale}${item.path === "/" ? "" : item.path}`;
@@ -94,18 +85,13 @@ export default function Navbar({ navData, locale }: NavbarProps) {
             })}
           </ul>
 
-          {/* Controls */}
           <div className="flex items-center gap-3">
-            {/* Tombol Dark Mode tetap muncul dan bisa di-klik saat menu terbuka */}
             <DarkModeToggle />
-
-            {/* Language toggle disembunyikan di mobile karena sudah ada di MobileMenu */}
             <div className="hidden md:block">
               <LanguageToggle />
             </div>
 
             <div className="md:hidden">
-              {/* Mobile hamburger kustom */}
               <motion.button
                 className="flex h-10 w-10 flex-col items-center rounded-lg justify-center gap-1 border-2 border-(--foreground) bg-(--card) cursor-pointer outline-none transition-colors hover:border-(--foreground)"
                 onClick={toggleMobileMenu}
@@ -115,7 +101,6 @@ export default function Navbar({ navData, locale }: NavbarProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {/* Garis-garis hamburger */}
                 {[lineTopVariants, lineMiddleVariants, lineBottomVariants].map(
                   (variants, i) => (
                     <motion.span
@@ -135,7 +120,6 @@ export default function Navbar({ navData, locale }: NavbarProps) {
         </div>
       </nav>
 
-      {/* Komponen Mobile Menu Terpisah */}
       <MobileMenu
         isOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}

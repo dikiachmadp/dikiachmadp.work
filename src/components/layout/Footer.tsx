@@ -21,15 +21,15 @@ export default function Footer({
   const socialEntries = Object.entries(siteConfig.socials);
 
   const footerLinkContainer = cn(
-    "relative inline-block transition-all duration-200 rounded-lg bg-[var(--foreground)]", // Layer bawah (Shadow)
+    "relative inline-block transition-all duration-200 rounded-lg bg-[var(--foreground)]",
     themeTransition,
   );
 
   const footerLinkContent = cn(
     "flex h-10 w-24 items-center justify-center rounded-lg uppercase transition-all duration-200",
-    "bg-[var(--background)] text-[var(--foreground)] border-2 border-[var(--border)]", // Style Outline
+    "bg-[var(--background)] text-[var(--foreground)] border-2 border-[var(--border)]",
     "text-[10px] font-bold tracking-widest",
-    "group-hover:-translate-x-1 group-hover:-translate-y-1", // Efek loncat yang sama dengan Button
+    "group-hover:-translate-x-1 group-hover:-translate-y-1",
   );
 
   return (
@@ -40,11 +40,8 @@ export default function Footer({
       )}
     >
       <div className="main-container">
-        {/* BARIS ATAS: KONTEN UTAMA */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-4 mb-10 md:mb-10">
-          {/* SISI KIRI: BRANDING & STATUS */}
           <div className="flex flex-col items-center md:items-start space-y-5">
-            {/* Status Available berada paling atas */}
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-(--border) bg-(--card)">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--accent) opacity-75"></span>
@@ -65,7 +62,6 @@ export default function Footer({
             </div>
           </div>
 
-          {/* SISI KANAN: SOCIALS */}
           <div className="flex flex-col items-center md:items-end justify-center">
             <div className="flex flex-col items-center md:items-end gap-3">
               <span className="text-xs font-bold tracking-widest text-(--gray) uppercase">
@@ -85,16 +81,12 @@ export default function Footer({
           </div>
         </div>
 
-        {/* GARIS PEMISAH FULL WIDTH */}
         <div className="w-full border-t-2 border-(--border) pt-4">
-          {/* BARIS BAWAH: COPYRIGHT & LEGAL */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            {/* Copyright di kiri bawah */}
             <p className="text-[9px] font-semibold uppercase tracking-wider text-(--gray-medium) order-2 md:order-1">
               {footerData.copyright}
             </p>
 
-            {/* Legal & Privacy di kanan bawah (sejajar copyright) */}
             <div className="flex gap-4 order-1 md:order-2">
               {[
                 { label: "Legal", path: "/legal" },

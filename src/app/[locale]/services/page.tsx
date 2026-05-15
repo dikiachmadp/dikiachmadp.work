@@ -28,14 +28,11 @@ export default async function ServicesPage({
         title={header.title}
         description={header.description}
       />
-
       <SectionWrapper id="services-list">
-        {/* Menggunakan grid yang sama dengan preview namun tetap optimal untuk halaman list */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 md:gap-10">
           {dict.services.items.map((service) => (
             <ServicesCard key={service.id}>
               <div className="flex flex-col gap-6 h-full">
-                {/* Header: Order Number & Title */}
                 <div className="flex flex-col gap-2">
                   <div className="flex justify-between items-center">
                     <span
@@ -56,16 +53,12 @@ export default async function ServicesPage({
                     {service.title}
                   </h2>
                 </div>
-
-                {/* Summary */}
                 <p
                   className="font-medium text-(--gray-medium) leading-relaxed"
                   style={{ fontSize: "var(--text-services-desc)" }}
                 >
                   {service.summary}
                 </p>
-
-                {/* Deliverables - Menjaga detail tetap ada namun dengan style yang lebih bersih */}
                 <div className="mt-auto pt-6 border-t-2 border-(--border) border-dashed">
                   <ul className="grid grid-cols-1 gap-3">
                     {service.deliverables.map((item, index) => (
@@ -86,7 +79,6 @@ export default async function ServicesPage({
           ))}
         </div>
       </SectionWrapper>
-
       <CTASection ctaData={dict.cta} uiLabels={dict.ui} locale={validLocale} />
     </PageWrapper>
   );

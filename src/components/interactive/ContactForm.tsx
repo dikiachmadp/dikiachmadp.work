@@ -61,10 +61,8 @@ export default function ContactForm({
 
   return (
     <div className="relative w-full max-w-2xl">
-      {/* Form Container Shadow */}
       <div className="absolute inset-0 bg-(--foreground) rounded-2xl transition-all duration-200" />
 
-      {/* Form Container Content */}
       <div
         className={cn(
           "relative bg-(--background) border-2 border-(--foreground) rounded-2xl p-8 md:p-12",
@@ -84,7 +82,6 @@ export default function ContactForm({
                   )}
                 </label>
 
-                {/* Input Layer Container - Group for input focus effect */}
                 <div className="relative group w-full">
                   <div className="absolute inset-0 bg-(--foreground) rounded-lg transition-all duration-200" />
                   <div
@@ -160,7 +157,6 @@ export default function ContactForm({
             ))}
           </div>
 
-          {/* Status Messages */}
           {(status === "success" || status === "error") && (
             <div
               className={cn(
@@ -188,9 +184,7 @@ export default function ContactForm({
             </div>
           )}
 
-          {/* Submit Button */}
           <div className="flex justify-start">
-            {/* Button Layer Container - Group scoped only to the button */}
             <button
               type="submit"
               disabled={status === "loading" || status === "success"}
@@ -201,11 +195,9 @@ export default function ContactForm({
                 className={cn(
                   "relative flex h-12 px-10 items-center justify-center rounded-lg uppercase transition-all duration-200 text-[10px] font-bold tracking-[0.2em] border-2",
                   themeTransition,
-                  // Success State
                   status === "success"
                     ? "bg-green-500 text-white border-green-500"
-                    : // Normal State with scoped hover effect
-                      "bg-(--background) text-(--foreground) border-(--foreground) group-hover:-translate-x-1 group-hover:-translate-y-1 group-active:translate-x-0 group-active:translate-y-0",
+                    : "bg-(--background) text-(--foreground) border-(--foreground) group-hover:-translate-x-1 group-hover:-translate-y-1 group-active:translate-x-0 group-active:translate-y-0",
                 )}
               >
                 {status === "loading" ? (

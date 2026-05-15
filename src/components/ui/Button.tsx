@@ -27,7 +27,6 @@ export default function Button({
   variant = "primary",
   size = "md",
 }: ButtonProps) {
-  // Mapping warna bayangan (Lapis Bawah)
   const shadowColors = {
     primary: "bg-[var(--foreground)]",
     outline: "bg-[var(--background)]",
@@ -66,11 +65,9 @@ export default function Button({
           variantStyles[variant],
           sizeStyles[size],
           "translate-x-0 translate-y-0",
-          // Animasi "loncat" dinonaktifkan untuk Ghost agar lebih smooth
           !disabled &&
             variant !== "ghost" &&
             "group-hover:-translate-x-1.5 group-hover:-translate-y-1.5",
-          // Untuk Ghost, cukup gunakan efek opacity atau scale mikro
           !disabled && variant === "ghost" && "group-hover:opacity-80",
           disabled && "opacity-50 cursor-not-allowed",
         )}

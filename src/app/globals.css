@@ -2,11 +2,9 @@
 
 @layer base {
   :root {
-    /* 1. Font Tokens */
     --font-main: "Inter", sans-serif;
     --font-display: "Playfair Display", serif;
 
-    /* Typography Scale */
     --text-hero-bottom: clamp(5.5rem, 18vw, 10rem);
     --text-hero-top: clamp(1rem, 8vw, 4rem);
     --text-stats-num: clamp(2.5rem, 4vw, 4rem);
@@ -16,7 +14,6 @@
     --text-services-desc: clamp(1rem, 1.6vw, 1.2rem);
     --text-ui-button: clamp(1.5rem, 2vw, 1.8rem);
 
-    /* 2. Color Tokens - Dark Mode (Default) */
     --background: #141415;
     --foreground: #ececec;
     --card: #1e1e1e;
@@ -25,7 +22,6 @@
     --gray-soft: #2a2a2a;
     --gray-medium: #71717a;
 
-    /* 3. Spacing Tokens (Scale 4px) */
     --space-xs: 4px;
     --space-sm: 8px;
     --space-md: 16px;
@@ -34,19 +30,16 @@
     --space-2xl: 48px;
     --space-3xl: 64px;
 
-    /* 4. Radius Tokens */
     --radius-none: 0px;
     --radius-sm: 2px;
     --radius-md: 4px;
     --radius-lg: 8px;
     --radius-full: 9999px;
 
-    /* 5. Brutalist & Layout Tokens */
     --border-width: 2px;
     --shadow-flat: 4px 4px 0px 0px rgba(255, 255, 255, 0.1);
     --container-max: 1280px;
 
-    /* 6. Component Variables */
     --shadow-color: var(--accent);
     --logo-bg: var(--foreground);
     --logo-text: var(--background);
@@ -55,7 +48,6 @@
     --button-bg: var(--background);
   }
 
-  /* 7. Color Tokens - Light Mode Override */
   .light {
     --background: #fdfdfd;
     --foreground: #141415;
@@ -67,7 +59,6 @@
     --gray-medium: #9ca3af;
   }
 
-  /* 8. Global Transition Target (Sesuai analisis) */
   html,
   body {
     background-color: var(--background);
@@ -77,7 +68,6 @@
     @apply antialiased min-h-screen;
   }
 
-  /* 9. Element Reset */
   *,
   *::before,
   *::after {
@@ -85,7 +75,6 @@
     border-color: var(--border);
   }
 
-  /* 10. Headings Standar */
   h1,
   h2,
   h3,
@@ -99,7 +88,6 @@
 }
 
 @layer utilities {
-  /* 11. Professional Utility Classes */
   .main-container {
     max-width: var(--container-max);
     margin-left: auto;

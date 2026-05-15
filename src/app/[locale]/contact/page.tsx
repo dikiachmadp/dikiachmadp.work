@@ -27,22 +27,14 @@ export default async function ContactPage({
         title={header.title}
         description={header.description}
       />
-
       <SectionWrapper id="contact-content">
         <div className="flex flex-col gap-12">
-          {/* Separator Border - Matching ProjectsGallery */}
           <div className="border-b-2 border-(--border) pb-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-              {/* Form Area - Span 7 for focus */}
               <div className="lg:col-span-7">
                 <ContactForm contactData={dict.contact} uiLabels={dict.ui} />
               </div>
-
-              {/* Optional: Info Sidebar - Span 5 */}
-              <div className="lg:col-span-5 flex flex-col gap-8">
-                {/* Anda bisa menambahkan info kantor atau email di sini 
-                     dengan style yang sama (Content Layer + Shadow Layer) jika diperlukan */}
-              </div>
+              <div className="lg:col-span-5 flex flex-col gap-8"></div>
             </div>
           </div>
         </div>

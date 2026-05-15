@@ -13,9 +13,10 @@ export default async function ProjectsPage({
   params: Promise<{ locale: string }>;
 }) {
   const resolvedParams = await params;
-  const validLocale = (resolvedParams.locale === "en" || resolvedParams.locale === "id")
-    ? (resolvedParams.locale as Locale)
-    : "en";
+  const validLocale =
+    resolvedParams.locale === "en" || resolvedParams.locale === "id"
+      ? (resolvedParams.locale as Locale)
+      : "en";
 
   const dict = await getDictionary(validLocale);
   const header = dict.pageHeader.projects;
@@ -27,7 +28,6 @@ export default async function ProjectsPage({
         title={header.title}
         description={header.description}
       />
-
       <SectionWrapper id="projects-gallery">
         <ProjectsGallery
           projectsData={dict.projects}
@@ -36,12 +36,7 @@ export default async function ProjectsPage({
           featuredOnly={false}
         />
       </SectionWrapper>
-
-      <CTASection
-        ctaData={dict.cta}
-        uiLabels={dict.ui}
-        locale={validLocale}
-      />
+      <CTASection ctaData={dict.cta} uiLabels={dict.ui} locale={validLocale} />
     </PageWrapper>
   );
 }

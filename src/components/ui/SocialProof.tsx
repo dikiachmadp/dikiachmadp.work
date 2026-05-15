@@ -5,7 +5,6 @@ import { Star } from "lucide-react";
 import { cn, themeTransition } from "@/lib/utils";
 import { HeroData } from "@/types/content";
 
-// Mengambil interface langsung dari struktur data Hero
 interface SocialProofProps {
   data: HeroData["socialProof"];
   className?: string;
@@ -26,10 +25,8 @@ export default function SocialProof({ data, className }: SocialProofProps) {
         themeTransition,
       )}
     >
-      {/* LAPISAN BAWAH (Shadow Accent) */}
       <div className="absolute inset-0 bg-(--foreground) rounded-full translate-x-0 translate-y-0 transition-transform duration-200" />
 
-      {/* LAPISAN ATAS (Body) */}
       <div
         className="
         relative flex items-center gap-3 
@@ -39,7 +36,6 @@ export default function SocialProof({ data, className }: SocialProofProps) {
         group-hover:-translate-x-1 group-hover:-translate-y-1
       "
       >
-        {/* Deretan Bintang berdasarkan nilai rating (misal: 5) */}
         <div className="flex items-center gap-0.5">
           {[...Array(Math.floor(data.rating))].map((_, i) => (
             <Star
@@ -49,10 +45,8 @@ export default function SocialProof({ data, className }: SocialProofProps) {
           ))}
         </div>
 
-        {/* Teks Deskriptif Dinamis dari JSON */}
         <p
           className="font-bold tracking-tight whitespace-nowrap"
-          /* Menggunakan variabel UI Label yang sudah kita buat di globals.css */
           style={{ fontSize: "var(--text-ui-label)" }}
         >
           <span className="tabular-nums">{data.score}</span>

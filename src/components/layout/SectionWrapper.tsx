@@ -7,9 +7,6 @@ interface SectionWrapperProps {
   className?: string;
 }
 
-/**
- * Reusable section wrapper that applies consistent padding and layout.
- */
 export default function SectionWrapper({
   children,
   id,

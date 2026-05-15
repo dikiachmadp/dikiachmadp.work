@@ -11,9 +11,6 @@ interface PageHeaderProps {
   className?: string;
 }
 
-/**
- * Brutalist-styled page header with staggered reveal animations.
- */
 export default function PageHeader({
   topTitle,
   title,

@@ -9,10 +9,6 @@ interface ServicesCardProps {
   className?: string;
 }
 
-/**
- * ServicesCard sebagai pembungkus (wrapper) visual 3D.
- * Menangani elevasi, hover, dan animasi tanpa mengatur konten di dalamnya.
- */
 export default function ServicesCard({
   children,
   index = 0,
@@ -24,14 +20,12 @@ export default function ServicesCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
-      /* LAPISAN BAWAH (Shadow) */
       className={cn(
         "group relative bg-(--foreground) rounded-(--button-radius)",
         className,
         themeTransition,
       )}
     >
-      {/* LAPISAN ATAS (Body Container) */}
       <div
         className="
         relative h-full p-4

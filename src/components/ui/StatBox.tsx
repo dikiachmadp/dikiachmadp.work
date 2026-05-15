@@ -8,9 +8,6 @@ interface StatBoxProps {
   className?: string;
 }
 
-/**
- * Komponen StatBox dengan efek hover 3D.
- */
 export default function StatBox({ label, value, className }: StatBoxProps) {
   return (
     <div
@@ -33,7 +30,6 @@ export default function StatBox({ label, value, className }: StatBoxProps) {
         cursor-default
       "
       >
-        {/* VALUE: Menggunakan font-display secara eksplisit */}
         <span
           className="block leading-none"
           style={{
@@ -44,7 +40,6 @@ export default function StatBox({ label, value, className }: StatBoxProps) {
           {value}
         </span>
 
-        {/* LABEL: Menggunakan font-main (Inter) */}
         <span
           className="uppercase tracking-widest text-(--gray-medium) mt-2 font-bold"
           style={{

@@ -42,7 +42,6 @@ export default function Social({
 
   return (
     <div className="group relative inline-block">
-      {/* TOOLTIP: Kotak Brutalist yang muncul saat hover */}
       <span
         className={cn(
           "absolute -top-12 left-1/2 z-50 -translate-x-1/2 scale-0 px-3 py-1.5",
@@ -54,7 +53,6 @@ export default function Social({
         {platform}
       </span>
 
-      {/* ICON BUTTON */}
       <a
         href={url}
         target="_blank"

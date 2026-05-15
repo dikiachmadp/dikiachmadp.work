@@ -6,13 +6,12 @@ import { cn, themeTransition } from "@/lib/utils";
 
 interface ExperienceSectionProps {
   aboutData: AboutData;
-  uiLabels: UiLabels; // Menambahkan uiLabels untuk menghindari hardcode
+  uiLabels: UiLabels;
 }
 
 export default function ExperienceSection({
   aboutData,
 }: ExperienceSectionProps) {
-  // Shared Brutalist Classes untuk Skill Tags
   const skillTagShadow =
     "absolute inset-0 bg-(--foreground) rounded-lg transition-all duration-200";
   const skillTagContent = cn(
@@ -26,7 +25,6 @@ export default function ExperienceSection({
     <section className="w-full py-16 md:py-24 border-t-2 border-(--border) bg-(--background)">
       <div className="main-container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-          {/* 1. Experience Timeline (Span 7) */}
           <div className="lg:col-span-7">
             <div className="flex flex-col">
               {aboutData.experience.map((item, index) => (
@@ -38,7 +36,6 @@ export default function ExperienceSection({
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                   className="group relative flex gap-6 py-8 border-b-2 border-(--border) border-dashed last:border-none"
                 >
-                  {/* Indicator Dot with Modak Style if needed */}
                   <div className="shrink-0 w-3 h-3 rounded-full bg-(--foreground) mt-2 group-hover:bg-(--accent) transition-colors duration-300" />
 
                   <div className="flex flex-col gap-1">
@@ -57,7 +54,6 @@ export default function ExperienceSection({
             </div>
           </div>
 
-          {/* 2. Skills (Span 5) */}
           <div className="lg:col-span-5">
             <div className="flex flex-col gap-10">
               {aboutData.skills.map((group, index) => (
@@ -75,9 +71,7 @@ export default function ExperienceSection({
                   <div className="flex flex-wrap gap-4">
                     {group.items.map((item, idx) => (
                       <div key={idx} className="relative group cursor-default">
-                        {/* Shadow Layer */}
                         <div className={skillTagShadow} />
-                        {/* Content Layer */}
                         <div className={skillTagContent}>{item}</div>
                       </div>
                     ))}

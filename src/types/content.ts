@@ -1,14 +1,8 @@
-import { z } from 'zod';
-import * as schemas from '@/schemas/content';
+import { z } from "zod";
+import * as schemas from "@/schemas/content";
 
-/**
- * Global Locale Type
- */
-export type Locale = 'en' | 'id';
+export type Locale = "en" | "id";
 
-/**
- * Inferred Types dari Zod Schemas
- */
 export type Navigation = z.infer<typeof schemas.NavigationSchema>;
 export type SiteConfig = z.infer<typeof schemas.SiteConfigSchema>;
 export type HeroData = z.infer<typeof schemas.HeroSchema>;
@@ -26,9 +20,6 @@ export type CtaData = z.infer<typeof schemas.CtaSchema>;
 export type PolicyData = z.infer<typeof schemas.PolicySchema>;
 export type UiLabels = z.infer<typeof schemas.UiSchema>;
 
-/**
- * Helper Type untuk Dictionary hasil gabungan
- */
 export interface FullDictionary {
   navigation: Navigation;
   siteConfig: SiteConfig;

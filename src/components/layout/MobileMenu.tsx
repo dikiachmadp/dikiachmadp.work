@@ -15,21 +15,17 @@ interface MobileMenuProps {
   pathname: string;
 }
 
-// Variants untuk animasi Circular Reveal menggunakan clip-path
 const overlayVariants: Variants = {
   closed: {
-    // Lingkaran kecil di sudut kanan atas (dekat hamburger)
     clipPath: "circle(0% at calc(100% - 40px) 40px)",
     opacity: 0,
     transition: {
       duration: 0.5,
       ease: [0.65, 0, 0.35, 1],
-      // Memastikan opacity mati setelah clip-path selesai
       opacity: { delay: 0.3, duration: 0.2 },
     },
   },
   opened: {
-    // Mekar menjadi lingkaran besar yang menutupi layar
     clipPath: "circle(150% at calc(100% - 40px) 40px)",
     opacity: 1,
     transition: {
@@ -46,7 +42,6 @@ export default function MobileMenu({
   locale,
   pathname,
 }: MobileMenuProps) {
-  // Lock scroll saat menu terbuka
   React.useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -68,9 +63,6 @@ export default function MobileMenu({
           variants={overlayVariants}
           className="fixed inset-0 z-100 flex flex-col bg-(--background) pt-24"
         >
-          {/* Top Bar Dihapus (Close button diwakili oleh Hamburger di Navbar) */}
-
-          {/* Center Nav Links - Font Display Besar */}
           <nav className="flex flex-1 flex-col items-center justify-center space-y-8 px-6">
             {navData.main.map((item, i) => {
               const fullPath = `/${locale}${item.path === "/" ? "" : item.path}`;
@@ -84,7 +76,6 @@ export default function MobileMenu({
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    // Delay staggered, muncul setelah animasi clip-path berjalan
                     delay: 0.3 + i * 0.1,
                     duration: 0.5,
                     ease: "easeOut",
@@ -107,7 +98,6 @@ export default function MobileMenu({
             })}
           </nav>
 
-          {/* Bottom Section - Hanya Language Toggle, Hardcode tulisan dihapus */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

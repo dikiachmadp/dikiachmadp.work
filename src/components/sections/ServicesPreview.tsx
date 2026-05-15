@@ -28,7 +28,6 @@ export default function ServicesPreview({
   return (
     <section className="w-full py-16 md:py-20 bg-(--background)">
       <div className="main-container flex flex-col gap-12">
-        {/* 1. Section Header - Sinkron dengan ProjectsGallery */}
         {section && (
           <div className="flex flex-col text-center md:text-start max-w-3xl">
             <h2
@@ -49,7 +48,6 @@ export default function ServicesPreview({
           </div>
         )}
 
-        {/* 2. Services List Grid - Menggunakan ServicesCard Wrapper */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {servicesData.items.map((service, index) => (
             <ServicesCard key={service.id} index={index}>
@@ -83,7 +81,6 @@ export default function ServicesPreview({
           ))}
         </div>
 
-        {/* 3. Button - Sinkron dengan ProjectsGallery (Posisi Bawah Tengah) */}
         {section.showButton && buttonLabel && (
           <div className="flex justify-center">
             <Button

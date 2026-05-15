@@ -1,12 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
-/**
- * Custom magnetic cursor that follows the mouse with spring physics.
- * Scales up on interactive elements.
- */
 export default function CustomCursor() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -52,9 +48,8 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Outer ring */}
       <motion.div
-        className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"
+        className="fixed top-0 left-0 z-9999 pointer-events-none mix-blend-difference"
         style={{ x: springX, y: springY }}
         animate={{ scale: isHovering ? 2 : 1 }}
         transition={{ duration: 0.15 }}
@@ -62,15 +57,20 @@ export default function CustomCursor() {
         <div className="w-6 h-6 rounded-full border-2 border-white opacity-80" />
       </motion.div>
 
-      {/* Inner dot */}
       <motion.div
-        className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"
+        className="fixed top-0 left-0 z-9999 pointer-events-none mix-blend-difference"
         style={{
-          x: useSpring(useMotionValue(cursorX.get()), { damping: 35, stiffness: 500 }),
-          y: useSpring(useMotionValue(cursorY.get()), { damping: 35, stiffness: 500 }),
+          x: useSpring(useMotionValue(cursorX.get()), {
+            damping: 35,
+            stiffness: 500,
+          }),
+          y: useSpring(useMotionValue(cursorY.get()), {
+            damping: 35,
+            stiffness: 500,
+          }),
         }}
       >
-        <div className="w-1.5 h-1.5 rounded-full bg-white translate-x-[9px] translate-y-[9px]" />
+        <div className="w-1.5 h-1.5 rounded-full bg-white translate-x-3 translate-y-3" />
       </motion.div>
     </>
   );

@@ -1,24 +1,15 @@
 import { z } from "zod";
 
-/**
- * 1. SHARED SCHEMAS (Reusable components)
- */
 const NavItemSchema = z.object({
   label: z.string(),
   path: z.string(),
 });
 
-/**
- * 2. INDIVIDUAL FILE SCHEMAS
- */
-
-// navigation.json
 export const NavigationSchema = z.object({
   main: z.array(NavItemSchema),
   footer: z.array(NavItemSchema),
 });
 
-// siteConfig.json
 export const SiteConfigSchema = z.object({
   siteName: z.string(),
   author: z.string(),
@@ -33,7 +24,6 @@ export const SiteConfigSchema = z.object({
   theme: z.enum(["dark", "light"]),
 });
 
-// hero.json
 export const HeroSchema = z.object({
   title: z.object({
     top: z.string(),
@@ -59,7 +49,6 @@ export const HeroSchema = z.object({
   ),
 });
 
-// projects.json
 export const ProjectItemSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -81,7 +70,6 @@ export const ProjectsDataSchema = z.object({
   items: z.array(ProjectItemSchema),
 });
 
-// services.json
 export const ServicesDataSchema = z.object({
   items: z.array(
     z.object({
@@ -94,7 +82,6 @@ export const ServicesDataSchema = z.object({
   ),
 });
 
-// about.json
 export const AboutSchema = z.object({
   biography: z.array(z.string()),
   experience: z.array(
@@ -112,7 +99,6 @@ export const AboutSchema = z.object({
   ),
 });
 
-// contact.json
 export const ContactSchema = z.object({
   form: z.object({
     id: z.string(),
@@ -140,7 +126,6 @@ export const ContactSchema = z.object({
   }),
 });
 
-// studio.json
 export const StudioSchema = z.object({
   items: z.array(
     z.object({
@@ -152,7 +137,6 @@ export const StudioSchema = z.object({
   ),
 });
 
-// testimonials.json
 export const TestimonialsSchema = z.object({
   items: z.array(
     z.object({
@@ -166,13 +150,11 @@ export const TestimonialsSchema = z.object({
   ),
 });
 
-// footer.json
 export const FooterSchema = z.object({
   socialLabel: z.string(),
   copyright: z.string(),
 });
 
-// pageHeader.json
 const HeaderDetailSchema = z.object({
   topTitle: z.string(),
   title: z.string(),
@@ -187,7 +169,6 @@ export const PageHeaderSchema = z.object({
   contact: HeaderDetailSchema,
 });
 
-// sections.json
 const SectionSchema = z.object({
   title: z.string(),
   description: z.string(),
@@ -202,7 +183,6 @@ export const SectionsSchema = z.object({
   cta: SectionSchema,
 });
 
-// cta.json
 export const CtaSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -219,7 +199,6 @@ export const CtaSchema = z.object({
   }),
 });
 
-// privacy.json & legal.json
 export const PolicySchema = z.object({
   title: z.string(),
   lastUpdated: z.string(),
@@ -243,7 +222,6 @@ export const PolicySchema = z.object({
     .optional(),
 });
 
-// Tambahkan atau perbarui bagian ini di src/schemas/content.ts
 export const UiSchema = z.object({
   buttons: z.object({
     viewAllWork: z.string(),
@@ -260,7 +238,7 @@ export const UiSchema = z.object({
     loading: z.string(),
     notFound: z.string(),
     comingSoon: z.string(),
-    allCategories: z.string(), // Tambahkan ini
-    searchPlaceholder: z.string(), // Tambahkan ini
+    allCategories: z.string(),
+    searchPlaceholder: z.string(),
   }),
 });

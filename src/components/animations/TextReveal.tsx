@@ -10,10 +10,6 @@ interface TextRevealProps {
   as?: "h1" | "h2" | "h3" | "p" | "span";
 }
 
-/**
- * Animated text reveal component that splits text into words
- * and animates them in with a stagger effect.
- */
 export default function TextReveal({
   text,
   className,

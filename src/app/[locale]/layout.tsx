@@ -23,13 +23,10 @@ export async function generateMetadata({
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
   const dict = await getDictionary(validLocale);
   const { siteConfig } = dict;
-
-  // 1. Mendefinisikan URL dasar dan URL spesifik bahasa
   const baseUrl = siteConfig.url || "https://dikiachmadp.work";
   const currentUrl = `${baseUrl}/${validLocale}`;
 
   return {
-    // --- Primary Meta Tags ---
     title: {
       default: `${siteConfig.siteName} | ${siteConfig.fullName}`,
       template: `%s | ${siteConfig.siteName}`,
@@ -42,11 +39,10 @@ export async function generateMetadata({
       languages: {
         "en-US": `${baseUrl}/en`,
         "id-ID": `${baseUrl}/id`,
-        "x-default": `${baseUrl}/en`, // Standar bahasa utama
+        "x-default": `${baseUrl}/en`,
       },
     },
 
-    // --- Open Graph / Facebook ---
     openGraph: {
       type: "website",
       url: currentUrl,
@@ -62,7 +58,6 @@ export async function generateMetadata({
       ],
     },
 
-    // --- X (Twitter) ---
     twitter: {
       card: "summary_large_image",
       title: `${siteConfig.siteName} | ${siteConfig.fullName}`,
@@ -70,7 +65,6 @@ export async function generateMetadata({
       images: "/og-image.png",
     },
 
-    // --- Favicon & Icons ---
     icons: {
       icon: "/favicon.webp",
       shortcut: "/favicon.webp",

@@ -49,7 +49,6 @@ export default function ProjectCard({
           group-hover:-translate-x-1.5 group-hover:-translate-y-1.5
         "
         >
-          {/* 1. Cover Image */}
           <div className="relative w-full overflow-hidden border-b-2 border-(--border) aspect-4/3 bg-(--card)">
             <Image
               src={project.coverImage}
@@ -64,10 +63,8 @@ export default function ProjectCard({
             />
           </div>
 
-          {/* 2. Meta Info (Menggunakan Fluid Typography) */}
           <div className="pt-4 pb-2 px-4 border-b-2 border-(--border) flex justify-between items-start gap-4">
             <div className="grow">
-              {/* Kategori & Tahun: Menggunakan UI Label Clamp */}
               <span
                 className="font-bold uppercase tracking-widest text-(--gray-medium) block"
                 style={{ fontSize: "var(--text-ui-label)" }}
@@ -75,11 +72,10 @@ export default function ProjectCard({
                 {project.category} · {project.year}
               </span>
 
-              {/* Judul Project: Menggunakan Title Scale yang lebih kecil dari Hero */}
               <h3
                 className="leading-[1.1] mt-1 group-hover:text-(--accent)"
                 style={{
-                  fontSize: "clamp(1.25rem, 3vw, 1.75rem)", // Fluid khusus untuk title card
+                  fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
                   fontFamily: "var(--font-modak)",
                 }}
               >
@@ -87,7 +83,6 @@ export default function ProjectCard({
               </h3>
             </div>
 
-            {/* Logo Wrapper */}
             <div className="relative w-10 h-10 shrink-0 border-2 border-(--border) overflow-hidden bg-(--card) rounded-sm">
               <Image
                 src={project.logoUrl}
@@ -99,13 +94,12 @@ export default function ProjectCard({
             </div>
           </div>
 
-          {/* 3. Tags (Menggunakan Fluid UI Label) */}
           <div className="pt-3 pb-4 px-4 flex flex-wrap gap-2">
             {project.tags.map((tag) => (
               <span
                 key={tag}
                 className="font-black uppercase tracking-widest px-2 py-1 border border-(--border) text-(--gray-medium)"
-                style={{ fontSize: "calc(var(--text-ui-label) * 0.9)" }} // Sedikit lebih kecil dari label utama
+                style={{ fontSize: "calc(var(--text-ui-label) * 0.9)" }}
               >
                 {tag}
               </span>

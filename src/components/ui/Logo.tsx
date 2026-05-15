@@ -14,7 +14,6 @@ export default function Logo() {
       aria-label="Back to home"
       className="group inline-block outline-none"
     >
-      {/* LAPISAN BAWAH (Warna Aksen / Bayangan Solid) */}
       <div
         className="
         relative
@@ -23,7 +22,6 @@ export default function Logo() {
         p-0
       "
       >
-        {/* LAPISAN ATAS (Kontainer Logo Utama) */}
         <div
           className="
           flex items-center justify-center
@@ -51,7 +49,6 @@ export default function Logo() {
               fill
               priority
               sizes="32px"
-              /* Logo orisinil (tanpa invert) */
               className="object-contain"
             />
           </div>

@@ -8,10 +8,6 @@ interface PageTransitionProps {
   children: React.ReactNode;
 }
 
-/**
- * Page transition wrapper using Framer Motion AnimatePresence.
- * Wrap page content for smooth page-to-page transitions.
- */
 export default function PageTransition({ children }: PageTransitionProps) {
   const pathname = usePathname();
 

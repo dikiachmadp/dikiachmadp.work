@@ -31,25 +31,15 @@ export default async function AboutPage({
         title={header.title}
         description={header.description}
       />
-
-      {/* Biography Section */}
       <SectionWrapper id="biography" className="border-b-2 border-(--border)">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-          {/* Left Side: Photo Placeholder */}
           <div className="lg:col-span-5 relative group">
-            {/* Shadow Layer */}
             <div className="absolute inset-0 bg-(--foreground) rounded-2xl transition-all duration-300" />
-
-            {/* Left Side: Photo Placeholder Container */}
             <div className="lg:col-span-5 relative group">
-              {/* Shadow Layer (Tetap di belakang, tidak bergerak) */}
               <div className="absolute inset-0 bg-(--foreground) rounded-2xl transition-all duration-200" />
-
-              {/* Image/Content Layer (Bergerak saat container di-hover) */}
               <div
                 className={cn(
                   "relative aspect-4/3 bg-(--gray-light) border-2 border-(--foreground) rounded-2xl overflow-hidden",
-                  // Menggunakan jarak translasi yang sama dengan card lainnya
                   "group-hover:-translate-x-1 group-hover:-translate-y-1 transition-all duration-200",
                   themeTransition,
                 )}
@@ -64,13 +54,10 @@ export default async function AboutPage({
               </div>
             </div>
           </div>
-
-          {/* Right Side: Text & CV Button */}
           <div className="lg:col-span-7 flex flex-col gap-8">
             <div className="flex flex-col gap-2">
               <div className="h-0.5 w-12 bg-(--foreground)" />
             </div>
-
             <div className="flex flex-col gap-6">
               {dict.about.biography.map((paragraph, index) => (
                 <p
@@ -81,19 +68,14 @@ export default async function AboutPage({
                 </p>
               ))}
             </div>
-
-            {/* Download CV Button - Styled like Filter Button */}
             <div className="pt-4">
               <a
-                href="/CV_Diki_2026.pdf" // Sesuaikan path file CV Anda
+                href="/CV_Diki_2026.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block group relative outline-none"
               >
-                {/* Shadow Layer */}
                 <div className="absolute inset-0 rounded-lg bg-(--foreground) transition-all duration-200" />
-
-                {/* Content Layer */}
                 <div
                   className={cn(
                     "relative flex h-12 px-8 items-center justify-center rounded-lg uppercase transition-all duration-200 text-[10px] font-bold tracking-[0.2em] border-2",
@@ -113,11 +95,7 @@ export default async function AboutPage({
           </div>
         </div>
       </SectionWrapper>
-
-      {/* Experience & Skills */}
       <ExperienceSection aboutData={dict.about} uiLabels={dict.ui} />
-
-      {/* CTA */}
       <CTASection ctaData={dict.cta} uiLabels={dict.ui} locale={validLocale} />
     </PageWrapper>
   );

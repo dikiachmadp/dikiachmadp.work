@@ -41,13 +41,11 @@ export default async function StudioPage({
         title={header.title}
         description={header.description}
       />
-
       <SectionWrapper id="studio-items">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {dict.studio.items.map((item) => {
             const config = typeConfig[item.type];
             const isExternal = item.link.startsWith("http");
-
             return (
               <Link
                 key={item.id}
