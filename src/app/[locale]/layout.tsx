@@ -37,6 +37,15 @@ export async function generateMetadata({
     description: siteConfig.description,
     metadataBase: new URL(baseUrl),
 
+    alternates: {
+      canonical: currentUrl,
+      languages: {
+        "en-US": `${baseUrl}/en`,
+        "id-ID": `${baseUrl}/id`,
+        "x-default": `${baseUrl}/en`, // Standar bahasa utama
+      },
+    },
+
     // --- Open Graph / Facebook ---
     openGraph: {
       type: "website",
