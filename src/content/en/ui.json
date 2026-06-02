@@ -16,5 +16,14 @@
     "comingSoon": "Coming Soon",
     "allCategories": "All Projects",
     "searchPlaceholder": "Search projects..."
+  },
+  "notFound": {
+    "marquee": "404 Error • Page Not Found • Lost in Space • ",
+    "badge": "Status: Path Unreachable",
+    "heading": "404 // HOUSTON, WE HAVE A PROBLEM.",
+    "description": "The page you are looking for is not available.",
+    "trace": "ERR_PATH_NOT_FOUND // [TRACE]",
+    "btnHome": "back to home",
+    "btnStudio": "back to studio"
   }
 }

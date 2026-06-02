@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Modak } from "next/font/google";
 import "@/app/globals.css";
-import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import ThemeProvider from "@/components/layout/ThemeProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { getDictionary } from "@/lib/dictionary";

@@ -268,4 +268,13 @@ export const UiSchema = z.object({
     allCategories: z.string(),
     searchPlaceholder: z.string(),
   }),
+  notFound: z.object({
+    marquee: z.string(),
+    badge: z.string(),
+    heading: z.string(),
+    description: z.string(),
+    trace: z.string(),
+    btnHome: z.string(),
+    btnStudio: z.string(),
+  }),
 });

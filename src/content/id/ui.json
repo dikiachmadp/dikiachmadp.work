@@ -16,5 +16,14 @@
     "comingSoon": "Segera",
     "allCategories": "Semua Kategori",
     "searchPlaceholder": "Cari proyek..."
+  },
+  "notFound": {
+    "marquee": "404 Error • Page Not Found • Lost in Space • ",
+    "badge": "Status: Halaman Tidak Dapat Dijangkau",
+    "heading": "404 // OOPSS, KITA PUNYA MASALAH.",
+    "description": "Halaman yang Anda cari tidak dapat diakses.",
+    "trace": "ERR_PATH_NOT_FOUND // [TRACE]",
+    "btnHome": "kembali ke beranda",
+    "btnStudio": "kembali ke studio"
   }
 }
