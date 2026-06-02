@@ -63,6 +63,8 @@ export const ProjectItemSchema = z.object({
   accent: z.string(),
   featured: z.boolean(),
   slug: z.string(),
+  liveUrl: z.string().optional(),
+  isLivePreview: z.boolean().optional(),
 });
 
 export const ProjectsDataSchema = z.object({
@@ -127,12 +129,37 @@ export const ContactSchema = z.object({
 });
 
 export const StudioSchema = z.object({
+  sections: z.object({
+    experiments: z.object({
+      id: z.string(),
+      title: z.string(),
+      number: z.string(),
+      buttonLabel: z.string(),
+    }),
+    store: z.object({
+      id: z.string(),
+      title: z.string(),
+      number: z.string(),
+      buttonLabel: z.string(),
+    }),
+    thoughts: z.object({
+      id: z.string(),
+      title: z.string(),
+      number: z.string(),
+      buttonLabel: z.string(),
+    }),
+  }),
   items: z.array(
     z.object({
       id: z.string(),
-      type: z.enum(["thoughts", "store"]),
+      type: z.enum(["thoughts", "store", "experiments"]),
       title: z.string(),
       link: z.string(),
+      description: z.string().optional(),
+      date: z.string().optional(),
+      isExternal: z.boolean().optional(),
+      thumbnail: z.string().optional(),
+      buttonLabel: z.string().optional(),
     }),
   ),
 });

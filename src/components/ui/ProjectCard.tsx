@@ -7,8 +7,13 @@ import { motion } from "framer-motion";
 import { Project } from "@/types/content";
 import { cn, themeTransition } from "@/lib/utils";
 
+interface ExtendedProject extends Project {
+  isLivePreview?: boolean;
+  liveUrl?: string;
+}
+
 interface ProjectCardProps {
-  project: Project;
+  project: ExtendedProject;
   index?: number;
   className?: string;
 }
@@ -20,6 +25,8 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
+
+  const projectSlugUrl = `/${locale}/projects/${project.slug}`;
 
   return (
     <motion.div
@@ -33,23 +40,20 @@ export default function ProjectCard({
         themeTransition,
       )}
     >
-      <Link
-        href={`/${locale}/projects/${project.slug}`}
-        className="block outline-none"
-      >
+      <Link href={projectSlugUrl} className="block outline-none cursor-pointer">
         <div
           className="
-          relative w-full h-full 
-          bg-(--background) 
-          border-2 border-(--foreground) 
-          rounded-(--button-radius) 
-          overflow-hidden 
-          transition-all duration-300 ease-out
-          translate-x-0 translate-y-0
-          group-hover:-translate-x-1.5 group-hover:-translate-y-1.5
-        "
+            relative w-full h-full 
+            bg-(--background) 
+            border-2 border-(--foreground) 
+            rounded-(--button-radius) 
+            overflow-hidden 
+            transition-all duration-300 ease-out
+            translate-x-0 translate-y-0
+            group-hover:-translate-x-1.5 group-hover:-translate-y-1.5
+          "
         >
-          <div className="relative w-full overflow-hidden border-b-2 border-(--border) aspect-4/3 bg-(--card)">
+          <div className="relative w-full overflow-hidden border-b-2 border-(--border) aspect-video bg-(--card)">
             <Image
               src={project.coverImage}
               alt={project.title}
@@ -57,6 +61,7 @@ export default function ProjectCard({
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
+
             <div
               className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
               style={{ backgroundColor: project.accent }}

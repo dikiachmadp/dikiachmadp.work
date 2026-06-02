@@ -1,6 +1,60 @@
 {
+  "sections": {
+    "experiments": {
+      "id": "experiments",
+      "title": "Experiments",
+      "number": "01 |",
+      "buttonLabel": "Explore"
+    },
+    "store": {
+      "id": "store",
+      "title": "Digital Products",
+      "number": "02 |",
+      "buttonLabel": "Get Asset"
+    },
+    "thoughts": {
+      "id": "thoughts",
+      "title": "Logbook",
+      "number": "03 |",
+      "buttonLabel": "Read Post"
+    }
+  },
   "items": [
-    { "id": "01", "type": "thoughts", "title": "Membangun Digital Garden di 2026", "link": "/blog/digital-garden" },
-    { "id": "02", "type": "store", "title": "Minimalist Icon Pack v.1", "link": "https://gumroad.com/diki" }
+    {
+      "id": "exp-01",
+      "type": "experiments",
+      "title": "KidLab Pixel Art",
+      "description": "Exploration of pixels and 2D assets for web interfaces.",
+      "link": "https://lab.dikiachmadp.work/kidlab",
+      "isExternal": true,
+      "thumbnail": "/projects/studio/kidlab.svg"
+    },
+    {
+      "id": "store-01",
+      "type": "store",
+      "title": "OJS 3 CSS Template - Minimalist Theme",
+      "description": "A minimalist CSS template for Open Journal Systems 3, designed for academic journals seeking a clean and modern look. This template focuses on simplicity and readability, making it ideal for scholarly publications. It includes responsive design, customizable color schemes, and support for all OJS 3 features.",
+      "link": "https://kidstudio.gumroad.com/l/minimalist-theme",
+      "isExternal": true,
+      "thumbnail": "/projects/covers/cover-placeholder.webp"
+    },
+    {
+      "id": "store-02",
+      "type": "store",
+      "title": "OJS 3 CSS Template - Modern Theme",
+      "description": "A modern CSS template for Open Journal Systems 3, designed for academic journals seeking a contemporary and visually engaging look. This template features a sleek design with bold typography, customizable color schemes, and support for all OJS 3 features. It is perfect for scholarly publications that want to make a strong visual impact while maintaining readability.",
+      "link": "https://kidstudio.gumroad.com/l/modern-theme",
+      "isExternal": true,
+      "thumbnail": "/projects/covers/cover-placeholder.webp"
+    },
+    {
+      "id": "thought-01",
+      "type": "thoughts",
+      "title": "Next.js 16 Multi-language Architecture",
+      "description": "Notes on structuring JSON-based localization.",
+      "date": "2026-05-10",
+      "link": "/studio/thoughts/nextjs-architecture",
+      "isExternal": false
+    }
   ]
 }

@@ -12,6 +12,7 @@ export type ServicesData = z.infer<typeof schemas.ServicesDataSchema>;
 export type AboutData = z.infer<typeof schemas.AboutSchema>;
 export type ContactData = z.infer<typeof schemas.ContactSchema>;
 export type StudioData = z.infer<typeof schemas.StudioSchema>;
+export type StudioItem = StudioData["items"][number];
 export type TestimonialsData = z.infer<typeof schemas.TestimonialsSchema>;
 export type FooterData = z.infer<typeof schemas.FooterSchema>;
 export type PageHeaderData = z.infer<typeof schemas.PageHeaderSchema>;
