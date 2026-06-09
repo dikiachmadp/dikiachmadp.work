@@ -25,11 +25,26 @@
         "label": "Apa yang sedang Anda cari?",
         "placeholder": "Pilih opsi",
         "options": [
-          { "value": "web-development", "label": "Pengembangan Web" },
-          { "value": "brand-identity", "label": "Identitas Merek" },
-          { "value": "3d-design", "label": "Desain 3D" },
-          { "value": "ui-ux-design", "label": "Desain UI/UX" },
-          { "value": "other", "label": "Lainnya" }
+          {
+            "value": "web-development",
+            "label": "Pengembangan Web"
+          },
+          {
+            "value": "brand-identity",
+            "label": "Identitas Merek"
+          },
+          {
+            "value": "3d-design",
+            "label": "Desain 3D"
+          },
+          {
+            "value": "ui-ux-design",
+            "label": "Desain UI/UX"
+          },
+          {
+            "value": "other",
+            "label": "Lainnya"
+          }
         ],
         "required": true
       },
@@ -43,7 +58,7 @@
       }
     ],
     "submitAction": {
-      "uiKey": "kirim" 
+      "uiKey": "submit"
     }
   }
 }

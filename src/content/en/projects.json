@@ -29,7 +29,22 @@
       "featured": true,
       "slug": "website-ekonomi",
       "liveUrl": "https://ekonomi.feb.unpas.ac.id",
-      "isLivePreview": true
+      "isLivePreview": true,
+      "role": "Lead UI/UX Designer",
+      "duration": "3 Months",
+      "tools": [
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "contentBlocks": [
+        "This project aimed to completely revamp the digital presence of the Economics Development Study Program at FEB UNPAS. The main focus was to enhance information accessibility for active and prospective students.",
+        "The interface design was created with a neat brutalist approach, highlighting the institution's identity through strong accent colors. The biggest challenge was organizing the massive academic data into an intuitive navigation structure."
+      ],
+      "gallery": [
+        "/projects/covers/webep-gallery1.webp",
+        "/projects/covers/webep-gallery2.webp"
+      ]
     },
     {
       "id": "website-jahe",

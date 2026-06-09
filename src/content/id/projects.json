@@ -1,13 +1,13 @@
 {
   "categories": [
-    "All",
+    "Semua",
     "Branding",
-    "UI/UX Design",
-    "3D Modeling",
-    "Packaging",
-    "Illustration",
-    "Animation",
-    "Web Design"
+    "Desain UI/UX",
+    "Pemodelan 3D",
+    "Pengemasan",
+    "Ilustrasi",
+    "Animasi",
+    "Desain Web"
   ],
   "items": [
     {
@@ -16,7 +16,7 @@
       "category": "Web Design",
       "year": "2026",
       "date": "2026-04-15",
-      "client": "FEB UNPAS (Indonesia)",
+      "client": "FEB UNPAS",
       "description": "Web Design for Economics Development Study Program at FEB UNPAS (Bandung)",
       "tags": [
         "Web Design",
@@ -29,7 +29,22 @@
       "featured": true,
       "slug": "website-ekonomi",
       "liveUrl": "https://ekonomi.feb.unpas.ac.id",
-      "isLivePreview": true
+      "isLivePreview": true,
+      "role": "Desainer UI/UX Utama",
+      "duration": "3 Bulan",
+      "tools": [
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "contentBlocks": [
+        "Proyek ini bertujuan untuk merombak total kehadiran digital Program Studi Ekonomi Pembangunan FEB UNPAS. Fokus utamanya adalah meningkatkan aksesibilitas informasi bagi mahasiswa aktif dan calon mahasiswa.",
+        "Desain antarmuka dibuat dengan pendekatan brutalist yang rapi, menonjolkan identitas institusi melalui warna aksen yang kuat. Tantangan terbesar adalah mengorganisasi data akademik yang masif menjadi struktur navigasi yang intuitif."
+      ],
+      "gallery": [
+        "/projects/covers/webep-gallery1.webp",
+        "/projects/covers/webep-gallery2.webp"
+      ]
     },
     {
       "id": "website-jahe",
@@ -38,7 +53,7 @@
       "year": "2026",
       "date": "2026-02-22",
       "client": "PT Padjajaran Pratama Wijaya (Indonesia)",
-      "description": "Web Design for Ginger Candy Product at PT Padjajaran Pratama Wijaya",
+      "description": "Desain Web untuk Produk Permen Jahe di PT Padjajaran Pratama Wijaya",
       "tags": [
         "Web Design",
         "UI",
@@ -59,7 +74,7 @@
       "year": "2025",
       "date": "2025-08-10",
       "client": "DIM UNPAS (Indonesia)",
-      "description": "Web Design for Doctoral Programme at DIM UNPAS (Bandung)",
+      "description": "Desain Web untuk Program Doktor di DIM UNPAS (Bandung)",
       "tags": [
         "Web Design",
         "UI",

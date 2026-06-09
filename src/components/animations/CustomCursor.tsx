@@ -7,15 +7,22 @@ export default function CustomCursor() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const [isHovering, setIsHovering] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
 
   const springConfig = { damping: 25, stiffness: 300, mass: 0.5 };
   const springX = useSpring(cursorX, springConfig);
   const springY = useSpring(cursorY, springConfig);
 
-  useEffect(() => {
-    setIsMounted(true);
+  const dotX = useSpring(cursorX, {
+    damping: 35,
+    stiffness: 500,
+  });
 
+  const dotY = useSpring(cursorY, {
+    damping: 35,
+    stiffness: 500,
+  });
+
+  useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       cursorX.set(e.clientX - 12);
       cursorY.set(e.clientY - 12);
@@ -44,8 +51,6 @@ export default function CustomCursor() {
     };
   }, [cursorX, cursorY]);
 
-  if (!isMounted) return null;
-
   return (
     <>
       <motion.div
@@ -60,14 +65,8 @@ export default function CustomCursor() {
       <motion.div
         className="fixed top-0 left-0 z-9999 pointer-events-none mix-blend-difference"
         style={{
-          x: useSpring(useMotionValue(cursorX.get()), {
-            damping: 35,
-            stiffness: 500,
-          }),
-          y: useSpring(useMotionValue(cursorY.get()), {
-            damping: 35,
-            stiffness: 500,
-          }),
+          x: dotX,
+          y: dotY,
         }}
       >
         <div className="w-1.5 h-1.5 rounded-full bg-white translate-x-3 translate-y-3" />

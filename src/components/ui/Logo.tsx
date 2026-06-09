@@ -28,16 +28,10 @@ export default function Logo() {
           bg-(--background)
           border-2 border-(--foreground)
           rounded-(--button-radius)
-          p-2
-          
-          /* KONDISI AWAL: Flat (Posisi 0, menutupi bayangan sepenuhnya) */
+          p-2          
           translate-x-0
           translate-y-0
-          
-          /* Transisi untuk pergerakan halus saat hover */
           transition-transform duration-200 ease-out
-          
-          /* HOVER: Terangkat ke kiri-atas agar bayangan muncul di kanan-bawah */
           group-hover:-translate-x-1
           group-hover:-translate-y-1
         "

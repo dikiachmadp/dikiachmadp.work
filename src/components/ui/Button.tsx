@@ -15,6 +15,8 @@ interface ButtonProps {
   className?: string;
   variant?: "primary" | "outline" | "ghost";
   size?: ButtonSize;
+  target?: string;
+  rel?: string;
 }
 
 export default function Button({
@@ -26,6 +28,8 @@ export default function Button({
   className,
   variant = "primary",
   size = "md",
+  target,
+  rel,
 }: ButtonProps) {
   const shadowColors = {
     primary: "bg-[var(--foreground)]",
@@ -61,7 +65,7 @@ export default function Button({
     >
       <div
         className={cn(
-          "flex items-center justify-center transition-all duration-200 rounded-(--button-radius) uppercase",
+          "flex items-center justify-center transition-all duration-200 rounded-(--button-radius) uppercase w-full",
           variantStyles[variant],
           sizeStyles[size],
           "translate-x-0 translate-y-0",
@@ -74,11 +78,11 @@ export default function Button({
         style={
           size === "md" || size === "lg" || size === "xl"
             ? {
-                fontFamily: "var(--font-modak), var(--font-display), cursive",
+                fontFamily: "var(--font-modak), cursive",
                 fontSize: size === "md" ? "var(--text-ui-button)" : undefined,
               }
             : {
-                fontFamily: "var(--font-main), sans-serif",
+                fontFamily: "var(--font-body), sans-serif",
               }
         }
       >
@@ -89,7 +93,12 @@ export default function Button({
 
   if (href) {
     return (
-      <Link href={href} className="group block sm:inline-block outline-none">
+      <Link
+        href={href}
+        target={target}
+        rel={target === "_blank" ? rel || "noopener noreferrer" : rel}
+        className="group block sm:inline-block outline-none"
+      >
         {content}
       </Link>
     );

@@ -65,6 +65,11 @@ export const ProjectItemSchema = z.object({
   slug: z.string(),
   liveUrl: z.string().optional(),
   isLivePreview: z.boolean().optional(),
+  role: z.string().optional(),
+  duration: z.string().optional(),
+  tools: z.array(z.string()).optional(),
+  contentBlocks: z.array(z.string()).optional(),
+  gallery: z.array(z.string()).optional(),
 });
 
 export const ProjectsDataSchema = z.object({
@@ -276,5 +281,17 @@ export const UiSchema = z.object({
     trace: z.string(),
     btnHome: z.string(),
     btnStudio: z.string(),
+  }),
+  projectDetail: z.object({
+    aboutProject: z.string(),
+    client: z.string(),
+    datePublished: z.string(),
+    role: z.string(),
+    duration: z.string(),
+    tools: z.string(),
+    techStack: z.string(),
+    backBtn: z.string(),
+    visitBtn: z.string(),
+    galleryLabel: z.string(),
   }),
 });

@@ -25,5 +25,17 @@
     "trace": "ERR_PATH_NOT_FOUND // [TRACE]",
     "btnHome": "kembali ke beranda",
     "btnStudio": "kembali ke studio"
+  },
+  "projectDetail": {
+    "aboutProject": "Tentang Proyek",
+    "client": "Klien",
+    "datePublished": "Tanggal Rilis",
+    "role": "Peran",
+    "duration": "Durasi",
+    "tools": "Peralatan",
+    "techStack": "Teknologi",
+    "backBtn": "Kembali ke Proyek",
+    "visitBtn": "Kunjungi Situs",
+    "galleryLabel": "Galeri"
   }
 }

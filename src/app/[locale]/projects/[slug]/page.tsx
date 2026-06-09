@@ -1,13 +1,12 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, ArrowUpRight } from "lucide-react";
 import { getDictionary } from "@/lib/dictionary";
 import PageWrapper from "@/components/layout/PageWrapper";
 import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
-import { cn, themeTransition } from "@/lib/utils";
+import Button from "@/components/ui/Button";
 import { Locale } from "@/types/content";
 
 interface ProjectDetailPageProps {
@@ -28,16 +27,13 @@ export default async function ProjectDetailPage({
       : "en";
 
   const dict = await getDictionary(validLocale);
-
   const project = dict.projects.items.find(
     (item) => item.slug === resolvedParams.slug,
   );
 
-  if (!project) {
-    notFound();
-  }
+  if (!project) notFound();
 
-  const isLive = project.isLivePreview && project.liveUrl;
+  const t = dict.ui.projectDetail;
 
   return (
     <PageWrapper>
@@ -51,109 +47,189 @@ export default async function ProjectDetailPage({
         id="project-detail-content"
         className="pt-4 pb-12 md:pb-20"
       >
-        <div className="max-w-3xl mx-auto flex flex-col gap-8">
-          <div className="w-full flex justify-center">
-            {isLive ? (
-              <div className="w-full max-w-240 aspect-9/16 md:aspect-video rounded-xl border-2 border-(--foreground) overflow-hidden relative">
-                <div className="absolute z-10 opacity-90" />
-                <iframe
-                  src={project.liveUrl}
-                  title={project.title}
-                  className="w-full h-full border-none"
-                  loading="lazy"
-                />
-              </div>
-            ) : (
-              <div className="w-full max-w-md border-4 border-(--foreground) rounded-(--button-radius) overflow-hidden aspect-square bg-(--card) relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-8 flex flex-col gap-8">
+            <div className="group relative bg-(--foreground) rounded-(--button-radius) w-full">
+              <div className="relative w-full aspect-video bg-(--card) border-2 border-(--foreground) rounded-(--button-radius) overflow-hidden transition-all duration-300 ease-out translate-x-0 translate-y-0 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5 flex justify-center cursor-default">
                 <Image
                   src={project.coverImage}
                   alt={project.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 1024px) 100vw, 66vw"
                   className="object-cover"
                   priority
                 />
               </div>
-            )}
-          </div>
-
-          <div className="w-full border-2 border-(--foreground) bg-(--card) p-6 md:p-8 rounded-(--button-radius) shadow-[4px_4px_0px_0px_var(--foreground)] flex flex-col gap-2">
-            <h4 className="text-xl text-(--foreground) tracking-widest">
-              {validLocale === "id" ? "Tentang Proyek" : "About Project"}
-            </h4>
-            <p className="text-base font-medium leading-relaxed text-(--foreground) text-justify">
-              {project.description}. Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat.
-            </p>
-          </div>
-
-          <div className="w-full border-2 border-(--foreground) bg-(--card) p-6 rounded-(--button-radius) flex flex-col sm:flex-row gap-6 justify-between items-start sm:items-center shadow-[4px_4px_0px_0px_var(--foreground)]">
-            <div>
-              <h4 className="text-[10px] font-black uppercase text-(--gray-medium) tracking-widest">
-                Client
-              </h4>
-              <p className="font-bold text-base mt-0.5 text-(--foreground)">
-                {project.client}
-              </p>
             </div>
 
-            <div className="sm:border-l-2 sm:border-(--border) sm:pl-6">
-              <h4 className="text-[10px] font-black uppercase text-(--gray-medium) tracking-widest">
-                Date Published
-              </h4>
-              <p className="font-bold text-base mt-0.5 text-(--foreground)">
-                {project.date}
-              </p>
-            </div>
-
-            <div className="sm:border-l-2 sm:border-(--border) sm:pl-6 max-w-xs">
-              <h4 className="text-[10px] font-black uppercase text-(--gray-medium) tracking-widest mb-1.5">
-                Tech Stack
-              </h4>
-              <div className="flex flex-wrap gap-1.5">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 border border-(--foreground) bg-(--background) text-(--foreground)"
+            {project.gallery && project.gallery.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {project.gallery.slice(0, 2).map((imgUrl, idx) => (
+                  <div
+                    key={idx}
+                    className="group relative bg-(--foreground) rounded-(--button-radius) w-full"
                   >
-                    {tag}
-                  </span>
+                    <div className="relative w-full aspect-video bg-(--card) border-2 border-(--foreground) rounded-(--button-radius) overflow-hidden transition-all duration-300 ease-out translate-x-0 translate-y-0 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5 cursor-default">
+                      <Image
+                        src={imgUrl}
+                        alt={`${project.title} ${t.galleryLabel} ${idx + 1}`}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    </div>
+                  </div>
                 ))}
+              </div>
+            )}
+
+            <div className="group relative bg-(--foreground) rounded-(--button-radius) w-full">
+              <div className="relative h-full p-6 md:p-10 bg-(--background) border-2 border-(--foreground) rounded-(--button-radius) transition-all duration-300 ease-out translate-x-0 translate-y-0 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5 cursor-default flex flex-col gap-4">
+                <h3
+                  className="text-2xl tracking-wide text-(--foreground) mb-2"
+                  style={{
+                    fontFamily:
+                      "var(--font-heading), var(--font-heading), cursive",
+                  }}
+                >
+                  {t.aboutProject}
+                </h3>
+
+                <div className="prose prose-lg dark:prose-invert max-w-none text-(--foreground) text-justify space-y-4">
+                  {project.contentBlocks && project.contentBlocks.length > 0 ? (
+                    project.contentBlocks.map((paragraph, index) => (
+                      <p key={index} className="leading-relaxed font-medium">
+                        {paragraph}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="leading-relaxed font-medium">
+                      {project.description}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="w-full flex flex-col sm:flex-row gap-4 justify-between items-center mt-4">
-            <Link
-              href={`/${validLocale}/projects`}
-              className={cn(
-                "w-full sm:w-1/2 flex items-center justify-center gap-2 px-5 py-3.5 border-2 border-(--foreground) bg-(--background) rounded-(--button-radius) font-bold uppercase tracking-widest text-xs transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 shadow-[4px_4px_0px_0px_var(--foreground)] hover:shadow-[5px_5px_0px_0px_var(--foreground)] outline-none text-center",
-                themeTransition,
-              )}
-            >
-              <ChevronLeft className="w-4 h-4" strokeWidth={3} />
-              {validLocale === "id" ? "Kembali" : "Back to Projects"}
-            </Link>
+          <div className="lg:col-span-4 lg:sticky lg:top-24 flex flex-col gap-8">
+            <div className="group relative bg-(--foreground) rounded-(--button-radius) w-full">
+              <div className="relative h-full p-6 bg-(--background) border-2 border-(--foreground) rounded-(--button-radius) transition-all duration-300 ease-out translate-x-0 translate-y-0 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5 cursor-default flex flex-col gap-5">
+                <div className="flex flex-col pb-4 border-b-2 border-(--border)">
+                  <h4
+                    className="tracking-wide text-(--foreground)"
+                    style={{ fontSize: "var(--text-desc)" }}
+                  >
+                    {t.client}
+                  </h4>
+                  <p className="var(--text-desc) text-(--foreground)">
+                    {project.client}
+                  </p>
+                </div>
 
-            {project.liveUrl ? (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "w-full sm:w-1/2 flex items-center justify-center gap-2 px-5 py-3.5 border-2 border-(--foreground) bg-(--background) rounded-(--button-radius) font-bold uppercase tracking-widest text-xs transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 shadow-[4px_4px_0px_0px_var(--foreground)] hover:shadow-[5px_5px_0px_0px_var(--foreground)] outline-none cursor-pointer text-center",
-                  themeTransition,
+                {project.role && (
+                  <div className="flex flex-col pb-4 border-b-2 border-(--border)">
+                    <h4
+                      className="tracking-wide text-(--foreground)"
+                      style={{ fontSize: "var(--text-desc)" }}
+                    >
+                      {t.role}
+                    </h4>
+                    <p className="var(--text-desc) text-(--foreground)">
+                      {project.role}
+                    </p>
+                  </div>
                 )}
+
+                {project.duration && (
+                  <div className="flex flex-col pb-4 border-b-2 border-(--border)">
+                    <h4
+                      className="tracking-wide text-(--foreground)"
+                      style={{ fontSize: "var(--text-desc)" }}
+                    >
+                      {t.duration}
+                    </h4>
+                    <p className="var(--text-desc) text-(--foreground)">
+                      {project.duration}
+                    </p>
+                  </div>
+                )}
+
+                {project.tools && project.tools.length > 0 && (
+                  <div className="flex flex-col pb-4 border-b-2 border-(--border)">
+                    <h4
+                      className="tracking-wide text-(--foreground)"
+                      style={{ fontSize: "var(--text-desc)" }}
+                    >
+                      {t.tools}
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tools.map((tool) => (
+                        <span
+                          key={tool}
+                          className="tracking-wide px-2 py-1 border border-(--border) text-(--foreground)"
+                          style={{
+                            fontSize: "calc(var(--text-ui-label) * 0.9)",
+                          }}
+                        >
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex flex-col">
+                  <h4
+                    className="tracking-wide text-(--foreground)"
+                    style={{ fontSize: "var(--text-desc)" }}
+                  >
+                    {t.techStack}
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="tracking-wide px-2 py-1 border border-(--foreground) bg-(--foreground) text-(--background) rounded-sm"
+                        style={{ fontSize: "calc(var(--text-ui-label) * 0.9)" }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              {project.liveUrl && (
+                <Button
+                  variant="primary"
+                  size="md"
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full"
+                >
+                  <span className="flex items-center gap-2">
+                    {t.visitBtn}
+                    <ArrowUpRight className="w-4 h-4" strokeWidth={3} />
+                  </span>
+                </Button>
+              )}
+
+              <Button
+                variant="primary"
+                size="md"
+                href={`/${validLocale}/projects`}
+                className="w-full"
               >
-                {validLocale === "id" ? "Kunjungi Situs" : "Visit Live Site"}
-                <ArrowUpRight className="w-4 h-4" strokeWidth={3} />
-              </a>
-            ) : (
-              <div className="hidden sm:block sm:w-1/2" />
-            )}
+                <span className="flex items-center justify-center gap-2 w-full">
+                  <ChevronLeft className="w-4 h-4" strokeWidth={3} />
+                  {t.backBtn}
+                </span>
+              </Button>
+            </div>
           </div>
         </div>
       </SectionWrapper>

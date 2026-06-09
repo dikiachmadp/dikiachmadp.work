@@ -25,5 +25,17 @@
     "trace": "ERR_PATH_NOT_FOUND // [TRACE]",
     "btnHome": "back to home",
     "btnStudio": "back to studio"
+  },
+  "projectDetail": {
+    "aboutProject": "About Project",
+    "client": "Client",
+    "datePublished": "Date Published",
+    "role": "Role",
+    "duration": "Duration",
+    "tools": "Tools",
+    "techStack": "Tech Stack",
+    "backBtn": "Back to Projects",
+    "visitBtn": "Visit Live Site",
+    "galleryLabel": "Gallery"
   }
 }

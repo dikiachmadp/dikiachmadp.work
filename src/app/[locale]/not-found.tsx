@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, Variants } from "framer-motion";
 import { RiAlarmWarningLine } from "react-icons/ri";
 import PageWrapper from "@/components/layout/PageWrapper";
-import { Locale, UiLabels } from "@/types/content"; // 💡 Impor tipe data resmi dari projekmu
+import { Locale, UiLabels } from "@/types/content";
 
 interface NotFoundContentProps {
   dict: UiLabels["notFound"];
