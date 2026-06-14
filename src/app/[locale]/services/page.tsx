@@ -1,11 +1,32 @@
 import React from "react";
+import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
+import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import CTASection from "@/components/sections/CTASection";
 import ServicesCard from "@/components/ui/ServicesCard";
 import { Locale } from "@/types/content";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const validLocale = (locale === "id" ? "id" : "en") as Locale;
+  const dict = await getDictionary(validLocale);
+  const { pageHeader, siteConfig } = dict;
+
+  return createMetadata({
+    title: pageHeader.services.title,
+    description: pageHeader.services.description,
+    path: "/services",
+    siteConfig,
+    locale: validLocale,
+  });
+}
 
 export default async function ServicesPage({
   params,

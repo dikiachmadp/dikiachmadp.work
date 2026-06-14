@@ -1,5 +1,7 @@
 import React from "react";
+import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
+import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import Hero from "@/components/sections/Hero";
 import ServicesPreview from "@/components/sections/ServicesPreview";
@@ -11,6 +13,25 @@ import { Locale } from "@/types/content";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const validLocale = (locale === "id" ? "id" : "en") as Locale;
+  const dict = await getDictionary(validLocale);
+  const { siteConfig } = dict;
+
+  return createMetadata({
+    title: siteConfig.fullName,
+    description: siteConfig.description,
+    path: "",
+    siteConfig,
+    locale: validLocale,
+  });
 }
 
 export default async function HomePage({ params }: PageProps) {

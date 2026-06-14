@@ -37,5 +37,8 @@
     "backBtn": "Back to Projects",
     "visitBtn": "Visit Live Site",
     "galleryLabel": "Gallery"
+  },
+  "contactInfo": {
+    "title": "Contact Information"
   }
 }

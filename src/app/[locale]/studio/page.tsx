@@ -1,21 +1,43 @@
 import React from "react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionary";
+import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import PageHeader from "@/components/layout/PageHeader";
 import { Calendar } from "lucide-react";
 import { Locale, StudioItem } from "@/types/content";
 
-interface StudioPageProps {
-  params: Promise<{
-    locale: string;
-  }>;
-}
-
-export default async function StudioPage({ params }: StudioPageProps) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
+  const dict = await getDictionary(validLocale);
+  const { pageHeader, siteConfig } = dict;
+
+  return createMetadata({
+    title: pageHeader.studio.title,
+    description: pageHeader.studio.description,
+    path: "/studio",
+    siteConfig,
+    locale: validLocale,
+  });
+}
+
+export default async function StudioPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const resolvedParams = await params;
+  const validLocale =
+    resolvedParams.locale === "en" || resolvedParams.locale === "id"
+      ? (resolvedParams.locale as Locale)
+      : "en";
   const dict = await getDictionary(validLocale);
 
   const { sections, items } = dict.studio;

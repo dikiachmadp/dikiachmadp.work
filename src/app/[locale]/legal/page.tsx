@@ -1,10 +1,30 @@
 import React from "react";
+import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
+import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import { Locale } from "@/types/content";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const validLocale = (locale === "id" ? "id" : "en") as Locale;
+  const dict = await getDictionary(validLocale);
+  const { pageHeader, siteConfig } = dict;
+
+  return createMetadata({
+    title: pageHeader.legal.title,
+    description: pageHeader.legal.description,
+    path: "/legal",
+    siteConfig,
+    locale: validLocale,
+  });
+}
 export default async function LegalPage({
   params,
 }: {
@@ -17,14 +37,13 @@ export default async function LegalPage({
       : "en";
 
   const dict = await getDictionary(validLocale);
-  const legal = dict.legal;
-
+  const { pageHeader, legal } = dict;
   return (
     <PageWrapper>
       <PageHeader
-        topTitle={`Last updated: ${legal.lastUpdated}`}
-        title={legal.title}
-        description={legal.description}
+        topTitle={pageHeader.legal.topTitle}
+        title={pageHeader.legal.title}
+        description={pageHeader.legal.description}
       />
       <SectionWrapper id="legal-content">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
@@ -38,7 +57,7 @@ export default async function LegalPage({
                   <h2
                     className="leading-[1.1] group-hover:text-(--accent) transition-colors"
                     style={{
-                      fontSize: "clamp(2rem, 3vw, 1.75rem)",
+                      fontSize: "clamp(1.5rem, 3vw, 2.25rem)",
                       fontFamily: "var(--font-modak)",
                     }}
                   >

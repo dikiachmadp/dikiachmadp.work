@@ -37,5 +37,8 @@
     "backBtn": "Kembali ke Proyek",
     "visitBtn": "Kunjungi Situs",
     "galleryLabel": "Galeri"
+  },
+  "contactInfo": {
+    "title": "Informasi Kontak"
   }
 }

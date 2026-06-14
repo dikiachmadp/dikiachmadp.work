@@ -1,10 +1,12 @@
 import { MetadataRoute } from "next";
+import { getDictionary } from "@/lib/dictionary";
+import { Locale } from "@/types/content";
 
 const BASE_URL = "https://dikiachmadp.work";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const locales = ["en", "id"];
-  const routes = [
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const locales: Locale[] = ["en", "id"];
+  const staticRoutes = [
     "",
     "/about",
     "/contact",
@@ -15,22 +17,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/legal",
   ];
 
-  const entries = routes.flatMap((route) =>
-    locales.map((locale) => ({
+  const projectsData = await Promise.all(
+    locales.map(async (locale) => ({
+      locale,
+      projects: (await getDictionary(locale)).projects.items,
+    })),
+  );
+
+  const staticEntries = locales.flatMap((locale) =>
+    staticRoutes.map((route) => ({
       url: `${BASE_URL}/${locale}${route}`,
       lastModified: new Date(),
-      changeFrequency: "monthly" as const,
+      changeFrequency: "weekly" as const,
       priority: route === "" ? 1.0 : 0.8,
     })),
   );
 
-  return [
-    {
-      url: BASE_URL,
+  const projectEntries = projectsData.flatMap(({ locale, projects }) =>
+    projects.map((project) => ({
+      url: `${BASE_URL}/${locale}/projects/${project.slug}`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1.0,
-    },
-    ...entries,
-  ];
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  );
+
+  return [...staticEntries, ...projectEntries];
 }

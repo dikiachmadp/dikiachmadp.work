@@ -23,5 +23,15 @@
     "topTitle": "Get In Touch",
     "title": "Let's Work Together.",
     "description": "Drop me a message and I'll get back to you as soon as possible."
+  },
+  "legal": {
+    "topTitle": "Last Updated: May 2026",
+    "title": "Legal Notice",
+    "description": "Please read these terms carefully before using this website. By accessing or using dikiachmadp.work, you agree to be bound by these terms."
+  },
+  "privacy": {
+    "topTitle": "Last Updated: May 2026",
+    "title": "Privacy Policy",
+    "description": "Your privacy is important to me. This privacy policy explains how I collect, use, and protect your personal information when you visit my website."
   }
 }

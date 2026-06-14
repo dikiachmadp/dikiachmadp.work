@@ -2,7 +2,9 @@ import React from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ChevronLeft, ArrowUpRight } from "lucide-react";
+import { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
+import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
@@ -14,6 +16,27 @@ interface ProjectDetailPageProps {
     locale: string;
     slug: string;
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: ProjectDetailPageProps): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const validLocale = (locale === "id" ? "id" : "en") as Locale;
+  const dict = await getDictionary(validLocale);
+  const project = dict.projects.items.find((item) => item.slug === slug);
+
+  if (!project) {
+    return { title: "Project Not Found" };
+  }
+
+  return createMetadata({
+    title: project.title,
+    description: project.description,
+    path: `/projects/${slug}`,
+    siteConfig: dict.siteConfig,
+    locale: validLocale,
+  });
 }
 
 export default async function ProjectDetailPage({

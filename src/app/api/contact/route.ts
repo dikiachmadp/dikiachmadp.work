@@ -1,60 +1,109 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { z } from "zod";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
+const ContactRequestSchema = z.object({
+  name: z.string().min(1, "Name is required").max(200),
+  email: z.string().email("Invalid email address"),
+  subject: z.string().max(300).optional().default("No Subject"),
+  message: z.string().min(1, "Message is required").max(5000),
+});
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
+
+const ratelimit = new Ratelimit({
+  redis: redis,
+  limiter: Ratelimit.slidingWindow(3, "1 h"),
+});
+
+function sanitizeHtml(str: string): string {
+  return str.replace(/[<>&"']/g, (char) => {
+    switch (char) {
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case "&":
+        return "&amp;";
+      case '"':
+        return "&quot;";
+      case "'":
+        return "&#39;";
+      default:
+        return char;
+    }
+  });
+}
 
 export async function POST(request: Request) {
+  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+
+  const { success } = await ratelimit.limit(ip);
+  if (!success) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429 },
+    );
+  }
+
+  if (
+    !process.env.RESEND_API_KEY ||
+    !process.env.CONTACT_EMAIL ||
+    !process.env.UPSTASH_REDIS_REST_URL ||
+    !process.env.UPSTASH_REDIS_REST_TOKEN
+  ) {
+    console.error("Missing email or redis environment variables");
+    return NextResponse.json(
+      { error: "Server configuration error" },
+      { status: 500 },
+    );
+  }
+
   try {
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
     const body = await request.json();
-    const { name, email, subject, message } = body;
 
-    if (!name || !email || !message) {
+    const validation = ContactRequestSchema.safeParse(body);
+    if (!validation.success) {
       return NextResponse.json(
-        { error: "Name, email, and message are required fields." },
+        { error: "Invalid input data", details: validation.error.format() },
         { status: 400 },
       );
     }
 
+    const { name, email, subject, message } = validation.data;
+
+    const safeName = sanitizeHtml(name);
+    const safeEmail = sanitizeHtml(email);
+    const safeSubject = sanitizeHtml(subject);
+    const safeMessage = sanitizeHtml(message);
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const fromAddress =
+      process.env.RESEND_FROM_EMAIL ||
+      "Portfolio Contact Form <onboarding@resend.dev>";
+
     const data = await resend.emails.send({
-      from: "Portfolio Contact Form <onboarding@resend.dev>",
+      from: fromAddress,
       to: process.env.CONTACT_EMAIL as string,
-      subject: `New Contact Inquiry: ${subject || "No Subject"}`,
+      subject: `New Contact Inquiry: ${safeSubject}`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-          <h2 style="color: #111; border-bottom: 2px solid #eaeaea; padding-bottom: 10px;">
-            New Message from Your Portfolio
-          </h2>
-          <p style="font-size: 16px;">You have received a new contact form submission. Here are the details:</p>
-          
-          <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 15px;">
-            <tr>
-              <td style="padding: 10px 0; border-bottom: 1px solid #ddd; width: 80px;"><strong>Name:</strong></td>
-              <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${name}</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px 0; border-bottom: 1px solid #ddd;"><strong>Email:</strong></td>
-              <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">
-                <a href="mailto:${email}" style="color: #0066cc; text-decoration: none;">${email}</a>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 10px 0; border-bottom: 1px solid #ddd;"><strong>Subject:</strong></td>
-              <td style="padding: 10px 0; border-bottom: 1px solid #ddd;">${subject || "N/A"}</td>
-            </tr>
-          </table>
-          
-          <h3 style="margin-top: 30px; color: #111;">Message:</h3>
-          <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #eee; font-size: 15px; line-height: 1.6;">
-            <p style="white-space: pre-wrap; margin: 0;">${message}</p>
+        <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
+          <h2>New Message from Your Portfolio</h2>
+          <p><strong>Name:</strong> ${safeName}</p>
+          <p><strong>Email:</strong> ${safeEmail}</p>
+          <p><strong>Subject:</strong> ${safeSubject}</p>
+          <h3>Message:</h3>
+          <div style="background: #f4f4f4; padding: 15px; border-radius: 5px;">
+            ${safeMessage.replace(/\n/g, "<br />")}
           </div>
-          
-          <p style="margin-top: 40px; font-size: 12px; color: #888; text-align: center;">
-            This email was automatically generated from your portfolio website's contact form.
-          </p>
         </div>
       `,
     });
-
     return NextResponse.json(
       { message: "Message sent successfully!", data },
       { status: 200 },
@@ -62,7 +111,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Failed to send email:", error);
     return NextResponse.json(
-      { error: "An unexpected error occurred while sending the message." },
+      { error: "An unexpected error occurred." },
       { status: 500 },
     );
   }

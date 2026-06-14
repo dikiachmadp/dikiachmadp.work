@@ -199,6 +199,8 @@ export const PageHeaderSchema = z.object({
   about: HeaderDetailSchema,
   studio: HeaderDetailSchema,
   contact: HeaderDetailSchema,
+  legal: HeaderDetailSchema,
+  privacy: HeaderDetailSchema,
 });
 
 const SectionSchema = z.object({
@@ -232,9 +234,6 @@ export const CtaSchema = z.object({
 });
 
 export const PolicySchema = z.object({
-  title: z.string(),
-  lastUpdated: z.string(),
-  description: z.string().optional(),
   points: z
     .array(
       z.object({
@@ -293,5 +292,8 @@ export const UiSchema = z.object({
     backBtn: z.string(),
     visitBtn: z.string(),
     galleryLabel: z.string(),
+  }),
+  contactInfo: z.object({
+    title: z.string(),
   }),
 });

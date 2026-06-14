@@ -50,7 +50,7 @@ export async function generateMetadata({
       description: siteConfig.description,
       images: [
         {
-          url: "/og-image.png",
+          url: "/ogImage.webp",
           width: 1200,
           height: 630,
           alt: siteConfig.siteName,
@@ -62,12 +62,25 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: `${siteConfig.siteName} | ${siteConfig.fullName}`,
       description: siteConfig.description,
-      images: "/og-image.png",
+      images: "/ogImage.webp",
     },
 
     icons: {
-      icon: "/favicon.webp",
-      shortcut: "/favicon.webp",
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      ],
+      shortcut: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+      other: [
+        {
+          rel: "icon",
+          url: "/icon-192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+      ],
     },
   };
 }
