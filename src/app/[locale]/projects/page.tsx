@@ -7,7 +7,8 @@ import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import ProjectsGallery from "@/components/sections/ProjectsGallery";
 import CTASection from "@/components/sections/CTASection";
-import { Locale } from "@/types/content";
+import { Locale, ProjectsData } from "@/types/content";
+import { prisma } from "@/lib/prisma";
 
 export async function generateMetadata({
   params,
@@ -42,6 +43,25 @@ export default async function ProjectsPage({
   const dict = await getDictionary(validLocale);
   const header = dict.pageHeader.projects;
 
+  // Fetch from DB
+  const dbProjects = await prisma.project.findMany();
+
+  // Map DB projects to frontend expected structure
+  // This is a partial mapping based on current DB schema vs JSON schema
+  const dbProjectsMapped = dbProjects.map((p) => ({
+    ...dict.projects.items[0], // Use first item as template for missing fields
+    id: p.id,
+    title: p.title,
+    slug: p.slug,
+    description: p.description,
+    coverImage: p.imageUrl,
+  }));
+
+  const projectsData: ProjectsData = {
+    categories: ["All", ...Array.from(new Set(dbProjects.map(p => p.title)))], // Simplification for now
+    items: dbProjectsMapped,
+  };
+
   return (
     <PageWrapper>
       <PageHeader
@@ -51,7 +71,7 @@ export default async function ProjectsPage({
       />
       <SectionWrapper id="projects-gallery">
         <ProjectsGallery
-          projectsData={dict.projects}
+          projectsData={projectsData}
           uiLabels={dict.ui}
           locale={validLocale}
           featuredOnly={false}
