@@ -1,24 +1,27 @@
 {
   "featuredProjects": {
-    "title": "Proyek Terbaru",
-    "description": "Berikut adalah beberapa proyek terbaik saya saat ini.",
+    "eyebrow": "pilihan karya",
+    "title": "Proyek Unggulan",
+    "description": "Sebagian karya terbaru.",
     "showButton": true,
     "buttonLabel": "viewAllWork"
   },
   "services": {
+    "eyebrow": "yang saya kerjakan",
     "title": "Layanan",
-    "description": "Solusi desain komprehensif yang disesuaikan dengan kebutuhan merek Anda.",
+    "description": "Enam layanan inti, dari awal sampai selesai.",
     "showButton": true,
     "buttonLabel": "viewAllServices"
   },
   "testimonials": {
+    "eyebrow": "kata mereka",
     "title": "Testimoni",
-    "description": "apa yang klien katakan tentang saya.",
+    "description": "Kata klien tentang bekerja bersama.",
     "showButton": false
   },
   "cta": {
-    "title": "Punya ide yang ingin Anda kerjakan?",
-    "description": "Mari bekerja sama untuk mewujudkan ide Anda menjadi nyata.",
+    "title": "Punya ide yang mau dibangun?",
+    "description": "Ceritakan versi berantakannya — saya bantu rapikan jadi sesuatu yang diingat orang.",
     "showButton": true,
     "buttonLabel": "contactMe"
   }

@@ -4,40 +4,32 @@
       "id": "t1",
       "clientName": "David B.",
       "role": "Client from Australia",
-      "content": "Great to work with. He is awesome, great skills, followed brief. A pleasure to work with, we are happy to keep working with you as your work is amazing!!!",
-      "avatarUrl": "/testimonials/budi-avatar.webp",
+      "content": "Great to work with. Awesome skills, followed the brief. A pleasure — we're happy to keep working with you, your work is amazing.",
+      "avatarUrl": "",
       "projectRef": "holroyd-packaging"
     },
     {
       "id": "t2",
       "clientName": "David B.",
       "role": "Client from Australia",
-      "content": "Our number one freelancer. Couldn't recommend highly enough. Always understands the brief and communication is A+",
-      "avatarUrl": "/testimonials/budi-avatar.webp",
+      "content": "Our number one freelancer. Couldn't recommend highly enough — always understands the brief and communication is A+.",
+      "avatarUrl": "",
       "projectRef": "bmpro-brochure"
     },
     {
       "id": "t3",
-      "clientName": "David B.",
-      "role": "Client from Australia",
-      "content": "Our number one freelancer never fails to disappoint. Delivered on time and very well designed, couldn't recommend highly enough",
-      "avatarUrl": "/testimonials/budi-avatar.webp",
-      "projectRef": "holroyd-brochure"
+      "clientName": "Abas B.",
+      "role": "Client from Indonesia",
+      "content": "Submission on time. Easy to work with, understanding and always happy to help. Very patient with changes.",
+      "avatarUrl": "",
+      "projectRef": "website-jahe"
     },
     {
       "id": "t4",
-      "clientName": "Abas B.",
-      "role": "Client from Indonesia",
-      "content": "Submission on time. Easy to work with, understanding and always happy to help. Very patient and accomodating with any changes",
-      "avatarUrl": "/testimonials/budi-avatar.webp",
-      "projectRef": "branding-eatbread"
-    },
-    {
-      "id": "t5",
       "clientName": "Eric S.",
       "role": "Client from Canada",
-      "content": "Very great jobs, thanks again",
-      "avatarUrl": "/testimonials/budi-avatar.webp",
+      "content": "Very great job, thanks again.",
+      "avatarUrl": "",
       "projectRef": "trader-packaging"
     }
   ]

@@ -1,54 +1,24 @@
-"use client";
-
-import { cn, themeTransition } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 interface StatBoxProps {
-  label: string;
   value: string;
-  className?: string;
+  label: string;
+  /** Alternate the rotation direction so neighbours never tilt the same way. */
+  index?: number;
 }
 
-export default function StatBox({ label, value, className }: StatBoxProps) {
+export default function StatBox({ value, label, index = 0 }: StatBoxProps) {
   return (
     <div
       className={cn(
-        "group relative bg-(--foreground) rounded-(--button-radius)",
-        className,
-        themeTransition,
+        "ink-border flat-3 lift-card-sm bg-(--paper) px-[22px] py-[26px] text-center",
+        index % 2 === 0 ? "r-btn" : "r-btn-alt",
+        index % 2 === 1 && "lift-card-sm-cw",
       )}
     >
-      <div
-        className="
-        relative h-full p-6
-        bg-(--background) 
-        border-2 border-(--foreground) 
-        rounded-(--button-radius)
-        flex flex-col items-center justify-center text-center
-        translate-x-0 translate-y-0
-        transition-all duration-200 ease-out
-        group-hover:-translate-x-1.5 group-hover:-translate-y-1.5
-        cursor-default
-      "
-      >
-        <span
-          className="block leading-none"
-          style={{
-            fontSize: "var(--text-stats-num)",
-            fontFamily: "var(--font-modak), var(--font-display), cursive",
-          }}
-        >
-          {value}
-        </span>
-
-        <span
-          className="uppercase tracking-widest text-(--gray-medium) mt-2 font-bold"
-          style={{
-            fontSize: "var(--text-ui-label)",
-            fontFamily: "var(--font-main)",
-          }}
-        >
-          {label}
-        </span>
+      <div className="font-hand text-[52px] leading-none">{value}</div>
+      <div className="mt-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-(--soft)">
+        {label}
       </div>
     </div>
   );

@@ -1,23 +1,39 @@
 {
   "biography": [
-    "Creative and detail-oriented Graphic Designer with more than 5 years of experience in graphic design, specializing in packaging design, ui/ux design, and 3D assets.",
-    "Proven track record of delivering high-quality designs that align with brand identity. Experienced in working with international clients, with a strong commitment to meeting deadlines and ensuring client satisfaction."
+    "Creative, detail-obsessed designer with 6+ years across packaging, UI/UX and 3D. I work with founders, studios and universities — mostly remote, always hands-on.",
+    "I've shipped work for clients in Australia, Canada and Indonesia, and I care as much about the handoff as the hero shot."
   ],
+  "sticker": "hi, that's me 👋",
+  "experienceTitle": "Experience",
+  "skillsTitle": "Skills & tools",
+  "cv": {
+    "note": "grab my CV",
+    "items": [
+      {
+        "label": "CV — Bahasa Indonesia",
+        "href": "/CV_Diki.pdf"
+      },
+      {
+        "label": "CV — English",
+        "href": "/CV_Diki.pdf"
+      }
+    ]
+  },
   "experience": [
     {
-      "year": "2016 — Present",
+      "year": "2016 — now",
       "role": "Publishing Staff",
-      "place": "FEB UNPAS (Bandung)"
+      "place": "FEB UNPAS, Bandung"
     },
     {
-      "year": "2019 — Present",
+      "year": "2019 — now",
       "role": "Graphic Designer",
-      "place": "Freelancer (Remote)"
+      "place": "Freelance (remote)"
     },
     {
-      "year": "2019 — Present",
-      "role": "Freelance 3D Artist",
-      "place": "(Remote)"
+      "year": "2019 — now",
+      "role": "3D Artist",
+      "place": "Freelance (remote)"
     }
   ],
   "skills": [
@@ -25,16 +41,18 @@
       "category": "Design",
       "items": [
         "Brand Identity",
-        "UI/UX Design",
-        "Product Packaging"
+        "UI/UX",
+        "Packaging",
+        "3D"
       ]
     },
     {
       "category": "Tools",
       "items": [
-        "Adobe Creative Suite",
-        "Next.js",
-        "Blender"
+        "Adobe CC",
+        "Figma",
+        "Blender",
+        "Next.js"
       ]
     }
   ]

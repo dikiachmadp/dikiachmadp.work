@@ -1,9 +1,9 @@
 {
   "id": "main-cta",
-  "title": "Do you have a project in mind?",
-  "description": "Let's work together to bring your ideas to life.",
+  "title": "Got something to build?",
+  "description": "Tell me the messy version — I'll help shape it into something people remember.",
   "primaryButton": {
-    "label": "Contact Me",
+    "label": "Let's talk",
     "link": "/contact",
     "uiKey": "contactMe"
   },

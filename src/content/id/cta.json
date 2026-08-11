@@ -1,9 +1,9 @@
 {
   "id": "main-cta",
-  "title": "Punya ide yang ingin Anda kerjakan?",
-  "description": "Mari bekerja sama untuk mewujudkan ide Anda menjadi nyata.",
+  "title": "Punya ide yang mau dibangun?",
+  "description": "Ceritakan versi berantakannya — saya bantu rapikan jadi sesuatu yang diingat orang.",
   "primaryButton": {
-    "label": "Hubungi Saya",
+    "label": "Ngobrol yuk",
     "link": "/contact",
     "uiKey": "contactMe"
   },

@@ -1,117 +1,93 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { motion } from "framer-motion";
-import { Project } from "@/types/content";
-import { cn, themeTransition } from "@/lib/utils";
-
-interface ExtendedProject extends Project {
-  isLivePreview?: boolean;
-  liveUrl?: string;
-}
+import { Project, Locale } from "@/types/content";
+import Tag from "@/components/ui/Tag";
+import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
-  project: ExtendedProject;
-  index?: number;
+  project: Project;
+  locale: Locale;
+  /** Featured cards also carry the client's logo blob. */
+  showLogo?: boolean;
   className?: string;
 }
 
 export default function ProjectCard({
   project,
-  index = 0,
+  locale,
+  showLogo,
   className,
 }: ProjectCardProps) {
-  const params = useParams();
-  const locale = (params?.locale as string) || "en";
-
-  const projectSlugUrl = `/${locale}/projects/${project.slug}`;
+  const hasCover = Boolean(project.coverImage);
+  const meta = `${project.category} · ${project.year}`;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
+    <Link
+      href={`/${locale}/projects/${project.slug}`}
       className={cn(
-        "group relative bg-(--foreground) rounded-(--button-radius)",
+        "r-card ink-border flat-3 lift-card block overflow-hidden bg-(--paper)",
         className,
-        themeTransition,
       )}
     >
-      <Link href={projectSlugUrl} className="block outline-none cursor-pointer">
-        <div
-          className="
-            relative w-full h-full 
-            bg-(--background) 
-            border-2 border-(--foreground) 
-            rounded-(--button-radius) 
-            overflow-hidden 
-            transition-all duration-300 ease-out
-            translate-x-0 translate-y-0
-            group-hover:-translate-x-1.5 group-hover:-translate-y-1.5
-          "
-        >
-          <div className="relative w-full overflow-hidden border-b-2 border-(--border) aspect-video bg-(--card)">
-            <Image
-              src={project.coverImage}
-              alt={project.title}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
+      <div
+        className={cn(
+          "relative flex aspect-[16/10] items-center justify-center overflow-hidden border-b-2 border-(--line) bg-(--wash)",
+          !hasCover && "crosshatch",
+        )}
+      >
+        {hasCover ? (
+          <Image
+            src={project.coverImage}
+            alt={project.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1180px) 50vw, 376px"
+            className="photo-ink object-cover"
+          />
+        ) : (
+          <span className="font-tech text-[10px] uppercase tracking-[0.2em] text-(--soft)">
+            {project.category.toLowerCase()} shot
+          </span>
+        )}
+      </div>
 
-            <div
-              className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
-              style={{ backgroundColor: project.accent }}
-            />
+      <div className="px-[18px] pb-[18px] pt-4">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="micro">{meta}</div>
+            <h3 className="font-hand mt-1 text-[23px] leading-[1.1]">
+              {project.title}
+            </h3>
           </div>
-
-          <div className="pt-4 pb-2 px-4 border-b-2 border-(--border) flex justify-between items-start gap-4">
-            <div className="grow">
-              <span
-                className="font-bold uppercase tracking-widest text-(--gray-medium) block"
-                style={{ fontSize: "var(--text-ui-label)" }}
-              >
-                {project.category} · {project.year}
-              </span>
-
-              <h3
-                className="leading-[1.1] mt-1 group-hover:text-(--accent)"
-                style={{
-                  fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
-                  fontFamily: "var(--font-modak)",
-                }}
-              >
-                {project.title}
-              </h3>
-            </div>
-
-            <div className="relative w-10 h-10 shrink-0 border-2 border-(--border) overflow-hidden bg-(--card) rounded-sm">
-              <Image
-                src={project.logoUrl}
-                alt={`${project.title} logo`}
-                fill
-                sizes="40px"
-                className="object-contain p-1"
-              />
-            </div>
-          </div>
-
-          <div className="pt-3 pb-4 px-4 flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="font-black uppercase tracking-widest px-2 py-1 border border-(--border) text-(--gray-medium)"
-                style={{ fontSize: "calc(var(--text-ui-label) * 0.9)" }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+          {showLogo && (
+            <span
+              className="ink-border flex h-[38px] w-[38px] shrink-0 items-center justify-center overflow-hidden bg-(--wash)"
+              style={{
+                borderRadius: "52% 48% 51% 49% / 49% 52% 48% 51%",
+              }}
+            >
+              {project.logoUrl ? (
+                <Image
+                  src={project.logoUrl}
+                  alt=""
+                  width={26}
+                  height={26}
+                  className="h-[26px] w-[26px] object-contain grayscale"
+                />
+              ) : (
+                <span className="font-hand text-[15px]">
+                  {project.title.charAt(0)}
+                </span>
+              )}
+            </span>
+          )}
         </div>
-      </Link>
-    </motion.div>
+
+        <div className="mt-3.5 flex flex-wrap gap-[7px]">
+          {project.tags.map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
+        </div>
+      </div>
+    </Link>
   );
 }

@@ -1,9 +1,7 @@
-"use client";
-
+import Link from "next/link";
 import { FooterData, SiteConfig, HeroData, Locale } from "@/types/content";
 import Social from "@/components/ui/Social";
-import { cn, themeTransition } from "@/lib/utils";
-import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface FooterProps {
   footerData: FooterData;
@@ -18,93 +16,64 @@ export default function Footer({
   heroData,
   locale,
 }: FooterProps) {
-  const socialEntries = Object.entries(siteConfig.socials);
+  const socials = Object.entries(siteConfig.socials);
 
-  const footerLinkContainer = cn(
-    "relative inline-block transition-all duration-200 rounded-lg bg-[var(--foreground)]",
-    themeTransition,
-  );
-
-  const footerLinkContent = cn(
-    "flex h-10 w-24 items-center justify-center rounded-lg uppercase transition-all duration-200",
-    "bg-[var(--background)] text-[var(--foreground)] border-2 border-[var(--border)]",
-    "text-[10px] font-bold tracking-widest",
-    "group-hover:-translate-x-1 group-hover:-translate-y-1",
-  );
+  const bottomLinks = [
+    { label: "Legal", href: `/${locale}/legal` },
+    { label: "Privacy", href: `/${locale}/privacy` },
+    { label: "Admin", href: `/${locale}/dashboard` },
+    { label: "404", href: `/${locale}/404` },
+  ];
 
   return (
-    <footer
-      className={cn(
-        "w-full border-t-2 border-(--border) bg-(--background) pb-8 pt-12 md:pt-8",
-        themeTransition,
-      )}
-    >
-      <div className="main-container">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-4 mb-10 md:mb-10">
-          <div className="flex flex-col items-center md:items-start space-y-5">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border-2 border-(--border) bg-(--card)">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--accent) opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-(--accent)"></span>
-              </span>
-              <span className="text-[8px] font-black uppercase tracking-[0.15em] text-(--foreground)">
+    <footer className="mt-24 border-t-2 border-(--line) bg-(--wash) transition-colors duration-[0.45s]">
+      <div className="main-container pb-[26px] pt-[38px]">
+        <div className="grid grid-cols-1 items-end gap-8 pb-6 md:grid-cols-[1fr_auto]">
+          <div>
+            <div className="r-chip ink-border mb-3 inline-flex items-center gap-2 bg-(--paper) px-3 py-[5px]">
+              <span className="anim-pulse-dot h-2 w-2 rounded-full bg-(--accent)" />
+              <span className="text-[9px] font-bold uppercase tracking-[0.16em]">
                 {heroData.availability.status}
               </span>
             </div>
-
-            <div className="flex flex-col items-center md:items-start leading-none">
-              <h2 className="font-display text-5xl md:text-7xl tracking-wide text-(--accent) uppercase">
-                {siteConfig.author}
-              </h2>
-              <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.4em] text-(--gray)">
-                {siteConfig.location}
-              </p>
-            </div>
+            <h2 className="font-hand m-0 text-[clamp(2.4rem,7vw,4.6rem)] leading-[0.95]">
+              {siteConfig.author}
+            </h2>
+            <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.4em] text-(--soft)">
+              {siteConfig.location}
+            </p>
           </div>
 
-          <div className="flex flex-col items-center md:items-end justify-center">
-            <div className="flex flex-col items-center md:items-end gap-3">
-              <span className="text-xs font-bold tracking-widest text-(--gray) uppercase">
-                {footerData.socialLabel}
-              </span>
-              <div className="flex items-center gap-2">
-                {socialEntries.map(([platform, url]) => (
-                  <Social
-                    key={platform}
-                    platform={platform}
-                    url={url}
-                    size="sm"
-                  />
-                ))}
-              </div>
+          <div className="flex flex-col items-start gap-2.5 md:items-end">
+            <span className="font-note text-[19px] text-(--soft)">
+              {footerData.socialLabel}
+            </span>
+            <div className="flex max-w-[300px] flex-wrap gap-2 md:justify-end">
+              {socials.map(([platform, url]) => (
+                <Social key={platform} platform={platform} url={url} />
+              ))}
             </div>
           </div>
         </div>
 
-        <div className="w-full border-t-2 border-(--border) pt-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-[9px] font-semibold uppercase tracking-wider text-(--gray-medium) order-2 md:order-1">
-              {footerData.copyright}
-            </p>
-
-            <div className="flex gap-4 order-1 md:order-2">
-              {[
-                { label: "Legal", path: "/legal" },
-                { label: "Privacy", path: "/privacy" },
-              ].map((item) => (
-                <Link
-                  key={item.label}
-                  href={`/${locale}${item.path}`}
-                  className="group relative outline-none"
-                >
-                  {/* Container ini berfungsi sebagai bayangan (Layer Bawah) */}
-                  <div className={footerLinkContainer}>
-                    {/* Div ini adalah konten utama yang akan bergeser (Layer Atas) */}
-                    <div className={footerLinkContent}>{item.label}</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t-2 border-dashed border-(--line) pt-4">
+          <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.06em] text-(--soft)">
+            {footerData.copyright}
+          </p>
+          <div className="flex flex-wrap gap-2.5">
+            {bottomLinks.map((item, i) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={cn(
+                  "ink-border lift-chip bg-(--paper) px-[15px] py-[7px]",
+                  "text-[10px] font-bold uppercase tracking-[0.12em]",
+                  i % 2 === 0 ? "r-tag" : "r-chip-alt",
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

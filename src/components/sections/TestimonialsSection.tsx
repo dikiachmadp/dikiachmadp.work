@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { TestimonialsData, SectionsData } from "@/types/content";
-import { Star, ArrowLeft, ArrowRight } from "lucide-react";
-import ServicesCard from "@/components/ui/ServicesCard";
 
 interface TestimonialsSectionProps {
   testimonialsData: TestimonialsData;
@@ -15,135 +12,97 @@ export default function TestimonialsSection({
   testimonialsData,
   sectionsData,
 }: TestimonialsSectionProps) {
-  const section = sectionsData.testimonials;
-  const [index, setIndex] = useState(0);
   const items = testimonialsData.items;
+  const [index, setIndex] = useState(0);
 
-  const next = () => setIndex((prev) => (prev + 1) % items.length);
-  const prev = () =>
-    setIndex((prev) => (prev - 1 + items.length) % items.length);
+  if (items.length === 0) return null;
 
-  const testimonial = items[index];
+  const quote = items[index % items.length];
+  const step = (delta: number) =>
+    setIndex((i) => (i + delta + items.length) % items.length);
 
   return (
-    <section className="w-full py-10 md:py-16 bg-(--background)">
-      <div className="main-container flex flex-col items-center gap-12">
-        {section && (
-          <div className="flex flex-col text-center max-w-3xl">
-            <h2
-              className="tracking-wide leading-[0.9]"
-              style={{
-                fontSize: "var(--text-section-title)",
-                fontFamily: "var(--font-display)",
-              }}
+    <div className="r-panel ink-border flat-5 relative bg-(--wash) p-9">
+      <span
+        className="font-note ink-border absolute -top-3.5 left-[34px] bg-(--paper) px-3.5 py-[3px] text-[18px]"
+        style={{ transform: "rotate(-2.5deg)" }}
+      >
+        {sectionsData.testimonials.eyebrow ?? sectionsData.testimonials.title}
+      </span>
+
+      <div className="grid grid-cols-1 items-center gap-[34px] md:grid-cols-[220px_1fr]">
+        <div className="flex flex-col items-center gap-2.5 text-center">
+          <div className="r-blob-alt ink-border flat-3 font-hand flex h-[88px] w-[88px] items-center justify-center bg-(--paper) text-[34px]">
+            {quote.clientName.charAt(0)}
+          </div>
+          <div className="text-[14px] font-bold">{quote.clientName}</div>
+          <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-(--soft)">
+            {quote.role}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-1" aria-label="5 out of 5">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <svg
+                key={i}
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                fill="var(--accent)"
+                aria-hidden
+              >
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+              </svg>
+            ))}
+          </div>
+
+          <blockquote className="font-hand m-0 text-[21px] font-normal leading-[1.5]">
+            &ldquo;{quote.content}&rdquo;
+          </blockquote>
+
+          <div className="flex gap-2.5">
+            <button
+              type="button"
+              onClick={() => step(-1)}
+              aria-label="Previous testimonial"
+              className="ink-border flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-(--paper) transition-all duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:rotate-[-6deg] hover:shadow-[4px_4px_0_var(--line)]"
             >
-              {section.title}
-            </h2>
-            {section.description && (
-              <p
-                className="text-(--gray-medium) font-medium leading-relaxed"
-                style={{ fontSize: "var(--text-desc)" }}
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                aria-hidden
               >
-                {section.description}
-              </p>
-            )}
-          </div>
-        )}
-
-        <div className="w-full flex flex-col items-center gap-10">
-          <div className="w-full max-w-5xl">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={testimonial.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => step(1)}
+              aria-label="Next testimonial"
+              className="ink-border flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-(--paper) transition-all duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:rotate-[6deg] hover:shadow-[4px_4px_0_var(--line)]"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                aria-hidden
               >
-                <ServicesCard index={index}>
-                  <div className="flex flex-col md:flex-row items-center md:items-stretch gap-8 md:gap-12">
-                    <div className="flex flex-col items-center text-center shrink-0 md:w-64 justify-center">
-                      <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-(--accent) flex items-center justify-center border-2 border-(--foreground) shadow-[4px_4px_0px_0px_var(--foreground)] mb-4">
-                        <span className="text-(--background) text-2xl font-black">
-                          {testimonial.clientName.charAt(0)}
-                        </span>
-                      </div>
-                      <p
-                        className="font-black uppercase leading-tight"
-                        style={{ fontSize: "var(--text-ui-label)" }}
-                      >
-                        {testimonial.clientName}
-                      </p>
-                      <p className="text-[10px] text-(--gray-medium) font-bold uppercase tracking-widest mt-1">
-                        {testimonial.role}
-                      </p>
-                    </div>
-
-                    <div className="w-full h-0.5 md:w-0.5 md:h-auto bg-(--border) opacity-50" />
-
-                    <div className="flex flex-col justify-center flex-1 gap-6">
-                      <div className="flex gap-1 justify-center md:justify-start">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className="w-5 h-5 fill-(--accent) text-(--accent)"
-                          />
-                        ))}
-                      </div>
-
-                      <blockquote
-                        className="font-medium leading-relaxed italic text-center md:text-left"
-                        style={{ fontSize: "var(--text-ui-label)" }}
-                      >
-                        &ldquo;{testimonial.content}&rdquo;
-                      </blockquote>
-                    </div>
-                  </div>
-                </ServicesCard>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <div className="flex gap-6 justify-center">
-            <NavButton
-              onClick={prev}
-              icon={<ArrowLeft className="w-6 h-6" />}
-            />
-            <NavButton
-              onClick={next}
-              icon={<ArrowRight className="w-6 h-6" />}
-            />
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
-    </section>
-  );
-}
-
-function NavButton({
-  onClick,
-  icon,
-}: {
-  onClick: () => void;
-  icon: React.ReactNode;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className="group relative bg-(--foreground) rounded-full p-0 outline-none"
-    >
-      <div
-        className="
-        relative flex items-center justify-center w-14 h-14 
-        bg-(--background) text-(--foreground) 
-        border-2 border-(--foreground) rounded-full
-        transition-transform duration-150 ease-out
-        group-hover:-translate-x-1 group-hover:-translate-y-1
-        active:translate-x-0 active:translate-y-0
-      "
-      >
-        {icon}
-      </div>
-    </button>
+    </div>
   );
 }

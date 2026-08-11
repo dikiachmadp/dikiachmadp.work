@@ -1,84 +1,79 @@
-"use client";
-
-import { cn, themeTransition } from "@/lib/utils";
-import { FiInstagram, FiGithub, FiLinkedin } from "react-icons/fi";
-import {
-  SiDribbble,
-  SiUpwork,
-  SiFreelancer,
-  SiGooglescholar,
-} from "react-icons/si";
+import { cn } from "@/lib/utils";
 
 interface SocialProps {
   platform: string;
   url: string;
+  /** `blob` is the 38px footer button; `chip` is the labelled contact-page pill. */
+  variant?: "blob" | "chip";
   className?: string;
-  size?: "sm" | "md" | "lg";
 }
 
-const icons: Record<string, React.ComponentType<{ className?: string }>> = {
-  instagram: FiInstagram,
-  github: FiGithub,
-  linkedin: FiLinkedin,
-  dribbble: SiDribbble,
-  upwork: SiUpwork,
-  freelancer: SiFreelancer,
-  scholar: SiGooglescholar,
+/** Two-letter marks stand in for icons — the theme is hand-lettered, not iconographic. */
+const SHORT: Record<string, string> = {
+  instagram: "IG",
+  github: "GH",
+  linkedin: "IN",
+  dribbble: "DR",
+  freelancer: "FR",
+  upwork: "UP",
+  scholar: "SC",
 };
 
-const sizeClasses = {
-  sm: "w-4 h-4 md:w-6 h-6",
-  md: "w-5 h-5 md:w-7 h-7",
-  lg: "w-8 h-8 md:w-9 h-9",
+const LABEL: Record<string, string> = {
+  instagram: "Instagram",
+  github: "GitHub",
+  linkedin: "LinkedIn",
+  dribbble: "Dribbble",
+  freelancer: "Freelancer",
+  upwork: "Upwork",
+  scholar: "Scholar",
 };
+
+export function socialLabel(platform: string) {
+  return LABEL[platform.toLowerCase()] ?? platform;
+}
 
 export default function Social({
   platform,
   url,
+  variant = "blob",
   className,
-  size = "md",
 }: SocialProps) {
-  const Icon = icons[platform.toLowerCase()];
+  const key = platform.toLowerCase();
+  const short = SHORT[key] ?? platform.slice(0, 2).toUpperCase();
+  const label = socialLabel(platform);
 
-  return (
-    <div className="group relative inline-block">
-      <span
-        className={cn(
-          "absolute -top-12 left-1/2 z-50 -translate-x-1/2 scale-0 px-3 py-1.5",
-          "rounded-md border-2 border-(--border) bg-(--card) text-[10px] font-black uppercase tracking-widest text-(--foreground)",
-          "shadow-[4px_4px_0px_0px_var(--foreground)] transition-all duration-300 ease-in-out group-hover:scale-100",
-          themeTransition,
-        )}
-      >
-        {platform}
-      </span>
-
+  if (variant === "chip") {
+    return (
       <a
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={platform}
         className={cn(
-          "flex items-center justify-center rounded-lg border-2 border-(--border) bg-(--card) p-2.5",
-          "transition-all duration-300 hover:-translate-y-1 hover:border-(--border) hover:shadow-[4px_4px_0px_0px_var(--foreground)]",
-          "text-(--foreground) hover:text-(--foreground)",
+          "r-chip ink-border lift-chip px-3 py-[7px]",
+          "text-[11px] font-bold uppercase tracking-[0.08em]",
           className,
-          themeTransition,
         )}
       >
-        {Icon ? (
-          <Icon
-            className={cn(
-              sizeClasses[size],
-              "transition-transform duration-300 group-hover:scale-125",
-            )}
-          />
-        ) : (
-          <span className="text-xs font-black uppercase">
-            {platform.charAt(0)}
-          </span>
-        )}
+        {label}
       </a>
-    </div>
+    );
+  }
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      title={label}
+      className={cn(
+        "r-blob ink-border lift-blob flex h-[38px] w-[38px] items-center justify-center bg-(--paper)",
+        "text-[10px] font-bold tracking-[0.04em]",
+        className,
+      )}
+    >
+      {short}
+    </a>
   );
 }

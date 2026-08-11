@@ -2,6 +2,7 @@
   "siteName": "Kid-Studio",
   "author": "dikiachmadp",
   "fullName": "Diki Achmad Prasetya",
+  "tagline": "Digital Problem Solver",
   "description": "Freelance Graphic Designer based in Bandung, Indonesia. Specializing in packaging design, ui/ux design, and 3D assets.",
   "email": "dikiachmadp123@gmail.com",
   "url": "https://dikiachmadp.work",
@@ -17,5 +18,5 @@
     "scholar": "https://scholar.google.com/citations?user=XPjEd0AAAAAJ&hl=en"
   },
   "defaultLanguage": "en",
-  "theme": "dark"
+  "theme": "light"
 }

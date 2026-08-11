@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import AdminForm from "@/components/ui/AdminForm";
 import { updateProject } from "./actions";
 
 export default async function EditProjectPage({
@@ -7,26 +8,27 @@ export default async function EditProjectPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const project = await prisma.project.findUnique({
-    where: { id },
-  });
+  const project = await prisma.project.findUnique({ where: { id } });
 
   if (!project) {
-    return <div>Project not found</div>;
+    return (
+      <p className="ink-border-dashed r-chip px-5 py-8 text-center text-[14px] text-(--soft)">
+        Project not found
+      </p>
+    );
   }
 
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Edit Project</h1>
-      <form action={updateProject.bind(null, id)} className="flex flex-col gap-4">
-        <input name="title" defaultValue={project.title} required className="border p-2 rounded" />
-        <input name="slug" defaultValue={project.slug} required className="border p-2 rounded" />
-        <textarea name="description" defaultValue={project.description} required className="border p-2 rounded" />
-        <input name="imageUrl" defaultValue={project.imageUrl} required className="border p-2 rounded" />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-          Update Project
-        </button>
-      </form>
-    </div>
+    <AdminForm
+      title="Edit Project"
+      submitLabel="Update project"
+      action={updateProject.bind(null, id)}
+      defaults={{
+        title: project.title,
+        slug: project.slug,
+        description: project.description,
+        imageUrl: project.imageUrl,
+      }}
+    />
   );
 }

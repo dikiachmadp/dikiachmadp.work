@@ -1,17 +1,32 @@
 import type { Metadata } from "next";
-import { Inter, Modak } from "next/font/google";
+import { Kalam, Caveat, Space_Grotesk } from "next/font/google";
 import "@/app/globals.css";
 import ThemeProvider from "@/components/layout/ThemeProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import PaperTexture from "@/components/layout/PaperTexture";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/types/content";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const modak = Modak({
+const kalam = Kalam({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-modak",
+  weight: ["400", "700"],
+  variable: "--font-kalam",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-caveat",
+  display: "swap",
+});
+
+const grotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-grotesk",
+  display: "swap",
 });
 
 export async function generateMetadata({
@@ -97,21 +112,36 @@ export default async function RootLayout({
   const dict = await getDictionary(validLocale);
 
   return (
-    <html lang={validLocale} suppressHydrationWarning>
-      <body className={`${inter.variable} ${modak.variable} antialiased`}>
+    // The font variables must live on :root — globals.css resolves --font-hand
+    // and friends there, and a custom property can only reference another one
+    // that is defined on the same element.
+    <html
+      lang={validLocale}
+      suppressHydrationWarning
+      className={`${kalam.variable} ${caveat.variable} ${grotesk.variable}`}
+    >
+      <body className="antialiased">
         <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
+          attribute="data-theme"
+          defaultTheme="light"
           enableSystem={false}
+          disableTransitionOnChange={false}
         >
-          <Navbar navData={dict.navigation} locale={validLocale} />
-          <main className="min-h-screen">{children}</main>
-          <Footer
-            footerData={dict.footer}
-            siteConfig={dict.siteConfig}
-            heroData={dict.hero}
-            locale={validLocale}
-          />
+          <PaperTexture />
+          <div className="relative z-1 flex min-h-screen flex-col">
+            <Navbar
+              navData={dict.navigation}
+              siteConfig={dict.siteConfig}
+              locale={validLocale}
+            />
+            <main className="flex-1">{children}</main>
+            <Footer
+              footerData={dict.footer}
+              siteConfig={dict.siteConfig}
+              heroData={dict.hero}
+              locale={validLocale}
+            />
+          </div>
         </ThemeProvider>
       </body>
     </html>

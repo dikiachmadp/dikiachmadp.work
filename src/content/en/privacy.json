@@ -1,19 +1,20 @@
 {
-  "points": [
+  "sections": [
     {
-      "id": "data-collection",
-      "title": "Data Collection",
-      "content": "We only collect information that you voluntarily provide via the contact form."
+      "heading": "What is collected",
+      "content": "Only what you type into the contact form: name, email, inquiry type and message."
     },
     {
-      "id": "data-usage",
-      "title": "Data Usage",
-      "content": "Your data is used solely for communication purposes related to your inquiries."
+      "heading": "How it is used",
+      "content": "Solely to reply to your enquiry. Nothing is sold, rented or shared with advertisers."
     },
     {
-      "id": "cookies",
-      "title": "Cookies",
-      "content": "This site may use cookies to enhance your browsing experience."
+      "heading": "Analytics",
+      "content": "Aggregate, anonymous page-view counts are recorded. No cross-site tracking is used."
+    },
+    {
+      "heading": "Your control",
+      "content": "Ask for your message data to be deleted at any time and it will be removed within seven days."
     }
   ]
 }

@@ -1,37 +1,37 @@
 {
   "projects": {
-    "topTitle": "Arsip Proyek Terbaru",
+    "topTitle": "arsip berjalan",
     "title": "Semua Karya",
-    "description": "Arsip berjalan untuk proyek terbaru di bidang branding, UI/UX, pengemasan, 3D, dan ilustrasi."
+    "description": "Proyek branding, UI/UX, kemasan, 3D, dan ilustrasi."
   },
   "services": {
-    "topTitle": "Layanan yang Ditawarkan",
-    "title": "Apa yang Bisa Saya Lakukan Untuk Anda",
-    "description": "Pilihan layanan inti yang dikurasi di bidang branding, UI/UX, pengemasan, 3D, dan ilustrasi."
+    "topTitle": "layanan",
+    "title": "Yang bisa saya kerjakan",
+    "description": "Enam layanan inti. Semua dimulai dari sketsa dan berakhir dengan file yang siap dipakai."
   },
   "about": {
-    "topTitle": "Halo, Saya",
+    "topTitle": "halo, saya",
     "title": "Diki Achmad Prasetya",
-    "description": "Freelance Desainer Grafis basis di Bandung, Indonesia."
+    "description": "Desainer lepas yang berbasis di Bandung, Indonesia."
   },
   "studio": {
-    "topTitle": "Studio & Eksperimen",
-    "title": "Selamat Datang di Studio Saya",
-    "description": "Eksperimen, pemikiran, dan produk digital."
+    "topTitle": "studio & eksperimen",
+    "title": "Selamat datang di studio",
+    "description": "Eksperimen, produk digital, dan catatan dari meja kerja."
   },
   "contact": {
-    "topTitle": "Hubungi Saya",
-    "title": "Mari Bekerja Sama.",
-    "description": "Kirimkan pesan dan saya akan membalas Anda sesegera mungkin."
+    "topTitle": "hubungi saya",
+    "title": "Mari bekerja sama.",
+    "description": "Kirim pesan dan saya balas secepatnya — biasanya dalam sehari."
   },
   "legal": {
-    "topTitle": "Terakhir Diperbarui: Mei 2026",
-    "title": "Pemberitahuan Hukum",
-    "description": "Harap baca syarat ini dengan seksama sebelum menggunakan situs web ini. Dengan mengakses atau menggunakan dikiachmadp.work, Anda setuju untuk terikat oleh syarat-syarat ini."
+    "topTitle": "Terakhir diperbarui: Mei 2026",
+    "title": "Ketentuan Hukum",
+    "description": "Harap baca ketentuan ini sebelum menggunakan situs. Dengan mengakses dikiachmadp.work Anda terikat pada ketentuan ini."
   },
   "privacy": {
-    "topTitle": "Terakhir Diperbarui: Mei 2026",
+    "topTitle": "Terakhir diperbarui: Mei 2026",
     "title": "Kebijakan Privasi",
-    "description": "Privasi Anda penting bagi saya. Kebijakan privasi ini menjelaskan bagaimana saya mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda saat Anda mengunjungi situs web saya."
+    "description": "Kebijakan ini menjelaskan data apa yang dikumpulkan saat Anda mengunjungi situs ini dan bagaimana penanganannya."
   }
 }

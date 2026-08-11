@@ -3,87 +3,93 @@ import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
-import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import ContactForm from "@/components/interactive/ContactForm";
+import Social from "@/components/ui/Social";
 import { Locale } from "@/types/content";
-import { Mail, MapPin } from "lucide-react";
-import { cn } from "@/lib/utils";
+
+interface PageProps {
+  params: Promise<{ locale: string }>;
+}
 
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
   const dict = await getDictionary(validLocale);
-  const { pageHeader, siteConfig } = dict;
-  const header = pageHeader.contact;
+  const header = dict.pageHeader.contact;
 
   return createMetadata({
     title: header.title,
     description: header.description,
     path: "/contact",
-    siteConfig,
+    siteConfig: dict.siteConfig,
     locale: validLocale,
   });
 }
-export default async function ContactPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const resolvedParams = await params;
-  const validLocale =
-    resolvedParams.locale === "en" || resolvedParams.locale === "id"
-      ? (resolvedParams.locale as Locale)
-      : "en";
 
+export default async function ContactPage({ params }: PageProps) {
+  const { locale } = await params;
+  const validLocale = (locale === "id" ? "id" : "en") as Locale;
   const dict = await getDictionary(validLocale);
   const header = dict.pageHeader.contact;
-  const themeTransition = "transition-colors duration-300";
+  const socials = Object.entries(dict.siteConfig.socials);
 
   return (
     <PageWrapper>
-      <PageHeader
-        topTitle={header.topTitle}
-        title={header.title}
-        description={header.description}
-      />
-      <SectionWrapper id="contact-content">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start border-b-2 border-(--border) pb-12">
-          <div className="lg:col-span-7">
+      <SectionWrapper id="contact" spacing="sm">
+        <div className="grid grid-cols-1 items-start gap-11 lg:grid-cols-[1fr_340px]">
+          <div>
+            <div className="eyebrow">{header.topTitle}</div>
+            <h1 className="font-hand mb-2.5 mt-0.5 text-[clamp(2.4rem,5.4vw,4rem)] leading-none">
+              {header.title}
+            </h1>
+            <p className="mb-7 max-w-[520px] text-[16px] leading-[1.6] text-(--soft)">
+              {header.description}
+            </p>
+
             <ContactForm contactData={dict.contact} uiLabels={dict.ui} />
           </div>
-          <div className="lg:col-span-5 flex flex-col gap-6">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-(--foreground) rounded-2xl transition-all duration-300" />
-              <div
-                className={cn(
-                  "relative p-8 rounded-2xl border-2 border-(--foreground) bg-(--background)",
-                  "transition-all duration-300 ease-out",
-                  "translate-x-0 translate-y-0",
-                  "group-hover:-translate-x-1 group-hover:-translate-y-1",
-                  themeTransition,
-                )}
-              >
-                <h3 className="text-xl font-bold mb-6 text-(--foreground)">
-                  {dict.ui.contactInfo.title}
-                </h3>
-                <div className="flex flex-col gap-4">
-                  <a
-                    href={`mailto:${dict.siteConfig.email}`}
-                    className="flex items-center gap-3 text-(--foreground) hover:text-(--accent) transition-colors"
-                  >
-                    <Mail className="w-5 h-5" />
-                    {dict.siteConfig.email}
-                  </a>
-                  <div className="flex items-center gap-3 text-(--foreground)">
-                    <MapPin className="w-5 h-5" />
-                    {dict.siteConfig.location}
+
+          <div className="flex flex-col gap-[18px]">
+            <div
+              className="ink-border flat-3 bg-(--wash) p-[22px]"
+              style={{
+                borderRadius: "12px 28px 13px 30px / 30px 13px 28px 12px",
+              }}
+            >
+              <div className="font-note mb-3 text-[20px]">
+                {dict.ui.contactInfo.title}
+              </div>
+              {dict.contact.info.map((entry) => (
+                <div key={entry.label} className="mb-3 last:mb-0">
+                  <div className="micro">{entry.label}</div>
+                  <div className="mt-0.5 text-[14px] font-semibold">
+                    {entry.value}
                   </div>
                 </div>
+              ))}
+            </div>
+
+            <div
+              className="ink-border flat-3 bg-(--paper) p-[22px]"
+              style={{
+                borderRadius: "28px 12px 30px 13px / 13px 30px 12px 28px",
+              }}
+            >
+              <div className="font-note mb-3 text-[20px]">
+                {dict.ui.contactInfo.findMe}
+              </div>
+              <div className="flex flex-wrap gap-[9px]">
+                {socials.map(([platform, url]) => (
+                  <Social
+                    key={platform}
+                    platform={platform}
+                    url={url}
+                    variant="chip"
+                  />
+                ))}
               </div>
             </div>
           </div>

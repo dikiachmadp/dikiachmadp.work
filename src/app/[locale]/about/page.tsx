@@ -4,120 +4,123 @@ import Image from "next/image";
 import { getDictionary } from "@/lib/dictionary";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
-import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import ExperienceSection from "@/components/sections/ExperienceSection";
 import CTASection from "@/components/sections/CTASection";
+import Button from "@/components/ui/Button";
 import { Locale } from "@/types/content";
-import { cn, themeTransition } from "@/lib/utils";
-import { Download } from "lucide-react";
+
+interface PageProps {
+  params: Promise<{ locale: string }>;
+}
 
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
   const dict = await getDictionary(validLocale);
-  const { pageHeader, siteConfig } = dict;
-  const header = pageHeader.about;
+  const header = dict.pageHeader.about;
 
   return createMetadata({
     title: header.title,
     description: header.description,
     path: "/about",
-    siteConfig,
+    siteConfig: dict.siteConfig,
     locale: validLocale,
   });
 }
-export default async function AboutPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const resolvedParams = await params;
-  const validLocale =
-    resolvedParams.locale === "en" || resolvedParams.locale === "id"
-      ? (resolvedParams.locale as Locale)
-      : "en";
 
+const DownloadIcon = () => (
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.4"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+  >
+    <path d="M12 3v12M7 12l5 5 5-5M4 20h16" />
+  </svg>
+);
+
+export default async function AboutPage({ params }: PageProps) {
+  const { locale } = await params;
+  const validLocale = (locale === "id" ? "id" : "en") as Locale;
   const dict = await getDictionary(validLocale);
   const header = dict.pageHeader.about;
+  const { about, siteConfig } = dict;
 
   return (
     <PageWrapper>
-      <PageHeader
-        topTitle={header.topTitle}
-        title={header.title}
-        description={header.description}
-      />
-      <SectionWrapper id="biography" className="border-b-2 border-(--border)">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-          <div className="lg:col-span-5 relative group">
-            <div className="absolute inset-0 bg-(--foreground) rounded-2xl transition-all duration-300" />
-            <div
-              className={cn(
-                "relative aspect-4/3 bg-(--gray-light) border-2 border-(--foreground) rounded-2xl overflow-hidden",
-                "transition-all duration-300 ease-out",
-                "translate-x-0 translate-y-0",
-                "group-hover:-translate-x-1 group-hover:-translate-y-1",
-                themeTransition,
-              )}
-            >
-              <Image
-                src="/foto.webp"
-                alt={dict.siteConfig.fullName || "Profile Photo"}
-                fill
-                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                priority
-              />
+      <SectionWrapper id="about" spacing="sm">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[330px_1fr]">
+          <div className="flex flex-col gap-[30px]">
+            <div className="relative">
+              <div className="r-portrait ink-border flat-6 relative aspect-square overflow-hidden bg-(--wash)">
+                <Image
+                  src="/foto.webp"
+                  alt={siteConfig.fullName}
+                  fill
+                  sizes="330px"
+                  priority
+                  className="object-cover"
+                  style={{ filter: "grayscale(1) contrast(1.1)" }}
+                />
+              </div>
+              <span
+                className="font-note ink-border flat-3 absolute -bottom-3.5 -left-3 bg-(--paper) px-3.5 py-[5px] text-[19px]"
+                style={{ transform: "rotate(-5deg)" }}
+              >
+                {about.sticker}
+              </span>
             </div>
-          </div>
-          <div className="lg:col-span-7 flex flex-col gap-8">
-            <div className="flex flex-col gap-2">
-              <div className="h-0.5 w-12 bg-(--foreground)" />
-            </div>
-            <div className="flex flex-col gap-6">
-              {dict.about.biography.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className="text-base md:text-lg font-medium leading-relaxed text-(--foreground)"
+
+            <div className="flex flex-col gap-[11px]">
+              <span className="font-note text-[19px] text-(--soft)">
+                {about.cv.note}
+              </span>
+              {about.cv.items.map((item, i) => (
+                <Button
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  variant={i === 0 ? "primary" : "secondary"}
+                  mirrored={i !== 0}
+                  fullWidth
                 >
-                  {paragraph}
-                </p>
+                  <DownloadIcon />
+                  {item.label}
+                </Button>
               ))}
             </div>
-            <div className="pt-4">
-              <a
-                href="/CV_Diki.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block group relative outline-none"
+          </div>
+
+          <div>
+            <div className="eyebrow">{header.topTitle}</div>
+            <h1 className="font-hand mb-[18px] mt-0.5 text-[clamp(2.2rem,4.8vw,3.6rem)] leading-none">
+              {header.title}
+            </h1>
+            {about.biography.map((paragraph, i) => (
+              <p
+                key={i}
+                className="mb-3.5 max-w-[620px] text-[16px] leading-[1.75] text-(--soft)"
               >
-                <div className="absolute inset-0 rounded-lg bg-(--foreground) transition-all duration-200" />
-                <div
-                  className={cn(
-                    "relative flex h-12 px-8 items-center justify-center rounded-lg uppercase transition-all duration-300 ease-out text-[10px] font-bold tracking-[0.2em] border-2",
-                    "bg-(--background) text-(--foreground) border-(--foreground)",
-                    "translate-x-0 translate-y-0",
-                    "group-hover:-translate-x-1 group-hover:-translate-y-1 group-active:translate-x-0 group-active:translate-y-0",
-                    themeTransition,
-                  )}
-                >
-                  <Download
-                    className="w-4 h-4 mr-3 text-(--accent)"
-                    strokeWidth={3}
-                  />
-                  {dict.ui.buttons.download || "Download CV"}
-                </div>
-              </a>
-            </div>
+                {paragraph}
+              </p>
+            ))}
+
+            <ExperienceSection aboutData={about} />
           </div>
         </div>
       </SectionWrapper>
-      <ExperienceSection aboutData={dict.about} uiLabels={dict.ui} />
-      <CTASection ctaData={dict.cta} uiLabels={dict.ui} locale={validLocale} />
+
+      <SectionWrapper id="cta">
+        <CTASection ctaData={dict.cta} locale={validLocale} />
+      </SectionWrapper>
     </PageWrapper>
   );
 }

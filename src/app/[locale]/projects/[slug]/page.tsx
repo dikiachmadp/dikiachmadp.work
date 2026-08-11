@@ -1,21 +1,17 @@
 import React from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ChevronLeft, ArrowUpRight } from "lucide-react";
 import { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
-import PageHeader from "@/components/layout/PageHeader";
-import SectionWrapper from "@/components/layout/SectionWrapper";
 import Button from "@/components/ui/Button";
+import Tag from "@/components/ui/Tag";
 import { Locale } from "@/types/content";
+import { cn } from "@/lib/utils";
 
 interface ProjectDetailPageProps {
-  params: Promise<{
-    locale: string;
-    slug: string;
-  }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export async function generateMetadata({
@@ -26,9 +22,7 @@ export async function generateMetadata({
   const dict = await getDictionary(validLocale);
   const project = dict.projects.items.find((item) => item.slug === slug);
 
-  if (!project) {
-    return { title: "Project Not Found" };
-  }
+  if (!project) return { title: "Project Not Found" };
 
   return createMetadata({
     title: project.title,
@@ -42,220 +36,135 @@ export async function generateMetadata({
 export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
-  const resolvedParams = await params;
-
-  const validLocale =
-    resolvedParams.locale === "en" || resolvedParams.locale === "id"
-      ? (resolvedParams.locale as Locale)
-      : "en";
-
+  const { locale, slug } = await params;
+  const validLocale = (locale === "id" ? "id" : "en") as Locale;
   const dict = await getDictionary(validLocale);
-  const project = dict.projects.items.find(
-    (item) => item.slug === resolvedParams.slug,
-  );
+  const project = dict.projects.items.find((item) => item.slug === slug);
 
   if (!project) notFound();
 
   const t = dict.ui.projectDetail;
+  const hasCover = Boolean(project.coverImage);
+  const blocks =
+    project.contentBlocks && project.contentBlocks.length > 0
+      ? project.contentBlocks
+      : [project.description];
+
+  const facts = [
+    { label: t.client, value: project.client },
+    { label: t.datePublished, value: project.year },
+    { label: t.role, value: project.role },
+    { label: t.duration, value: project.duration },
+  ].filter((fact): fact is { label: string; value: string } =>
+    Boolean(fact.value),
+  );
 
   return (
     <PageWrapper>
-      <PageHeader
-        topTitle={`${project.category} · ${project.year}`}
-        title={project.title}
-        description={project.description}
-      />
+      <div className="mx-auto w-full max-w-[980px] px-[22px] pt-11">
+        <Button
+          href={`/${validLocale}/projects`}
+          variant="secondary"
+          size="sm"
+          className="r-chip mb-[26px] px-4 py-2 text-[12px]"
+        >
+          ← {t.backBtn}
+        </Button>
 
-      <SectionWrapper
-        id="project-detail-content"
-        className="pt-4 pb-12 md:pb-20"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-8 flex flex-col gap-8">
-            <div className="group relative bg-(--foreground) rounded-(--button-radius) w-full">
-              <div className="relative w-full aspect-video bg-(--card) border-2 border-(--foreground) rounded-(--button-radius) overflow-hidden transition-all duration-300 ease-out translate-x-0 translate-y-0 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5 flex justify-center cursor-default">
-                <Image
-                  src={project.coverImage}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 66vw"
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </div>
+        <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-(--soft)">
+          {project.category} · {project.year}
+        </div>
+        <h1 className="font-hand mb-4 mt-1.5 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
+          {project.title}
+        </h1>
+        <p className="mb-[30px] max-w-[640px] text-[17px] leading-[1.65] text-(--soft)">
+          {project.description}
+        </p>
 
-            {project.gallery && project.gallery.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {project.gallery.slice(0, 2).map((imgUrl, idx) => (
-                  <div
-                    key={idx}
-                    className="group relative bg-(--foreground) rounded-(--button-radius) w-full"
-                  >
-                    <div className="relative w-full aspect-video bg-(--card) border-2 border-(--foreground) rounded-(--button-radius) overflow-hidden transition-all duration-300 ease-out translate-x-0 translate-y-0 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5 cursor-default">
-                      <Image
-                        src={imgUrl}
-                        alt={`${project.title} ${t.galleryLabel} ${idx + 1}`}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+        <div className="r-frame ink-border flat-5 mb-[34px] bg-(--wash) p-2.5">
+          <div
+            className={cn(
+              "r-frame-inner ink-border relative flex aspect-video items-center justify-center overflow-hidden",
+              !hasCover && "crosshatch",
             )}
-
-            <div className="group relative bg-(--foreground) rounded-(--button-radius) w-full">
-              <div className="relative h-full p-6 md:p-10 bg-(--background) border-2 border-(--foreground) rounded-(--button-radius) transition-all duration-300 ease-out translate-x-0 translate-y-0 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5 cursor-default flex flex-col gap-4">
-                <h3
-                  className="text-2xl tracking-wide text-(--foreground) mb-2"
-                  style={{
-                    fontFamily:
-                      "var(--font-heading), var(--font-heading), cursive",
-                  }}
-                >
-                  {t.aboutProject}
-                </h3>
-
-                <div className="prose prose-lg dark:prose-invert max-w-none text-(--foreground) text-justify space-y-4">
-                  {project.contentBlocks && project.contentBlocks.length > 0 ? (
-                    project.contentBlocks.map((paragraph, index) => (
-                      <p key={index} className="leading-relaxed font-medium">
-                        {paragraph}
-                      </p>
-                    ))
-                  ) : (
-                    <p className="leading-relaxed font-medium">
-                      {project.description}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-4 lg:sticky lg:top-24 flex flex-col gap-8">
-            <div className="group relative bg-(--foreground) rounded-(--button-radius) w-full">
-              <div className="relative h-full p-6 bg-(--background) border-2 border-(--foreground) rounded-(--button-radius) transition-all duration-300 ease-out translate-x-0 translate-y-0 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5 cursor-default flex flex-col gap-5">
-                <div className="flex flex-col pb-4 border-b-2 border-(--border)">
-                  <h4
-                    className="tracking-wide text-(--foreground)"
-                    style={{ fontSize: "var(--text-desc)" }}
-                  >
-                    {t.client}
-                  </h4>
-                  <p className="var(--text-desc) text-(--foreground)">
-                    {project.client}
-                  </p>
-                </div>
-
-                {project.role && (
-                  <div className="flex flex-col pb-4 border-b-2 border-(--border)">
-                    <h4
-                      className="tracking-wide text-(--foreground)"
-                      style={{ fontSize: "var(--text-desc)" }}
-                    >
-                      {t.role}
-                    </h4>
-                    <p className="var(--text-desc) text-(--foreground)">
-                      {project.role}
-                    </p>
-                  </div>
-                )}
-
-                {project.duration && (
-                  <div className="flex flex-col pb-4 border-b-2 border-(--border)">
-                    <h4
-                      className="tracking-wide text-(--foreground)"
-                      style={{ fontSize: "var(--text-desc)" }}
-                    >
-                      {t.duration}
-                    </h4>
-                    <p className="var(--text-desc) text-(--foreground)">
-                      {project.duration}
-                    </p>
-                  </div>
-                )}
-
-                {project.tools && project.tools.length > 0 && (
-                  <div className="flex flex-col pb-4 border-b-2 border-(--border)">
-                    <h4
-                      className="tracking-wide text-(--foreground)"
-                      style={{ fontSize: "var(--text-desc)" }}
-                    >
-                      {t.tools}
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tools.map((tool) => (
-                        <span
-                          key={tool}
-                          className="tracking-wide px-2 py-1 border border-(--border) text-(--foreground)"
-                          style={{
-                            fontSize: "calc(var(--text-ui-label) * 0.9)",
-                          }}
-                        >
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex flex-col">
-                  <h4
-                    className="tracking-wide text-(--foreground)"
-                    style={{ fontSize: "var(--text-desc)" }}
-                  >
-                    {t.techStack}
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="tracking-wide px-2 py-1 border border-(--foreground) bg-(--foreground) text-(--background) rounded-sm"
-                        style={{ fontSize: "calc(var(--text-ui-label) * 0.9)" }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-4">
-              {project.liveUrl && (
-                <Button
-                  variant="primary"
-                  size="md"
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full"
-                >
-                  <span className="flex items-center gap-2">
-                    {t.visitBtn}
-                    <ArrowUpRight className="w-4 h-4" strokeWidth={3} />
-                  </span>
-                </Button>
-              )}
-
-              <Button
-                variant="primary"
-                size="md"
-                href={`/${validLocale}/projects`}
-                className="w-full"
-              >
-                <span className="flex items-center justify-center gap-2 w-full">
-                  <ChevronLeft className="w-4 h-4" strokeWidth={3} />
-                  {t.backBtn}
-                </span>
-              </Button>
-            </div>
+          >
+            {hasCover ? (
+              <Image
+                src={project.coverImage}
+                alt={project.title}
+                fill
+                sizes="(max-width: 980px) 100vw, 960px"
+                priority
+                className="photo-ink object-cover"
+              />
+            ) : (
+              <span className="font-tech text-[11px] uppercase tracking-[0.2em] text-(--soft)">
+                {project.category.toLowerCase()} cover
+              </span>
+            )}
           </div>
         </div>
-      </SectionWrapper>
+
+        <div className="grid grid-cols-1 items-start gap-9 lg:grid-cols-[1fr_260px]">
+          <div className="flex flex-col gap-[18px]">
+            <h2 className="font-hand text-[28px]">{t.aboutProject}</h2>
+            {blocks.map((paragraph, i) => (
+              <p key={i} className="m-0 text-[16px] leading-[1.75] text-(--soft)">
+                {paragraph}
+              </p>
+            ))}
+            <div className="mt-1.5 flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <Tag key={tag} className="px-3 py-[5px]">
+                  {tag}
+                </Tag>
+              ))}
+            </div>
+          </div>
+
+          <aside className="r-card-alt ink-border flat-3 flex flex-col gap-3.5 bg-(--paper) p-5">
+            {facts.map((fact) => (
+              <div key={fact.label}>
+                <div className="micro">{fact.label}</div>
+                <div className="font-hand mt-0.5 text-[18px] leading-[1.2]">
+                  {fact.value}
+                </div>
+              </div>
+            ))}
+
+            <div className="h-0.5 bg-(--line) opacity-25" />
+
+            {project.liveUrl && (
+              <Button
+                href={project.liveUrl}
+                target="_blank"
+                variant="primary"
+                size="sm"
+                fullWidth
+                className="r-chip py-[11px] text-[13px]"
+              >
+                {t.visitBtn} ↗
+              </Button>
+            )}
+          </aside>
+        </div>
+
+        <div className="mt-11">
+          <h2 className="font-hand mb-4 text-[28px]">{t.galleryLabel}</h2>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            {["detail shot 01", "detail shot 02"].map((label) => (
+              <div
+                key={label}
+                className="r-card crosshatch ink-border flex aspect-[4/3] items-center justify-center bg-(--wash) transition-all duration-[0.25s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:rotate-[-0.8deg] hover:shadow-[6px_6px_0_var(--line)]"
+              >
+                <span className="font-tech text-[10px] uppercase tracking-[0.2em] text-(--soft)">
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </PageWrapper>
   );
 }

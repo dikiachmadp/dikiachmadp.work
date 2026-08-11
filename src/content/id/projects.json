@@ -1,13 +1,13 @@
 {
   "categories": [
-    "Semua",
+    "All",
     "Branding",
-    "Desain UI/UX",
-    "Pemodelan 3D",
-    "Pengemasan",
-    "Ilustrasi",
-    "Animasi",
-    "Desain Web"
+    "UI/UX Design",
+    "3D Modeling",
+    "Packaging",
+    "Illustration",
+    "Animation",
+    "Web Design"
   ],
   "items": [
     {
@@ -16,8 +16,8 @@
       "category": "Web Design",
       "year": "2026",
       "date": "2026-04-15",
-      "client": "FEB UNPAS",
-      "description": "Web Design for Economics Development Study Program at FEB UNPAS (Bandung)",
+      "client": "FEB UNPAS (Indonesia)",
+      "description": "Perombakan menyeluruh kehadiran digital program studi Ekonomi Pembangunan FEB UNPAS.",
       "tags": [
         "Web Design",
         "UI",
@@ -25,25 +25,15 @@
       ],
       "coverImage": "/projects/covers/webep.webp",
       "logoUrl": "/projects/logos/logoep.webp",
-      "accent": "#8b5a2b",
       "featured": true,
       "slug": "website-ekonomi",
       "liveUrl": "https://ekonomi.feb.unpas.ac.id",
       "isLivePreview": true,
-      "role": "Desainer UI/UX Utama",
-      "duration": "3 Bulan",
-      "tools": [
-        "React",
-        "TypeScript",
-        "Tailwind CSS"
-      ],
+      "role": "Lead UI/UX Designer",
+      "duration": "3 bulan",
       "contentBlocks": [
-        "Proyek ini bertujuan untuk merombak total kehadiran digital Program Studi Ekonomi Pembangunan FEB UNPAS. Fokus utamanya adalah meningkatkan aksesibilitas informasi bagi mahasiswa aktif dan calon mahasiswa.",
-        "Desain antarmuka dibuat dengan pendekatan brutalist yang rapi, menonjolkan identitas institusi melalui warna aksen yang kuat. Tantangan terbesar adalah mengorganisasi data akademik yang masif menjadi struktur navigasi yang intuitif."
-      ],
-      "gallery": [
-        "/projects/covers/webep-gallery1.webp",
-        "/projects/covers/webep-gallery2.webp"
+        "Tujuannya membuat informasi akademik yang padat mudah diakses mahasiswa aktif maupun calon mahasiswa, tanpa kehilangan karakter institusi.",
+        "Antarmukanya bertumpu pada tata letak tenang dengan hierarki kuat. Bagian tersulit: melipat data akademik yang besar ke navigasi yang tetap terasa ringan."
       ]
     },
     {
@@ -53,7 +43,7 @@
       "year": "2026",
       "date": "2026-02-22",
       "client": "PT Padjajaran Pratama Wijaya (Indonesia)",
-      "description": "Desain Web untuk Produk Permen Jahe di PT Padjajaran Pratama Wijaya",
+      "description": "Situs produk untuk brand permen jahe — hangat, menggugah, dan siap ekspor.",
       "tags": [
         "Web Design",
         "UI",
@@ -61,11 +51,16 @@
       ],
       "coverImage": "/projects/covers/webjahe.webp",
       "logoUrl": "/projects/logos/logojahe.webp",
-      "accent": "#2d4a3e",
       "featured": true,
       "slug": "website-jahe",
       "liveUrl": "https://jahepadjajaran.com",
-      "isLivePreview": true
+      "isLivePreview": true,
+      "role": "Desainer",
+      "duration": "2 bulan",
+      "contentBlocks": [
+        "Brand ini butuh situs yang bekerja untuk pembeli ritel lokal sekaligus distributor luar negeri.",
+        "Fotografi produk memimpin tata letak; sisanya sengaja dibuat tidak mengganggu."
+      ]
     },
     {
       "id": "website-dim",
@@ -74,7 +69,7 @@
       "year": "2025",
       "date": "2025-08-10",
       "client": "DIM UNPAS (Indonesia)",
-      "description": "Desain Web untuk Program Doktor di DIM UNPAS (Bandung)",
+      "description": "Desain web untuk program doktor ilmu manajemen UNPAS, Bandung.",
       "tags": [
         "Web Design",
         "UI",
@@ -82,11 +77,16 @@
       ],
       "coverImage": "/projects/covers/webdim.webp",
       "logoUrl": "/projects/logos/logodim.webp",
-      "accent": "#3a7d7b",
       "featured": true,
       "slug": "website-dim",
       "liveUrl": "https://dim.unpas.ac.id",
-      "isLivePreview": true
+      "isLivePreview": true,
+      "role": "Desainer",
+      "duration": "3 bulan",
+      "contentBlocks": [
+        "Situs program doktor punya dua tugas: meyakinkan dan menginformasikan. Strukturnya memisahkan keduanya dengan jelas.",
+        "Tipografi jadi tulang punggung — paletnya sengaja dibuat tenang."
+      ]
     },
     {
       "id": "holroyd-packaging",
@@ -95,17 +95,18 @@
       "year": "2024",
       "date": "2024-06-16",
       "client": "Holroyd (Australia)",
-      "description": "Packaging Design and Mockup Design for Tow Ball Product at Holroyd",
+      "description": "Desain kemasan dan mockup untuk lini produk tow ball Holroyd.",
       "tags": [
         "Packaging",
         "3D",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#c39a2c",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "holroyd-packaging"
+      "slug": "holroyd-packaging",
+      "role": "Desainer Kemasan",
+      "duration": "6 minggu"
     },
     {
       "id": "trader-packaging",
@@ -114,17 +115,18 @@
       "year": "2024",
       "date": "2024-07-10",
       "client": "Trading Bot (Canada)",
-      "description": "Design Package for Pricing Plan Pack in Trading Bot AI Website",
+      "description": "Visual paket harga untuk situs produk trading bot.",
       "tags": [
         "Packaging",
         "3D",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#6b2a4a",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "trader-packaging"
+      "slug": "trader-packaging",
+      "role": "Desainer",
+      "duration": "4 minggu"
     },
     {
       "id": "branding-eatbread",
@@ -133,17 +135,18 @@
       "year": "2025",
       "date": "2025-09-20",
       "client": "Eat'Bread (Indonesia)",
-      "description": "Branding Identity and Packaging for Eat'Bread Product",
+      "description": "Sistem identitas dan kemasan untuk brand bakery lokal.",
       "tags": [
         "Packaging",
         "Branding",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#b8a88a",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "branding-eatbread"
+      "slug": "branding-eatbread",
+      "role": "Desainer Brand",
+      "duration": "8 minggu"
     },
     {
       "id": "holroyd-brochure",
@@ -152,17 +155,18 @@
       "year": "2025",
       "date": "2025-02-14",
       "client": "Holroyd (Australia)",
-      "description": "Brochure Design for Holroyd Bearing Product",
+      "description": "Desain brosur untuk rangkaian produk bearing Holroyd.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#e2723f",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "holroyd-brochure"
+      "slug": "holroyd-brochure",
+      "role": "Desainer",
+      "duration": "3 minggu"
     },
     {
       "id": "purepro-brochure",
@@ -171,17 +175,18 @@
       "year": "2025",
       "date": "2025-04-30",
       "client": "BMPRO (Australia)",
-      "description": "Brochure Design for BMPRO-PurePro Product",
+      "description": "Desain brosur untuk produk BMPRO PurePro.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#a84b2a",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "purepro-brochure"
+      "slug": "purepro-brochure",
+      "role": "Desainer",
+      "duration": "3 minggu"
     },
     {
       "id": "bmpro-dealerbook",
@@ -190,17 +195,18 @@
       "year": "2025",
       "date": "2025-05-10",
       "client": "BMPRO (Australia)",
-      "description": "Layout and Formatting Handbook Document for BMPRO-Dealerbook",
+      "description": "Tata letak dan format untuk buku pegangan dealer BMPRO.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#8a7a68",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "bmpro-dealerbook"
+      "slug": "bmpro-dealerbook",
+      "role": "Desainer Tata Letak",
+      "duration": "5 minggu"
     },
     {
       "id": "xero-brochure",
@@ -209,17 +215,18 @@
       "year": "2025",
       "date": "2025-04-12",
       "client": "BMPRO (Australia)",
-      "description": "Brochure Design for BMPRO-Xero Product",
+      "description": "Desain brosur untuk produk BMPRO Xero.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#2b2b3b",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "xero-brochure"
+      "slug": "xero-brochure",
+      "role": "Desainer",
+      "duration": "2 minggu"
     },
     {
       "id": "bmpro-brochure",
@@ -228,17 +235,18 @@
       "year": "2025",
       "date": "2025-04-05",
       "client": "BMPRO (Australia)",
-      "description": "Brochure Design for BMPRO-Trailer Safety Control Product",
+      "description": "Desain brosur untuk BMPRO Trailer Safety Control.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#1f6f8b",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "bmpro-brochure"
+      "slug": "bmpro-brochure",
+      "role": "Desainer",
+      "duration": "2 minggu"
     },
     {
       "id": "bmpro-connect",
@@ -247,17 +255,18 @@
       "year": "2025",
       "date": "2025-04-20",
       "client": "BMPRO (Australia)",
-      "description": "Brochure Design for BMPRO-Connect Product",
+      "description": "Desain brosur untuk produk BMPRO Connect.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#e7a35a",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "bmpro-connect"
+      "slug": "bmpro-connect",
+      "role": "Desainer",
+      "duration": "2 minggu"
     }
   ]
 }

@@ -1,98 +1,66 @@
-"use client";
-
-import { ServicesData, SectionsData, UiLabels, Locale } from "@/types/content";
-import Button from "@/components/ui/Button";
-import ServicesCard from "@/components/ui/ServicesCard";
+import Link from "next/link";
+import { ServicesData, SectionsData, Locale } from "@/types/content";
+import { cn } from "@/lib/utils";
 
 interface ServicesPreviewProps {
   servicesData: ServicesData;
   sectionsData: SectionsData;
-  uiLabels: UiLabels;
   locale: Locale;
 }
 
 export default function ServicesPreview({
   servicesData,
   sectionsData,
-  uiLabels,
   locale,
 }: ServicesPreviewProps) {
   const section = sectionsData.services;
-  const buttonLabel =
-    section?.buttonLabel && uiLabels
-      ? uiLabels.buttons[
-          section.buttonLabel as keyof typeof uiLabels.buttons
-        ] || section.buttonLabel
-      : "";
 
   return (
-    <section className="w-full py-16 md:py-20 bg-(--background)">
-      <div className="main-container flex flex-col gap-12">
-        {section && (
-          <div className="flex flex-col text-center md:text-start max-w-3xl">
-            <h2
-              className="tracking-wide leading-[0.9]"
-              style={{
-                fontSize: "var(--text-section-title)",
-                fontFamily: "var(--font-display)",
-              }}
-            >
-              {section.title}
-            </h2>
-            <p
-              className="text-(--gray-medium) font-medium leading-relaxed"
-              style={{ fontSize: "var(--text-desc)" }}
-            >
-              {section.description}
+    <>
+      {section.eyebrow && <div className="eyebrow">{section.eyebrow}</div>}
+      <h2 className="font-hand mb-[30px] mt-0.5 text-[clamp(2rem,4vw,3.2rem)] leading-none">
+        {section.title}
+      </h2>
+
+      <div className="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
+        {servicesData.items.map((service, i) => (
+          <Link
+            key={service.id}
+            href={`/${locale}/services`}
+            className={cn(
+              "ink-border flat-3 lift-card-sm flex min-h-[186px] flex-col gap-2 bg-(--paper) p-[22px]",
+              i % 2 === 0 ? "r-card-alt" : "r-card",
+              i % 2 === 0 && "lift-card-sm-cw",
+            )}
+          >
+            <div className="flex items-center justify-between">
+              <span className="font-hand text-[34px] leading-none text-(--accent)">
+                {String(service.order).padStart(2, "0")}
+              </span>
+              <span className="ink-border flex h-[30px] w-[30px] items-center justify-center rounded-full">
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  aria-hidden
+                >
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </span>
+            </div>
+            <h3 className="font-hand mt-0.5 text-[22px] leading-[1.15]">
+              {service.title}
+            </h3>
+            <p className="m-0 text-[14px] leading-[1.6] text-(--soft)">
+              {service.summary}
             </p>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {servicesData.items.map((service, index) => (
-            <ServicesCard key={service.id} index={index}>
-              <div className="flex flex-col gap-2 group">
-                <div className="flex justify-between items-center">
-                  <span
-                    className="text-(--accent) opacity-40 group-hover:opacity-100 transition-opacity"
-                    style={{
-                      fontSize: "var(--text-stats-num)",
-                      fontFamily:
-                        "var(--font-modak), var(--font-display), cursive",
-                    }}
-                  >
-                    {String(service.order).padStart(2, "0")}
-                  </span>
-                </div>
-                <h3
-                  className="leading-wide"
-                  style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-                >
-                  {service.title}
-                </h3>
-                <p
-                  className="font-medium text-(--gray-medium) leading-relaxed"
-                  style={{ fontSize: "var(--text-services-desc)" }}
-                >
-                  {service.summary}
-                </p>
-              </div>
-            </ServicesCard>
-          ))}
-        </div>
-
-        {section.showButton && buttonLabel && (
-          <div className="flex justify-center">
-            <Button
-              href={`/${locale}/services`}
-              variant="primary"
-              className="min-w-52"
-            >
-              {buttonLabel}
-            </Button>
-          </div>
-        )}
+          </Link>
+        ))}
       </div>
-    </section>
+    </>
   );
 }
