@@ -3,34 +3,34 @@
     {
       "id": "brand-identity",
       "order": 1,
-      "title": "Identitas Merek",
-      "summary": "Logo, sistem identitas, dan pedoman merek yang dirancang untuk jangka panjang.",
+      "title": "Identitas Brand",
+      "summary": "Logo, sistem identitas, dan panduan brand yang tahan lama.",
       "deliverables": [
-        "Desain logo & varian",
+        "Desain logo & variannya",
         "Sistem tipografi & warna",
-        "Pedoman merek (PDF)",
-        "Alat tulis & perlengkapan media sosial"
+        "Panduan brand (PDF)",
+        "Kit stationery & sosial"
       ]
     },
     {
       "id": "ui-ux",
       "order": 2,
       "title": "Desain UI/UX",
-      "summary": "Desain produk digital mulai dari wireframe hingga antarmuka yang sempurna.",
+      "summary": "Desain produk dari wireframe hingga antarmuka rapi.",
       "deliverables": [
         "Riset UX & alur pengguna",
         "Wireframe & prototipe",
-        "Sistem desain UI",
-        "Serah terima desain & dukungan pengembang"
+        "Design system UI",
+        "Handoff & dukungan dev"
       ]
     },
     {
       "id": "packaging",
       "order": 3,
-      "title": "Desain Pengemasan",
-      "summary": "Kemasan struktural dan grafis yang menonjol di rak pajangan.",
+      "title": "Desain Kemasan",
+      "summary": "Kemasan struktural dan grafis yang menonjol di rak.",
       "deliverables": [
-        "Desain kemasan struktural",
+        "Desain struktur kemasan",
         "Grafis label & permukaan",
         "File produksi dieline",
         "Mockup kemasan 3D"
@@ -39,24 +39,24 @@
     {
       "id": "3d-modeling",
       "order": 4,
-      "title": "Pemodelan & Animasi 3D",
-      "summary": "Visualisasi produk, lingkungan, dan gerak untuk merek.",
+      "title": "3D & Animasi",
+      "summary": "Visualisasi produk, environment, dan motion.",
       "deliverables": [
         "Visualisasi produk 3D",
-        "Pemodelan lingkungan & properti",
-        "Animasi & grafis gerak",
-        "Render passes & komposit"
+        "Modeling environment & prop",
+        "Animasi & motion graphics",
+        "Render pass & compositing"
       ]
     },
     {
       "id": "illustration",
       "order": 5,
       "title": "Ilustrasi",
-      "summary": "Ilustrasi khusus untuk konteks editorial, merek, dan produk.",
+      "summary": "Ilustrasi kustom untuk editorial, brand, dan produk.",
       "deliverables": [
         "Ilustrasi editorial",
         "Ilustrasi spot & hero",
-        "Seni isometrik & teknis",
+        "Art isometrik & teknis",
         "Desain karakter"
       ]
     },
@@ -64,12 +64,12 @@
       "id": "web-design",
       "order": 6,
       "title": "Desain Web",
-      "summary": "Situs pemasaran dan halaman produk dengan desain yang halus dan terencana.",
+      "summary": "Situs marketing dan halaman produk, dipikirkan menyeluruh.",
       "deliverables": [
         "Desain landing page",
-        "Desain situs pemasaran",
-        "Sistem desain responsif",
-        "Templat siap CMS"
+        "Desain situs marketing",
+        "Design system responsif",
+        "Template siap CMS"
       ]
     }
   ]

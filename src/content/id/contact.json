@@ -1,4 +1,18 @@
 {
+  "info": [
+    {
+      "label": "Email",
+      "value": "dikiachmadp123@gmail.com"
+    },
+    {
+      "label": "Berbasis di",
+      "value": "Bandung, Indonesia"
+    },
+    {
+      "label": "Waktu respons",
+      "value": "Dalam 24 jam"
+    }
+  ],
   "form": {
     "id": "main-contact-form",
     "fields": [
@@ -15,31 +29,35 @@
         "name": "email",
         "type": "email",
         "label": "Email",
-        "placeholder": "halo@contoh.com",
+        "placeholder": "hello@example.com",
         "required": true
       },
       {
         "id": "field-inquiry",
-        "name": "inquiryType",
+        "name": "subject",
         "type": "select",
-        "label": "Apa yang sedang Anda cari?",
-        "placeholder": "Pilih opsi",
+        "label": "Apa yang Anda cari?",
+        "placeholder": "Pilih salah satu",
         "options": [
           {
-            "value": "web-development",
-            "label": "Pengembangan Web"
-          },
-          {
             "value": "brand-identity",
-            "label": "Identitas Merek"
-          },
-          {
-            "value": "3d-design",
-            "label": "Desain 3D"
+            "label": "Identitas brand"
           },
           {
             "value": "ui-ux-design",
             "label": "Desain UI/UX"
+          },
+          {
+            "value": "packaging",
+            "label": "Kemasan"
+          },
+          {
+            "value": "3d-animation",
+            "label": "3D & animasi"
+          },
+          {
+            "value": "web-design",
+            "label": "Desain web"
           },
           {
             "value": "other",
@@ -53,7 +71,7 @@
         "name": "message",
         "type": "textarea",
         "label": "Pesan",
-        "placeholder": "Ceritakan tentang proyek Anda...",
+        "placeholder": "Ceritakan proyek Anda…",
         "required": true
       }
     ],

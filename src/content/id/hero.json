@@ -1,11 +1,27 @@
 {
   "title": {
-    "top": "Welcome to My",
+    "top": "Selamat datang di",
     "bottom": "Studio"
   },
-  "description": "Mewujudkan ide yang bernilai sebagai Desainer Grafis, UI/UX Desainer, Desainer 3D & Animasi.",
+  "description": "Desainer lepas di Bandung — identitas brand, UI/UX, kemasan, dan 3D. Enam tahun mengubah coretan kasar jadi karya yang benar-benar dipakai.",
+  "annotation": "biasanya dibalas sehari",
+  "ctaPrimary": "Lihat karya",
+  "ctaSecondary": "Mulai proyek",
+  "videoTag": "showreel '26",
+  "craftBadge": [
+    "6+ thn",
+    "berkarya"
+  ],
+  "marquee": [
+    "brand identity",
+    "ui/ux",
+    "packaging",
+    "3d & motion",
+    "illustration",
+    "web design"
+  ],
   "availability": {
-    "status": "Available for work",
+    "status": "Terbuka untuk proyek",
     "isAvailable": true
   },
   "socialProof": {
@@ -23,12 +39,12 @@
     {
       "id": "stat-2",
       "value": "6+",
-      "label": "tahun pengalaman"
+      "label": "tahun berkarya"
     },
     {
       "id": "stat-3",
       "value": "10+",
-      "label": "klien repeat order"
+      "label": "klien berulang"
     }
   ]
 }

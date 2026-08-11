@@ -1,19 +1,20 @@
 {
-  "points": [
+  "sections": [
     {
-      "id": "data-collection",
-      "title": "Pengumpulan Data",
-      "content": "Kami hanya mengumpulkan informasi yang Anda berikan secara sukarela melalui formulir kontak."
+      "heading": "Data yang dikumpulkan",
+      "content": "Hanya yang Anda isi di formulir kontak: nama, email, jenis kebutuhan, dan pesan."
     },
     {
-      "id": "data-usage",
-      "title": "Penggunaan Data",
-      "content": "Data Anda digunakan semata-mata untuk keperluan komunikasi terkait pertanyaan Anda."
+      "heading": "Penggunaannya",
+      "content": "Semata-mata untuk membalas pertanyaan Anda. Tidak dijual, disewakan, atau dibagikan ke pengiklan."
     },
     {
-      "id": "cookies",
-      "title": "Cookie",
-      "content": "Situs ini mungkin menggunakan cookie untuk meningkatkan pengalaman penjelajahan Anda."
+      "heading": "Analitik",
+      "content": "Hanya jumlah kunjungan halaman yang anonim dan agregat. Tidak ada pelacakan lintas situs."
+    },
+    {
+      "heading": "Kendali Anda",
+      "content": "Anda dapat meminta penghapusan data pesan kapan saja, dan akan dihapus dalam tujuh hari."
     }
   ]
 }

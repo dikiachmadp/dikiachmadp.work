@@ -1,93 +1,126 @@
-"use client";
-
-import React from "react";
-import { motion } from "framer-motion";
 import { HeroData, Locale } from "@/types/content";
-import VideoHero from "@/components/ui/VideoHero";
-import StatBox from "@/components/ui/StatBox";
-import SocialProof from "@/components/ui/SocialProof";
+import Button from "@/components/ui/Button";
 
 interface HeroProps {
   heroData: HeroData;
   locale: Locale;
 }
 
-export default function Hero({ heroData }: HeroProps) {
+export default function Hero({ heroData, locale }: HeroProps) {
   return (
-    <section className="relative w-full pt-12 md:pt-32 bg-(--background) text-(--foreground)">
-      <div className="main-container">
-        <div className="flex justify-start mb-12">
-          <div className="flex items-center gap-3 px-4 py-2 border-2 border-(--border) bg-(--card) rounded-full shadow-flat">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--accent) opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-(--accent)"></span>
+    <section className="main-container pt-16">
+      <div className="grid grid-cols-1 items-center gap-[52px] lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <div className="r-chip ink-border mb-[26px] inline-flex items-center gap-[9px] bg-(--wash) px-3.5 py-[7px]">
+            <span className="relative flex h-[9px] w-[9px]">
+              <span className="anim-pulse-dot absolute inset-0 rounded-full bg-(--accent)" />
+              <span className="relative h-[9px] w-[9px] rounded-full bg-(--accent)" />
             </span>
-            <span
-              className="font-bold uppercase tracking-widest leading-none mt-2px"
-              style={{ fontSize: "var(--text-ui-label)" }}
-            >
+            <span className="text-[11px] font-bold uppercase tracking-[0.14em]">
               {heroData.availability.status}
             </span>
           </div>
-        </div>
 
-        <div className="flex flex-col-reverse lg:flex-row items-center gap-8 mb-20">
-          <div className="w-full lg:w-1/2">
-            <motion.h1
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              style={{ fontFamily: "var(--font-display)" }}
-              className="leading-[0.8] mb-8 uppercase"
+          <h1 className="font-hand mb-0.5 text-[clamp(2.4rem,5.2vw,4.2rem)] leading-none tracking-[-0.02em]">
+            {heroData.title.top}
+          </h1>
+
+          <div className="relative mb-[26px] inline-block">
+            <span className="font-hand block text-[clamp(3.6rem,9vw,7.2rem)] leading-[0.92] tracking-[-0.03em] text-(--accent)">
+              {heroData.title.bottom}
+            </span>
+            {/* Hand-drawn underline that draws itself once on load. */}
+            <svg
+              viewBox="0 0 300 18"
+              preserveAspectRatio="none"
+              aria-hidden
+              className="absolute -bottom-2 left-0 h-[15px] w-full overflow-visible"
             >
-              <span
-                className="block text-center md:text-left mb-6"
-                style={{ fontSize: "var(--text-hero-top)" }}
-              >
-                {heroData.title.top}
-              </span>
-
-              <span
-                className="text-(--accent) block text-center md:text-left"
-                style={{ fontSize: "var(--text-hero-bottom)" }}
-              >
-                {heroData.title.bottom}
-              </span>
-            </motion.h1>
-
-            <div className="max-w-xl space-y-8">
-              <p
-                className="font-medium leading-tight text-center md:text-left"
-                style={{ fontSize: "var(--text-desc)" }}
-              >
-                {heroData.description}
-              </p>
-
-              <div
-                className="flex justify-center md:justify-start"
-                style={{ paddingTop: "var(--space-fluid-md)" }}
-              >
-                <SocialProof data={heroData.socialProof} />
-              </div>
-            </div>
+              <path
+                d="M2 12 C 60 4, 120 16, 180 8 S 280 6, 298 11"
+                fill="none"
+                stroke="var(--accent)"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeDasharray="400"
+                strokeDashoffset="400"
+                style={{ animation: "dash 1.1s ease .35s forwards" }}
+              />
+            </svg>
           </div>
 
-          <div className="w-full lg:w-1/2">
-            <div className="relative p-2 bg-(--gray-soft) border-2 border-(--foreground) rounded-(--button-radius)">
-              <div className="relative overflow-hidden aspect-video bg-black rounded-[calc(var(--button-radius)-4px)] border-2 border-(--foreground)">
-                <VideoHero />
-              </div>
-            </div>
+          <p className="mb-[26px] max-w-[470px] text-[17px] leading-[1.65] text-(--soft)">
+            {heroData.description}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-3.5">
+            <Button href={`/${locale}/projects`} variant="primary">
+              {heroData.ctaPrimary}
+            </Button>
+            <Button href={`/${locale}/contact`} variant="secondary" mirrored>
+              {heroData.ctaSecondary}
+            </Button>
+            <span className="font-note flex items-center gap-[7px] text-[19px] text-(--soft)">
+              <svg
+                width="46"
+                height="26"
+                viewBox="0 0 46 26"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                aria-hidden
+              >
+                <path d="M2 20 C 12 2, 28 2, 40 10" />
+                <path d="M40 10 L 31 9 M40 10 L 37 18" />
+              </svg>
+              {heroData.annotation}
+            </span>
           </div>
         </div>
 
-        <div
-          className="grid grid-cols-1 md:grid-cols-3 justify-start gap-6 mb-24"
-          style={{ paddingBottom: "var(--space-fluid-md)" }}
-        >
-          {heroData.stats.map((stat) => (
-            <StatBox key={stat.id} label={stat.label} value={stat.value} />
-          ))}
+        <div className="relative">
+          <span
+            className="font-note absolute -top-4 left-[26px] z-3 border-2 border-dashed border-(--line) bg-(--wash) px-4 py-[5px] text-[18px] opacity-95"
+            style={{ transform: "rotate(-6deg)" }}
+          >
+            {heroData.videoTag}
+          </span>
+
+          <div
+            className="anim-float ink-border flat-6 relative bg-(--wash) p-2.5"
+            style={{
+              borderRadius: "22px 42px 22px 42px / 42px 22px 42px 22px",
+            }}
+          >
+            <div
+              className="crosshatch ink-border aspect-video overflow-hidden"
+              style={{
+                borderRadius: "16px 34px 16px 34px / 34px 16px 34px 16px",
+              }}
+            >
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-label="Showreel"
+                className="photo-ink h-full w-full object-cover"
+              >
+                <source src="/hero-video.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+
+          <div className="ink-border flat-3 absolute -bottom-[22px] -right-2.5 z-3 flex h-24 w-24 items-center justify-center rounded-full bg-(--paper)">
+            <span className="font-note text-center text-[17px] leading-[1.05] text-(--accent)">
+              {heroData.craftBadge.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </span>
+          </div>
         </div>
       </div>
     </section>

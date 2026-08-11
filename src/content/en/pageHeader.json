@@ -1,37 +1,37 @@
 {
   "projects": {
-    "topTitle": "Archive of Recent Projects",
+    "topTitle": "running archive",
     "title": "All Work",
-    "description": "A running archive of recent projects across branding, UI/UX, packaging, 3D, and illustration."
+    "description": "Projects across branding, UI/UX, packaging, 3D and illustration."
   },
   "services": {
-    "topTitle": "Services Offered",
-    "title": "What I Can Do For You",
-    "description": "A curated selection of core services across branding, UI/UX, packaging, 3D, and illustration."
+    "topTitle": "services offered",
+    "title": "What I can do for you",
+    "description": "Six core services. Every engagement starts with a sketch and ends with files you can actually use."
   },
   "about": {
-    "topTitle": "Hello, I'm",
+    "topTitle": "hello, I'm",
     "title": "Diki Achmad Prasetya",
-    "description": "Freelance Graphic Designer based in Bandung, Indonesia."
+    "description": "Freelance designer based in Bandung, Indonesia."
   },
   "studio": {
-    "topTitle": "Studio & Play",
-    "title": "Welcome to my Studio",
-    "description": "Experiments, thoughts, and digital products."
+    "topTitle": "studio & play",
+    "title": "Welcome to my studio",
+    "description": "Experiments, digital products and notes from the desk."
   },
   "contact": {
-    "topTitle": "Get In Touch",
-    "title": "Let's Work Together.",
-    "description": "Drop me a message and I'll get back to you as soon as possible."
+    "topTitle": "get in touch",
+    "title": "Let's work together.",
+    "description": "Drop a message and I'll get back to you as soon as I can — usually within a day."
   },
   "legal": {
-    "topTitle": "Last Updated: May 2026",
+    "topTitle": "Last updated: May 2026",
     "title": "Legal Notice",
-    "description": "Please read these terms carefully before using this website. By accessing or using dikiachmadp.work, you agree to be bound by these terms."
+    "description": "Please read these terms before using this website. By accessing dikiachmadp.work you agree to be bound by them."
   },
   "privacy": {
-    "topTitle": "Last Updated: May 2026",
+    "topTitle": "Last updated: May 2026",
     "title": "Privacy Policy",
-    "description": "Your privacy is important to me. This privacy policy explains how I collect, use, and protect your personal information when you visit my website."
+    "description": "This policy explains what is collected when you visit this site and how it is handled."
   }
 }

@@ -1,4 +1,18 @@
 {
+  "info": [
+    {
+      "label": "Email",
+      "value": "dikiachmadp123@gmail.com"
+    },
+    {
+      "label": "Based in",
+      "value": "Bandung, Indonesia"
+    },
+    {
+      "label": "Response time",
+      "value": "Within 24 hours"
+    }
+  ],
   "form": {
     "id": "main-contact-form",
     "fields": [
@@ -20,16 +34,35 @@
       },
       {
         "id": "field-inquiry",
-        "name": "inquiryType",
+        "name": "subject",
         "type": "select",
         "label": "What are you looking for?",
         "placeholder": "Select an option",
         "options": [
-          { "value": "web-development", "label": "Web Development" },
-          { "value": "brand-identity", "label": "Brand Identity" },
-          { "value": "3d-design", "label": "3D Design" },
-          { "value": "ui-ux-design", "label": "UI/UX Design" },
-          { "value": "other", "label": "Other" }
+          {
+            "value": "brand-identity",
+            "label": "Brand identity"
+          },
+          {
+            "value": "ui-ux-design",
+            "label": "UI/UX design"
+          },
+          {
+            "value": "packaging",
+            "label": "Packaging"
+          },
+          {
+            "value": "3d-animation",
+            "label": "3D & animation"
+          },
+          {
+            "value": "web-design",
+            "label": "Web design"
+          },
+          {
+            "value": "other",
+            "label": "Something else"
+          }
         ],
         "required": true
       },
@@ -38,12 +71,12 @@
         "name": "message",
         "type": "textarea",
         "label": "Message",
-        "placeholder": "Tell me about your project...",
+        "placeholder": "Tell me about your project…",
         "required": true
       }
     ],
     "submitAction": {
-      "uiKey": "submit" 
+      "uiKey": "submit"
     }
   }
 }

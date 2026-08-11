@@ -1,13 +1,34 @@
 {
   "main": [
-    { "label": "Projects", "path": "/projects" },
-    { "label": "About", "path": "/about" },
-    { "label": "Services", "path": "/services" },
-    { "label": "Contact", "path": "/contact" },
-    { "label": "Studio", "path": "/studio" }
+    {
+      "label": "Work",
+      "path": "/projects"
+    },
+    {
+      "label": "Studio",
+      "path": "/studio"
+    },
+    {
+      "label": "About",
+      "path": "/about"
+    },
+    {
+      "label": "Services",
+      "path": "/services"
+    },
+    {
+      "label": "Contact",
+      "path": "/contact"
+    }
   ],
   "footer": [
-    { "label": "Legal", "path": "/legal" },
-    { "label": "Privacy", "path": "/privacy" }
+    {
+      "label": "Legal",
+      "path": "/legal"
+    },
+    {
+      "label": "Privacy",
+      "path": "/privacy"
+    }
   ]
 }

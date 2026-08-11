@@ -24,7 +24,8 @@ export const createMetadata = ({
   const canonicalUrl = `${baseUrl}${fullPath}`;
 
   return {
-    title: `${title} | ${siteConfig.siteName}`,
+    // The layout's title.template already appends the site name.
+    title,
     description,
     openGraph: {
       title: `${title} | ${siteConfig.siteName}`,

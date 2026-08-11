@@ -1,40 +1,58 @@
 {
   "biography": [
-    "Desainer Grafis yang kreatif dan teliti dengan pengalaman lebih dari 5 tahun di bidang desain grafis, spesialisasi desain kemasan, ui/ux desain, dan aset 3D.",
-    "Rekam jejak terbukti dalam menghasilkan desain berkualitas tinggi yang selaras dengan identitas merek. Berpengalaman bekerja dengan klien internasional, dengan komitmen kuat untuk memenuhi tenggat waktu dan memastikan kepuasan klien."
+    "Desainer yang teliti dengan pengalaman 6+ tahun di kemasan, UI/UX, dan 3D. Bekerja bersama founder, studio, dan kampus — sebagian besar remote, selalu turun tangan.",
+    "Sudah mengerjakan proyek untuk klien di Australia, Kanada, dan Indonesia, dan sama pedulinya pada proses handoff maupun visual akhirnya."
   ],
+  "sticker": "halo, itu saya 👋",
+  "experienceTitle": "Pengalaman",
+  "skillsTitle": "Keahlian & alat",
+  "cv": {
+    "note": "unduh CV saya",
+    "items": [
+      {
+        "label": "CV — Bahasa Indonesia",
+        "href": "/CV_Diki.pdf"
+      },
+      {
+        "label": "CV — English",
+        "href": "/CV_Diki.pdf"
+      }
+    ]
+  },
   "experience": [
     {
-      "year": "2016 — Sekarang",
-      "role": "Staf Publikasi",
-      "place": "FEB UNPAS (Bandung)"
+      "year": "2016 — kini",
+      "role": "Staf Penerbitan",
+      "place": "FEB UNPAS, Bandung"
     },
     {
-      "year": "2019 — Sekarang",
+      "year": "2019 — kini",
       "role": "Desainer Grafis",
-      "place": "Freelancer (Remote)"
+      "place": "Lepas (remote)"
     },
     {
-      "year": "2019 — Sekarang",
-      "role": "Freelance 3D Artist",
-      "place": "(Remote)"
+      "year": "2019 — kini",
+      "role": "Seniman 3D",
+      "place": "Lepas (remote)"
     }
   ],
   "skills": [
     {
-      "category": "Desain",
+      "category": "Design",
       "items": [
-        "Identitas Merek",
-        "UI/UX Design",
-        "Desain Kemasan Produk"
+        "Identitas Brand",
+        "UI/UX",
+        "Kemasan",
+        "3D"
       ]
     },
     {
       "category": "Tools",
       "items": [
-        "Adobe Creative Suite",
-        "Next.js",
-        "Blender"
+        "Adobe CC",
+        "Figma",
+        "Blender",
+        "Next.js"
       ]
     }
   ]

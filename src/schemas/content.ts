@@ -14,6 +14,8 @@ export const SiteConfigSchema = z.object({
   siteName: z.string(),
   author: z.string(),
   fullName: z.string(),
+  /** Handwritten line under the wordmark in the navbar. */
+  tagline: z.string(),
   description: z.string(),
   email: z.string().email(),
   location: z.string(),
@@ -30,6 +32,16 @@ export const HeroSchema = z.object({
     bottom: z.string(),
   }),
   description: z.string(),
+  /** Caveat note next to the hero buttons. */
+  annotation: z.string(),
+  ctaPrimary: z.string(),
+  ctaSecondary: z.string(),
+  /** Rotated tag on the hero video frame. */
+  videoTag: z.string(),
+  /** Two lines inside the circular badge under the hero frame. */
+  craftBadge: z.array(z.string()),
+  /** Items cycled through the full-bleed marquee strip. */
+  marquee: z.array(z.string()),
   availability: z.object({
     status: z.string(),
     isAvailable: z.boolean(),
@@ -58,9 +70,9 @@ export const ProjectItemSchema = z.object({
   client: z.string(),
   description: z.string(),
   tags: z.array(z.string()),
+  /** Empty means "no cover" — the card falls back to a cross-hatch panel. */
   coverImage: z.string(),
   logoUrl: z.string(),
-  accent: z.string(),
   featured: z.boolean(),
   slug: z.string(),
   liveUrl: z.string().optional(),
@@ -91,6 +103,19 @@ export const ServicesDataSchema = z.object({
 
 export const AboutSchema = z.object({
   biography: z.array(z.string()),
+  /** Handwritten sticker overlapping the portrait. */
+  sticker: z.string(),
+  experienceTitle: z.string(),
+  skillsTitle: z.string(),
+  cv: z.object({
+    note: z.string(),
+    items: z.array(
+      z.object({
+        label: z.string(),
+        href: z.string(),
+      }),
+    ),
+  }),
   experience: z.array(
     z.object({
       year: z.string(),
@@ -107,6 +132,13 @@ export const AboutSchema = z.object({
 });
 
 export const ContactSchema = z.object({
+  /** Right-hand "Contact information" card. */
+  info: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string(),
+    }),
+  ),
   form: z.object({
     id: z.string(),
     fields: z.array(
@@ -165,6 +197,8 @@ export const StudioSchema = z.object({
       isExternal: z.boolean().optional(),
       thumbnail: z.string().optional(),
       buttonLabel: z.string().optional(),
+      /** Two- or three-character mark shown in the card's blob. */
+      badge: z.string().optional(),
     }),
   ),
 });
@@ -204,6 +238,8 @@ export const PageHeaderSchema = z.object({
 });
 
 const SectionSchema = z.object({
+  /** Handwritten line above the section heading. */
+  eyebrow: z.string().optional(),
   title: z.string(),
   description: z.string(),
   showButton: z.boolean(),
@@ -295,5 +331,21 @@ export const UiSchema = z.object({
   }),
   contactInfo: z.object({
     title: z.string(),
+    findMe: z.string(),
+  }),
+  admin: z.object({
+    panelLabel: z.string(),
+    greeting: z.string(),
+    dashboard: z.string(),
+    newProject: z.string(),
+    recentProjects: z.string(),
+    inbox: z.string(),
+    nav: z.array(z.string()),
+    stats: z.array(z.string()),
+    status: z.object({
+      live: z.string(),
+      draft: z.string(),
+      archived: z.string(),
+    }),
   }),
 });

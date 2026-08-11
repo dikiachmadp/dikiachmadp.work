@@ -1,10 +1,9 @@
-"use client";
-
 import Link from "next/link";
 import { ReactNode } from "react";
-import { cn, themeTransition } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
-export type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type ButtonVariant = "primary" | "secondary" | "onDark";
+export type ButtonSize = "sm" | "md" | "lg";
 
 interface ButtonProps {
   children: ReactNode;
@@ -13,12 +12,29 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   className?: string;
-  variant?: "primary" | "outline" | "ghost";
+  variant?: ButtonVariant;
   size?: ButtonSize;
+  /** Mirror the wobbly radius so neighbouring buttons never share a silhouette. */
+  mirrored?: boolean;
+  fullWidth?: boolean;
   target?: string;
   rel?: string;
+  download?: boolean;
+  "aria-label"?: string;
 }
 
+const sizeStyles: Record<ButtonSize, string> = {
+  sm: "px-5 py-2 text-[13px]",
+  md: "px-[26px] py-[13px] text-[14px]",
+  lg: "px-8 py-3.5 text-[15px]",
+};
+
+/**
+ * One button, two fills. Both share the 2px ink border, the wobbly radius, the
+ * 3px flat shadow and the −3px hover lift; only the fill changes. `onDark`
+ * keeps the accent fill but swaps border and shadow to paper for use on the
+ * ink CTA panel.
+ */
 export default function Button({
   children,
   onClick,
@@ -28,67 +44,26 @@ export default function Button({
   className,
   variant = "primary",
   size = "md",
+  mirrored,
+  fullWidth,
   target,
   rel,
+  download,
+  ...rest
 }: ButtonProps) {
-  const shadowColors = {
-    primary: "bg-[var(--foreground)]",
-    outline: "bg-[var(--background)]",
-    ghost: "bg-transparent",
-  };
-
-  const variantStyles = {
-    primary:
-      "bg-[var(--foreground)] text-[var(--background)] border-2 border-[var(--background)]",
-    outline:
-      "bg-[var(--background)] text-[var(--foreground)] border-2 border-[var(--foreground)]",
-    ghost:
-      "bg-transparent text-[var(--foreground)] border-2 border-transparent hover:bg-[var(--gray-soft)] hover:border-[var(--border)]",
-  };
-
-  const sizeStyles = {
-    xs: "px-3 py-1 text-[9px] tracking-[0.2em]",
-    sm: "px-5 py-1.5 text-[10px] tracking-widest",
-    md: "px-8 py-2 text-xs tracking-wide",
-    lg: "px-10 py-3 text-sm tracking-wide",
-    xl: "px-12 py-4 text-base tracking-wider",
-  };
-
-  const content = (
-    <div
-      className={cn(
-        "relative inline-block w-full sm:w-fit transition-all duration-200 rounded-(--button-radius)",
-        shadowColors[variant],
-        className,
-        themeTransition,
-      )}
-    >
-      <div
-        className={cn(
-          "flex items-center justify-center transition-all duration-200 rounded-(--button-radius) uppercase w-full",
-          variantStyles[variant],
-          sizeStyles[size],
-          "translate-x-0 translate-y-0",
-          !disabled &&
-            variant !== "ghost" &&
-            "group-hover:-translate-x-1.5 group-hover:-translate-y-1.5",
-          !disabled && variant === "ghost" && "group-hover:opacity-80",
-          disabled && "opacity-50 cursor-not-allowed",
-        )}
-        style={
-          size === "md" || size === "lg" || size === "xl"
-            ? {
-                fontFamily: "var(--font-modak), cursive",
-                fontSize: size === "md" ? "var(--text-ui-button)" : undefined,
-              }
-            : {
-                fontFamily: "var(--font-body), sans-serif",
-              }
-        }
-      >
-        {children}
-      </div>
-    </div>
+  const base = cn(
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap",
+    "font-bold tracking-[0.03em] cursor-pointer",
+    mirrored ? "r-btn-alt" : "r-btn",
+    sizeStyles[size],
+    fullWidth ? "w-full" : "w-auto",
+    variant === "onDark"
+      ? "border-2 border-(--paper) bg-(--accent) text-white shadow-[3px_3px_0_var(--paper)] transition-all duration-[0.22s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-[6px_6px_0_var(--paper)]"
+      : "ink-border flat-3 lift-btn",
+    variant === "primary" && "bg-(--accent) text-white",
+    variant === "secondary" && "bg-(--paper) text-(--ink)",
+    disabled && "pointer-events-none opacity-50",
+    className,
   );
 
   if (href) {
@@ -96,10 +71,12 @@ export default function Button({
       <Link
         href={href}
         target={target}
-        rel={target === "_blank" ? rel || "noopener noreferrer" : rel}
-        className="group block sm:inline-block outline-none"
+        rel={target === "_blank" ? (rel ?? "noopener noreferrer") : rel}
+        download={download}
+        className={base}
+        {...rest}
       >
-        {content}
+        {children}
       </Link>
     );
   }
@@ -109,9 +86,10 @@ export default function Button({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className="group block w-full sm:w-fit outline-none"
+      className={base}
+      {...rest}
     >
-      {content}
+      {children}
     </button>
   );
 }

@@ -1,44 +1,70 @@
 {
   "buttons": {
-    "viewAllWork": "Lihat Semua Proyek",
-    "viewAllServices": "Lihat Semua Layanan",
-    "contactMe": "Hubungi Saya",
-    "submit": "Kirim Pesan",
-    "loading": "Mohon tunggu...",
-    "success": "Pesan terkirim!",
+    "viewAllWork": "Semua karya",
+    "viewAllServices": "Semua layanan",
+    "contactMe": "Ngobrol yuk",
+    "submit": "Kirim pesan",
+    "loading": "Mengirim…",
+    "success": "Terkirim! ✓",
     "download": "Unduh CV"
   },
   "states": {
-    "empty": "Tidak ada data",
-    "error": "Sesuatu yang salah terjadi. Silakan coba lagi nanti.",
-    "loading": "Memuat...",
+    "empty": "belum ada… coba kata lain",
+    "error": "Terjadi kesalahan. Silakan coba lagi.",
+    "loading": "Memuat…",
     "notFound": "Halaman tidak ditemukan",
     "comingSoon": "Segera",
-    "allCategories": "Semua Kategori",
-    "searchPlaceholder": "Cari proyek..."
+    "allCategories": "Semua",
+    "searchPlaceholder": "cari proyek…"
   },
   "notFound": {
-    "marquee": "404 Error • Page Not Found • Lost in Space • ",
-    "badge": "Status: Halaman Tidak Dapat Dijangkau",
-    "heading": "404 // OOPSS, KITA PUNYA MASALAH.",
-    "description": "Halaman yang Anda cari tidak dapat diakses.",
-    "trace": "ERR_PATH_NOT_FOUND // [TRACE]",
-    "btnHome": "kembali ke beranda",
-    "btnStudio": "kembali ke studio"
+    "marquee": "404 · halaman tidak ditemukan · ",
+    "badge": "halaman ini hilang",
+    "heading": "404",
+    "description": "Halaman yang Anda cari tidak ada. Mungkin ini sketsa yang sudah saya buang.",
+    "trace": "ERR_PATH_NOT_FOUND",
+    "btnHome": "Ke beranda",
+    "btnStudio": "Ke studio"
   },
   "projectDetail": {
-    "aboutProject": "Tentang Proyek",
+    "aboutProject": "Tentang proyek",
     "client": "Klien",
-    "datePublished": "Tanggal Rilis",
+    "datePublished": "Tahun",
     "role": "Peran",
     "duration": "Durasi",
-    "tools": "Peralatan",
-    "techStack": "Teknologi",
-    "backBtn": "Kembali ke Proyek",
-    "visitBtn": "Kunjungi Situs",
+    "tools": "Alat",
+    "techStack": "Tag",
+    "backBtn": "Kembali ke proyek",
+    "visitBtn": "Kunjungi situs",
     "galleryLabel": "Galeri"
   },
   "contactInfo": {
-    "title": "Informasi Kontak"
+    "title": "Informasi kontak",
+    "findMe": "temukan saya di"
+  },
+  "admin": {
+    "panelLabel": "ruang kendali",
+    "greeting": "selamat datang, Diki",
+    "dashboard": "Dasbor",
+    "newProject": "Proyek baru",
+    "recentProjects": "Proyek terbaru",
+    "inbox": "Kotak masuk",
+    "nav": [
+      "Dasbor",
+      "Proyek",
+      "Pesan",
+      "Pengaturan"
+    ],
+    "stats": [
+      "proyek",
+      "unggulan",
+      "pesan baru",
+      "kunjungan / minggu"
+    ],
+    "status": {
+      "live": "Tayang",
+      "draft": "Draf",
+      "archived": "Arsip"
+    }
   }
 }

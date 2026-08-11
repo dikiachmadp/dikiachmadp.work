@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
+import SectionWrapper from "@/components/layout/SectionWrapper";
 import Hero from "@/components/sections/Hero";
-import ServicesPreview from "@/components/sections/ServicesPreview";
+import Marquee from "@/components/sections/Marquee";
+import StatBox from "@/components/ui/StatBox";
 import ProjectsGallery from "@/components/sections/ProjectsGallery";
+import ServicesPreview from "@/components/sections/ServicesPreview";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import CTASection from "@/components/sections/CTASection";
-import SectionWrapper from "@/components/layout/SectionWrapper";
 import { Locale } from "@/types/content";
 
 interface PageProps {
@@ -17,9 +19,7 @@ interface PageProps {
 
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
   const dict = await getDictionary(validLocale);
@@ -35,17 +35,28 @@ export async function generateMetadata({
 }
 
 export default async function HomePage({ params }: PageProps) {
-  const resolvedParams = await params;
-  const validLocale =
-    resolvedParams.locale === "id" || resolvedParams.locale === "en"
-      ? (resolvedParams.locale as Locale)
-      : "en";
-
+  const { locale } = await params;
+  const validLocale = (locale === "id" ? "id" : "en") as Locale;
   const dict = await getDictionary(validLocale);
 
   return (
     <PageWrapper>
       <Hero heroData={dict.hero} locale={validLocale} />
+
+      <Marquee items={dict.hero.marquee} />
+
+      <SectionWrapper id="stats" spacing="md">
+        <div className="grid grid-cols-1 gap-[22px] sm:grid-cols-3">
+          {dict.hero.stats.map((stat, i) => (
+            <StatBox
+              key={stat.id}
+              value={stat.value}
+              label={stat.label}
+              index={i}
+            />
+          ))}
+        </div>
+      </SectionWrapper>
 
       <SectionWrapper id="featured-projects">
         <ProjectsGallery
@@ -53,23 +64,27 @@ export default async function HomePage({ params }: PageProps) {
           sectionsData={dict.sections}
           uiLabels={dict.ui}
           locale={validLocale}
-          featuredOnly={true}
         />
       </SectionWrapper>
 
-      <ServicesPreview
-        servicesData={dict.services}
-        sectionsData={dict.sections}
-        uiLabels={dict.ui}
-        locale={validLocale}
-      />
+      <SectionWrapper id="services">
+        <ServicesPreview
+          servicesData={dict.services}
+          sectionsData={dict.sections}
+          locale={validLocale}
+        />
+      </SectionWrapper>
 
-      <TestimonialsSection
-        testimonialsData={dict.testimonials}
-        sectionsData={dict.sections}
-      />
+      <SectionWrapper id="testimonials">
+        <TestimonialsSection
+          testimonialsData={dict.testimonials}
+          sectionsData={dict.sections}
+        />
+      </SectionWrapper>
 
-      <CTASection ctaData={dict.cta} uiLabels={dict.ui} locale={validLocale} />
+      <SectionWrapper id="cta">
+        <CTASection ctaData={dict.cta} locale={validLocale} />
+      </SectionWrapper>
     </PageWrapper>
   );
 }

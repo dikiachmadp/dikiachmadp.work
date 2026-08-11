@@ -1,5 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import ConfirmSubmitButton from "@/components/interactive/ConfirmSubmitButton";
 import { deleteProject } from "./delete-action";
 
 export default async function ProjectsPage({
@@ -8,51 +9,55 @@ export default async function ProjectsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const projects = await prisma.project.findMany();
+  const projects = await prisma.project.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Manage Projects</h1>
+    <>
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
+        <h1 className="font-hand text-[34px] leading-none">Manage Projects</h1>
         <Link
           href={`/${locale}/dashboard/projects/new`}
-          className="bg-green-500 text-white px-4 py-2 rounded"
+          className="ink-border flat-3 lift-btn bg-(--accent) px-5 py-2.5 text-[12px] font-bold text-white"
+          style={{ borderRadius: "22px 9px 24px 10px / 10px 24px 9px 22px" }}
         >
-          Add New Project
+          + New project
         </Link>
       </div>
-      <table className="min-w-full bg-white">
-        <thead>
-          <tr>
-            <th className="py-2 px-4 border">Title</th>
-            <th className="py-2 px-4 border">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projects.map((project) => (
-            <tr key={project.id}>
-              <td className="py-2 px-4 border">{project.title}</td>
-              <td className="py-2 px-4 border flex gap-2">
+
+      <div className="r-card ink-border flat-3 bg-(--paper) p-5">
+        {projects.length === 0 ? (
+          <p className="m-0 py-6 text-center text-[14px] text-(--soft)">
+            No projects yet.
+          </p>
+        ) : (
+          projects.map((project) => (
+            <div
+              key={project.id}
+              className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-dashed border-(--line) py-3 last:border-b-0"
+            >
+              <span className="text-[14px] font-semibold">{project.title}</span>
+              <span className="flex items-center gap-2">
                 <Link
                   href={`/${locale}/dashboard/projects/${project.id}/edit`}
-                  className="text-blue-500 hover:underline"
+                  className="r-tag ink-border lift-chip px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em]"
                 >
                   Edit
                 </Link>
                 <form action={deleteProject.bind(null, project.id)}>
-                  <button
-                    type="submit"
-                    className="text-red-500 hover:underline"
-                    onClick={() => confirm("Are you sure?")}
+                  <ConfirmSubmitButton
+                    message={`Delete "${project.title}"? This cannot be undone.`}
+                    className="r-tag ink-border lift-chip px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-(--soft)"
                   >
                     Delete
-                  </button>
+                  </ConfirmSubmitButton>
                 </form>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+              </span>
+            </div>
+          ))
+        )}
+      </div>
+    </>
   );
 }

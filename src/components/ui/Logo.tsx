@@ -1,53 +1,38 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { Locale } from "@/types/content";
 
-export default function Logo() {
-  const params = useParams();
-  const locale = (params?.locale as string) || "en";
+interface LogoProps {
+  locale: Locale;
+  wordmark: string;
+  tagline: string;
+}
 
+export default function Logo({ locale, wordmark, tagline }: LogoProps) {
   return (
     <Link
       href={`/${locale}`}
-      aria-label="Back to home"
-      className="group inline-block outline-none"
+      aria-label={wordmark}
+      className="group flex shrink-0 items-center gap-3 outline-none"
     >
-      <div
-        className="
-        relative
-        bg-(--foreground)
-        rounded-(--button-radius)
-        p-0
-      "
-      >
-        <div
-          className="
-          flex items-center justify-center
-          bg-(--background)
-          border-2 border-(--foreground)
-          rounded-(--button-radius)
-          p-2          
-          translate-x-0
-          translate-y-0
-          transition-transform duration-200 ease-out
-          group-hover:-translate-x-1
-          group-hover:-translate-y-1
-        "
-        >
-          <div className="relative w-10 h-10">
-            <Image
-              src="/logo.webp"
-              alt="Kid Studio Logo"
-              fill
-              priority
-              sizes="32px"
-              className="object-contain"
-            />
-          </div>
-        </div>
-      </div>
+      <span className="r-blob-alt ink-border flex h-[46px] w-[46px] items-center justify-center overflow-hidden bg-(--wash) transition-transform duration-300 ease-out group-hover:rotate-[-8deg] group-hover:scale-105">
+        <Image
+          src="/logo.webp"
+          alt=""
+          width={34}
+          height={34}
+          priority
+          className="h-[34px] w-[34px] object-contain"
+        />
+      </span>
+      <span className="leading-none">
+        <span className="font-hand block text-[21px] tracking-[-0.01em]">
+          {wordmark}
+        </span>
+        <span className="font-note mt-px block text-[14px] text-(--accent)">
+          {tagline}
+        </span>
+      </span>
     </Link>
   );
 }

@@ -17,7 +17,7 @@
       "year": "2026",
       "date": "2026-04-15",
       "client": "FEB UNPAS (Indonesia)",
-      "description": "Web Design for Economics Development Study Program at FEB UNPAS (Bandung)",
+      "description": "A full revamp of the digital presence for the Economics Development study program at FEB UNPAS.",
       "tags": [
         "Web Design",
         "UI",
@@ -25,25 +25,15 @@
       ],
       "coverImage": "/projects/covers/webep.webp",
       "logoUrl": "/projects/logos/logoep.webp",
-      "accent": "#8b5a2b",
       "featured": true,
       "slug": "website-ekonomi",
       "liveUrl": "https://ekonomi.feb.unpas.ac.id",
       "isLivePreview": true,
       "role": "Lead UI/UX Designer",
-      "duration": "3 Months",
-      "tools": [
-        "React",
-        "TypeScript",
-        "Tailwind CSS"
-      ],
+      "duration": "3 months",
       "contentBlocks": [
-        "This project aimed to completely revamp the digital presence of the Economics Development Study Program at FEB UNPAS. The main focus was to enhance information accessibility for active and prospective students.",
-        "The interface design was created with a neat brutalist approach, highlighting the institution's identity through strong accent colors. The biggest challenge was organizing the massive academic data into an intuitive navigation structure."
-      ],
-      "gallery": [
-        "/projects/covers/webep-gallery1.webp",
-        "/projects/covers/webep-gallery2.webp"
+        "The goal was to make dense academic information easy to reach for current and prospective students, without losing the institution's voice.",
+        "The interface leans on a calm, structured layout with strong hierarchy. The hardest part was folding a huge amount of academic data into navigation that still feels light."
       ]
     },
     {
@@ -53,7 +43,7 @@
       "year": "2026",
       "date": "2026-02-22",
       "client": "PT Padjajaran Pratama Wijaya (Indonesia)",
-      "description": "Web Design for Ginger Candy Product at PT Padjajaran Pratama Wijaya",
+      "description": "Product site for a ginger candy brand — warm, appetising and export-ready.",
       "tags": [
         "Web Design",
         "UI",
@@ -61,11 +51,16 @@
       ],
       "coverImage": "/projects/covers/webjahe.webp",
       "logoUrl": "/projects/logos/logojahe.webp",
-      "accent": "#2d4a3e",
       "featured": true,
       "slug": "website-jahe",
       "liveUrl": "https://jahepadjajaran.com",
-      "isLivePreview": true
+      "isLivePreview": true,
+      "role": "Designer",
+      "duration": "2 months",
+      "contentBlocks": [
+        "The brand needed a site that worked for both local retail buyers and overseas distributors.",
+        "Product photography drives the layout; everything else stays out of the way."
+      ]
     },
     {
       "id": "website-dim",
@@ -74,7 +69,7 @@
       "year": "2025",
       "date": "2025-08-10",
       "client": "DIM UNPAS (Indonesia)",
-      "description": "Web Design for Doctoral Programme at DIM UNPAS (Bandung)",
+      "description": "Web design for the doctoral management programme at UNPAS, Bandung.",
       "tags": [
         "Web Design",
         "UI",
@@ -82,11 +77,16 @@
       ],
       "coverImage": "/projects/covers/webdim.webp",
       "logoUrl": "/projects/logos/logodim.webp",
-      "accent": "#3a7d7b",
       "featured": true,
       "slug": "website-dim",
       "liveUrl": "https://dim.unpas.ac.id",
-      "isLivePreview": true
+      "isLivePreview": true,
+      "role": "Designer",
+      "duration": "3 months",
+      "contentBlocks": [
+        "A doctoral programme site has two jobs: convince and inform. The structure separates the two clearly.",
+        "Typography does most of the work — the palette stays quiet on purpose."
+      ]
     },
     {
       "id": "holroyd-packaging",
@@ -95,17 +95,18 @@
       "year": "2024",
       "date": "2024-06-16",
       "client": "Holroyd (Australia)",
-      "description": "Packaging Design and Mockup Design for Tow Ball Product at Holroyd",
+      "description": "Packaging and mockup design for the Holroyd tow ball product line.",
       "tags": [
         "Packaging",
         "3D",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#c39a2c",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "holroyd-packaging"
+      "slug": "holroyd-packaging",
+      "role": "Packaging Designer",
+      "duration": "6 weeks"
     },
     {
       "id": "trader-packaging",
@@ -114,17 +115,18 @@
       "year": "2024",
       "date": "2024-07-10",
       "client": "Trading Bot (Canada)",
-      "description": "Design Package for Pricing Plan Pack in Trading Bot AI Website",
+      "description": "Pricing-plan pack visuals for a trading bot product site.",
       "tags": [
         "Packaging",
         "3D",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#6b2a4a",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "trader-packaging"
+      "slug": "trader-packaging",
+      "role": "Designer",
+      "duration": "4 weeks"
     },
     {
       "id": "branding-eatbread",
@@ -133,17 +135,18 @@
       "year": "2025",
       "date": "2025-09-20",
       "client": "Eat'Bread (Indonesia)",
-      "description": "Branding Identity and Packaging for Eat'Bread Product",
+      "description": "Identity and packaging system for a local bakery brand.",
       "tags": [
         "Packaging",
         "Branding",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#b8a88a",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "branding-eatbread"
+      "slug": "branding-eatbread",
+      "role": "Brand Designer",
+      "duration": "8 weeks"
     },
     {
       "id": "holroyd-brochure",
@@ -152,17 +155,18 @@
       "year": "2025",
       "date": "2025-02-14",
       "client": "Holroyd (Australia)",
-      "description": "Brochure Design for Holroyd Bearing Product",
+      "description": "Brochure design for the Holroyd bearing product range.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#e2723f",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "holroyd-brochure"
+      "slug": "holroyd-brochure",
+      "role": "Designer",
+      "duration": "3 weeks"
     },
     {
       "id": "purepro-brochure",
@@ -171,17 +175,18 @@
       "year": "2025",
       "date": "2025-04-30",
       "client": "BMPRO (Australia)",
-      "description": "Brochure Design for BMPRO-PurePro Product",
+      "description": "Brochure design for the BMPRO PurePro product.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#a84b2a",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "purepro-brochure"
+      "slug": "purepro-brochure",
+      "role": "Designer",
+      "duration": "3 weeks"
     },
     {
       "id": "bmpro-dealerbook",
@@ -190,17 +195,18 @@
       "year": "2025",
       "date": "2025-05-10",
       "client": "BMPRO (Australia)",
-      "description": "Layout and Formatting Handbook Document for BMPRO-Dealerbook",
+      "description": "Layout and formatting for the BMPRO dealer handbook.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#8a7a68",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "bmpro-dealerbook"
+      "slug": "bmpro-dealerbook",
+      "role": "Layout Designer",
+      "duration": "5 weeks"
     },
     {
       "id": "xero-brochure",
@@ -209,17 +215,18 @@
       "year": "2025",
       "date": "2025-04-12",
       "client": "BMPRO (Australia)",
-      "description": "Brochure Design for BMPRO-Xero Product",
+      "description": "Brochure design for the BMPRO Xero product.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#2b2b3b",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "xero-brochure"
+      "slug": "xero-brochure",
+      "role": "Designer",
+      "duration": "2 weeks"
     },
     {
       "id": "bmpro-brochure",
@@ -228,17 +235,18 @@
       "year": "2025",
       "date": "2025-04-05",
       "client": "BMPRO (Australia)",
-      "description": "Brochure Design for BMPRO-Trailer Safety Control Product",
+      "description": "Brochure design for BMPRO Trailer Safety Control.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#1f6f8b",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "bmpro-brochure"
+      "slug": "bmpro-brochure",
+      "role": "Designer",
+      "duration": "2 weeks"
     },
     {
       "id": "bmpro-connect",
@@ -247,17 +255,18 @@
       "year": "2025",
       "date": "2025-04-20",
       "client": "BMPRO (Australia)",
-      "description": "Brochure Design for BMPRO-Connect Product",
+      "description": "Brochure design for the BMPRO Connect product.",
       "tags": [
         "Branding",
         "Print",
         "Mockup"
       ],
-      "coverImage": "/projects/covers/cover-placeholder.webp",
-      "logoUrl": "/projects/logos/logo-placeholder.webp",
-      "accent": "#e7a35a",
+      "coverImage": "",
+      "logoUrl": "",
       "featured": false,
-      "slug": "bmpro-connect"
+      "slug": "bmpro-connect",
+      "role": "Designer",
+      "duration": "2 weeks"
     }
   ]
 }

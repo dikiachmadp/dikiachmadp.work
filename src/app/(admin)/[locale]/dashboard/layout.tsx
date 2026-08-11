@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { getDictionary } from "@/lib/dictionary";
+import { Locale } from "@/types/content";
+import DarkModeToggle from "@/components/interactive/DarkModeToggle";
+import { cn } from "@/lib/utils";
 
 export default async function DashboardLayout({
   children,
@@ -8,24 +12,41 @@ export default async function DashboardLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const validLocale = (locale === "id" ? "id" : "en") as Locale;
+  const dict = await getDictionary(validLocale);
+  const admin = dict.ui.admin;
+
+  const navItems = [
+    { label: admin.nav[0], href: `/${validLocale}/dashboard` },
+    { label: admin.nav[1], href: `/${validLocale}/dashboard/projects` },
+    { label: admin.nav[2], href: `/${validLocale}/contact` },
+    { label: admin.nav[3], href: `/${validLocale}` },
+  ];
 
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-64 bg-gray-800 text-white p-4">
-        <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
-        <nav className="flex flex-col gap-2">
-          <Link href={`/${locale}/dashboard`} className="hover:text-blue-300">
-            Dashboard
-          </Link>
-          <Link
-            href={`/${locale}/dashboard/projects`}
-            className="hover:text-blue-300"
-          >
-            Projects
-          </Link>
-        </nav>
-      </aside>
-      <main className="flex-1 p-8 bg-gray-100">{children}</main>
+    <div className="main-container py-11">
+      <div className="grid grid-cols-1 items-start gap-[26px] lg:grid-cols-[210px_1fr]">
+        <aside className="r-card ink-border flat-3 flex flex-col gap-1.5 bg-(--wash) p-[18px]">
+          <div className="mb-1.5 flex items-center justify-between gap-2">
+            <span className="font-note text-[20px]">{admin.panelLabel}</span>
+            <DarkModeToggle />
+          </div>
+          {navItems.map((item, i) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={cn(
+                "r-tag ink-border px-3 py-[9px] text-[12px] font-bold transition-transform duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px]",
+                i === 0 ? "bg-(--accent) text-white" : "bg-transparent",
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </aside>
+
+        <main>{children}</main>
+      </div>
     </div>
   );
 }

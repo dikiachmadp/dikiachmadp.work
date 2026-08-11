@@ -10,6 +10,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Design references and their vendored runtime, not application code.
+    "design_handoff_dikiachmadp_rebuild/**",
+    "prisma/generated/**",
   ]),
 ]);
 

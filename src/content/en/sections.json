@@ -1,24 +1,27 @@
 {
   "featuredProjects": {
+    "eyebrow": "selected pieces",
     "title": "Featured Projects",
-    "description": "A selection of my best current projects.",
+    "description": "A selection of recent work.",
     "showButton": true,
     "buttonLabel": "viewAllWork"
   },
   "services": {
+    "eyebrow": "what I do",
     "title": "Services",
-    "description": "Comprehensive design solutions tailored to your brand needs.",
+    "description": "Six core services, start to finish.",
     "showButton": true,
     "buttonLabel": "viewAllServices"
   },
   "testimonials": {
+    "eyebrow": "kind words",
     "title": "Testimonials",
-    "description": "What clients says about me.",
+    "description": "What clients say about working together.",
     "showButton": false
   },
   "cta": {
-    "title": "Do you have a project in mind?",
-    "description": "Let's work together.",
+    "title": "Got something to build?",
+    "description": "Tell me the messy version — I'll help shape it into something people remember.",
     "showButton": true,
     "buttonLabel": "contactMe"
   }

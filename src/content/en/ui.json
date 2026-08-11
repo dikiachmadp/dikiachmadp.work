@@ -1,44 +1,70 @@
 {
   "buttons": {
-    "viewAllWork": "View All Work",
-    "viewAllServices": "View All Services",
-    "contactMe": "Contact Me",
-    "submit": "Send Message",
-    "loading": "Please wait...",
-    "success": "Message Sent!",
+    "viewAllWork": "All work",
+    "viewAllServices": "All services",
+    "contactMe": "Let's talk",
+    "submit": "Send message",
+    "loading": "Sending…",
+    "success": "Sent! ✓",
     "download": "Download CV"
   },
   "states": {
-    "empty": "No projects found matching your search",
-    "error": "Something went wrong",
-    "loading": "Loading...",
+    "empty": "nothing here… try another word",
+    "error": "Something went wrong. Please try again.",
+    "loading": "Loading…",
     "notFound": "Page not found",
-    "comingSoon": "Coming Soon",
-    "allCategories": "All Projects",
-    "searchPlaceholder": "Search projects..."
+    "comingSoon": "Coming soon",
+    "allCategories": "All",
+    "searchPlaceholder": "search projects…"
   },
   "notFound": {
-    "marquee": "404 Error • Page Not Found • Lost in Space • ",
-    "badge": "Status: Path Unreachable",
-    "heading": "404 // HOUSTON, WE HAVE A PROBLEM.",
-    "description": "The page you are looking for is not available.",
-    "trace": "ERR_PATH_NOT_FOUND // [TRACE]",
-    "btnHome": "back to home",
-    "btnStudio": "back to studio"
+    "marquee": "404 · page not found · ",
+    "badge": "this path went missing",
+    "heading": "404",
+    "description": "The page you're after isn't here. Maybe it was a sketch I threw away.",
+    "trace": "ERR_PATH_NOT_FOUND",
+    "btnHome": "Back home",
+    "btnStudio": "To the studio"
   },
   "projectDetail": {
-    "aboutProject": "About Project",
+    "aboutProject": "About the project",
     "client": "Client",
-    "datePublished": "Date Published",
+    "datePublished": "Year",
     "role": "Role",
     "duration": "Duration",
     "tools": "Tools",
-    "techStack": "Tech Stack",
-    "backBtn": "Back to Projects",
-    "visitBtn": "Visit Live Site",
+    "techStack": "Tags",
+    "backBtn": "Back to projects",
+    "visitBtn": "Visit live site",
     "galleryLabel": "Gallery"
   },
   "contactInfo": {
-    "title": "Contact Information"
+    "title": "Contact information",
+    "findMe": "find me on"
+  },
+  "admin": {
+    "panelLabel": "control room",
+    "greeting": "welcome back, Diki",
+    "dashboard": "Dashboard",
+    "newProject": "New project",
+    "recentProjects": "Recent projects",
+    "inbox": "Inbox",
+    "nav": [
+      "Dashboard",
+      "Projects",
+      "Messages",
+      "Settings"
+    ],
+    "stats": [
+      "projects",
+      "featured",
+      "new messages",
+      "views / week"
+    ],
+    "status": {
+      "live": "Live",
+      "draft": "Draft",
+      "archived": "Archived"
+    }
   }
 }

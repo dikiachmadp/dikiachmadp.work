@@ -2,55 +2,43 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { Locale } from "@/types/content";
-import { cn, themeTransition } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
+const LOCALES: Locale[] = ["en", "id"];
+
+/** Two segments in one wobbly pill; the active one takes the accent fill. */
 export default function LanguageToggle() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const currentLocale = pathname.split("/")[1] as Locale;
+  const currentLocale = (pathname.split("/")[1] as Locale) || "en";
 
-  const toggleLanguage = (newLocale: Locale) => {
-    if (newLocale === currentLocale) return;
-
-    const pathSegments = pathname.split("/");
-    pathSegments[1] = newLocale;
-    const newPath = pathSegments.join("/");
-
-    router.push(newPath);
+  const switchTo = (next: Locale) => {
+    if (next === currentLocale) return;
+    const segments = pathname.split("/");
+    segments[1] = next;
+    router.push(segments.join("/"));
   };
 
   return (
     <div
-      className={cn(
-        "relative inline-flex h-8.5 w-18 items-center rounded-full border-2 border-(--foreground) bg-(--gray-soft)",
-        "transition-colors duration-500 ease-in-out",
-      )}
+      className="ink-border flex w-fit cursor-pointer items-center overflow-hidden text-[11px] font-bold tracking-[0.08em] transition-transform duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px]"
+      style={{ borderRadius: "20px 9px 22px 8px / 8px 22px 9px 20px" }}
     >
-      <span
-        className="absolute bottom-0.5 left-0.5 z-0 h-6.5 w-7.5 rounded-full bg-(--foreground)"
-        style={{
-          transition: "transform 0.5s cubic-bezier(0.65, 0, 0.35, 1)",
-          transform:
-            currentLocale === "id" ? "translateX(34px)" : "translateX(0px)",
-          willChange: "transform",
-        }}
-      />
-
-      {(["en", "id"] as const).map((lang) => {
+      {LOCALES.map((lang) => {
         const isActive = currentLocale === lang;
         return (
           <button
             key={lang}
-            onClick={() => toggleLanguage(lang)}
-            aria-label={`Switch to ${lang} language`}
+            type="button"
+            onClick={() => switchTo(lang)}
+            aria-label={`Switch to ${lang.toUpperCase()}`}
+            aria-current={isActive ? "true" : undefined}
             className={cn(
-              "relative z-10 flex h-full w-1/2 items-center justify-center outline-none cursor-pointer",
-              "text-[11px] font-black uppercase tracking-wider transition-colors duration-500",
+              "cursor-pointer px-[10px] py-[6px] uppercase outline-none transition-colors",
               isActive
-                ? "text-(--background)"
-                : "text-(--foreground) hover:opacity-70",
-              themeTransition,
+                ? "bg-(--accent) text-white"
+                : "bg-transparent text-(--ink)",
             )}
           >
             {lang}
