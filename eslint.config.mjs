@@ -10,6 +10,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Git worktrees live here; linting them double-reports every finding
+    // and walks their build output, which ".next/**" above does not match.
+    ".claude/**",
     // Design references and their vendored runtime, not application code.
     "design_handoff_dikiachmadp_rebuild/**",
     "prisma/generated/**",
