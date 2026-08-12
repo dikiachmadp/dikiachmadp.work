@@ -21,12 +21,12 @@ export default function NotFoundContent({
           </h1>
           <span
             aria-hidden
-            className="anim-wob absolute left-[-8%] top-[14%] h-[70%] w-[116%] border-2 border-dashed border-(--line) opacity-50"
+            className="anim-wob absolute top-[14%] left-[-8%] h-[70%] w-[116%] border-2 border-dashed border-(--line) opacity-50"
             style={{ borderRadius: "52% 48% 45% 55% / 48% 52% 48% 52%" }}
           />
         </div>
 
-        <p className="font-note mb-1.5 mt-2.5 text-[24px] text-(--soft)">
+        <p className="font-note mt-2.5 mb-1.5 text-[24px] text-(--soft)">
           {dict.badge}
         </p>
         <p className="mx-auto mb-[26px] max-w-[420px] text-[17px] leading-[1.6]">

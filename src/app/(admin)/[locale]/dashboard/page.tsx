@@ -85,7 +85,7 @@ export default async function DashboardPage({
             <div className="font-hand text-[30px] leading-none">
               {stat.value}
             </div>
-            <div className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-(--soft)">
+            <div className="mt-1 text-[10px] font-bold tracking-[0.14em] text-(--soft) uppercase">
               {stat.label}
             </div>
           </div>
@@ -94,9 +94,7 @@ export default async function DashboardPage({
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1.35fr_1fr]">
         <section className="r-card ink-border flat-3 bg-(--paper) p-5">
-          <h2 className="font-hand mb-3 text-[21px]">
-            {admin.recentProjects}
-          </h2>
+          <h2 className="font-hand mb-3 text-[21px]">{admin.recentProjects}</h2>
           {recent.map((project) => {
             const isLive = Boolean(project.liveUrl);
             return (
@@ -112,7 +110,7 @@ export default async function DashboardPage({
                 </span>
                 <span
                   className={cn(
-                    "border-[1.5px] border-(--line) px-2 py-1 text-center text-[9px] font-bold uppercase tracking-[0.1em]",
+                    "border-[1.5px] border-(--line) px-2 py-1 text-center text-[9px] font-bold tracking-[0.1em] uppercase",
                     isLive
                       ? "bg-(--accent) text-white"
                       : "bg-transparent text-(--ink)",
@@ -152,9 +150,7 @@ export default async function DashboardPage({
               ))
             ) : (
               <p className="ink-border-dashed r-chip m-0 px-4 py-6 text-center text-[13px] text-(--soft)">
-                {inbox === null
-                  ? dict.ui.states.error
-                  : dict.ui.states.empty}
+                {inbox === null ? dict.ui.states.error : dict.ui.states.empty}
               </p>
             )}
           </div>

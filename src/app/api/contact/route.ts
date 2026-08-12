@@ -66,8 +66,7 @@ export async function POST(request: Request) {
 
     const resend = new Resend(env.RESEND_API_KEY);
     const fromAddress =
-      env.RESEND_FROM_EMAIL ||
-      "Portfolio Contact Form <onboarding@resend.dev>";
+      env.RESEND_FROM_EMAIL || "Portfolio Contact Form <onboarding@resend.dev>";
 
     // Pesan sudah tersimpan; kegagalan email tidak boleh membuat pengirim
     // mengira pesannya tidak terkirim, jadi ditangani terpisah.

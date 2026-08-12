@@ -27,19 +27,19 @@ export default function Footer({
 
   return (
     <footer className="mt-24 border-t-2 border-(--line) bg-(--wash) transition-colors duration-[0.45s]">
-      <div className="main-container pb-[26px] pt-[38px]">
+      <div className="main-container pt-[38px] pb-[26px]">
         <div className="grid grid-cols-1 items-end gap-8 pb-6 md:grid-cols-[1fr_auto]">
           <div>
             <div className="r-chip ink-border mb-3 inline-flex items-center gap-2 bg-(--paper) px-3 py-[5px]">
               <span className="anim-pulse-dot h-2 w-2 rounded-full bg-(--accent)" />
-              <span className="text-[9px] font-bold uppercase tracking-[0.16em]">
+              <span className="text-[9px] font-bold tracking-[0.16em] uppercase">
                 {heroData.availability.status}
               </span>
             </div>
             <h2 className="font-hand m-0 text-[clamp(2.4rem,7vw,4.6rem)] leading-[0.95]">
               {siteConfig.author}
             </h2>
-            <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.4em] text-(--soft)">
+            <p className="mt-1.5 text-[10px] font-bold tracking-[0.4em] text-(--soft) uppercase">
               {siteConfig.location}
             </p>
           </div>
@@ -57,7 +57,7 @@ export default function Footer({
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 border-t-2 border-dashed border-(--line) pt-4">
-          <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.06em] text-(--soft)">
+          <p className="m-0 text-[10px] font-semibold tracking-[0.06em] text-(--soft) uppercase">
             {footerData.copyright}
           </p>
           <div className="flex flex-wrap gap-2.5">
@@ -67,7 +67,7 @@ export default function Footer({
                 href={item.href}
                 className={cn(
                   "ink-border lift-chip bg-(--paper) px-[15px] py-[7px]",
-                  "text-[10px] font-bold uppercase tracking-[0.12em]",
+                  "text-[10px] font-bold tracking-[0.12em] uppercase",
                   i % 2 === 0 ? "r-tag" : "r-chip-alt",
                 )}
               >

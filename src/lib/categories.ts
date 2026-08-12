@@ -9,9 +9,14 @@ import { getDictionary } from "@/lib/dictionary";
 export async function getCategoryLabels(): Promise<
   Record<"en" | "id", string[]>
 > {
-  const [en, id] = await Promise.all([getDictionary("en"), getDictionary("id")]);
+  const [en, id] = await Promise.all([
+    getDictionary("en"),
+    getDictionary("id"),
+  ]);
   const strip = (labels: string[]) =>
-    labels.filter((label) => label.toLowerCase() !== "all" && label !== "Semua");
+    labels.filter(
+      (label) => label.toLowerCase() !== "all" && label !== "Semua",
+    );
 
   return {
     en: strip(en.projects.categories),

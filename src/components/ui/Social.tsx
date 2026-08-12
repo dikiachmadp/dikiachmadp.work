@@ -51,7 +51,7 @@ export default function Social({
         rel="noopener noreferrer"
         className={cn(
           "r-chip ink-border lift-chip px-3 py-[7px]",
-          "text-[11px] font-bold uppercase tracking-[0.08em]",
+          "text-[11px] font-bold tracking-[0.08em] uppercase",
           className,
         )}
       >

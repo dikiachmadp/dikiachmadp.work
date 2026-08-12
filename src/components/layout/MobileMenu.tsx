@@ -37,7 +37,7 @@ export default function MobileMenu({
   const links = [...navData.main, ...navData.footer];
 
   return (
-    <div className="fixed inset-x-0 bottom-0 top-[78px] z-40 overflow-y-auto bg-(--paper) lg:hidden">
+    <div className="fixed inset-x-0 top-[78px] bottom-0 z-40 overflow-y-auto bg-(--paper) lg:hidden">
       <div className="main-container flex flex-col gap-2 py-8">
         {links.map((item, index) => {
           const fullPath = `/${locale}${item.path === "/" ? "" : item.path}`;

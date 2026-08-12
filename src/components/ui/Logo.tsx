@@ -15,7 +15,7 @@ export default function Logo({ locale, wordmark, tagline }: LogoProps) {
       aria-label={wordmark}
       className="group flex shrink-0 items-center gap-3 outline-none"
     >
-      <span className="r-blob-alt ink-border flex h-[46px] w-[46px] items-center justify-center overflow-hidden bg-(--wash) transition-transform duration-300 ease-out group-hover:rotate-[-8deg] group-hover:scale-105">
+      <span className="r-blob-alt ink-border flex h-[46px] w-[46px] items-center justify-center overflow-hidden bg-(--wash) transition-transform duration-300 ease-out group-hover:scale-105 group-hover:rotate-[-8deg]">
         <Image
           src="/logo.webp"
           alt=""

@@ -73,7 +73,7 @@ export default async function StudioPage({ params }: PageProps) {
               {item.description}
             </span>
           )}
-          <span className="block text-[11px] font-bold uppercase tracking-[0.1em]">
+          <span className="block text-[11px] font-bold tracking-[0.1em] uppercase">
             {actionLabel} ↗
           </span>
         </span>

@@ -18,7 +18,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Slug tidak bergantung locale, jadi satu query cukup untuk kedua bahasa.
-  const slugs = process.env.SKIP_DB_STATIC_GEN ? [] : await getAllProjectSlugs();
+  const slugs = process.env.SKIP_DB_STATIC_GEN
+    ? []
+    : await getAllProjectSlugs();
 
   const staticEntries = locales.flatMap((locale) =>
     staticRoutes.map((route) => ({

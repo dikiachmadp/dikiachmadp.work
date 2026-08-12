@@ -44,13 +44,13 @@ export default function ProjectCard({
             className="photo-ink object-cover"
           />
         ) : (
-          <span className="font-tech text-[10px] uppercase tracking-[0.2em] text-(--soft)">
+          <span className="font-tech text-[10px] tracking-[0.2em] text-(--soft) uppercase">
             {project.category.toLowerCase()} shot
           </span>
         )}
       </div>
 
-      <div className="px-[18px] pb-[18px] pt-4">
+      <div className="px-[18px] pt-4 pb-[18px]">
         <div className="flex items-start justify-between gap-3">
           <div>
             <div className="micro">{meta}</div>

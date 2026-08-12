@@ -74,7 +74,7 @@ export default function Navbar({ navData, siteConfig, locale }: NavbarProps) {
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
-              className="r-chip ink-border flex h-[34px] w-[38px] cursor-pointer flex-col items-center justify-center gap-[4px] bg-(--wash) outline-none transition-transform duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px] lg:hidden"
+              className="r-chip ink-border flex h-[34px] w-[38px] cursor-pointer flex-col items-center justify-center gap-[4px] bg-(--wash) transition-transform duration-200 outline-none hover:-translate-x-[2px] hover:-translate-y-[2px] lg:hidden"
             >
               <span
                 className={cn(

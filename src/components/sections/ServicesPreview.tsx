@@ -18,7 +18,7 @@ export default function ServicesPreview({
   return (
     <>
       {section.eyebrow && <div className="eyebrow">{section.eyebrow}</div>}
-      <h2 className="font-hand mb-[30px] mt-0.5 text-[clamp(2rem,4vw,3.2rem)] leading-none">
+      <h2 className="font-hand mt-0.5 mb-[30px] text-[clamp(2rem,4vw,3.2rem)] leading-none">
         {section.title}
       </h2>
 

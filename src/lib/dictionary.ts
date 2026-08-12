@@ -1,23 +1,38 @@
-import 'server-only';
-import { Locale, FullDictionary } from '@/types/content';
-import * as schemas from '@/schemas/content';
+import "server-only";
+import { Locale, FullDictionary } from "@/types/content";
+import * as schemas from "@/schemas/content";
 
 const loaders = {
-  navigation: (lang: Locale) => import(`@/content/${lang}/navigation.json`).then((m) => m.default),
-  siteConfig: (lang: Locale) => import(`@/content/${lang}/siteConfig.json`).then((m) => m.default),
-  hero: (lang: Locale) => import(`@/content/${lang}/hero.json`).then((m) => m.default),
-  projects: (lang: Locale) => import(`@/content/${lang}/projects.json`).then((m) => m.default),
-  services: (lang: Locale) => import(`@/content/${lang}/services.json`).then((m) => m.default),
-  about: (lang: Locale) => import(`@/content/${lang}/about.json`).then((m) => m.default),
-  contact: (lang: Locale) => import(`@/content/${lang}/contact.json`).then((m) => m.default),
-  studio: (lang: Locale) => import(`@/content/${lang}/studio.json`).then((m) => m.default),
-  footer: (lang: Locale) => import(`@/content/${lang}/footer.json`).then((m) => m.default),
-  pageHeader: (lang: Locale) => import(`@/content/${lang}/pageHeader.json`).then((m) => m.default),
-  sections: (lang: Locale) => import(`@/content/${lang}/sections.json`).then((m) => m.default),
-  cta: (lang: Locale) => import(`@/content/${lang}/cta.json`).then((m) => m.default),
-  privacy: (lang: Locale) => import(`@/content/${lang}/privacy.json`).then((m) => m.default),
-  legal: (lang: Locale) => import(`@/content/${lang}/legal.json`).then((m) => m.default),
-  ui: (lang: Locale) => import(`@/content/${lang}/ui.json`).then((m) => m.default),
+  navigation: (lang: Locale) =>
+    import(`@/content/${lang}/navigation.json`).then((m) => m.default),
+  siteConfig: (lang: Locale) =>
+    import(`@/content/${lang}/siteConfig.json`).then((m) => m.default),
+  hero: (lang: Locale) =>
+    import(`@/content/${lang}/hero.json`).then((m) => m.default),
+  projects: (lang: Locale) =>
+    import(`@/content/${lang}/projects.json`).then((m) => m.default),
+  services: (lang: Locale) =>
+    import(`@/content/${lang}/services.json`).then((m) => m.default),
+  about: (lang: Locale) =>
+    import(`@/content/${lang}/about.json`).then((m) => m.default),
+  contact: (lang: Locale) =>
+    import(`@/content/${lang}/contact.json`).then((m) => m.default),
+  studio: (lang: Locale) =>
+    import(`@/content/${lang}/studio.json`).then((m) => m.default),
+  footer: (lang: Locale) =>
+    import(`@/content/${lang}/footer.json`).then((m) => m.default),
+  pageHeader: (lang: Locale) =>
+    import(`@/content/${lang}/pageHeader.json`).then((m) => m.default),
+  sections: (lang: Locale) =>
+    import(`@/content/${lang}/sections.json`).then((m) => m.default),
+  cta: (lang: Locale) =>
+    import(`@/content/${lang}/cta.json`).then((m) => m.default),
+  privacy: (lang: Locale) =>
+    import(`@/content/${lang}/privacy.json`).then((m) => m.default),
+  legal: (lang: Locale) =>
+    import(`@/content/${lang}/legal.json`).then((m) => m.default),
+  ui: (lang: Locale) =>
+    import(`@/content/${lang}/ui.json`).then((m) => m.default),
 };
 
 export const getDictionary = async (lang: Locale): Promise<FullDictionary> => {
@@ -59,6 +74,8 @@ export const getDictionary = async (lang: Locale): Promise<FullDictionary> => {
     };
   } catch (error) {
     console.error("Zod Validation Error:", error);
-    throw new Error("Failed to validate dictionary data. Check your JSON files.");
+    throw new Error(
+      "Failed to validate dictionary data. Check your JSON files.",
+    );
   }
 };

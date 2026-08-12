@@ -49,19 +49,8 @@
     "newProject": "New project",
     "recentProjects": "Recent projects",
     "inbox": "Inbox",
-    "nav": [
-      "Dashboard",
-      "Projects",
-      "Testimonials",
-      "Messages",
-      "View site"
-    ],
-    "stats": [
-      "projects",
-      "featured",
-      "new messages",
-      "testimonials"
-    ],
+    "nav": ["Dashboard", "Projects", "Testimonials", "Messages", "View site"],
+    "stats": ["projects", "featured", "new messages", "testimonials"],
     "status": {
       "live": "Live",
       "draft": "Draft",

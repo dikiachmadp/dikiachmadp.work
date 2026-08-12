@@ -89,10 +89,10 @@ export default async function ProjectDetailPage({
           ← {t.backBtn}
         </Button>
 
-        <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-(--soft)">
+        <div className="text-[11px] font-bold tracking-[0.16em] text-(--soft) uppercase">
           {project.category} · {project.year}
         </div>
-        <h1 className="font-hand mb-4 mt-1.5 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
+        <h1 className="font-hand mt-1.5 mb-4 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
           {project.title}
         </h1>
         <p className="mb-[30px] max-w-[640px] text-[17px] leading-[1.65] text-(--soft)">
@@ -116,7 +116,7 @@ export default async function ProjectDetailPage({
                 className="photo-ink object-cover"
               />
             ) : (
-              <span className="font-tech text-[11px] uppercase tracking-[0.2em] text-(--soft)">
+              <span className="font-tech text-[11px] tracking-[0.2em] text-(--soft) uppercase">
                 {project.category.toLowerCase()} cover
               </span>
             )}
@@ -127,7 +127,10 @@ export default async function ProjectDetailPage({
           <div className="flex flex-col gap-[18px]">
             <h2 className="font-hand text-[28px]">{t.aboutProject}</h2>
             {blocks.map((paragraph, i) => (
-              <p key={i} className="m-0 text-[16px] leading-[1.75] text-(--soft)">
+              <p
+                key={i}
+                className="m-0 text-[16px] leading-[1.75] text-(--soft)"
+              >
                 {paragraph}
               </p>
             ))}
@@ -190,7 +193,7 @@ export default async function ProjectDetailPage({
                     key={label}
                     className="r-card crosshatch ink-border flex aspect-[4/3] items-center justify-center bg-(--wash) transition-all duration-[0.25s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:rotate-[-0.8deg] hover:shadow-[6px_6px_0_var(--line)]"
                   >
-                    <span className="font-tech text-[10px] uppercase tracking-[0.2em] text-(--soft)">
+                    <span className="font-tech text-[10px] tracking-[0.2em] text-(--soft) uppercase">
                       {label}
                     </span>
                   </div>

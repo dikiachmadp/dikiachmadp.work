@@ -75,7 +75,11 @@ export function AdminTextarea({
         placeholder={placeholder}
         defaultValue={props.defaultValue}
         aria-invalid={Boolean(props.error)}
-        className={cn(controlClass, "resize-y", props.error && "border-(--accent)")}
+        className={cn(
+          controlClass,
+          "resize-y",
+          props.error && "border-(--accent)",
+        )}
       />
     </Shell>
   );
