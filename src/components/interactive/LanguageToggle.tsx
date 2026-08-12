@@ -35,7 +35,7 @@ export default function LanguageToggle() {
             aria-label={`Switch to ${lang.toUpperCase()}`}
             aria-current={isActive ? "true" : undefined}
             className={cn(
-              "cursor-pointer px-[10px] py-[6px] uppercase outline-none transition-colors",
+              "cursor-pointer px-[10px] py-[6px] uppercase transition-colors outline-none",
               isActive
                 ? "bg-(--accent) text-white"
                 : "bg-transparent text-(--ink)",

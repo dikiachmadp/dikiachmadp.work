@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
+import { getProjects } from "@/lib/db/projects";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import PageHeader from "@/components/layout/PageHeader";
@@ -33,7 +34,10 @@ export async function generateMetadata({
 export default async function ProjectsPage({ params }: PageProps) {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
-  const dict = await getDictionary(validLocale);
+  const [dict, items] = await Promise.all([
+    getDictionary(validLocale),
+    getProjects(validLocale),
+  ]);
   const header = dict.pageHeader.projects;
 
   return (
@@ -46,7 +50,7 @@ export default async function ProjectsPage({ params }: PageProps) {
           className="mb-[30px]"
         />
         <ProjectsExplorer
-          projectsData={dict.projects}
+          projectsData={{ ...dict.projects, items }}
           uiLabels={dict.ui}
           locale={validLocale}
         />

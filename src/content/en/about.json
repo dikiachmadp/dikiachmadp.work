@@ -39,21 +39,11 @@
   "skills": [
     {
       "category": "Design",
-      "items": [
-        "Brand Identity",
-        "UI/UX",
-        "Packaging",
-        "3D"
-      ]
+      "items": ["Brand Identity", "UI/UX", "Packaging", "3D"]
     },
     {
       "category": "Tools",
-      "items": [
-        "Adobe CC",
-        "Figma",
-        "Blender",
-        "Next.js"
-      ]
+      "items": ["Adobe CC", "Figma", "Blender", "Next.js"]
     }
   ]
 }

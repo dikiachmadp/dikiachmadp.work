@@ -18,7 +18,7 @@ export default function Marquee({ items }: MarqueeProps) {
         {doubled.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="font-hand flex items-center gap-[22px] whitespace-nowrap px-[22px] text-[23px]"
+            className="font-hand flex items-center gap-[22px] px-[22px] text-[23px] whitespace-nowrap"
           >
             {item}
             <span className="text-(--accent)">✳</span>

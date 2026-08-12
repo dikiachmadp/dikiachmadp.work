@@ -1,6 +1,7 @@
 import "server-only";
 import { PrismaClient } from "@/../prisma/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { env } from "@/lib/env";
 
 // Reuse a single client across hot reloads in dev to avoid exhausting
 // database connections.
@@ -8,7 +9,8 @@ const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 function createPrismaClient() {
   const adapter = new PrismaPg({
-    connectionString: process.env.DATABASE_URL,
+    // Lewat env agar fallback POSTGRES_PRISMA_URL ikut berlaku di Vercel.
+    connectionString: env.DATABASE_URL,
   });
   return new PrismaClient({ adapter });
 }

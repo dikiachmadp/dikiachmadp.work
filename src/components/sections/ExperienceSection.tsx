@@ -12,7 +12,7 @@ export default function ExperienceSection({
 }: ExperienceSectionProps) {
   return (
     <>
-      <h2 className="font-hand mb-3.5 mt-[30px] text-[26px]">
+      <h2 className="font-hand mt-[30px] mb-3.5 text-[26px]">
         {aboutData.experienceTitle}
       </h2>
       <div className="flex flex-col gap-3">
@@ -27,13 +27,16 @@ export default function ExperienceSection({
             </span>
             <span>
               <strong className="font-hand text-[19px]">{entry.role}</strong>
-              <span className="text-[14px] text-(--soft)"> — {entry.place}</span>
+              <span className="text-[14px] text-(--soft)">
+                {" "}
+                — {entry.place}
+              </span>
             </span>
           </div>
         ))}
       </div>
 
-      <h2 className="font-hand mb-3.5 mt-[30px] text-[26px]">
+      <h2 className="font-hand mt-[30px] mb-3.5 text-[26px]">
         {aboutData.skillsTitle}
       </h2>
       <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2">
@@ -45,14 +48,14 @@ export default function ExperienceSection({
               i % 2 === 0 ? "r-card-alt" : "r-card",
             )}
           >
-            <div className="mb-2.5 text-[10px] font-bold uppercase tracking-[0.18em] text-(--soft)">
+            <div className="mb-2.5 text-[10px] font-bold tracking-[0.18em] text-(--soft) uppercase">
               {group.category}
             </div>
             <div className="flex flex-wrap gap-[7px]">
               {group.items.map((item) => (
                 <Tag
                   key={item}
-                  className="bg-(--paper) text-[12px] font-semibold normal-case tracking-normal text-(--ink)"
+                  className="bg-(--paper) text-[12px] font-semibold tracking-normal text-(--ink) normal-case"
                 >
                   {item}
                 </Tag>

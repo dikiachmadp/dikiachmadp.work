@@ -96,7 +96,10 @@ export default function ContactForm({
                   required={field.required}
                   value={formData[field.name] ?? ""}
                   onChange={(e) => handleChange(field.name, e.target.value)}
-                  className={cn(fieldBase, "r-chip cursor-pointer appearance-none")}
+                  className={cn(
+                    fieldBase,
+                    "r-chip cursor-pointer appearance-none",
+                  )}
                 >
                   <option value="" disabled>
                     {field.placeholder}

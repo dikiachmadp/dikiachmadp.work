@@ -29,6 +29,17 @@ const grotesk = Space_Grotesk({
   display: "swap",
 });
 
+// Semua halaman di bawah /[locale] membaca database. Dengan mengembalikan []
+// saat SKIP_DB_STATIC_GEN diset, `next build` di CI tidak memprerender satu
+// pun dan karenanya tidak butuh database sama sekali.
+export async function generateStaticParams() {
+  if (process.env.SKIP_DB_STATIC_GEN) return [];
+  return [{ locale: "en" }, { locale: "id" }];
+}
+
+// Jaring pengaman kalau ada mutasi yang lupa memanggil revalidateProjectPaths.
+export const revalidate = 3600;
+
 export async function generateMetadata({
   params,
 }: {

@@ -49,22 +49,13 @@
     "newProject": "Proyek baru",
     "recentProjects": "Proyek terbaru",
     "inbox": "Kotak masuk",
-    "nav": [
-      "Dasbor",
-      "Proyek",
-      "Pesan",
-      "Pengaturan"
-    ],
-    "stats": [
-      "proyek",
-      "unggulan",
-      "pesan baru",
-      "kunjungan / minggu"
-    ],
+    "nav": ["Dasbor", "Proyek", "Testimoni", "Pesan", "Lihat situs"],
+    "stats": ["proyek", "unggulan", "pesan baru", "testimoni"],
     "status": {
       "live": "Tayang",
       "draft": "Draf",
       "archived": "Arsip"
-    }
+    },
+    "logout": "Keluar"
   }
 }

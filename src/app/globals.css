@@ -48,7 +48,7 @@
     transition:
       background 0.45s ease,
       color 0.45s ease;
-    @apply antialiased min-h-screen;
+    @apply min-h-screen antialiased;
   }
 
   body {

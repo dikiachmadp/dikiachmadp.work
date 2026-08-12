@@ -16,7 +16,7 @@ export default function Hero({ heroData, locale }: HeroProps) {
               <span className="anim-pulse-dot absolute inset-0 rounded-full bg-(--accent)" />
               <span className="relative h-[9px] w-[9px] rounded-full bg-(--accent)" />
             </span>
-            <span className="text-[11px] font-bold uppercase tracking-[0.14em]">
+            <span className="text-[11px] font-bold tracking-[0.14em] uppercase">
               {heroData.availability.status}
             </span>
           </div>
@@ -112,7 +112,7 @@ export default function Hero({ heroData, locale }: HeroProps) {
             </div>
           </div>
 
-          <div className="ink-border flat-3 absolute -bottom-[22px] -right-2.5 z-3 flex h-24 w-24 items-center justify-center rounded-full bg-(--paper)">
+          <div className="ink-border flat-3 absolute -right-2.5 -bottom-[22px] z-3 flex h-24 w-24 items-center justify-center rounded-full bg-(--paper)">
             <span className="font-note text-center text-[17px] leading-[1.05] text-(--accent)">
               {heroData.craftBadge.map((line) => (
                 <span key={line} className="block">

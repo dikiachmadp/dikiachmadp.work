@@ -42,7 +42,7 @@ export default async function ContactPage({ params }: PageProps) {
         <div className="grid grid-cols-1 items-start gap-11 lg:grid-cols-[1fr_340px]">
           <div>
             <div className="eyebrow">{header.topTitle}</div>
-            <h1 className="font-hand mb-2.5 mt-0.5 text-[clamp(2.4rem,5.4vw,4rem)] leading-none">
+            <h1 className="font-hand mt-0.5 mb-2.5 text-[clamp(2.4rem,5.4vw,4rem)] leading-none">
               {header.title}
             </h1>
             <p className="mb-7 max-w-[520px] text-[16px] leading-[1.6] text-(--soft)">

@@ -101,7 +101,7 @@ export default async function AboutPage({ params }: PageProps) {
 
           <div>
             <div className="eyebrow">{header.topTitle}</div>
-            <h1 className="font-hand mb-[18px] mt-0.5 text-[clamp(2.2rem,4.8vw,3.6rem)] leading-none">
+            <h1 className="font-hand mt-0.5 mb-[18px] text-[clamp(2.2rem,4.8vw,3.6rem)] leading-none">
               {header.title}
             </h1>
             {about.biography.map((paragraph, i) => (

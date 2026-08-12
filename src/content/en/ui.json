@@ -49,22 +49,13 @@
     "newProject": "New project",
     "recentProjects": "Recent projects",
     "inbox": "Inbox",
-    "nav": [
-      "Dashboard",
-      "Projects",
-      "Messages",
-      "Settings"
-    ],
-    "stats": [
-      "projects",
-      "featured",
-      "new messages",
-      "views / week"
-    ],
+    "nav": ["Dashboard", "Projects", "Testimonials", "Messages", "View site"],
+    "stats": ["projects", "featured", "new messages", "testimonials"],
     "status": {
       "live": "Live",
       "draft": "Draft",
       "archived": "Archived"
-    }
+    },
+    "logout": "Log out"
   }
 }

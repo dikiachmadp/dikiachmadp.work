@@ -84,9 +84,10 @@ export const ProjectItemSchema = z.object({
   gallery: z.array(z.string()).optional(),
 });
 
-export const ProjectsDataSchema = z.object({
+// Hanya bagian yang masih berasal dari JSON. Data project sendiri datang dari
+// database lewat DAL; `items` di file JSON diabaikan (arsip konten pra-CMS).
+export const ProjectsContentSchema = z.object({
   categories: z.array(z.string()),
-  items: z.array(ProjectItemSchema),
 });
 
 export const ServicesDataSchema = z.object({
@@ -203,17 +204,17 @@ export const StudioSchema = z.object({
   ),
 });
 
+export const TestimonialItemSchema = z.object({
+  id: z.string(),
+  clientName: z.string(),
+  role: z.string(),
+  content: z.string(),
+  avatarUrl: z.string(),
+  projectRef: z.string(),
+});
+
 export const TestimonialsSchema = z.object({
-  items: z.array(
-    z.object({
-      id: z.string(),
-      clientName: z.string(),
-      role: z.string(),
-      content: z.string(),
-      avatarUrl: z.string(),
-      projectRef: z.string(),
-    }),
-  ),
+  items: z.array(TestimonialItemSchema),
 });
 
 export const FooterSchema = z.object({
@@ -340,6 +341,7 @@ export const UiSchema = z.object({
     newProject: z.string(),
     recentProjects: z.string(),
     inbox: z.string(),
+    logout: z.string(),
     nav: z.array(z.string()),
     stats: z.array(z.string()),
     status: z.object({

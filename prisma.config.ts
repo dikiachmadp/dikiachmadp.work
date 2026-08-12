@@ -9,6 +9,14 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env.DATABASE_URL || "",
+    // DDL (migrate) butuh session pooler port 5432; DIRECT_URL disediakan
+    // bila runtime kelak pindah ke transaction pooler (6543).
+    // Nama POSTGRES_* datang dari integrasi Supabase–Vercel; lihat src/lib/env.ts.
+    url:
+      process.env.DIRECT_URL ||
+      process.env.POSTGRES_URL_NON_POOLING ||
+      process.env.DATABASE_URL ||
+      process.env.POSTGRES_PRISMA_URL ||
+      "",
   },
 });

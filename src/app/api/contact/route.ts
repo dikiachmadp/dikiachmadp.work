@@ -1,24 +1,15 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import { env } from "@/lib/env";
+import { createContactSubmission } from "@/lib/db/contact";
+import { getContactLimiter } from "@/lib/ratelimit";
 
 const ContactRequestSchema = z.object({
   name: z.string().min(1, "Name is required").max(200),
   email: z.string().email("Invalid email address"),
   subject: z.string().max(300).optional().default("No Subject"),
   message: z.string().min(1, "Message is required").max(5000),
-});
-
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-});
-
-const ratelimit = new Ratelimit({
-  redis: redis,
-  limiter: Ratelimit.slidingWindow(3, "1 h"),
 });
 
 function sanitizeHtml(str: string): string {
@@ -43,24 +34,11 @@ function sanitizeHtml(str: string): string {
 export async function POST(request: Request) {
   const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
 
-  const { success } = await ratelimit.limit(ip);
+  const { success } = await getContactLimiter().limit(ip);
   if (!success) {
     return NextResponse.json(
       { error: "Too many requests. Please try again later." },
       { status: 429 },
-    );
-  }
-
-  if (
-    !process.env.RESEND_API_KEY ||
-    !process.env.CONTACT_EMAIL ||
-    !process.env.UPSTASH_REDIS_REST_URL ||
-    !process.env.UPSTASH_REDIS_REST_TOKEN
-  ) {
-    console.error("Missing email or redis environment variables");
-    return NextResponse.json(
-      { error: "Server configuration error" },
-      { status: 500 },
     );
   }
 
@@ -77,21 +55,67 @@ export async function POST(request: Request) {
 
     const { name, email, subject, message } = validation.data;
 
+    // Simpan dulu, baru kirim email. Kalau Resend sedang bermasalah, pesannya
+    // tetap tersimpan dan muncul di inbox dasbor — sebelumnya hilang total.
+    await createContactSubmission({ name, email, subject, message });
+
     const safeName = sanitizeHtml(name);
     const safeEmail = sanitizeHtml(email);
     const safeSubject = sanitizeHtml(subject);
     const safeMessage = sanitizeHtml(message);
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = new Resend(env.RESEND_API_KEY);
     const fromAddress =
-      process.env.RESEND_FROM_EMAIL ||
-      "Portfolio Contact Form <onboarding@resend.dev>";
+      env.RESEND_FROM_EMAIL || "Portfolio Contact Form <onboarding@resend.dev>";
 
-    const data = await resend.emails.send({
-      from: fromAddress,
-      to: process.env.CONTACT_EMAIL as string,
-      subject: `New Contact Inquiry: ${safeSubject}`,
-      html: `
+    // Pesan sudah tersimpan; kegagalan email tidak boleh membuat pengirim
+    // mengira pesannya tidak terkirim, jadi ditangani terpisah.
+    try {
+      await sendNotification({
+        resend,
+        fromAddress,
+        safeName,
+        safeEmail,
+        safeSubject,
+        safeMessage,
+      });
+    } catch (error) {
+      console.error("Message stored but email failed:", error);
+    }
+
+    return NextResponse.json(
+      { message: "Message sent successfully!" },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Failed to handle contact submission:", error);
+    return NextResponse.json(
+      { error: "An unexpected error occurred." },
+      { status: 500 },
+    );
+  }
+}
+
+async function sendNotification({
+  resend,
+  fromAddress,
+  safeName,
+  safeEmail,
+  safeSubject,
+  safeMessage,
+}: {
+  resend: Resend;
+  fromAddress: string;
+  safeName: string;
+  safeEmail: string;
+  safeSubject: string;
+  safeMessage: string;
+}) {
+  const { error } = await resend.emails.send({
+    from: fromAddress,
+    to: env.CONTACT_EMAIL,
+    subject: `New Contact Inquiry: ${safeSubject}`,
+    html: `
         <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
           <h2>New Message from Your Portfolio</h2>
           <p><strong>Name:</strong> ${safeName}</p>
@@ -103,16 +127,9 @@ export async function POST(request: Request) {
           </div>
         </div>
       `,
-    });
-    return NextResponse.json(
-      { message: "Message sent successfully!", data },
-      { status: 200 },
-    );
-  } catch (error) {
-    console.error("Failed to send email:", error);
-    return NextResponse.json(
-      { error: "An unexpected error occurred." },
-      { status: 500 },
-    );
+  });
+
+  if (error) {
+    throw new Error(error.message);
   }
 }

@@ -36,7 +36,7 @@ export default function TestimonialsSection({
             {quote.clientName.charAt(0)}
           </div>
           <div className="text-[14px] font-bold">{quote.clientName}</div>
-          <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-(--soft)">
+          <div className="text-[10px] font-bold tracking-[0.14em] text-(--soft) uppercase">
             {quote.role}
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function TestimonialsSection({
             ))}
           </div>
 
-          <blockquote className="font-hand m-0 text-[21px] font-normal leading-[1.5]">
+          <blockquote className="font-hand m-0 text-[21px] leading-[1.5] font-normal">
             &ldquo;{quote.content}&rdquo;
           </blockquote>
 
