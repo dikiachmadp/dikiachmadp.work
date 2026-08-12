@@ -1,5 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Schema database. Konten yang berbeda antar bahasa hidup di
+// ProjectTranslation; field yang sama untuk semua bahasa hidup di Project.
 
 generator client {
   provider = "prisma-client"
@@ -7,25 +7,64 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
 model Project {
-  id          String   @id @default(uuid())
-  title       String
-  slug        String   @unique
-  description String
-  imageUrl    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(uuid())
+  slug          String   @unique
+  // Kunci kategori stabil (slug dari label EN), untuk filter/sort.
+  categoryKey   String
+  year          String
+  date          String
+  coverImage    String
+  logoUrl       String?
+  accent        String?
+  featured      Boolean  @default(false)
+  liveUrl       String?
+  isLivePreview Boolean  @default(false)
+  tags          String[]
+  tools         String[]
+  gallery       String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  translations ProjectTranslation[]
+
+  @@index([featured])
+}
+
+model ProjectTranslation {
+  id            String @id @default(uuid())
+  projectId     String
+  locale        String
+  title         String
+  // Label kategori sesuai bahasa, dipakai UI filter.
+  category      String
+  client        String
+  description   String
+  role          String?
+  duration      String?
+  contentBlocks Json?
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, locale])
+  @@index([locale])
 }
 
 model Testimonial {
-  id        String   @id @default(uuid())
-  name      String
-  role      String
-  content   String
-  createdAt DateTime @default(now())
+  id         String   @id @default(uuid())
+  locale     String   @default("en")
+  name       String
+  role       String
+  content    String
+  avatarUrl  String?
+  projectRef String?
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([locale, order])
 }
 
 model ContactSubmission {
@@ -35,4 +74,6 @@ model ContactSubmission {
   subject   String
   message   String
   createdAt DateTime @default(now())
+
+  @@index([createdAt])
 }

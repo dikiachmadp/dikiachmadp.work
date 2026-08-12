@@ -56,7 +56,8 @@ next-env.d.ts
 
 AGENTS.md
 CLAUDE.md
-/src/generated/prisma
+# prisma client is generated at install/build time, never committed
+/prisma/generated
 
 # design reference material (assets duplicate /public, kept local only)
 /design_handoff_dikiachmadp_rebuild/

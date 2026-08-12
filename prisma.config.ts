@@ -9,6 +9,8 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env.DATABASE_URL || "",
+    // DDL (migrate) butuh session pooler port 5432; DIRECT_URL disediakan
+    // bila runtime kelak pindah ke transaction pooler (6543).
+    url: process.env.DIRECT_URL || process.env.DATABASE_URL || "",
   },
 });
