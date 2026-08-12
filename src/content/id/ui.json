@@ -52,8 +52,9 @@
     "nav": [
       "Dasbor",
       "Proyek",
+      "Testimoni",
       "Pesan",
-      "Pengaturan"
+      "Lihat situs"
     ],
     "stats": [
       "proyek",
@@ -65,6 +66,7 @@
       "live": "Tayang",
       "draft": "Draf",
       "archived": "Arsip"
-    }
+    },
+    "logout": "Keluar"
   }
 }

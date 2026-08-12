@@ -52,8 +52,9 @@
     "nav": [
       "Dashboard",
       "Projects",
+      "Testimonials",
       "Messages",
-      "Settings"
+      "View site"
     ],
     "stats": [
       "projects",
@@ -65,6 +66,7 @@
       "live": "Live",
       "draft": "Draft",
       "archived": "Archived"
-    }
+    },
+    "logout": "Log out"
   }
 }

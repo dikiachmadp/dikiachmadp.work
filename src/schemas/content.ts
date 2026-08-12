@@ -341,6 +341,7 @@ export const UiSchema = z.object({
     newProject: z.string(),
     recentProjects: z.string(),
     inbox: z.string(),
+    logout: z.string(),
     nav: z.array(z.string()),
     stats: z.array(z.string()),
     status: z.object({

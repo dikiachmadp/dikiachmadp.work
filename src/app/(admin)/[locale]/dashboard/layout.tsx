@@ -1,8 +1,9 @@
-import Link from "next/link";
 import { getDictionary } from "@/lib/dictionary";
 import { Locale } from "@/types/content";
+import AdminNav from "@/components/admin/AdminNav";
 import DarkModeToggle from "@/components/interactive/DarkModeToggle";
-import { cn } from "@/lib/utils";
+import { requireUser } from "@/lib/supabase/auth";
+import { logout } from "./actions";
 
 export default async function DashboardLayout({
   children,
@@ -13,14 +14,18 @@ export default async function DashboardLayout({
 }) {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
+  // Gerbang untuk seluruh subtree dasbor; server action tetap memeriksa
+  // sendiri karena bisa dipanggil tanpa merender layout ini.
+  await requireUser(validLocale);
   const dict = await getDictionary(validLocale);
   const admin = dict.ui.admin;
 
   const navItems = [
-    { label: admin.nav[0], href: `/${validLocale}/dashboard` },
+    { label: admin.nav[0], href: `/${validLocale}/dashboard`, exact: true },
     { label: admin.nav[1], href: `/${validLocale}/dashboard/projects` },
-    { label: admin.nav[2], href: `/${validLocale}/contact` },
-    { label: admin.nav[3], href: `/${validLocale}` },
+    { label: admin.nav[2], href: `/${validLocale}/dashboard/testimonials` },
+    { label: admin.nav[3], href: `/${validLocale}/dashboard/submissions` },
+    { label: admin.nav[4], href: `/${validLocale}`, exact: true },
   ];
 
   return (
@@ -31,18 +36,17 @@ export default async function DashboardLayout({
             <span className="font-note text-[20px]">{admin.panelLabel}</span>
             <DarkModeToggle />
           </div>
-          {navItems.map((item, i) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={cn(
-                "r-tag ink-border px-3 py-[9px] text-[12px] font-bold transition-transform duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px]",
-                i === 0 ? "bg-(--accent) text-white" : "bg-transparent",
-              )}
+          <AdminNav items={navItems} />
+
+          <form action={logout} className="mt-1.5">
+            <input type="hidden" name="formLocale" value={validLocale} />
+            <button
+              type="submit"
+              className="r-tag ink-border w-full cursor-pointer bg-transparent px-3 py-[9px] text-[12px] font-bold text-(--soft) transition-transform duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px]"
             >
-              {item.label}
-            </Link>
-          ))}
+              {admin.logout}
+            </button>
+          </form>
         </aside>
 
         <main>{children}</main>
