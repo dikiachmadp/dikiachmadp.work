@@ -8,6 +8,7 @@ interface MetadataOptions {
   siteConfig: {
     siteName: string;
     url: string;
+    ogImage?: string;
   };
   locale: Locale;
 }
@@ -22,6 +23,10 @@ export const createMetadata = ({
   const baseUrl = siteConfig.url;
   const fullPath = `/${locale}${path}`;
   const canonicalUrl = `${baseUrl}${fullPath}`;
+  // Tanpa ini setiap halaman selain beranda mengirim OG tag tanpa gambar.
+  const images = siteConfig.ogImage
+    ? [{ url: `${baseUrl}${siteConfig.ogImage}` }]
+    : undefined;
 
   return {
     // The layout's title.template already appends the site name.
@@ -33,6 +38,7 @@ export const createMetadata = ({
       url: canonicalUrl,
       siteName: siteConfig.siteName,
       type: "website",
+      images,
     },
     alternates: {
       canonical: canonicalUrl,
@@ -45,6 +51,7 @@ export const createMetadata = ({
       card: "summary_large_image",
       title: `${title} | ${siteConfig.siteName}`,
       description,
+      images,
     },
   };
 };
