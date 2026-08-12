@@ -203,17 +203,17 @@ export const StudioSchema = z.object({
   ),
 });
 
+export const TestimonialItemSchema = z.object({
+  id: z.string(),
+  clientName: z.string(),
+  role: z.string(),
+  content: z.string(),
+  avatarUrl: z.string(),
+  projectRef: z.string(),
+});
+
 export const TestimonialsSchema = z.object({
-  items: z.array(
-    z.object({
-      id: z.string(),
-      clientName: z.string(),
-      role: z.string(),
-      content: z.string(),
-      avatarUrl: z.string(),
-      projectRef: z.string(),
-    }),
-  ),
+  items: z.array(TestimonialItemSchema),
 });
 
 export const FooterSchema = z.object({
