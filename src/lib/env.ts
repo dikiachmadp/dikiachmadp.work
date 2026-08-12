@@ -14,7 +14,15 @@ const serverSchema = z.object({
   SKIP_DB_STATIC_GEN: z.string().optional(),
 });
 
-const parsed = serverSchema.safeParse(process.env);
+// Integrasi Supabase–Vercel menyuntikkan POSTGRES_* dan tidak pernah membuat
+// DATABASE_URL/DIRECT_URL. Terima keduanya supaya kredensial tidak perlu
+// disalin dua kali (salinan manual jadi basi begitu integrasi merotasinya).
+// Nama milik kita menang, jadi .env lokal tetap berkuasa.
+const parsed = serverSchema.safeParse({
+  ...process.env,
+  DATABASE_URL: process.env.DATABASE_URL ?? process.env.POSTGRES_PRISMA_URL,
+  DIRECT_URL: process.env.DIRECT_URL ?? process.env.POSTGRES_URL_NON_POOLING,
+});
 
 if (!parsed.success) {
   const detail = parsed.error.issues
