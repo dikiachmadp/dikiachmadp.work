@@ -13,4 +13,6 @@ export function revalidateProjectPaths(slug?: string) {
       revalidatePath(`/${locale}/projects/${slug}`);
     }
   }
+  // Tanpa ini project baru tidak masuk sitemap sampai deploy berikutnya.
+  revalidatePath("/sitemap.xml");
 }

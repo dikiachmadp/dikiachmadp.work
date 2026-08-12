@@ -84,9 +84,10 @@ export const ProjectItemSchema = z.object({
   gallery: z.array(z.string()).optional(),
 });
 
-export const ProjectsDataSchema = z.object({
+// Hanya bagian yang masih berasal dari JSON. Data project sendiri datang dari
+// database lewat DAL; `items` di file JSON diabaikan (arsip konten pra-CMS).
+export const ProjectsContentSchema = z.object({
   categories: z.array(z.string()),
-  items: z.array(ProjectItemSchema),
 });
 
 export const ServicesDataSchema = z.object({

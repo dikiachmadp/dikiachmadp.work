@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
+import { getAllProjectSlugs, getProjectBySlug } from "@/lib/db/projects";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import Button from "@/components/ui/Button";
@@ -14,13 +15,25 @@ interface ProjectDetailPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
+export async function generateStaticParams() {
+  // CI membangun tanpa database; tanpa guard ini `next build` mencoba query.
+  if (process.env.SKIP_DB_STATIC_GEN) return [];
+
+  const slugs = await getAllProjectSlugs();
+  return ["en", "id"].flatMap((locale) =>
+    slugs.map((slug) => ({ locale, slug })),
+  );
+}
+
 export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
-  const dict = await getDictionary(validLocale);
-  const project = dict.projects.items.find((item) => item.slug === slug);
+  const [dict, project] = await Promise.all([
+    getDictionary(validLocale),
+    getProjectBySlug(validLocale, slug),
+  ]);
 
   if (!project) return { title: "Project Not Found" };
 
@@ -38,13 +51,18 @@ export default async function ProjectDetailPage({
 }: ProjectDetailPageProps) {
   const { locale, slug } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
-  const dict = await getDictionary(validLocale);
-  const project = dict.projects.items.find((item) => item.slug === slug);
+  const [dict, project] = await Promise.all([
+    getDictionary(validLocale),
+    getProjectBySlug(validLocale, slug),
+  ]);
 
   if (!project) notFound();
 
   const t = dict.ui.projectDetail;
   const hasCover = Boolean(project.coverImage);
+  // Selama galeri kosong, panel crosshatch lama tetap tampil — begitu gambar
+  // diunggah lewat CMS, gambar itu yang muncul.
+  const gallery = project.gallery ?? [];
   const blocks =
     project.contentBlocks && project.contentBlocks.length > 0
       ? project.contentBlocks
@@ -152,16 +170,31 @@ export default async function ProjectDetailPage({
         <div className="mt-11">
           <h2 className="font-hand mb-4 text-[28px]">{t.galleryLabel}</h2>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {["detail shot 01", "detail shot 02"].map((label) => (
-              <div
-                key={label}
-                className="r-card crosshatch ink-border flex aspect-[4/3] items-center justify-center bg-(--wash) transition-all duration-[0.25s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:rotate-[-0.8deg] hover:shadow-[6px_6px_0_var(--line)]"
-              >
-                <span className="font-tech text-[10px] uppercase tracking-[0.2em] text-(--soft)">
-                  {label}
-                </span>
-              </div>
-            ))}
+            {gallery.length > 0
+              ? gallery.map((src, i) => (
+                  <div
+                    key={src}
+                    className="r-card ink-border relative aspect-[4/3] overflow-hidden bg-(--wash) transition-all duration-[0.25s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:rotate-[-0.8deg] hover:shadow-[6px_6px_0_var(--line)]"
+                  >
+                    <Image
+                      src={src}
+                      alt={`${project.title} — ${i + 1}`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 480px"
+                      className="photo-ink object-cover"
+                    />
+                  </div>
+                ))
+              : ["detail shot 01", "detail shot 02"].map((label) => (
+                  <div
+                    key={label}
+                    className="r-card crosshatch ink-border flex aspect-[4/3] items-center justify-center bg-(--wash) transition-all duration-[0.25s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:rotate-[-0.8deg] hover:shadow-[6px_6px_0_var(--line)]"
+                  >
+                    <span className="font-tech text-[10px] uppercase tracking-[0.2em] text-(--soft)">
+                      {label}
+                    </span>
+                  </div>
+                ))}
           </div>
         </div>
       </div>

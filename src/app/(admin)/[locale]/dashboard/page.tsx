@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { getDictionary } from "@/lib/dictionary";
-import { prisma } from "@/lib/prisma";
+import { getSubmissionsPage } from "@/lib/db/contact";
+import { getProjects } from "@/lib/db/projects";
+import { getDashboardStats } from "@/lib/db/stats";
 import { Locale } from "@/types/content";
 import { cn } from "@/lib/utils";
 
@@ -17,11 +18,8 @@ interface InboxMessage {
  */
 async function loadInbox(): Promise<InboxMessage[] | null> {
   try {
-    return await prisma.contactSubmission.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 3,
-      select: { id: true, name: true, createdAt: true, message: true },
-    });
+    const { rows } = await getSubmissionsPage({ page: 1, perPage: 3 });
+    return rows;
   } catch {
     return null;
   }
@@ -42,23 +40,26 @@ export default async function DashboardPage({
 }) {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
-  const dict = await getDictionary(validLocale);
+  const [dict, projects, counts, inbox] = await Promise.all([
+    getDictionary(validLocale),
+    getProjects(validLocale),
+    getDashboardStats(),
+    loadInbox(),
+  ]);
   const admin = dict.ui.admin;
 
-  const projects = dict.projects.items;
-  const featured = projects.filter((p) => p.featured);
-  const inbox = await loadInbox();
-
   const stats = [
-    { value: String(projects.length), label: admin.stats[0] },
-    { value: String(featured.length), label: admin.stats[1] },
-    { value: String(inbox?.length ?? 0), label: admin.stats[2] },
-    { value: "1.4k", label: admin.stats[3] },
+    { value: String(counts.projects), label: admin.stats[0] },
+    {
+      value: String(projects.filter((p) => p.featured).length),
+      label: admin.stats[1],
+    },
+    { value: String(counts.submissions), label: admin.stats[2] },
+    { value: String(counts.testimonials), label: admin.stats[3] },
   ];
 
-  const recent = [...projects]
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .slice(0, 5);
+  // getProjects sudah mengurutkan berdasarkan date desc.
+  const recent = projects.slice(0, 5);
 
   return (
     <>
@@ -71,13 +72,7 @@ export default async function DashboardPage({
             {admin.dashboard}
           </h1>
         </div>
-        <Link
-          href={`/${validLocale}/dashboard/projects/new`}
-          className="ink-border flat-3 lift-btn bg-(--accent) px-5 py-2.5 text-[12px] font-bold text-white"
-          style={{ borderRadius: "22px 9px 24px 10px / 10px 24px 9px 22px" }}
-        >
-          + {admin.newProject}
-        </Link>
+        {/* Tombol "new project" kembali di Fase 5 bersama form bilingualnya. */}
       </div>
 
       <div className="mb-6 grid grid-cols-2 gap-3.5 lg:grid-cols-4">

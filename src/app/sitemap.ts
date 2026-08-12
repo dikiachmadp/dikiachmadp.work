@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getDictionary } from "@/lib/dictionary";
+import { getAllProjectSlugs } from "@/lib/db/projects";
 import { Locale } from "@/types/content";
 
 const BASE_URL = "https://dikiachmadp.work";
@@ -17,12 +17,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/legal",
   ];
 
-  const projectsData = await Promise.all(
-    locales.map(async (locale) => ({
-      locale,
-      projects: (await getDictionary(locale)).projects.items,
-    })),
-  );
+  // Slug tidak bergantung locale, jadi satu query cukup untuk kedua bahasa.
+  const slugs = process.env.SKIP_DB_STATIC_GEN ? [] : await getAllProjectSlugs();
 
   const staticEntries = locales.flatMap((locale) =>
     staticRoutes.map((route) => ({
@@ -33,9 +29,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   );
 
-  const projectEntries = projectsData.flatMap(({ locale, projects }) =>
-    projects.map((project) => ({
-      url: `${BASE_URL}/${locale}/projects/${project.slug}`,
+  const projectEntries = locales.flatMap((locale) =>
+    slugs.map((slug) => ({
+      url: `${BASE_URL}/${locale}/projects/${slug}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.6,

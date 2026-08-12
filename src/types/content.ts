@@ -7,7 +7,10 @@ export type Navigation = z.infer<typeof schemas.NavigationSchema>;
 export type SiteConfig = z.infer<typeof schemas.SiteConfigSchema>;
 export type HeroData = z.infer<typeof schemas.HeroSchema>;
 export type Project = z.infer<typeof schemas.ProjectItemSchema>;
-export type ProjectsData = z.infer<typeof schemas.ProjectsDataSchema>;
+/** Bagian projects yang berasal dari JSON (label kategori). */
+export type ProjectsContent = z.infer<typeof schemas.ProjectsContentSchema>;
+/** Yang diterima komponen: label dari JSON + item dari database. */
+export type ProjectsData = ProjectsContent & { items: Project[] };
 export type ServicesData = z.infer<typeof schemas.ServicesDataSchema>;
 export type AboutData = z.infer<typeof schemas.AboutSchema>;
 export type ContactData = z.infer<typeof schemas.ContactSchema>;
@@ -26,12 +29,11 @@ export interface FullDictionary {
   navigation: Navigation;
   siteConfig: SiteConfig;
   hero: HeroData;
-  projects: ProjectsData;
+  projects: ProjectsContent;
   services: ServicesData;
   about: AboutData;
   contact: ContactData;
   studio: StudioData;
-  testimonials: TestimonialsData;
   footer: FooterData;
   pageHeader: PageHeaderData;
   sections: SectionsData;

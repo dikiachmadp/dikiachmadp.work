@@ -7,7 +7,15 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/_next/"],
+      // Route group (admin) tidak muncul di URL, jadi jalurnya /{locale}/...
+      disallow: [
+        "/api/",
+        "/_next/",
+        "/en/dashboard",
+        "/id/dashboard",
+        "/en/login",
+        "/id/login",
+      ],
     },
     sitemap: `${BASE_URL}/sitemap.xml`,
   };

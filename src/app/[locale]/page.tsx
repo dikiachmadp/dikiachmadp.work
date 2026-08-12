@@ -1,6 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
+import { getProjects } from "@/lib/db/projects";
+import { getTestimonials } from "@/lib/db/testimonials";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import SectionWrapper from "@/components/layout/SectionWrapper";
@@ -37,7 +39,11 @@ export async function generateMetadata({
 export default async function HomePage({ params }: PageProps) {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
-  const dict = await getDictionary(validLocale);
+  const [dict, featured, testimonials] = await Promise.all([
+    getDictionary(validLocale),
+    getProjects(validLocale, { featured: true }),
+    getTestimonials(validLocale),
+  ]);
 
   return (
     <PageWrapper>
@@ -60,7 +66,7 @@ export default async function HomePage({ params }: PageProps) {
 
       <SectionWrapper id="featured-projects">
         <ProjectsGallery
-          projectsData={dict.projects}
+          projectsData={{ ...dict.projects, items: featured }}
           sectionsData={dict.sections}
           uiLabels={dict.ui}
           locale={validLocale}
@@ -77,7 +83,7 @@ export default async function HomePage({ params }: PageProps) {
 
       <SectionWrapper id="testimonials">
         <TestimonialsSection
-          testimonialsData={dict.testimonials}
+          testimonialsData={{ items: testimonials }}
           sectionsData={dict.sections}
         />
       </SectionWrapper>
