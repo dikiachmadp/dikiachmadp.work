@@ -21,7 +21,7 @@ export default async function EditTestimonialPage({
 
   return (
     <>
-      <h1 className="font-hand mb-5 text-[34px] leading-none">
+      <h1 className="font-hand mb-5 text-[clamp(1.75rem,5vw,2.125rem)] leading-none">
         Edit testimonial
       </h1>
       <TestimonialForm

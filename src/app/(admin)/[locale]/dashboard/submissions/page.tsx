@@ -38,7 +38,9 @@ export default async function SubmissionsPage({
   return (
     <>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
-        <h1 className="font-hand text-[34px] leading-none">Messages</h1>
+        <h1 className="font-hand text-[clamp(1.75rem,5vw,2.125rem)] leading-none">
+          Messages
+        </h1>
         <span className="text-[12px] text-(--soft)">{total} total</span>
       </div>
 

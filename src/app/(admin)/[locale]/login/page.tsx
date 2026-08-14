@@ -12,10 +12,12 @@ export default async function LoginPage({
   const { error } = await searchParams;
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-[22px]">
+    <main className="flex min-h-screen items-center justify-center px-[22px]">
       <div className="r-frame ink-border flat-5 w-full max-w-[380px] bg-(--paper) p-7">
         <p className="font-note m-0 text-[19px] text-(--soft)">control room</p>
-        <h1 className="font-hand mb-5 text-[30px] leading-none">Admin Login</h1>
+        <h1 className="font-hand mb-5 text-[clamp(1.625rem,4.5vw,1.875rem)] leading-none">
+          Admin Login
+        </h1>
 
         <form action={login} className="flex flex-col gap-3.5">
           <input type="hidden" name="locale" value={locale} />
@@ -66,6 +68,6 @@ export default async function LoginPage({
           </Link>
         </form>
       </div>
-    </div>
+    </main>
   );
 }

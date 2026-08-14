@@ -68,7 +68,7 @@ export default async function DashboardPage({
           <div className="font-note text-[20px] text-(--soft)">
             {admin.greeting}
           </div>
-          <h1 className="font-hand text-[34px] leading-none">
+          <h1 className="font-hand text-[clamp(1.75rem,5vw,2.125rem)] leading-none">
             {admin.dashboard}
           </h1>
         </div>
@@ -82,7 +82,7 @@ export default async function DashboardPage({
             className="ink-border flat-3 lift-btn bg-(--paper) p-4"
             style={{ borderRadius: "20px 9px 22px 10px / 10px 22px 9px 20px" }}
           >
-            <div className="font-hand text-[30px] leading-none">
+            <div className="font-hand text-[clamp(1.625rem,4.5vw,1.875rem)] leading-none">
               {stat.value}
             </div>
             <div className="mt-1 text-[10px] font-bold tracking-[0.14em] text-(--soft) uppercase">
@@ -100,9 +100,12 @@ export default async function DashboardPage({
             return (
               <div
                 key={project.id}
-                className="grid grid-cols-[1fr_90px_74px] items-center gap-2.5 border-b-2 border-dashed border-(--line) py-2.5 last:border-b-0"
+                // 164px of fixed columns left ~92px for the title at 320px —
+                // five or six characters after truncate. Below sm the title
+                // takes its own line and the date and badge share the next.
+                className="flex flex-wrap items-center gap-x-2.5 gap-y-1 border-b-2 border-dashed border-(--line) py-2.5 last:border-b-0 sm:grid sm:grid-cols-[1fr_90px_74px] sm:gap-2.5"
               >
-                <span className="truncate text-[13px] font-semibold">
+                <span className="w-full truncate text-[13px] font-semibold sm:w-auto">
                   {project.title}
                 </span>
                 <span className="font-tech text-[11px] text-(--soft)">
