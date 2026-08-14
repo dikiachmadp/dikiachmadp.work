@@ -303,6 +303,8 @@ export const UiSchema = z.object({
   states: z.object({
     empty: z.string(),
     error: z.string(),
+    success: z.string(),
+    rateLimited: z.string(),
     loading: z.string(),
     notFound: z.string(),
     comingSoon: z.string(),

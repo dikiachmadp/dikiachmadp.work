@@ -11,6 +11,8 @@
   "states": {
     "empty": "nothing here… try another word",
     "error": "Something went wrong. Please try again.",
+    "success": "Thanks — your message is on its way. I'll get back to you soon.",
+    "rateLimited": "You've sent a few messages already. Please try again in an hour.",
     "loading": "Loading…",
     "notFound": "Page not found",
     "comingSoon": "Coming soon",

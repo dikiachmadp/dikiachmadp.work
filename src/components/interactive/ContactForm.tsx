@@ -9,7 +9,10 @@ interface ContactFormProps {
   uiLabels: UiLabels;
 }
 
-type FormStatus = "idle" | "loading" | "success" | "error";
+// "rateLimited" berdiri sendiri: batas 3-per-jam di /api/contact sebelumnya
+// tampil sebagai pesan error umum, jadi pengirim mencoba lagi dan menghabiskan
+// sisa jatahnya tanpa pernah tahu apa yang terjadi.
+type FormStatus = "idle" | "loading" | "success" | "error" | "rateLimited";
 
 const fieldBase =
   "ink-border w-full bg-(--wash) px-[15px] py-3 text-[14px] outline-none placeholder:text-(--soft)";
@@ -23,8 +26,14 @@ export default function ContactForm({
 
   const { form } = contactData;
 
-  const handleChange = (name: string, value: string) =>
+  const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Kesalahan yang lama menempel setelah pengguna memperbaiki isiannya cuma
+    // membingungkan; sukses tetap dibiarkan sampai halaman dimuat ulang.
+    setStatus((prev) =>
+      prev === "error" || prev === "rateLimited" ? "idle" : prev,
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +50,7 @@ export default function ContactForm({
         setStatus("success");
         setFormData({});
       } else {
-        setStatus("error");
+        setStatus(res.status === 429 ? "rateLimited" : "error");
       }
     } catch {
       setStatus("error");
@@ -54,6 +63,15 @@ export default function ContactForm({
       : status === "success"
         ? uiLabels.buttons.success
         : uiLabels.buttons.submit;
+
+  const statusMessage =
+    status === "success"
+      ? uiLabels.states.success
+      : status === "rateLimited"
+        ? uiLabels.states.rateLimited
+        : status === "error"
+          ? uiLabels.states.error
+          : null;
 
   return (
     <form
@@ -149,14 +167,25 @@ export default function ContactForm({
         />
       </div>
 
-      {status === "error" && (
-        <p
-          role="alert"
-          className="ink-border-dashed r-chip m-0 px-4 py-3 text-[13px] font-semibold text-(--soft)"
-        >
-          {uiLabels.states.error}
-        </p>
-      )}
+      {/*
+        Selalu dirender dan tidak pernah disembunyikan: pembaca layar perlu
+        sudah mengamati wadahnya sebelum isinya berubah. Region yang muncul
+        berbarengan dengan teksnya (`display:none` lalu tampil) kerap tidak
+        diumumkan sama sekali. Sebelum ini keberhasilan hanya mengubah label
+        tombol, jadi pengguna pembaca layar tidak mendapat konfirmasi apa pun.
+      */}
+      <div role="status" aria-live="polite">
+        {statusMessage && (
+          <p
+            className={cn(
+              "ink-border-dashed r-chip m-0 px-4 py-3 text-[13px] font-semibold",
+              status === "success" ? "text-(--accent)" : "text-(--soft)",
+            )}
+          >
+            {statusMessage}
+          </p>
+        )}
+      </div>
 
       <button
         type="submit"

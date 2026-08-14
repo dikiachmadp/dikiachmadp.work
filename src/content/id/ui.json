@@ -11,6 +11,8 @@
   "states": {
     "empty": "belum ada… coba kata lain",
     "error": "Terjadi kesalahan. Silakan coba lagi.",
+    "success": "Terima kasih — pesan Anda sudah meluncur. Saya akan segera membalas.",
+    "rateLimited": "Anda sudah mengirim beberapa pesan. Silakan coba lagi satu jam lagi.",
     "loading": "Memuat…",
     "notFound": "Halaman tidak ditemukan",
     "comingSoon": "Segera",
