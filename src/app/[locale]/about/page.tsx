@@ -65,7 +65,10 @@ export default async function AboutPage({ params }: PageProps) {
                   src="/foto.webp"
                   alt={siteConfig.fullName}
                   fill
-                  sizes="330px"
+                  // The 330px column only exists from lg up; below that the
+                  // portrait spans the full container, so a flat "330px" made
+                  // the browser pick a candidate it then upscaled ~3.4x.
+                  sizes="(max-width: 1023px) 100vw, 330px"
                   priority
                   className="object-cover"
                   style={{ filter: "grayscale(1) contrast(1.1)" }}

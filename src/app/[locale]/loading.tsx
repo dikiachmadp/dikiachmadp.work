@@ -23,11 +23,11 @@ export default function LocaleLoading() {
 
       <div
         aria-hidden
-        className="anim-pulse-dot ink-border r-card h-9 w-[min(20rem,70%)] bg-(--wash)"
+        className="anim-pulse-soft ink-border r-card h-9 w-[min(20rem,70%)] bg-(--wash)"
       />
       <div
         aria-hidden
-        className="anim-pulse-dot ink-border r-card h-5 w-[min(32rem,90%)] bg-(--wash)"
+        className="anim-pulse-soft ink-border r-card h-5 w-[min(32rem,90%)] bg-(--wash)"
       />
 
       <div className="mt-4 grid grid-cols-1 gap-[26px] sm:grid-cols-2 lg:grid-cols-3">
@@ -35,7 +35,7 @@ export default function LocaleLoading() {
           <div
             key={i}
             aria-hidden
-            className="anim-pulse-dot ink-border r-card aspect-[16/10] bg-(--wash)"
+            className="anim-pulse-soft ink-border r-card aspect-[16/10] bg-(--wash)"
           />
         ))}
       </div>

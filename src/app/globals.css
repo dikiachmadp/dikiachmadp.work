@@ -163,6 +163,8 @@
   }
 }
 
+/* Sized for the 8px "available" dot, which is why it scales to 1.9. Anything
+   larger than a dot wants pulseSoft instead. */
 @keyframes pulseDot {
   0%,
   100% {
@@ -172,6 +174,17 @@
   50% {
     transform: scale(1.9);
     opacity: 0.25;
+  }
+}
+
+/* Opacity only — safe on skeleton blocks, which must not change size. */
+@keyframes pulseSoft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
   }
 }
 
@@ -390,6 +403,9 @@
   }
   .anim-pulse-dot {
     animation: pulseDot 1.8s ease-in-out infinite;
+  }
+  .anim-pulse-soft {
+    animation: pulseSoft 1.6s ease-in-out infinite;
   }
 }
 

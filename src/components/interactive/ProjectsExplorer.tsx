@@ -48,7 +48,7 @@ export default function ProjectsExplorer({
         </div>
 
         <label
-          className="ink-border flex min-w-[250px] items-center gap-[9px] bg-(--paper) px-[15px] py-2"
+          className="ink-border flex w-full items-center gap-[9px] bg-(--paper) px-[15px] py-2 sm:w-auto sm:min-w-[250px]"
           style={{ borderRadius: "20px 9px 22px 8px / 8px 22px 9px 20px" }}
         >
           <span className="sr-only">{uiLabels.states.searchPlaceholder}</span>

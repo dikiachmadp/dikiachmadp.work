@@ -31,7 +31,7 @@ export default function Navbar({ navData, siteConfig, locale }: NavbarProps) {
   return (
     <>
       <nav className="sticky top-0 z-50 w-full border-b-2 border-(--line) bg-(--paper) transition-colors duration-[0.45s]">
-        <div className="main-container flex h-[78px] items-center justify-between gap-6">
+        <div className="main-container flex h-[78px] items-center justify-between gap-2 sm:gap-6">
           <Logo
             locale={locale}
             wordmark={siteConfig.author}

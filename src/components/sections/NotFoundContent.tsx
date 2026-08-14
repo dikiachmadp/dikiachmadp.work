@@ -15,13 +15,15 @@ export default function NotFoundContent({
   return (
     <PageWrapper>
       <div className="mx-auto w-full max-w-[820px] px-[22px] pt-[70px] text-center">
-        <div className="relative inline-block">
+        {/* Same containment as ErrorContent — see the note there. The two
+            blocks share this markup and should not drift apart. */}
+        <div className="relative inline-block max-w-full px-[8%]">
           <h1 className="font-hand m-0 text-[clamp(6rem,20vw,13rem)] leading-[0.85]">
             {dict.heading}
           </h1>
           <span
             aria-hidden
-            className="anim-wob absolute top-[14%] left-[-8%] h-[70%] w-[116%] border-2 border-dashed border-(--line) opacity-50"
+            className="anim-wob absolute inset-x-0 top-[14%] h-[70%] border-2 border-dashed border-(--line) opacity-50"
             style={{ borderRadius: "52% 48% 45% 55% / 48% 52% 48% 52%" }}
           />
         </div>
