@@ -3,13 +3,16 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { env } from "@/lib/env";
 import { createContactSubmission } from "@/lib/db/contact";
-import { getContactLimiter } from "@/lib/ratelimit";
+import { clientIp, getContactLimiter } from "@/lib/ratelimit";
 
 const ContactRequestSchema = z.object({
   name: z.string().min(1, "Name is required").max(200),
   email: z.string().email("Invalid email address"),
   subject: z.string().max(300).optional().default("No Subject"),
   message: z.string().min(1, "Message is required").max(5000),
+  // Honeypot: field ini disembunyikan dari manusia di ContactForm, jadi hanya
+  // bot pengisi-semua-field yang mengirimnya terisi.
+  website: z.string().optional(),
 });
 
 function sanitizeHtml(str: string): string {
@@ -32,9 +35,9 @@ function sanitizeHtml(str: string): string {
 }
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
-
-  const { success } = await getContactLimiter().limit(ip);
+  const { success } = await getContactLimiter().limit(
+    clientIp(request.headers),
+  );
   if (!success) {
     return NextResponse.json(
       { error: "Too many requests. Please try again later." },
@@ -47,13 +50,23 @@ export async function POST(request: Request) {
 
     const validation = ContactRequestSchema.safeParse(body);
     if (!validation.success) {
+      // Detail isu Zod membocorkan bentuk schema tanpa menolong pengirim yang
+      // sah — form sudah memvalidasi sendiri di klien.
       return NextResponse.json(
-        { error: "Invalid input data", details: validation.error.format() },
+        { error: "Invalid input data" },
         { status: 400 },
       );
     }
 
-    const { name, email, subject, message } = validation.data;
+    const { name, email, subject, message, website } = validation.data;
+
+    // Balas seperti berhasil supaya bot tidak belajar bahwa jebakannya ketahuan.
+    if (website) {
+      return NextResponse.json(
+        { message: "Message sent successfully!" },
+        { status: 200 },
+      );
+    }
 
     // Simpan dulu, baru kirim email. Kalau Resend sedang bermasalah, pesannya
     // tetap tersimpan dan muncul di inbox dasbor — sebelumnya hilang total.
