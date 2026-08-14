@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/supabase/auth";
+import { pageQuery } from "@/lib/pagination";
 import {
   formValues,
   testimonialFormSchema,
@@ -76,5 +77,8 @@ export async function deleteTestimonialAction(id: string, formData: FormData) {
 
   await deleteTestimonialById(id);
   revalidateHome();
-  redirect(`/${locale}/dashboard/testimonials`);
+  // Kembali ke halaman tempat tombolnya ditekan, bukan selalu ke halaman 1.
+  redirect(
+    `/${locale}/dashboard/testimonials${pageQuery(formData.get("page"))}`,
+  );
 }

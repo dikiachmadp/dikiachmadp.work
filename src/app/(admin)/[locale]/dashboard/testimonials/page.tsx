@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import ConfirmSubmitButton from "@/components/interactive/ConfirmSubmitButton";
+import Pagination from "@/components/admin/Pagination";
 import { getTestimonialsPage } from "@/lib/db/testimonials";
+import { pageCount, parsePageParam } from "@/lib/pagination";
 import { requireUser } from "@/lib/supabase/auth";
 import { deleteTestimonialAction } from "./actions";
 
@@ -8,13 +11,29 @@ const PER_PAGE = 30;
 
 export default async function TestimonialsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string | string[] }>;
 }) {
   const { locale } = await params;
+  const { page } = await searchParams;
   await requireUser(locale);
 
-  const { rows } = await getTestimonialsPage({ page: 1, perPage: PER_PAGE });
+  const current = parsePageParam(page);
+  const { rows, total } = await getTestimonialsPage({
+    page: current,
+    perPage: PER_PAGE,
+  });
+
+  // Lihat catatan di halaman submissions: halaman di luar jangkauan tampil
+  // seperti daftar yang benar-benar kosong.
+  const pages = pageCount(total, PER_PAGE);
+  if (current > pages) {
+    redirect(
+      `/${locale}/dashboard/testimonials${pages > 1 ? `?page=${pages}` : ""}`,
+    );
+  }
 
   return (
     <>
@@ -60,6 +79,7 @@ export default async function TestimonialsPage({
                 </Link>
                 <form action={deleteTestimonialAction.bind(null, item.id)}>
                   <input type="hidden" name="formLocale" value={locale} />
+                  <input type="hidden" name="page" value={current} />
                   <ConfirmSubmitButton
                     message={`Delete the testimonial from "${item.name}"? This cannot be undone.`}
                     className="r-tag ink-border lift-chip px-3 py-1.5 text-[10px] font-bold tracking-[0.1em] text-(--soft) uppercase"
@@ -72,6 +92,14 @@ export default async function TestimonialsPage({
           ))
         )}
       </div>
+
+      <Pagination
+        current={current}
+        total={total}
+        perPage={PER_PAGE}
+        basePath={`/${locale}/dashboard/testimonials`}
+        label="Testimonial pages"
+      />
     </>
   );
 }
