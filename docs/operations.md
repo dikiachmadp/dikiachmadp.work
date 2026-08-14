@@ -116,8 +116,24 @@ client-supplied filename. Deleting a project also deletes its objects.
 ## Response headers
 
 `next.config.ts` sets HSTS, `X-Frame-Options: DENY`, `nosniff`,
-`Referrer-Policy`, and `Permissions-Policy` on every route. The CSP is still
-`Content-Security-Policy-Report-Only` — Next's bootstrap scripts, the
-next-themes inline script, and JSX `style` attributes all need verifying before
-it can be enforced. Watch the browser console for report-only violations, then
-rename the header to `Content-Security-Policy`.
+`Referrer-Policy`, and `Permissions-Policy` on every route.
+
+The CSP is now **enforced** (`Content-Security-Policy`, no longer report-only).
+`object-src 'none'`, `base-uri`, `form-action`, `frame-ancestors 'none'`, and
+the `connect-src`/`img-src` restrictions all bind. `'unsafe-eval'` is dev-only —
+React needs it there to reconstruct server error stacks in the browser.
+
+**`'unsafe-inline'` in `script-src` stays, deliberately.** Dropping it requires
+nonces, and per `node_modules/next/dist/docs/01-app/02-guides/content-security-policy.md`
+nonces force **every page to render dynamically — static generation and ISR are
+disabled**. That would void `revalidate = 3600`, every `generateStaticParams`,
+and the whole `revalidateProjectPaths()` flow, and put a Supabase query on every
+single visit — to the same free-tier database the keep-alive cron exists to
+protect. The XSS-inline hardening is not worth that here. `style-src` needs
+`'unsafe-inline'` regardless: the components carry dozens of JSX `style`
+attributes, which nonces do not cover.
+
+Because the header binds now, a CSP violation is a broken feature, not a console
+note. After changing anything that loads a script, font, image, or media file,
+walk the public routes and the dashboard with the console open and confirm it
+stays clean.
