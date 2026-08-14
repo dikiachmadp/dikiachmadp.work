@@ -141,7 +141,7 @@ export default function ProjectForm({
       {uploadError && (
         <p
           role="alert"
-          className="ink-border-dashed r-chip m-0 bg-(--wash) px-4 py-3 text-[13px] font-semibold text-(--accent)"
+          className="ink-border-dashed r-chip m-0 bg-(--wash) px-4 py-3 text-[13px] font-semibold text-(--accent-ink)"
         >
           {uploadError}
         </p>

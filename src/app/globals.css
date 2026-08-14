@@ -9,13 +9,36 @@
 
 @layer base {
   :root {
+    /* No `color-scheme` here on purpose: next-themes already writes it inline
+       on <html> (`enableColorScheme` is on by default), and an inline style
+       beats any stylesheet rule — a declaration in this file would never
+       apply. Verified in the browser: toggling the theme flips the inline
+       value between light and dark. */
+
     --paper: #fbfaf6;
     --ink: #16150f;
     --soft: #6e6c62;
     --line: #16150f;
     --wash: #eceae1;
     --dot: rgba(22, 21, 15, 0.18);
+
+    /* --------------------------------------------------------------------
+       The accent comes in two roles, and they do NOT behave the same across
+       modes. Do not collapse them back into one token.
+
+       --accent is a *surface*: it is always paired with white text
+       (`bg-(--accent) text-white`, 14 places). White on #0d7c6f is 5.08:1, so
+       it stays put in both modes — lightening it for dark mode would break
+       every one of those pairings.
+
+       --accent-ink is the *foreground* role: accent text, icons, borders,
+       strokes and dots drawn on --paper. #0d7c6f only reaches 3.65:1 on the
+       dark paper, which fails AA for body text, so dark mode gets a lighter
+       teal (7.2:1). Light mode keeps the original value, so nothing shifts
+       there.
+       -------------------------------------------------------------------- */
     --accent: #0d7c6f;
+    --accent-ink: #0d7c6f;
 
     --container-max: 1180px;
     --container-pad: 22px;
@@ -34,6 +57,9 @@
     --line: #fbfaf6;
     --wash: #24231b;
     --dot: rgba(251, 250, 246, 0.2);
+
+    /* --accent is deliberately absent here — see the note in :root. */
+    --accent-ink: #35b3a3;
   }
 
   html {
@@ -389,9 +415,13 @@ select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid var(--accent);
+  /* --accent-ink, not --accent: the ring is drawn on --paper, and the plain
+     accent only clears 3.65:1 there in dark mode. No border-radius here —
+     `outline` already follows the element's own radius, and forcing 2px
+     squared off every wobbly .r-btn / .r-chip / .r-blob the moment it took
+     focus. */
+  outline: 3px solid var(--accent-ink);
   outline-offset: 2px;
-  border-radius: 2px;
 }
 
 /* Sits off-screen until tabbed to, so keyboard users can jump the navbar. */

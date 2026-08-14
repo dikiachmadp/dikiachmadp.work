@@ -14,8 +14,8 @@ export default function Hero({ heroData, locale }: HeroProps) {
         <div>
           <div className="r-chip ink-border mb-[26px] inline-flex items-center gap-[9px] bg-(--wash) px-3.5 py-[7px]">
             <span className="relative flex h-[9px] w-[9px]">
-              <span className="anim-pulse-dot absolute inset-0 rounded-full bg-(--accent)" />
-              <span className="relative h-[9px] w-[9px] rounded-full bg-(--accent)" />
+              <span className="anim-pulse-dot absolute inset-0 rounded-full bg-(--accent-ink)" />
+              <span className="relative h-[9px] w-[9px] rounded-full bg-(--accent-ink)" />
             </span>
             <span className="text-[11px] font-bold tracking-[0.14em] uppercase">
               {heroData.availability.status}
@@ -27,7 +27,7 @@ export default function Hero({ heroData, locale }: HeroProps) {
           </h1>
 
           <div className="relative mb-[26px] inline-block">
-            <span className="font-hand block text-[clamp(3.6rem,9vw,7.2rem)] leading-[0.92] tracking-[-0.03em] text-(--accent)">
+            <span className="font-hand block text-[clamp(3.6rem,9vw,7.2rem)] leading-[0.92] tracking-[-0.03em] text-(--accent-ink)">
               {heroData.title.bottom}
             </span>
             {/* Hand-drawn underline that draws itself once on load. */}
@@ -40,7 +40,7 @@ export default function Hero({ heroData, locale }: HeroProps) {
               <path
                 d="M2 12 C 60 4, 120 16, 180 8 S 280 6, 298 11"
                 fill="none"
-                stroke="var(--accent)"
+                stroke="var(--accent-ink)"
                 strokeWidth="4"
                 strokeLinecap="round"
                 strokeDasharray="400"
@@ -105,7 +105,7 @@ export default function Hero({ heroData, locale }: HeroProps) {
           </div>
 
           <div className="ink-border flat-3 absolute -right-2.5 -bottom-[22px] z-3 flex h-24 w-24 items-center justify-center rounded-full bg-(--paper)">
-            <span className="font-note text-center text-[17px] leading-[1.05] text-(--accent)">
+            <span className="font-note text-center text-[17px] leading-[1.05] text-(--accent-ink)">
               {heroData.craftBadge.map((line) => (
                 <span key={line} className="block">
                   {line}

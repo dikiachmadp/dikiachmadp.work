@@ -29,7 +29,7 @@ export default function Logo({ locale, wordmark, tagline }: LogoProps) {
         <span className="font-hand block text-[21px] tracking-[-0.01em]">
           {wordmark}
         </span>
-        <span className="font-note mt-px block text-[14px] text-(--accent)">
+        <span className="font-note mt-px block text-[14px] text-(--accent-ink)">
           {tagline}
         </span>
       </span>

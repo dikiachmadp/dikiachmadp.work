@@ -31,7 +31,7 @@ export default function Footer({
         <div className="grid grid-cols-1 items-end gap-8 pb-6 md:grid-cols-[1fr_auto]">
           <div>
             <div className="r-chip ink-border mb-3 inline-flex items-center gap-2 bg-(--paper) px-3 py-[5px]">
-              <span className="anim-pulse-dot h-2 w-2 rounded-full bg-(--accent)" />
+              <span className="anim-pulse-dot h-2 w-2 rounded-full bg-(--accent-ink)" />
               <span className="text-[9px] font-bold tracking-[0.16em] uppercase">
                 {heroData.availability.status}
               </span>
