@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/supabase/auth";
-import { uploadProjectImage } from "@/lib/storage";
+import { removeProjectImages, uploadProjectImage } from "@/lib/storage";
 import {
   formValues,
   projectFormSchema,
@@ -146,7 +146,15 @@ export async function deleteProjectAction(id: string, formData: FormData) {
   const locale = (formData.get("formLocale") as string) || "en";
   await requireUser(locale);
 
-  await deleteProjectById(id);
+  // delete() mengembalikan baris yang dihapus, jadi URL gambarnya masih ada di
+  // tangan untuk dibersihkan — tanpa ini berkasnya tetap publik selamanya.
+  const deleted = await deleteProjectById(id);
+  await removeProjectImages(
+    [deleted.coverImage, deleted.logoUrl, ...deleted.gallery].filter(
+      (url): url is string => Boolean(url),
+    ),
+  );
+
   revalidateProjectPaths();
   redirect(`/${locale}/dashboard/projects`);
 }
