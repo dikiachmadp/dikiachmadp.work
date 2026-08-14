@@ -60,7 +60,21 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
-      // Upload gambar project lewat FormData server action.
+      /**
+       * Upload gambar project lewat FormData server action.
+       *
+       * Jangan disamakan dengan batas 4 MB per berkas di
+       * `src/lib/upload-limits.ts` — keduanya mengukur hal berbeda. Satu submit
+       * bisa membawa cover + logo + banyak gambar galeri (`galleryFiles`
+       * bersifat multiple), jadi total yang sah mudah melebihi batas per
+       * berkas. Menurunkan angka ini ke 4–5mb akan menolak unggahan galeri yang
+       * benar-benar wajar.
+       *
+       * Next menolak body yang melewatinya sebelum server action jalan, jadi
+       * tidak ada pesan yang bisa dikembalikan; ProjectForm memeriksa totalnya
+       * di klien lebih dulu (`MAX_TOTAL_BYTES`, sengaja sedikit di bawah angka
+       * ini untuk menyisakan ruang bagi overhead multipart).
+       */
       bodySizeLimit: "8mb",
     },
   },
