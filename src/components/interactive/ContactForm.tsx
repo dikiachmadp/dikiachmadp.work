@@ -93,7 +93,9 @@ export default function ContactForm({
             >
               <span className="micro">
                 {field.label}
-                {field.required && <span className="text-(--accent)"> *</span>}
+                {field.required && (
+                  <span className="text-(--accent-ink)"> *</span>
+                )}
               </span>
 
               {field.type === "textarea" ? (
@@ -179,7 +181,7 @@ export default function ContactForm({
           <p
             className={cn(
               "ink-border-dashed r-chip m-0 px-4 py-3 text-[13px] font-semibold",
-              status === "success" ? "text-(--accent)" : "text-(--soft)",
+              status === "success" ? "text-(--accent-ink)" : "text-(--soft)",
             )}
           >
             {statusMessage}

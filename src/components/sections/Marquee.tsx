@@ -21,7 +21,7 @@ export default function Marquee({ items }: MarqueeProps) {
             className="font-hand flex items-center gap-[22px] px-[22px] text-[23px] whitespace-nowrap"
           >
             {item}
-            <span className="text-(--accent)">✳</span>
+            <span className="text-(--accent-ink)">✳</span>
           </span>
         ))}
       </div>

@@ -14,7 +14,7 @@ export default function ServicesCard({ service }: ServicesCardProps) {
       style={{ borderRadius: "28px 12px 30px 13px / 13px 30px 12px 28px" }}
     >
       <div className="flex items-baseline gap-3">
-        <span className="font-hand text-[34px] leading-none text-(--accent)">
+        <span className="font-hand text-[34px] leading-none text-(--accent-ink)">
           {String(service.order).padStart(2, "0")}
         </span>
         <h2 className="font-hand text-[25px]">{service.title}</h2>

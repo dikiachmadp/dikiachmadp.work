@@ -34,7 +34,7 @@ export default function ServicesPreview({
             )}
           >
             <div className="flex items-center justify-between">
-              <span className="font-hand text-[34px] leading-none text-(--accent)">
+              <span className="font-hand text-[34px] leading-none text-(--accent-ink)">
                 {String(service.order).padStart(2, "0")}
               </span>
               <span className="ink-border flex h-[30px] w-[30px] items-center justify-center rounded-full">

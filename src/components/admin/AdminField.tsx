@@ -28,14 +28,17 @@ function Shell({
     <label className={cn("flex flex-col gap-[7px]", className)}>
       <span className="micro">
         {label}
-        {required && <span className="text-(--accent)"> *</span>}
+        {required && <span className="text-(--accent-ink)"> *</span>}
       </span>
       {children}
       {hint && !error && (
         <span className="text-[11px] text-(--soft)">{hint}</span>
       )}
       {error && (
-        <span role="alert" className="text-[11px] font-bold text-(--accent)">
+        <span
+          role="alert"
+          className="text-[11px] font-bold text-(--accent-ink)"
+        >
           {error}
         </span>
       )}
@@ -56,7 +59,7 @@ export function AdminField({
         placeholder={placeholder}
         defaultValue={props.defaultValue}
         aria-invalid={Boolean(props.error)}
-        className={cn(controlClass, props.error && "border-(--accent)")}
+        className={cn(controlClass, props.error && "border-(--accent-ink)")}
       />
     </Shell>
   );
@@ -78,7 +81,7 @@ export function AdminTextarea({
         className={cn(
           controlClass,
           "resize-y",
-          props.error && "border-(--accent)",
+          props.error && "border-(--accent-ink)",
         )}
       />
     </Shell>
@@ -107,7 +110,7 @@ export function AdminSelect({
         className={cn(
           controlClass,
           "cursor-pointer",
-          props.error && "border-(--accent)",
+          props.error && "border-(--accent-ink)",
         )}
       >
         {options.map((option) => (
