@@ -16,6 +16,7 @@ jobs:
       DIRECT_URL: "postgresql://user:pass@localhost:5432/dummy"
       NEXT_PUBLIC_SUPABASE_URL: "https://dummy.supabase.co"
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "dummy-anon-key"
+      ADMIN_EMAILS: "ci@example.com"
       RESEND_API_KEY: "re_dummy"
       CONTACT_EMAIL: "ci@example.com"
       UPSTASH_REDIS_REST_URL: "https://dummy.upstash.io"
