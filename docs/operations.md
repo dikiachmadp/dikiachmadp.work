@@ -42,6 +42,11 @@ Three `rls_enabled_no_policy` notices are intentional and should not be
 - `public._prisma_migrations` — Prisma-managed.
 - `backup.*` — snapshot tables, not reachable by the app.
 
+The `auth_leaked_password_protection` warning is also expected and will not
+clear. Checking new passwords against HaveIBeenPwned is a paid-plan feature and
+this project is on the free tier, so there is nothing to enable. Treat it as
+accepted, not outstanding.
+
 ## Auth hardening
 
 Who counts as an admin is decided by `ADMIN_EMAILS`, not by Supabase. The anon
@@ -68,7 +73,12 @@ repo. Re-check them after any project change:
   (`https://dikiachmadp.work/**`), never a loose wildcard. Password-reset links
   are built from `SITE_URL`, and this list is the second lock on where a
   recovery token may land.
-- Authentication → Policies → leaked-password protection enabled.
+
+Verified 2026-08-14: signup off, one account in `auth.users`. Both are readable
+without the dashboard — `GET /auth/v1/settings` with the anon key reports
+`disable_signup`, and `select email from auth.users` covers the second. The
+redirect URL list has no read path short of the Management API, so it is the
+one item that can only be eyeballed.
 
 ## Environment
 
