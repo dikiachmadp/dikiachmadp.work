@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
+import { safeNext } from "@/lib/safe-redirect";
 
 /**
  * Tempat mendarat untuk semua tautan email Supabase (recovery, magic link,
@@ -21,7 +22,8 @@ export async function GET(
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = searchParams.get("next") ?? `/${locale}/dashboard`;
+  // `next` datang dari query, jadi tidak boleh dipercaya — lihat safeNext().
+  const next = safeNext(searchParams.get("next"), locale);
 
   const supabase = await createClient();
 

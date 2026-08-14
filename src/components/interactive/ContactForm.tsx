@@ -127,6 +127,28 @@ export default function ContactForm({
         })}
       </div>
 
+      {/*
+        Honeypot. Disembunyikan di luar layar, bukan dengan `display:none` —
+        sebagian bot melewati field yang benar-benar tidak dirender. Manusia
+        tidak akan pernah mengisinya (aria-hidden + tabIndex -1), jadi isian di
+        sini berarti pengirimnya bot dan API membuangnya diam-diam.
+      */}
+      <div
+        aria-hidden="true"
+        className="absolute -left-[9999px] h-0 w-0 overflow-hidden"
+      >
+        <label htmlFor="contact-website">Website</label>
+        <input
+          id="contact-website"
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={formData.website ?? ""}
+          onChange={(e) => handleChange("website", e.target.value)}
+        />
+      </div>
+
       {status === "error" && (
         <p
           role="alert"
