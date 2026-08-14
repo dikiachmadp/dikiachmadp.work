@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import ConfirmSubmitButton from "@/components/interactive/ConfirmSubmitButton";
+import Pagination from "@/components/admin/Pagination";
 import { getProjectsPage } from "@/lib/db/projects";
+import { pageCount, parsePageParam } from "@/lib/pagination";
 import { requireUser } from "@/lib/supabase/auth";
 import { deleteProjectAction } from "./actions";
 
@@ -11,18 +14,26 @@ export default async function ProjectsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string | string[] }>;
 }) {
   const { locale } = await params;
   const { page } = await searchParams;
   await requireUser(locale);
 
-  const current = Math.max(1, Number(page) || 1);
+  const current = parsePageParam(page);
   const { rows, total } = await getProjectsPage({
     page: current,
     perPage: PER_PAGE,
   });
-  const pages = Math.max(1, Math.ceil(total / PER_PAGE));
+
+  // Lihat catatan di halaman submissions: halaman di luar jangkauan tampil
+  // seperti daftar yang benar-benar kosong.
+  const pages = pageCount(total, PER_PAGE);
+  if (current > pages) {
+    redirect(
+      `/${locale}/dashboard/projects${pages > 1 ? `?page=${pages}` : ""}`,
+    );
+  }
 
   return (
     <>
@@ -66,6 +77,7 @@ export default async function ProjectsPage({
                   </Link>
                   <form action={deleteProjectAction.bind(null, project.id)}>
                     <input type="hidden" name="formLocale" value={locale} />
+                    <input type="hidden" name="page" value={current} />
                     <ConfirmSubmitButton
                       message={`Delete "${title}"? This cannot be undone.`}
                       className="r-tag ink-border lift-chip px-3 py-1.5 text-[10px] font-bold tracking-[0.1em] text-(--soft) uppercase"
@@ -80,24 +92,13 @@ export default async function ProjectsPage({
         )}
       </div>
 
-      {pages > 1 && (
-        <nav className="mt-4 flex items-center justify-center gap-2">
-          {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-            <Link
-              key={n}
-              href={`/${locale}/dashboard/projects?page=${n}`}
-              aria-current={n === current ? "page" : undefined}
-              className={
-                n === current
-                  ? "r-tag ink-border bg-(--accent) px-3 py-1.5 text-[11px] font-bold text-white"
-                  : "r-tag ink-border lift-chip px-3 py-1.5 text-[11px] font-bold"
-              }
-            >
-              {n}
-            </Link>
-          ))}
-        </nav>
-      )}
+      <Pagination
+        current={current}
+        total={total}
+        perPage={PER_PAGE}
+        basePath={`/${locale}/dashboard/projects`}
+        label="Project pages"
+      />
     </>
   );
 }

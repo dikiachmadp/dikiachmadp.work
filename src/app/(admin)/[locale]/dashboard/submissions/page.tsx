@@ -1,5 +1,8 @@
+import { redirect } from "next/navigation";
 import ConfirmSubmitButton from "@/components/interactive/ConfirmSubmitButton";
+import Pagination from "@/components/admin/Pagination";
 import { getSubmissionsPage } from "@/lib/db/contact";
+import { pageCount, parsePageParam } from "@/lib/pagination";
 import { requireUser } from "@/lib/supabase/auth";
 import { deleteSubmissionAction } from "./actions";
 
@@ -7,16 +10,30 @@ const PER_PAGE = 25;
 
 export default async function SubmissionsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string | string[] }>;
 }) {
   const { locale } = await params;
+  const { page } = await searchParams;
   await requireUser(locale);
 
+  const current = parsePageParam(page);
   const { rows, total } = await getSubmissionsPage({
-    page: 1,
+    page: current,
     perPage: PER_PAGE,
   });
+
+  // Halaman di luar jangkauan mendarat di daftar kosong yang berbunyi "belum
+  // ada pesan" — padahal pesannya ada. Terjadi lewat URL yang diketik manual,
+  // dan juga setelah menghapus item terakhir di halaman terakhir.
+  const pages = pageCount(total, PER_PAGE);
+  if (current > pages) {
+    redirect(
+      `/${locale}/dashboard/submissions${pages > 1 ? `?page=${pages}` : ""}`,
+    );
+  }
 
   return (
     <>
@@ -59,6 +76,7 @@ export default async function SubmissionsPage({
                 className="mt-3"
               >
                 <input type="hidden" name="formLocale" value={locale} />
+                <input type="hidden" name="page" value={current} />
                 <ConfirmSubmitButton
                   message={`Delete the message from "${message.name}"? This cannot be undone.`}
                   className="r-tag ink-border lift-chip px-3 py-1.5 text-[10px] font-bold tracking-[0.1em] text-(--soft) uppercase"
@@ -70,6 +88,14 @@ export default async function SubmissionsPage({
           ))
         )}
       </div>
+
+      <Pagination
+        current={current}
+        total={total}
+        perPage={PER_PAGE}
+        basePath={`/${locale}/dashboard/submissions`}
+        label="Message pages"
+      />
     </>
   );
 }

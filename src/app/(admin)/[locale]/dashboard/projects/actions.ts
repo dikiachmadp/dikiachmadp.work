@@ -16,6 +16,7 @@ import {
   updateProjectWithTranslations,
 } from "@/lib/db/projects";
 import { revalidateProjectPaths } from "@/lib/db/revalidate";
+import { pageQuery } from "@/lib/pagination";
 
 const UPLOAD_PLACEHOLDER = "__upload__";
 
@@ -156,5 +157,6 @@ export async function deleteProjectAction(id: string, formData: FormData) {
   );
 
   revalidateProjectPaths();
-  redirect(`/${locale}/dashboard/projects`);
+  // Kembali ke halaman tempat tombolnya ditekan, bukan selalu ke halaman 1.
+  redirect(`/${locale}/dashboard/projects${pageQuery(formData.get("page"))}`);
 }
