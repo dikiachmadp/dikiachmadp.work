@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
+import { MAX_FILE_BYTES } from "@/lib/upload-limits";
 
 const BUCKET = "project-images";
 
@@ -17,7 +18,8 @@ const ALLOWED_TYPES: Record<string, string> = {
   "image/avif": "avif",
 };
 
-const MAX_BYTES = 4 * 1024 * 1024;
+// Batasnya dipakai bersama form admin supaya klien dan server tidak berselisih.
+const MAX_BYTES = MAX_FILE_BYTES;
 
 const readableTypes = Object.keys(ALLOWED_TYPES).join(", ");
 

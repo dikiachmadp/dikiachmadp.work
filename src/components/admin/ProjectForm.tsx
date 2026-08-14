@@ -12,6 +12,7 @@ import {
 } from "./AdminField";
 import SubmitButton from "./SubmitButton";
 import { slugifyCategory } from "@/lib/slugify";
+import { uploadRejectionReason } from "@/lib/upload-limits";
 import { initialFormState, type FormState } from "@/schemas/admin";
 
 export interface ProjectFormValues {
@@ -96,6 +97,26 @@ export default function ProjectForm({
   const [categoryEn, setCategoryEn] = useState(
     values.translations.en.category || categories.en[0],
   );
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  /**
+   * Next menolak body yang melebihi `serverActions.bodySizeLimit` sebelum
+   * server action sempat jalan, jadi tidak ada jalur untuk mengembalikan pesan
+   * yang bisa dibaca — admin hanya melihat kiriman yang gagal begitu saja.
+   * Satu submit bisa membawa cover + logo + banyak gambar galeri, jadi total
+   * mudah melewati batas walau tiap berkasnya sah. Diperiksa di sini dulu.
+   */
+  const guardUploadSize = (event: React.FormEvent<HTMLFormElement>) => {
+    const files = Array.from(
+      event.currentTarget.querySelectorAll<HTMLInputElement>(
+        'input[type="file"]',
+      ),
+    ).flatMap((input) => Array.from(input.files ?? []));
+
+    const reason = uploadRejectionReason(files);
+    setUploadError(reason);
+    if (reason) event.preventDefault();
+  };
 
   // Nilai yang dikirim sebelumnya menang, supaya isian tidak hilang saat
   // validasi gagal — React me-reset form setelah server action selesai.
@@ -104,7 +125,11 @@ export default function ProjectForm({
   const err = (name: string) => state.fieldErrors?.[name];
 
   return (
-    <form action={formAction} className="flex flex-col gap-5">
+    <form
+      action={formAction}
+      onSubmit={guardUploadSize}
+      className="flex flex-col gap-5"
+    >
       <input type="hidden" name="formLocale" value={locale} />
       {/* Diturunkan dari label EN supaya filter publik tidak pernah putus. */}
       <input
@@ -112,6 +137,15 @@ export default function ProjectForm({
         name="categoryKey"
         value={slugifyCategory(categoryEn)}
       />
+
+      {uploadError && (
+        <p
+          role="alert"
+          className="ink-border-dashed r-chip m-0 bg-(--wash) px-4 py-3 text-[13px] font-semibold text-(--accent)"
+        >
+          {uploadError}
+        </p>
+      )}
 
       {state.status === "error" && state.message && (
         <p
