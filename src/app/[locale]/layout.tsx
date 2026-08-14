@@ -78,7 +78,10 @@ export async function generateMetadata({
         {
           url: "/ogImage.webp",
           width: 1200,
-          height: 630,
+          // Berkasnya benar-benar 1200×628, bukan 1200×630. Dimensi yang
+          // dideklarasikan dipakai untuk memesan ruang sebelum gambar terunduh,
+          // jadi angkanya harus cocok dengan berkasnya.
+          height: 628,
           alt: siteConfig.siteName,
         },
       ],

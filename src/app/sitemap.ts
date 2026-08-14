@@ -1,8 +1,12 @@
 import { MetadataRoute } from "next";
 import { getAllProjectSlugs } from "@/lib/db/projects";
+import { SITE_URL } from "@/lib/site-url";
 import { Locale } from "@/types/content";
 
-const BASE_URL = "https://dikiachmadp.work";
+// Sebelumnya domain produksi ditulis langsung di sini, jadi preview deploy
+// menerbitkan sitemap yang menunjuk ke produksi. SITE_URL sudah menangani
+// produksi, preview, dan dev — lihat src/lib/site-url.ts.
+const BASE_URL = SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const locales: Locale[] = ["en", "id"];

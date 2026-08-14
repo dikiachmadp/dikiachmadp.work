@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
 import NotFoundContent from "@/components/sections/NotFoundContent";
+
+// Sama seperti catch-all di bawahnya: jangan biarkan halaman 404 terindeks.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 /**
  * Next renders this boundary without route params, so it falls back to the
