@@ -3,15 +3,17 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getLoginLimiter } from "@/lib/ratelimit";
+import { clientIp, getLoginLimiter } from "@/lib/ratelimit";
+import { SITE_URL } from "@/lib/site-url";
 
 export async function requestPasswordReset(formData: FormData) {
   const email = String(formData.get("email") ?? "");
   const locale = String(formData.get("locale") ?? "en");
 
   const headerList = await headers();
-  const ip = headerList.get("x-forwarded-for") ?? "127.0.0.1";
-  const { success } = await getLoginLimiter().limit(`reset:${ip}`);
+  const { success } = await getLoginLimiter().limit(
+    `reset:${clientIp(headerList)}`,
+  );
   if (!success) {
     redirect(
       `/${locale}/forgot-password?error=${encodeURIComponent(
@@ -20,14 +22,12 @@ export async function requestPasswordReset(formData: FormData) {
     );
   }
 
-  // Origin dari request, supaya tautan tetap benar di preview maupun produksi.
-  const origin =
-    headerList.get("origin") ??
-    `https://${headerList.get("host") ?? "dikiachmadp.work"}`;
-
+  // Origin dari environment, bukan dari header `origin`/`host`: header itu ikut
+  // dikirim penyerang, jadi `Host` palsu bisa mengarahkan tautan recovery milik
+  // korban ke domain lain. Lihat @/lib/site-url.
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/${locale}/auth/callback?next=/${locale}/reset-password`,
+    redirectTo: `${SITE_URL}/${locale}/auth/callback?next=/${locale}/reset-password`,
   });
 
   if (error) {
