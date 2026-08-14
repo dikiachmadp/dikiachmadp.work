@@ -44,6 +44,9 @@ export default function Showreel() {
       muted
       loop
       playsInline
+      // Frame pertama video itu sendiri: mengisi bingkai sejak paint pertama,
+      // dan menjadi tampilan tetap bagi yang meminta pengurangan gerak.
+      poster="/hero-poster.webp"
       aria-label="Showreel"
       className="photo-ink h-full w-full object-cover"
     >

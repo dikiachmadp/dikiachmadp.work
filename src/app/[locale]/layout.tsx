@@ -99,6 +99,11 @@ export async function generateMetadata({
         { url: "/favicon.ico", sizes: "any" },
         { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
         { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        // Sebelumnya berkas ini ada di /public tapi tidak pernah dirujuk.
+        // Artwork-nya sama dengan ikon lain; ukurannya yang lebih besar
+        // dipakai tab dan bookmark di layar high-DPI. Yang di atas tetap
+        // jadi fallback untuk browser tanpa dukungan WebP.
+        { url: "/favicon.webp", sizes: "192x192", type: "image/webp" },
       ],
       shortcut: "/favicon.ico",
       apple: "/apple-touch-icon.png",
