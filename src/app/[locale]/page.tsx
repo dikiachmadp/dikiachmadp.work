@@ -13,6 +13,8 @@ import ProjectsGallery from "@/components/sections/ProjectsGallery";
 import ServicesPreview from "@/components/sections/ServicesPreview";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import CTASection from "@/components/sections/CTASection";
+import JsonLd from "@/components/seo/JsonLd";
+import { personSchema, websiteSchema } from "@/lib/structured-data";
 import { Locale } from "@/types/content";
 
 interface PageProps {
@@ -47,6 +49,11 @@ export default async function HomePage({ params }: PageProps) {
 
   return (
     <PageWrapper>
+      {/* Siapa pemilik situs ini, dan situs apa ini. Tanpa keduanya mesin
+          pencari hanya menebak dari teks halaman. */}
+      <JsonLd data={personSchema(dict.siteConfig, validLocale)} />
+      <JsonLd data={websiteSchema(dict.siteConfig, validLocale)} />
+
       <Hero heroData={dict.hero} locale={validLocale} />
 
       <Marquee items={dict.hero.marquee} />

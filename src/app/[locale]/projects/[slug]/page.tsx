@@ -8,6 +8,8 @@ import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import Button from "@/components/ui/Button";
 import Tag from "@/components/ui/Tag";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, projectSchema } from "@/lib/structured-data";
 import { Locale } from "@/types/content";
 import { cn } from "@/lib/utils";
 
@@ -77,8 +79,28 @@ export default async function ProjectDetailPage({
     Boolean(fact.value),
   );
 
+  // Label "Karya"/"All work" sudah ada di navigasi — jangan tulis ulang di sini.
+  const projectsLabel =
+    dict.navigation.main.find((item) => item.path === "/projects")?.label ??
+    "Projects";
+
   return (
     <PageWrapper>
+      <JsonLd data={projectSchema(project, dict.siteConfig, validLocale)} />
+      <JsonLd
+        data={breadcrumbSchema(
+          [
+            { name: dict.siteConfig.siteName, path: `/${validLocale}` },
+            { name: projectsLabel, path: `/${validLocale}/projects` },
+            {
+              name: project.title,
+              path: `/${validLocale}/projects/${project.slug}`,
+            },
+          ],
+          dict.siteConfig,
+        )}
+      />
+
       <div className="mx-auto w-full max-w-[980px] px-[22px] pt-11">
         <Button
           href={`/${validLocale}/projects`}
