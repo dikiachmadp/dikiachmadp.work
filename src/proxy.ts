@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { isAdminEmail, parseAdminEmails } from "@/lib/admin-allowlist";
 
 const locales = ["en", "id"];
 const defaultLocale = "en";
@@ -81,14 +82,21 @@ export default async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (protectedPattern.test(pathname) && !user) {
+  // A valid session is not authorization. The same allowlist runs in
+  // requireUser(); duplicated here so the guard never rests on one check.
+  const isAdmin = isAdminEmail(
+    user?.email,
+    parseAdminEmails(process.env.ADMIN_EMAILS),
+  );
+
+  if (protectedPattern.test(pathname) && !isAdmin) {
     const url = request.nextUrl.clone();
     const locale = pathname.split("/")[1];
     url.pathname = `/${locale}/login`;
     return NextResponse.redirect(url);
   }
 
-  if (loginPattern.test(pathname) && user) {
+  if (loginPattern.test(pathname) && isAdmin) {
     const url = request.nextUrl.clone();
     const locale = pathname.split("/")[1];
     url.pathname = `/${locale}/dashboard`;
@@ -100,5 +108,10 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
+    // The pattern above skips anything containing a dot, so /en/dashboard/a.b
+    // would slip past the guard. Match the dashboard subtree unconditionally.
+    "/:locale(en|id)/dashboard/:path*",
+  ],
 };

@@ -1,10 +1,20 @@
 import "server-only";
 import { z } from "zod";
+import { parseAdminEmails } from "@/lib/admin-allowlist";
+
+// Daftar email yang boleh masuk dasbor, dipisah koma. Punya akun Supabase saja
+// tidak cukup: anon key ada di bundle browser, jadi tanpa allowlist ini siapa
+// pun yang berhasil mendaftar otomatis jadi admin.
+const adminEmails = z
+  .string()
+  .transform(parseAdminEmails)
+  .refine((emails) => emails.length > 0, "Minimal satu email admin");
 
 const serverSchema = z.object({
   DATABASE_URL: z.string().min(1),
   // Koneksi langsung/session pooler untuk perintah DDL (prisma migrate).
   DIRECT_URL: z.string().min(1).optional(),
+  ADMIN_EMAILS: adminEmails,
   RESEND_API_KEY: z.string().min(1),
   RESEND_FROM_EMAIL: z.string().min(1).optional(),
   CONTACT_EMAIL: z.email(),
