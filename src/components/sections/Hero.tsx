@@ -1,5 +1,6 @@
 import { HeroData, Locale } from "@/types/content";
 import Button from "@/components/ui/Button";
+import Showreel from "@/components/interactive/Showreel";
 
 interface HeroProps {
   heroData: HeroData;
@@ -99,16 +100,7 @@ export default function Hero({ heroData, locale }: HeroProps) {
                 borderRadius: "16px 34px 16px 34px / 34px 16px 34px 16px",
               }}
             >
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                aria-label="Showreel"
-                className="photo-ink h-full w-full object-cover"
-              >
-                <source src="/hero-video.mp4" type="video/mp4" />
-              </video>
+              <Showreel />
             </div>
           </div>
 
