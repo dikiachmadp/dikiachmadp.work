@@ -308,6 +308,7 @@ export const UiSchema = z.object({
     comingSoon: z.string(),
     allCategories: z.string(),
     searchPlaceholder: z.string(),
+    skipToContent: z.string(),
   }),
   notFound: z.object({
     marquee: z.string(),

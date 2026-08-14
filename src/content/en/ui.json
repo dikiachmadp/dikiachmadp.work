@@ -15,7 +15,8 @@
     "notFound": "Page not found",
     "comingSoon": "Coming soon",
     "allCategories": "All",
-    "searchPlaceholder": "search projects…"
+    "searchPlaceholder": "search projects…",
+    "skipToContent": "Skip to content"
   },
   "notFound": {
     "marquee": "404 · page not found · ",

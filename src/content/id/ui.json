@@ -15,7 +15,8 @@
     "notFound": "Halaman tidak ditemukan",
     "comingSoon": "Segera",
     "allCategories": "Semua",
-    "searchPlaceholder": "cari proyek…"
+    "searchPlaceholder": "cari proyek…",
+    "skipToContent": "Lompat ke konten"
   },
   "notFound": {
     "marquee": "404 · halaman tidak ditemukan · ",

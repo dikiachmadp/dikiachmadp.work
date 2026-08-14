@@ -140,12 +140,17 @@ export default async function RootLayout({
         >
           <PaperTexture />
           <div className="relative z-1 flex min-h-screen flex-col">
+            <a href="#main-content" className="skip-link">
+              {dict.ui.states.skipToContent}
+            </a>
             <Navbar
               navData={dict.navigation}
               siteConfig={dict.siteConfig}
               locale={validLocale}
             />
-            <main className="flex-1">{children}</main>
+            <main id="main-content" className="flex-1">
+              {children}
+            </main>
             <Footer
               footerData={dict.footer}
               siteConfig={dict.siteConfig}
