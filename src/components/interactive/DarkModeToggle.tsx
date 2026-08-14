@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
+import { uiDictionary, localeFromPathname } from "@/lib/ui-dictionary";
 
 /**
  * 64×34 pill with a sun and a moon at either end and a blob knob that slides
@@ -9,6 +11,7 @@ import { useTheme } from "next-themes";
  */
 export default function DarkModeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
+  const a11y = uiDictionary(localeFromPathname(usePathname())).a11y;
 
   const mounted = React.useSyncExternalStore(
     () => () => {},
@@ -31,7 +34,7 @@ export default function DarkModeToggle() {
     <button
       type="button"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={isDark ? a11y.switchToLight : a11y.switchToDark}
       className="ink-border relative flex h-[34px] w-16 cursor-pointer items-center justify-between bg-(--wash) px-[7px] transition-transform duration-200 outline-none hover:-translate-x-[2px] hover:-translate-y-[2px] hover:rotate-[-2deg]"
       style={{ borderRadius: "24px 20px 24px 20px / 20px 24px 20px 24px" }}
     >

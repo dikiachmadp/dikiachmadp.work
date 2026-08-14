@@ -20,12 +20,27 @@
     "searchPlaceholder": "cari proyek…",
     "skipToContent": "Lompat ke konten"
   },
+  "a11y": {
+    "toggleMenu": "Buka atau tutup menu",
+    "menuDialog": "Menu",
+    "switchToLight": "Ganti ke mode terang",
+    "switchToDark": "Ganti ke mode gelap",
+    "switchToLanguage": "Ganti ke {lang}",
+    "languageNames": { "en": "English", "id": "Bahasa Indonesia" },
+    "previousTestimonial": "Testimoni sebelumnya",
+    "nextTestimonial": "Testimoni berikutnya",
+    "ratingOutOfFive": "Dinilai 5 dari 5",
+    "projectCover": "Sampul {category}",
+    "projectShot": "Gambar {category}",
+    "galleryPlaceholder": "gambar detail {n}"
+  },
   "errorPage": {
     "badge": "ada yang tumpah di halaman ini",
     "heading": "Aduh",
     "description": "Halaman ini gagal dimuat. Biasanya sementara — coba lagi, dan kalau masih begini, kabari saya ya.",
     "retry": "Coba lagi",
-    "btnHome": "Ke beranda"
+    "btnHome": "Ke beranda",
+    "digestLabel": "kode"
   },
   "notFound": {
     "marquee": "404 · halaman tidak ditemukan · ",
@@ -46,7 +61,8 @@
     "techStack": "Tag",
     "backBtn": "Kembali ke proyek",
     "visitBtn": "Kunjungi situs",
-    "galleryLabel": "Galeri"
+    "galleryLabel": "Galeri",
+    "notFoundTitle": "Proyek tidak ditemukan"
   },
   "contactInfo": {
     "title": "Informasi kontak",

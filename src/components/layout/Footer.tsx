@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { FooterData, SiteConfig, HeroData, Locale } from "@/types/content";
+import {
+  FooterData,
+  SiteConfig,
+  HeroData,
+  Navigation,
+  Locale,
+} from "@/types/content";
 import Social from "@/components/ui/Social";
 import { cn } from "@/lib/utils";
 
@@ -7,6 +13,7 @@ interface FooterProps {
   footerData: FooterData;
   siteConfig: SiteConfig;
   heroData: HeroData;
+  navData: Navigation;
   locale: Locale;
 }
 
@@ -14,16 +21,22 @@ export default function Footer({
   footerData,
   siteConfig,
   heroData,
+  navData,
   locale,
 }: FooterProps) {
   const socials = Object.entries(siteConfig.socials);
 
-  const bottomLinks = [
-    { label: "Legal", href: `/${locale}/legal` },
-    { label: "Privacy", href: `/${locale}/privacy` },
-    { label: "Admin", href: `/${locale}/dashboard` },
-    { label: "404", href: `/${locale}/404` },
-  ];
+  // These were four hardcoded English labels, two of which duplicated
+  // navigation.footer — which already says "Privasi" in Indonesian. Taking them
+  // from the dictionary keeps one source for the pair.
+  //
+  // The other two are gone on purpose: an "Admin" button advertised
+  // /dashboard to every visitor and crawler, and "404" was a development
+  // shortcut that had no business shipping.
+  const bottomLinks = navData.footer.map((item) => ({
+    label: item.label,
+    href: `/${locale}${item.path}`,
+  }));
 
   return (
     <footer className="mt-24 border-t-2 border-(--line) bg-(--wash) transition-colors duration-[0.45s]">

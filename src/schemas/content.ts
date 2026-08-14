@@ -312,6 +312,25 @@ export const UiSchema = z.object({
     searchPlaceholder: z.string(),
     skipToContent: z.string(),
   }),
+  // Nama aksesibel dan teks alt: tidak pernah terlihat di layar, jadi paling
+  // gampang tertinggal saat menerjemahkan. Yang memakai `{placeholder}`
+  // dirakit lewat fill() di lib/utils.
+  a11y: z.object({
+    toggleMenu: z.string(),
+    menuDialog: z.string(),
+    switchToLight: z.string(),
+    switchToDark: z.string(),
+    switchToLanguage: z.string(),
+    // Endonyms — a language is named in its own language in both files, so a
+    // screen reader hears "Bahasa Indonesia", never "Indonesian".
+    languageNames: z.object({ en: z.string(), id: z.string() }),
+    previousTestimonial: z.string(),
+    nextTestimonial: z.string(),
+    ratingOutOfFive: z.string(),
+    projectCover: z.string(),
+    projectShot: z.string(),
+    galleryPlaceholder: z.string(),
+  }),
   // Dipakai error boundary, yang wajib Client Component dan karena itu tidak
   // bisa memanggil getDictionary() — ui.json diimpor langsung di sana.
   errorPage: z.object({
@@ -320,6 +339,7 @@ export const UiSchema = z.object({
     description: z.string(),
     retry: z.string(),
     btnHome: z.string(),
+    digestLabel: z.string(),
   }),
   notFound: z.object({
     marquee: z.string(),
@@ -341,6 +361,7 @@ export const UiSchema = z.object({
     backBtn: z.string(),
     visitBtn: z.string(),
     galleryLabel: z.string(),
+    notFoundTitle: z.string(),
   }),
   contactInfo: z.object({
     title: z.string(),

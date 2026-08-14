@@ -1,17 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import enUi from "@/content/en/ui.json";
-import idUi from "@/content/id/ui.json";
+import { uiDictionary, localeFromPathname } from "@/lib/ui-dictionary";
 
 /**
  * Shown while a locale page waits on the database. Same locale trick as
- * ErrorContent: getDictionary() is `server-only`, so the two dictionaries are
- * imported directly and picked from the path.
+ * ErrorContent — see lib/ui-dictionary.
  */
 export default function LocaleLoading() {
-  const pathname = usePathname();
-  const dict = (pathname.split("/")[1] === "id" ? idUi : enUi).states;
+  const dict = uiDictionary(localeFromPathname(usePathname())).states;
 
   return (
     <div

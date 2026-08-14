@@ -11,7 +11,7 @@ import Tag from "@/components/ui/Tag";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, projectSchema } from "@/lib/structured-data";
 import { Locale } from "@/types/content";
-import { cn } from "@/lib/utils";
+import { cn, fill } from "@/lib/utils";
 
 interface ProjectDetailPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -37,7 +37,7 @@ export async function generateMetadata({
     getProjectBySlug(validLocale, slug),
   ]);
 
-  if (!project) return { title: "Project Not Found" };
+  if (!project) return { title: dict.ui.projectDetail.notFoundTitle };
 
   return createMetadata({
     title: project.title,
@@ -79,10 +79,13 @@ export default async function ProjectDetailPage({
     Boolean(fact.value),
   );
 
-  // Label "Karya"/"All work" sudah ada di navigasi — jangan tulis ulang di sini.
+  // Label "Karya"/"All work" sudah ada di navigasi — jangan tulis ulang di
+  // sini. Fallback-nya judul halaman projects, bukan literal Inggris: dua-duanya
+  // ikut bahasa, jadi tidak ada jalur yang bisa mengembalikan teks Inggris ke
+  // halaman berbahasa Indonesia.
   const projectsLabel =
     dict.navigation.main.find((item) => item.path === "/projects")?.label ??
-    "Projects";
+    dict.pageHeader.projects.title;
 
   return (
     <PageWrapper>
@@ -139,7 +142,9 @@ export default async function ProjectDetailPage({
               />
             ) : (
               <span className="font-tech text-[11px] tracking-[0.2em] text-(--soft) uppercase">
-                {project.category.toLowerCase()} cover
+                {fill(dict.ui.a11y.projectCover, {
+                  category: project.category.toLowerCase(),
+                })}
               </span>
             )}
           </div>
@@ -210,13 +215,13 @@ export default async function ProjectDetailPage({
                     />
                   </div>
                 ))
-              : ["detail shot 01", "detail shot 02"].map((label) => (
+              : ["01", "02"].map((n) => (
                   <div
-                    key={label}
+                    key={n}
                     className="r-card crosshatch ink-border flex aspect-[4/3] items-center justify-center bg-(--wash) transition-all duration-[0.25s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:rotate-[-0.8deg] hover:shadow-[6px_6px_0_var(--line)]"
                   >
                     <span className="font-tech text-[10px] tracking-[0.2em] text-(--soft) uppercase">
-                      {label}
+                      {fill(dict.ui.a11y.galleryPlaceholder, { n })}
                     </span>
                   </div>
                 ))}

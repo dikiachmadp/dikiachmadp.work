@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Project, Locale } from "@/types/content";
 import Tag from "@/components/ui/Tag";
-import { cn } from "@/lib/utils";
+import { cn, fill } from "@/lib/utils";
+import { uiDictionary } from "@/lib/ui-dictionary";
 
 interface ProjectCardProps {
   project: Project;
@@ -45,7 +46,9 @@ export default function ProjectCard({
           />
         ) : (
           <span className="font-tech text-[10px] tracking-[0.2em] text-(--soft) uppercase">
-            {project.category.toLowerCase()} shot
+            {fill(uiDictionary(locale).a11y.projectShot, {
+              category: project.category.toLowerCase(),
+            })}
           </span>
         )}
       </div>

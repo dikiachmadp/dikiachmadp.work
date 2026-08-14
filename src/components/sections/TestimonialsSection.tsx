@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { TestimonialsData, SectionsData } from "@/types/content";
+import { uiDictionary, localeFromPathname } from "@/lib/ui-dictionary";
 
 interface TestimonialsSectionProps {
   testimonialsData: TestimonialsData;
@@ -13,6 +15,7 @@ export default function TestimonialsSection({
   sectionsData,
 }: TestimonialsSectionProps) {
   const items = testimonialsData.items;
+  const a11y = uiDictionary(localeFromPathname(usePathname())).a11y;
   const [index, setIndex] = useState(0);
 
   if (items.length === 0) return null;
@@ -42,7 +45,11 @@ export default function TestimonialsSection({
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="flex gap-1" aria-label="5 out of 5">
+          <div
+            className="flex gap-1"
+            role="img"
+            aria-label={a11y.ratingOutOfFive}
+          >
             {[0, 1, 2, 3, 4].map((i) => (
               <svg
                 key={i}
@@ -65,7 +72,7 @@ export default function TestimonialsSection({
             <button
               type="button"
               onClick={() => step(-1)}
-              aria-label="Previous testimonial"
+              aria-label={a11y.previousTestimonial}
               className="ink-border flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-(--paper) transition-all duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:rotate-[-6deg] hover:shadow-[4px_4px_0_var(--line)]"
             >
               <svg
@@ -84,7 +91,7 @@ export default function TestimonialsSection({
             <button
               type="button"
               onClick={() => step(1)}
-              aria-label="Next testimonial"
+              aria-label={a11y.nextTestimonial}
               className="ink-border flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-(--paper) transition-all duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:rotate-[6deg] hover:shadow-[4px_4px_0_var(--line)]"
             >
               <svg

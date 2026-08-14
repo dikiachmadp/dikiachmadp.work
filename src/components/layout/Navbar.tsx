@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Navigation, SiteConfig, Locale } from "@/types/content";
 import { cn } from "@/lib/utils";
+import { uiDictionary } from "@/lib/ui-dictionary";
 import Logo from "@/components/ui/Logo";
 import LanguageToggle from "@/components/interactive/LanguageToggle";
 import DarkModeToggle from "@/components/interactive/DarkModeToggle";
@@ -18,6 +19,7 @@ interface NavbarProps {
 
 export default function Navbar({ navData, siteConfig, locale }: NavbarProps) {
   const pathname = usePathname();
+  const a11y = uiDictionary(locale).a11y;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openedAt, setOpenedAt] = useState(pathname);
 
@@ -72,7 +74,7 @@ export default function Navbar({ navData, siteConfig, locale }: NavbarProps) {
             <button
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
-              aria-label="Toggle menu"
+              aria-label={a11y.toggleMenu}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
               className="r-chip ink-border flex h-[34px] w-[38px] cursor-pointer flex-col items-center justify-center gap-[4px] bg-(--wash) transition-transform duration-200 outline-none hover:-translate-x-[2px] hover:-translate-y-[2px] lg:hidden"
