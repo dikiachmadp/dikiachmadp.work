@@ -11,11 +11,21 @@
   "states": {
     "empty": "belum ada… coba kata lain",
     "error": "Terjadi kesalahan. Silakan coba lagi.",
+    "success": "Terima kasih — pesan Anda sudah meluncur. Saya akan segera membalas.",
+    "rateLimited": "Anda sudah mengirim beberapa pesan. Silakan coba lagi satu jam lagi.",
     "loading": "Memuat…",
     "notFound": "Halaman tidak ditemukan",
     "comingSoon": "Segera",
     "allCategories": "Semua",
-    "searchPlaceholder": "cari proyek…"
+    "searchPlaceholder": "cari proyek…",
+    "skipToContent": "Lompat ke konten"
+  },
+  "errorPage": {
+    "badge": "ada yang tumpah di halaman ini",
+    "heading": "Aduh",
+    "description": "Halaman ini gagal dimuat. Biasanya sementara — coba lagi, dan kalau masih begini, kabari saya ya.",
+    "retry": "Coba lagi",
+    "btnHome": "Ke beranda"
   },
   "notFound": {
     "marquee": "404 · halaman tidak ditemukan · ",

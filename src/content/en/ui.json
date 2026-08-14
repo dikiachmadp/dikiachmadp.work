@@ -11,11 +11,21 @@
   "states": {
     "empty": "nothing here… try another word",
     "error": "Something went wrong. Please try again.",
+    "success": "Thanks — your message is on its way. I'll get back to you soon.",
+    "rateLimited": "You've sent a few messages already. Please try again in an hour.",
     "loading": "Loading…",
     "notFound": "Page not found",
     "comingSoon": "Coming soon",
     "allCategories": "All",
-    "searchPlaceholder": "search projects…"
+    "searchPlaceholder": "search projects…",
+    "skipToContent": "Skip to content"
+  },
+  "errorPage": {
+    "badge": "something spilled on this page",
+    "heading": "Oops",
+    "description": "This page couldn't load. It's usually temporary — try again, and if it sticks around, drop me a line.",
+    "retry": "Try again",
+    "btnHome": "Back home"
   },
   "notFound": {
     "marquee": "404 · page not found · ",

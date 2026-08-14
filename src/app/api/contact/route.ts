@@ -68,9 +68,18 @@ export async function POST(request: Request) {
       );
     }
 
-    // Simpan dulu, baru kirim email. Kalau Resend sedang bermasalah, pesannya
-    // tetap tersimpan dan muncul di inbox dasbor — sebelumnya hilang total.
-    await createContactSubmission({ name, email, subject, message });
+    // Dua jalur yang sengaja dibuat mandiri: pesan hanya benar-benar hilang
+    // kalau keduanya gagal. Database punya try sendiri karena Supabase free
+    // tier berhenti setelah ~7 hari tidak aktif (lihat docs/operations.md) —
+    // sebelumnya kegagalan di sini jatuh ke catch luar sebagai 500 dan email
+    // notifikasinya tidak pernah sempat terkirim.
+    let stored = true;
+    try {
+      await createContactSubmission({ name, email, subject, message });
+    } catch (error) {
+      stored = false;
+      console.error("Contact submission not stored:", error);
+    }
 
     const safeName = sanitizeHtml(name);
     const safeEmail = sanitizeHtml(email);
@@ -81,8 +90,9 @@ export async function POST(request: Request) {
     const fromAddress =
       env.RESEND_FROM_EMAIL || "Portfolio Contact Form <onboarding@resend.dev>";
 
-    // Pesan sudah tersimpan; kegagalan email tidak boleh membuat pengirim
-    // mengira pesannya tidak terkirim, jadi ditangani terpisah.
+    // Kegagalan email tidak boleh membuat pengirim mengira pesannya tidak
+    // terkirim selama barisnya sudah tersimpan, jadi ditangani terpisah.
+    let delivered = true;
     try {
       await sendNotification({
         resend,
@@ -91,9 +101,22 @@ export async function POST(request: Request) {
         safeEmail,
         safeSubject,
         safeMessage,
+        // Tanpa penanda ini sebuah pesan yang gagal disimpan tampak biasa saja
+        // di inbox, padahal email itulah satu-satunya salinan yang tersisa.
+        unstored: !stored,
       });
     } catch (error) {
-      console.error("Message stored but email failed:", error);
+      delivered = false;
+      console.error("Contact notification email failed:", error);
+    }
+
+    // Kedua jalur gagal: pesannya benar-benar hilang, jadi jangan katakan
+    // berhasil — biar pengirim tahu dan bisa menghubungi lewat jalur lain.
+    if (!stored && !delivered) {
+      return NextResponse.json(
+        { error: "An unexpected error occurred." },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json(
@@ -116,6 +139,7 @@ async function sendNotification({
   safeEmail,
   safeSubject,
   safeMessage,
+  unstored,
 }: {
   resend: Resend;
   fromAddress: string;
@@ -123,7 +147,15 @@ async function sendNotification({
   safeEmail: string;
   safeSubject: string;
   safeMessage: string;
+  unstored: boolean;
 }) {
+  const warning = unstored
+    ? `<p style="border: 2px solid #b91c1c; padding: 10px; color: #b91c1c;">
+         <strong>Not saved to the database.</strong> This email is the only
+         copy — it will not appear in the dashboard inbox.
+       </p>`
+    : "";
+
   const { error } = await resend.emails.send({
     from: fromAddress,
     to: env.CONTACT_EMAIL,
@@ -131,6 +163,7 @@ async function sendNotification({
     html: `
         <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
           <h2>New Message from Your Portfolio</h2>
+          ${warning}
           <p><strong>Name:</strong> ${safeName}</p>
           <p><strong>Email:</strong> ${safeEmail}</p>
           <p><strong>Subject:</strong> ${safeSubject}</p>
