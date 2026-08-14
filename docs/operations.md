@@ -8,7 +8,9 @@ already recorded in `_prisma_migrations`. `prisma migrate status` reports
 
 **Never run `prisma db push`, `prisma migrate dev`, or `prisma migrate reset`
 against production.** Use `npm run db:migrate` (`prisma migrate deploy`) for new
-migrations.
+migrations. `prisma migrate deploy` is the only path that may change the
+production schema — that includes tooling, which is why the Supabase GitHub
+integration is off (see below).
 
 - `DATABASE_URL` — transaction pooler, port **6543**, used at runtime.
 - `DIRECT_URL` — session pooler, port **5432**, used by the Prisma CLI for DDL.
@@ -16,6 +18,39 @@ migrations.
 `prisma/reconcile/sync-from-json.mjs` is a one-off script kept for the record:
 it pushed the JSON content into the database before the public pages switched
 to the DAL. It is idempotent but there is no reason to run it again.
+
+## Supabase GitHub integration — disabled, keep it that way
+
+Supabase Branching was connected to this repo. It was **switched off on
+2026-08-14**. Do not reconnect it.
+
+Branching exists to apply migrations from a repo to the project. This repo does
+not work that way: the schema is owned by Prisma (`prisma/migrations/0_init`,
+baselined — see above), and there is no `supabase/migrations/` directory for
+Branching to read. The two had already drifted:
+`supabase_migrations.schema_migrations` listed `v2_initial_schema` and
+`v2_harden_function_search_path`, neither of which matches the Prisma baseline.
+
+That made the integration a second, unsupervised DDL path into production —
+precisely what the warning at the top of this file exists to prevent.
+
+It surfaced as a red **"Supabase Preview"** check on the merge of PR #6:
+
+```
+unexpected status 403: {"message":"Endpoint does not support branching tokens"}
+```
+
+Nothing was wrong with that merge, and the message is easy to misread as an
+application fault. The same check passed on PR #5 fourteen minutes earlier; PR
+#6 touched no schema, no migration and no Supabase setting; CI and the Vercel
+deploy both passed; the public site served every route cleanly. The database was
+intact throughout — `0_init` finished, nothing unfinished, all 15 tables
+present.
+
+A leftover branch record (`git_branch: main`, `status: MIGRATIONS_FAILED`) can
+still appear in `list_branches` after disconnecting. It is inert. What actually
+confirms the integration is gone is that a push to `main` no longer produces a
+"Supabase Preview" check at all.
 
 ## Keep-alive
 
