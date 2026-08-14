@@ -20,12 +20,27 @@
     "searchPlaceholder": "search projects…",
     "skipToContent": "Skip to content"
   },
+  "a11y": {
+    "toggleMenu": "Toggle menu",
+    "menuDialog": "Menu",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode",
+    "switchToLanguage": "Switch to {lang}",
+    "languageNames": { "en": "English", "id": "Bahasa Indonesia" },
+    "previousTestimonial": "Previous testimonial",
+    "nextTestimonial": "Next testimonial",
+    "ratingOutOfFive": "Rated 5 out of 5",
+    "projectCover": "{category} cover",
+    "projectShot": "{category} shot",
+    "galleryPlaceholder": "detail shot {n}"
+  },
   "errorPage": {
     "badge": "something spilled on this page",
     "heading": "Oops",
     "description": "This page couldn't load. It's usually temporary — try again, and if it sticks around, drop me a line.",
     "retry": "Try again",
-    "btnHome": "Back home"
+    "btnHome": "Back home",
+    "digestLabel": "ref"
   },
   "notFound": {
     "marquee": "404 · page not found · ",
@@ -46,7 +61,8 @@
     "techStack": "Tags",
     "backBtn": "Back to projects",
     "visitBtn": "Visit live site",
-    "galleryLabel": "Gallery"
+    "galleryLabel": "Gallery",
+    "notFoundTitle": "Project not found"
   },
   "contactInfo": {
     "title": "Contact information",

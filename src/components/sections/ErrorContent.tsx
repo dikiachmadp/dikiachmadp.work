@@ -2,9 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import enUi from "@/content/en/ui.json";
-import idUi from "@/content/id/ui.json";
-import { Locale } from "@/types/content";
+import { uiDictionary, localeFromPathname } from "@/lib/ui-dictionary";
 import PageWrapper from "@/components/layout/PageWrapper";
 import Button from "@/components/ui/Button";
 
@@ -19,14 +17,12 @@ interface ErrorContentProps {
  * so a failed page still looks like the site rather than a crash.
  *
  * Error boundaries must be Client Components, which rules out getDictionary()
- * — it is marked `server-only`. The two dictionaries are imported directly
- * instead and picked by the locale segment of the path, the same way
- * LanguageToggle reads it.
+ * — it is marked `server-only`. lib/ui-dictionary reads ui.json off the path
+ * instead; see the note there.
  */
 export default function ErrorContent({ error, retry }: ErrorContentProps) {
-  const pathname = usePathname();
-  const locale: Locale = pathname.split("/")[1] === "id" ? "id" : "en";
-  const dict = (locale === "id" ? idUi : enUi).errorPage;
+  const locale = localeFromPathname(usePathname());
+  const dict = uiDictionary(locale).errorPage;
 
   useEffect(() => {
     // In production the message is redacted; `digest` is what matches this up
@@ -75,7 +71,7 @@ export default function ErrorContent({ error, retry }: ErrorContentProps) {
 
         {error.digest && (
           <p className="font-tech mt-8 text-[11px] tracking-[0.1em] text-(--soft) uppercase">
-            ref: {error.digest}
+            {dict.digestLabel}: {error.digest}
           </p>
         )}
       </div>

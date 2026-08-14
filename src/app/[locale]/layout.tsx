@@ -163,6 +163,7 @@ export default async function RootLayout({
               footerData={dict.footer}
               siteConfig={dict.siteConfig}
               heroData={dict.hero}
+              navData={dict.navigation}
               locale={validLocale}
             />
           </div>

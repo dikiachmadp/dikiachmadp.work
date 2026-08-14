@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { Navigation, Locale } from "@/types/content";
 import { cn } from "@/lib/utils";
+import { uiDictionary } from "@/lib/ui-dictionary";
 import LanguageToggle from "@/components/interactive/LanguageToggle";
 
 interface MobileMenuProps {
@@ -73,9 +74,7 @@ export default function MobileMenu({
       id="mobile-menu"
       role="dialog"
       aria-modal="true"
-      // TODO(i18n): the last English string left in this component; it moves to
-      // the dictionary with the other hardcoded aria-labels.
-      aria-label="Menu"
+      aria-label={uiDictionary(locale).a11y.menuDialog}
       tabIndex={-1}
       className="fixed inset-x-0 top-(--nav-h) bottom-0 z-40 overflow-y-auto bg-(--paper) outline-none lg:hidden"
     >

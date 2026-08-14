@@ -2,7 +2,8 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { Locale } from "@/types/content";
-import { cn } from "@/lib/utils";
+import { cn, fill } from "@/lib/utils";
+import { uiDictionary, localeFromPathname } from "@/lib/ui-dictionary";
 
 const LOCALES: Locale[] = ["en", "id"];
 
@@ -11,7 +12,8 @@ export default function LanguageToggle() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const currentLocale = (pathname.split("/")[1] as Locale) || "en";
+  const currentLocale = localeFromPathname(pathname);
+  const a11y = uiDictionary(currentLocale).a11y;
 
   const switchTo = (next: Locale) => {
     if (next === currentLocale) return;
@@ -32,7 +34,9 @@ export default function LanguageToggle() {
             key={lang}
             type="button"
             onClick={() => switchTo(lang)}
-            aria-label={`Switch to ${lang.toUpperCase()}`}
+            aria-label={fill(a11y.switchToLanguage, {
+              lang: a11y.languageNames[lang],
+            })}
             aria-current={isActive ? "true" : undefined}
             className={cn(
               "cursor-pointer px-[10px] py-[6px] uppercase transition-colors outline-none",

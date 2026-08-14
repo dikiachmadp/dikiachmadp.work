@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
-import enUi from "@/content/en/ui.json";
-import idUi from "@/content/id/ui.json";
+import { uiDictionary } from "@/lib/ui-dictionary";
+import type { Locale } from "@/types/content";
 
 /** The URL never changes under this component, so there is nothing to watch. */
 const subscribeToNothing = () => () => {};
 
-const getLocale = (): "en" | "id" =>
+const getLocale = (): Locale =>
   window.location.pathname.split("/")[1] === "id" ? "id" : "en";
 
 /**
@@ -34,7 +34,7 @@ export default function GlobalError({
   const locale = useSyncExternalStore(
     subscribeToNothing,
     getLocale,
-    () => "en",
+    (): Locale => "en",
   );
 
   useEffect(() => {
@@ -42,7 +42,10 @@ export default function GlobalError({
     console.error("Global error:", error.digest ?? error.message);
   }, [error]);
 
-  const dict = (locale === "id" ? idUi : enUi).errorPage;
+  // Only the lookup is shared — localeFromPathname() is deliberately not used
+  // here, since it belongs to usePathname()'s world and this component stands
+  // in for a root layout that has already failed.
+  const dict = uiDictionary(locale).errorPage;
 
   return (
     <html lang={locale}>
