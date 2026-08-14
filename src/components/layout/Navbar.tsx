@@ -31,7 +31,7 @@ export default function Navbar({ navData, siteConfig, locale }: NavbarProps) {
   return (
     <>
       <nav className="sticky top-0 z-50 w-full border-b-2 border-(--line) bg-(--paper) transition-colors duration-[0.45s]">
-        <div className="main-container flex h-[78px] items-center justify-between gap-2 sm:gap-6">
+        <div className="main-container flex h-(--nav-h) items-center justify-between gap-2 sm:gap-6">
           <Logo
             locale={locale}
             wordmark={siteConfig.author}
@@ -74,6 +74,7 @@ export default function Navbar({ navData, siteConfig, locale }: NavbarProps) {
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
               className="r-chip ink-border flex h-[34px] w-[38px] cursor-pointer flex-col items-center justify-center gap-[4px] bg-(--wash) transition-transform duration-200 outline-none hover:-translate-x-[2px] hover:-translate-y-[2px] lg:hidden"
             >
               <span

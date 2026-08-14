@@ -43,6 +43,11 @@
     --container-max: 1180px;
     --container-pad: 22px;
 
+    /* The navbar height and the mobile sheet's top offset have to agree — the
+       sheet sits directly under the bar. They were two hardcoded 78px in two
+       files; changing one alone left a gap or covered the bar. */
+    --nav-h: 78px;
+
     /* Fonts are injected by next/font in [locale]/layout.tsx */
     --font-hand: var(--font-kalam), cursive;
     --font-note: var(--font-caveat), cursive;
