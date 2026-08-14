@@ -30,6 +30,12 @@ export default async function DashboardLayout({
 
   return (
     <div className="main-container py-11">
+      {/* The dashboard has a sidebar to tab past, same as the public navbar,
+          so it gets the same escape hatch — reusing .skip-link and the string
+          the public layout already localises. */}
+      <a href="#main-content" className="skip-link">
+        {dict.ui.states.skipToContent}
+      </a>
       <div className="grid grid-cols-1 items-start gap-[26px] lg:grid-cols-[210px_1fr]">
         <aside className="r-card ink-border flat-3 flex flex-col gap-1.5 bg-(--wash) p-[18px]">
           <div className="mb-1.5 flex items-center justify-between gap-2">
@@ -49,7 +55,7 @@ export default async function DashboardLayout({
           </form>
         </aside>
 
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
       </div>
     </div>
   );

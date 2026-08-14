@@ -47,7 +47,13 @@ export default function Showreel() {
       // Frame pertama video itu sendiri: mengisi bingkai sejak paint pertama,
       // dan menjadi tampilan tetap bagi yang meminta pengurangan gerak.
       poster="/hero-poster.webp"
-      aria-label="Showreel"
+      // Only the poster is needed for first paint; without this the whole mp4
+      // competes for bandwidth with the hero LCP.
+      preload="metadata"
+      // Decorative: no controls, no captions, and nothing it conveys is absent
+      // from the surrounding copy. Naming it in the accessibility tree without
+      // a text alternative would promise more than it delivers.
+      aria-hidden
       className="photo-ink h-full w-full object-cover"
     >
       <source src="/hero-video.mp4" type="video/mp4" />

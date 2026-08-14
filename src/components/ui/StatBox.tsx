@@ -16,7 +16,9 @@ export default function StatBox({ value, label, index = 0 }: StatBoxProps) {
         index % 2 === 1 && "lift-card-sm-cw",
       )}
     >
-      <div className="font-hand text-[52px] leading-none">{value}</div>
+      <div className="font-hand text-[clamp(2.4rem,6vw,3.25rem)] leading-none">
+        {value}
+      </div>
       <div className="mt-1.5 text-[11px] font-bold tracking-[0.16em] text-(--soft) uppercase">
         {label}
       </div>

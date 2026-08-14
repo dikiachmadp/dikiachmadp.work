@@ -38,7 +38,9 @@ export default async function TestimonialsPage({
   return (
     <>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
-        <h1 className="font-hand text-[34px] leading-none">Testimonials</h1>
+        <h1 className="font-hand text-[clamp(1.75rem,5vw,2.125rem)] leading-none">
+          Testimonials
+        </h1>
         <Link
           href={`/${locale}/dashboard/testimonials/new`}
           className="r-btn ink-border flat-3 lift-btn bg-(--accent) px-5 py-2.5 text-[12px] font-bold text-white"

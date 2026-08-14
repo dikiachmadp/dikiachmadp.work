@@ -12,10 +12,10 @@ export default async function ForgotPasswordPage({
   const { error, sent } = await searchParams;
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-[22px]">
+    <main className="flex min-h-screen items-center justify-center px-[22px]">
       <div className="r-frame ink-border flat-5 w-full max-w-[380px] bg-(--paper) p-7">
         <p className="font-note m-0 text-[19px] text-(--soft)">lost the key</p>
-        <h1 className="font-hand mb-5 text-[30px] leading-none">
+        <h1 className="font-hand mb-5 text-[clamp(1.625rem,4.5vw,1.875rem)] leading-none">
           Reset password
         </h1>
 
@@ -72,6 +72,6 @@ export default async function ForgotPasswordPage({
           </form>
         )}
       </div>
-    </div>
+    </main>
   );
 }

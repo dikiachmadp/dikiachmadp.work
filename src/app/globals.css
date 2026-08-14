@@ -43,6 +43,11 @@
     --container-max: 1180px;
     --container-pad: 22px;
 
+    /* The navbar height and the mobile sheet's top offset have to agree — the
+       sheet sits directly under the bar. They were two hardcoded 78px in two
+       files; changing one alone left a gap or covered the bar. */
+    --nav-h: 78px;
+
     /* Fonts are injected by next/font in [locale]/layout.tsx */
     --font-hand: var(--font-kalam), cursive;
     --font-note: var(--font-caveat), cursive;
@@ -163,6 +168,8 @@
   }
 }
 
+/* Sized for the 8px "available" dot, which is why it scales to 1.9. Anything
+   larger than a dot wants pulseSoft instead. */
 @keyframes pulseDot {
   0%,
   100% {
@@ -172,6 +179,17 @@
   50% {
     transform: scale(1.9);
     opacity: 0.25;
+  }
+}
+
+/* Opacity only — safe on skeleton blocks, which must not change size. */
+@keyframes pulseSoft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
   }
 }
 
@@ -390,6 +408,9 @@
   }
   .anim-pulse-dot {
     animation: pulseDot 1.8s ease-in-out infinite;
+  }
+  .anim-pulse-soft {
+    animation: pulseSoft 1.6s ease-in-out infinite;
   }
 }
 
