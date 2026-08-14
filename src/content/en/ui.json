@@ -18,6 +18,13 @@
     "searchPlaceholder": "search projects…",
     "skipToContent": "Skip to content"
   },
+  "errorPage": {
+    "badge": "something spilled on this page",
+    "heading": "Oops",
+    "description": "This page couldn't load. It's usually temporary — try again, and if it sticks around, drop me a line.",
+    "retry": "Try again",
+    "btnHome": "Back home"
+  },
   "notFound": {
     "marquee": "404 · page not found · ",
     "badge": "this path went missing",

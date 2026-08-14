@@ -18,6 +18,13 @@
     "searchPlaceholder": "cari proyek…",
     "skipToContent": "Lompat ke konten"
   },
+  "errorPage": {
+    "badge": "ada yang tumpah di halaman ini",
+    "heading": "Aduh",
+    "description": "Halaman ini gagal dimuat. Biasanya sementara — coba lagi, dan kalau masih begini, kabari saya ya.",
+    "retry": "Coba lagi",
+    "btnHome": "Ke beranda"
+  },
   "notFound": {
     "marquee": "404 · halaman tidak ditemukan · ",
     "badge": "halaman ini hilang",

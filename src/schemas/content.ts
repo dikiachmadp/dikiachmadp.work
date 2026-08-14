@@ -310,6 +310,15 @@ export const UiSchema = z.object({
     searchPlaceholder: z.string(),
     skipToContent: z.string(),
   }),
+  // Dipakai error boundary, yang wajib Client Component dan karena itu tidak
+  // bisa memanggil getDictionary() — ui.json diimpor langsung di sana.
+  errorPage: z.object({
+    badge: z.string(),
+    heading: z.string(),
+    description: z.string(),
+    retry: z.string(),
+    btnHome: z.string(),
+  }),
   notFound: z.object({
     marquee: z.string(),
     badge: z.string(),
