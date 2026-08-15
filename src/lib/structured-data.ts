@@ -65,6 +65,13 @@ export function projectSchema(
   project: Project,
   siteConfig: SiteConfig,
   locale: Locale,
+  /**
+   * Label kategori sudah dicari pemanggilnya. Modul ini sengaja tidak
+   * mengimpor copy UI — semua nilai di sini datang dari siteConfig dan
+   * database, dan `genre` tidak boleh jadi pengecualian yang diam-diam
+   * mengunci satu bahasa.
+   */
+  category: string,
 ) {
   const url = `${siteConfig.url}/${locale}/projects/${project.slug}`;
 
@@ -76,7 +83,7 @@ export function projectSchema(
     url,
     inLanguage: LANGUAGE[locale],
     dateCreated: project.date,
-    genre: project.category,
+    genre: category,
     creator: { "@id": personId(siteConfig) },
     ...(project.coverImage && {
       image: absoluteUrl(siteConfig.url, project.coverImage),

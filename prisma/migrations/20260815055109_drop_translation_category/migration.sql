@@ -1,0 +1,22 @@
+-- Membuang label kategori dari tabel terjemahan.
+--
+-- Kategori punya dua representasi: `Project.categoryKey` (identitas, satu per
+-- project) dan `ProjectTranslation.category` (label, satu per bahasa per
+-- project). Yang kedua adalah duplikasi: label yang sama diulang di setiap
+-- project yang sekategori, dan tak ada yang menjaga keduanya tetap sejalan.
+--
+-- Akibatnya kategori tidak bisa diterjemahkan sama sekali. Filter publik
+-- membandingkan label chip dengan label ini (`ProjectsExplorer.tsx`), jadi
+-- menerjemahkan salah satunya membuat chip berhenti mencocokkan dan hasilnya
+-- nol tanpa peringatan apa pun. Sekarang yang dibandingkan `categoryKey`, dan
+-- labelnya hidup sebagai copy UI di `src/content/{en,id}/projects.json` —
+-- satu tempat, diterjemahkan sekali, berlaku untuk semua project.
+--
+-- Nol data hilang, diperiksa lebih dulu (15 Agu 2026): ke-24 baris terjemahan
+-- menyimpan label yang persis sama dengan label EN dari `categoryKey`-nya —
+-- branding→"Branding", packaging→"Packaging", web-design→"Web Design", identik
+-- di kedua locale. Tidak ada satu pun nilai yang tidak bisa direkonstruksi
+-- dari kuncinya.
+
+-- AlterTable
+ALTER TABLE "ProjectTranslation" DROP COLUMN "category";

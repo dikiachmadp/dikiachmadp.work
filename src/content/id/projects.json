@@ -1,13 +1,33 @@
 {
   "categories": [
-    "All",
-    "Branding",
-    "UI/UX Design",
-    "3D Modeling",
-    "Packaging",
-    "Illustration",
-    "Animation",
-    "Web Design"
+    {
+      "key": "branding",
+      "label": "Branding"
+    },
+    {
+      "key": "ui-ux-design",
+      "label": "Desain UI/UX"
+    },
+    {
+      "key": "3d-modeling",
+      "label": "Pemodelan 3D"
+    },
+    {
+      "key": "packaging",
+      "label": "Kemasan"
+    },
+    {
+      "key": "illustration",
+      "label": "Ilustrasi"
+    },
+    {
+      "key": "animation",
+      "label": "Animasi"
+    },
+    {
+      "key": "web-design",
+      "label": "Desain Web"
+    }
   ],
   "items": [
     {

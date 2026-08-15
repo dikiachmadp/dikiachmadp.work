@@ -17,32 +17,46 @@ export default function ProjectsExplorer({
   uiLabels,
   locale,
 }: ProjectsExplorerProps) {
-  const [category, setCategory] = useState("All");
+  // Sentinel "tanpa filter". Bukan literal `"All"` seperti sebelumnya: itu
+  // label bahasa Inggris yang dipakai sebagai nilai, jadi ia ikut jadi bagian
+  // kontrak yang tidak boleh diterjemahkan — persis jenis jebakan yang sedang
+  // dibereskan di sini. `null` tidak bisa bentrok dengan kunci mana pun.
+  const [categoryKey, setCategoryKey] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
     return projectsData.items.filter((p) => {
-      const matchesCategory = category === "All" || p.category === category;
+      const matchesCategory =
+        categoryKey === null || p.categoryKey === categoryKey;
       const matchesQuery =
         !q ||
         p.title.toLowerCase().includes(q) ||
         p.tags.join(" ").toLowerCase().includes(q);
       return matchesCategory && matchesQuery;
     });
-  }, [projectsData.items, category, query]);
+  }, [projectsData.items, categoryKey, query]);
 
   return (
     <>
       <div className="mb-[30px] flex flex-wrap items-center justify-between gap-2.5 border-b-2 border-dashed border-(--line) pb-[22px]">
         <div className="flex flex-wrap gap-2">
+          {/* Chip "semua" dirender terpisah, bukan sebagai entri palsu di dalam
+              daftar kategori — dulu ia ikut di sana sebagai label "All" yang
+              harus dikecualikan lagi di beberapa tempat. */}
+          <Chip
+            active={categoryKey === null}
+            onClick={() => setCategoryKey(null)}
+          >
+            {uiLabels.states.allCategories}
+          </Chip>
           {projectsData.categories.map((cat) => (
             <Chip
-              key={cat}
-              active={category === cat}
-              onClick={() => setCategory(cat)}
+              key={cat.key}
+              active={categoryKey === cat.key}
+              onClick={() => setCategoryKey(cat.key)}
             >
-              {cat === "All" ? uiLabels.states.allCategories : cat}
+              {cat.label}
             </Chip>
           ))}
         </div>

@@ -11,7 +11,7 @@ import {
   AdminTextarea,
 } from "./AdminField";
 import SubmitButton from "./SubmitButton";
-import { slugifyCategory } from "@/lib/slugify";
+import { projectCategories } from "@/lib/categories";
 import { uploadRejectionReason } from "@/lib/upload-limits";
 import { initialFormState, type FormState } from "@/schemas/admin";
 
@@ -33,7 +33,6 @@ export interface ProjectFormValues {
     "en" | "id",
     {
       title: string;
-      category: string;
       client: string;
       description: string;
       role: string;
@@ -60,7 +59,6 @@ export const emptyProjectForm: ProjectFormValues = {
   translations: {
     en: {
       title: "",
-      category: "",
       client: "",
       description: "",
       role: "",
@@ -69,7 +67,6 @@ export const emptyProjectForm: ProjectFormValues = {
     },
     id: {
       title: "",
-      category: "",
       client: "",
       description: "",
       role: "",
@@ -83,21 +80,27 @@ export default function ProjectForm({
   action,
   locale,
   values,
-  categories,
   submitLabel,
 }: {
   action: (state: FormState, formData: FormData) => Promise<FormState>;
   locale: string;
   values: ProjectFormValues;
-  /** Label kategori per locale, diambil dari src/content/{en,id}/projects.json. */
-  categories: Record<"en" | "id", string[]>;
   submitLabel: string;
 }) {
   const [state, formAction] = useActionState(action, initialFormState);
-  const [categoryEn, setCategoryEn] = useState(
-    values.translations.en.category || categories.en[0],
-  );
   const [uploadError, setUploadError] = useState<string | null>(null);
+
+  /**
+   * Satu select, bukan dua. Sebelumnya ada "Category (EN)" dan "Category (ID)"
+   * yang menyimpan label ke tiap terjemahan, plus field tersembunyi yang
+   * menurunkan kuncinya dari teks label EN. Sekarang yang dipilih langsung
+   * kuncinya; labelnya cuma yang terlihat, dan terjemahannya hidup di
+   * projects.json.
+   */
+  const categoryOptions = projectCategories("en").map((cat) => ({
+    value: cat.key,
+    label: cat.label,
+  }));
 
   /**
    * Next menolak body yang melebihi `serverActions.bodySizeLimit` sebelum
@@ -131,12 +134,6 @@ export default function ProjectForm({
       className="flex flex-col gap-5"
     >
       <input type="hidden" name="formLocale" value={locale} />
-      {/* Diturunkan dari label EN supaya filter publik tidak pernah putus. */}
-      <input
-        type="hidden"
-        name="categoryKey"
-        value={slugifyCategory(categoryEn)}
-      />
 
       {uploadError && (
         <p
@@ -168,16 +165,16 @@ export default function ProjectForm({
             error={err("slug")}
           />
           <AdminSelect
-            name="translations.en.category"
-            label="Category (EN)"
+            name="categoryKey"
+            label="Category"
             required
-            options={categories.en}
-            value={categoryEn}
-            onChange={setCategoryEn}
-            error={err("translations.en.category")}
+            hint="Shown translated on the site; the value stored is the key."
+            options={categoryOptions}
+            defaultValue={v("categoryKey", values.categoryKey)}
+            error={err("categoryKey")}
           />
         </div>
-        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
           <AdminField
             name="year"
             label="Year"
@@ -193,17 +190,6 @@ export default function ProjectForm({
             required
             defaultValue={v("date", values.date)}
             error={err("date")}
-          />
-          <AdminSelect
-            name="translations.id.category"
-            label="Category (ID)"
-            required
-            options={categories.id}
-            defaultValue={v(
-              "translations.id.category",
-              values.translations.id.category || categories.id[0],
-            )}
-            error={err("translations.id.category")}
           />
         </div>
         <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">

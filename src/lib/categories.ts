@@ -1,25 +1,31 @@
-import "server-only";
-import { getDictionary } from "@/lib/dictionary";
+import enProjects from "@/content/en/projects.json";
+import idProjects from "@/content/id/projects.json";
+import type { Locale, ProjectCategory } from "@/types/content";
 
 /**
- * Label kategori tetap tinggal di JSON (bagian dari copy UI), tapi form admin
- * butuh keduanya sekaligus: chip publik memfilter dengan perbandingan string
- * persis, jadi kategori harus dipilih dari daftar ini, bukan diketik bebas.
+ * Kategori project: kunci stabil dari JSON, label per bahasa.
+ *
+ * Tidak `server-only`, mengikuti pola `ui-dictionary.ts` — chip filter dan
+ * kartu project adalah Client Component, dan keduanya butuh label ini.
+ * Ongkos bundelnya nol tambahan: kedua berkas sudah ikut terbawa lewat
+ * dictionary.
+ *
+ * Yang dibandingkan filter adalah `key`, tidak pernah `label`. Itu bedanya
+ * dengan versi lama, yang menyamakan label chip dengan label kategori project
+ * dan karena itu ambruk begitu salah satunya diterjemahkan.
  */
-export async function getCategoryLabels(): Promise<
-  Record<"en" | "id", string[]>
-> {
-  const [en, id] = await Promise.all([
-    getDictionary("en"),
-    getDictionary("id"),
-  ]);
-  const strip = (labels: string[]) =>
-    labels.filter(
-      (label) => label.toLowerCase() !== "all" && label !== "Semua",
-    );
+export function projectCategories(locale: Locale): ProjectCategory[] {
+  return (locale === "id" ? idProjects : enProjects).categories;
+}
 
-  return {
-    en: strip(en.projects.categories),
-    id: strip(id.projects.categories),
-  };
+/**
+ * Label untuk sebuah kunci kategori.
+ *
+ * Kunci yang tidak ada di daftar dikembalikan apa adanya, bukan jadi string
+ * kosong: `web-design` yang terlihat di kartu adalah bug yang bisa dilacak,
+ * kartu tanpa kategori tidak. Ini bisa terjadi kalau sebuah project di database
+ * memakai kunci yang kemudian dihapus dari JSON.
+ */
+export function categoryLabel(locale: Locale, key: string): string {
+  return projectCategories(locale).find((c) => c.key === key)?.label ?? key;
 }

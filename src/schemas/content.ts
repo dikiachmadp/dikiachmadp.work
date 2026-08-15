@@ -64,7 +64,8 @@ export const HeroSchema = z.object({
 export const ProjectItemSchema = z.object({
   id: z.string(),
   title: z.string(),
-  category: z.string(),
+  /** Kunci kategori, bukan label — labelnya dicari per locale saat render. */
+  categoryKey: z.string(),
   year: z.string(),
   date: z.string(),
   client: z.string(),
@@ -84,10 +85,25 @@ export const ProjectItemSchema = z.object({
   gallery: z.array(z.string()).optional(),
 });
 
+/**
+ * Kategori punya kunci stabil dan label yang boleh berbeda tiap bahasa.
+ *
+ * Sebelumnya `categories` cuma `string[]` berisi label, dan filter publik
+ * membandingkan label itu dengan label kategori tiap project — jadi
+ * menerjemahkan salah satunya diam-diam membuat chip tidak pernah cocok.
+ * `key` inilah yang dibandingkan sekarang; `label` murni untuk dibaca manusia.
+ */
+export const ProjectCategorySchema = z.object({
+  key: z
+    .string()
+    .regex(/^[a-z0-9-]+$/, "Kunci kategori hanya huruf kecil/angka/hubung"),
+  label: z.string().min(1),
+});
+
 // Hanya bagian yang masih berasal dari JSON. Data project sendiri datang dari
 // database lewat DAL; `items` di file JSON diabaikan (arsip konten pra-CMS).
 export const ProjectsContentSchema = z.object({
-  categories: z.array(z.string()),
+  categories: z.array(ProjectCategorySchema),
 });
 
 export const ServicesDataSchema = z.object({

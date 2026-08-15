@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { projectCategories } from "@/lib/categories";
 
 // Schema validasi form admin. Dipakai server action lewat safeParse;
 // error per field dikembalikan ke client melalui FormState.
@@ -26,7 +27,6 @@ export const initialFormState: FormState = { status: "idle" };
 
 const translationSchema = z.object({
   title: z.string().min(1, "Judul wajib diisi"),
-  category: z.string().min(1, "Label kategori wajib diisi"),
   client: z.string().min(1, "Nama klien wajib diisi"),
   description: z.string().min(1, "Deskripsi wajib diisi"),
   role: z.string().optional(),
@@ -39,10 +39,16 @@ export const projectFormSchema = z.object({
     .string()
     .min(1, "Slug wajib diisi")
     .regex(/^[a-z0-9-]+$/, "Slug hanya huruf kecil, angka, dan tanda hubung"),
+  // Harus salah satu kunci yang benar-benar punya label di projects.json.
+  // Kunci asing lolos regex tapi tidak punya terjemahan, jadi kartunya akan
+  // menampilkan kunci mentah — dan chip filter tidak akan pernah cocok.
   categoryKey: z
     .string()
-    .min(1, "Kunci kategori wajib diisi")
-    .regex(/^[a-z0-9-]+$/, "Kunci kategori hanya huruf kecil/angka/hubung"),
+    .min(1, "Kategori wajib dipilih")
+    .refine(
+      (key) => projectCategories("en").some((cat) => cat.key === key),
+      "Kategori tidak dikenal",
+    ),
   year: z.string().regex(/^\d{4}$/, "Tahun berformat YYYY"),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Tanggal berformat YYYY-MM-DD"),
   coverImage: z.string().min(1, "Gambar cover wajib diisi (URL atau upload)"),
@@ -223,7 +229,6 @@ function translationFromForm(formData: FormData, locale: "en" | "id") {
   const p = (field: string) => `translations.${locale}.${field}`;
   return {
     title: text(formData, p("title")),
-    category: text(formData, p("category")),
     client: text(formData, p("client")),
     description: text(formData, p("description")),
     role: optionalText(formData, p("role")),

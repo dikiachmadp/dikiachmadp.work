@@ -9,6 +9,7 @@ export type HeroData = z.infer<typeof schemas.HeroSchema>;
 export type Project = z.infer<typeof schemas.ProjectItemSchema>;
 /** Bagian projects yang berasal dari JSON (label kategori). */
 export type ProjectsContent = z.infer<typeof schemas.ProjectsContentSchema>;
+export type ProjectCategory = z.infer<typeof schemas.ProjectCategorySchema>;
 /** Yang diterima komponen: label dari JSON + item dari database. */
 export type ProjectsData = ProjectsContent & { items: Project[] };
 export type ServicesData = z.infer<typeof schemas.ServicesDataSchema>;
