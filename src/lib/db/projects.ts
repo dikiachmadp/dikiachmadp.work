@@ -101,7 +101,6 @@ export type ProjectInput = {
   date: string;
   coverImage: string;
   logoUrl?: string;
-  accent?: string;
   featured: boolean;
   liveUrl?: string;
   isLivePreview: boolean;
@@ -121,7 +120,6 @@ function baseData(input: ProjectInput) {
     date: input.date,
     coverImage: input.coverImage,
     logoUrl: input.logoUrl ?? null,
-    accent: input.accent ?? null,
     featured: input.featured,
     liveUrl: input.liveUrl || null,
     isLivePreview: input.isLivePreview,

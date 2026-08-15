@@ -22,7 +22,6 @@ export interface ProjectFormValues {
   date: string;
   coverImage: string;
   logoUrl: string;
-  accent: string;
   featured: boolean;
   liveUrl: string;
   isLivePreview: boolean;
@@ -49,7 +48,6 @@ export const emptyProjectForm: ProjectFormValues = {
   date: new Date().toISOString().slice(0, 10),
   coverImage: "",
   logoUrl: "",
-  accent: "",
   featured: false,
   liveUrl: "",
   isLivePreview: false,

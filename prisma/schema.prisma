@@ -20,7 +20,6 @@ model Project {
   date          String
   coverImage    String
   logoUrl       String?
-  accent        String?
   featured      Boolean  @default(false)
   liveUrl       String?
   isLivePreview Boolean  @default(false)

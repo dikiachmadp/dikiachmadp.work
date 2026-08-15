@@ -21,7 +21,6 @@ const baseRow = {
   date: "2026-04-15",
   coverImage: "/covers/a.webp",
   logoUrl: null,
-  accent: null,
   featured: true,
   liveUrl: null,
   isLivePreview: false,
