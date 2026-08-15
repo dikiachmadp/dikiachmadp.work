@@ -41,9 +41,20 @@ New tables also need their own RLS block — see `0_init` and
 table without one is readable through the Supabase Data API by anyone holding
 the anon key, which ships in the client bundle.
 
-`prisma/reconcile/sync-from-json.mjs` is a one-off script kept for the record:
-it pushed the JSON content into the database before the public pages switched
-to the DAL. It is idempotent but there is no reason to run it again.
+### Where the content lives
+
+The database is the source of truth for projects, testimonials and logbook
+posts; all of it is edited through the dashboard. What stays in
+`src/content/{en,id}/*.json` is UI copy — page headers, section titles, button
+labels, accessible names, and the project category list.
+
+`prisma/reconcile/sync-from-json.mjs` used to sit here. It was a one-off from
+2026-08-12 that pushed the JSON content into the database before the public
+pages switched to the DAL, and it was removed on 2026-08-15 along with the two
+payloads only it read (`content/{en,id}/testimonials.json` and the `items`
+array inside `projects.json`). It had stopped working anyway — it wrote
+`ProjectTranslation.category`, dropped in the migration that made categories
+translatable. Git history has it if the reconciliation ever needs re-reading.
 
 ## Supabase GitHub integration — disabled, keep it that way
 
