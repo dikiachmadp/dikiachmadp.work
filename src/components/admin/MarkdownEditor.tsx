@@ -80,12 +80,19 @@ const controlClass =
 export default function MarkdownEditor({
   name,
   label,
+  context,
   defaultValue,
   error,
   rows = 14,
 }: {
   name: string;
   label: string;
+  /**
+   * Bahasa yang sedang disunting. Form ini memuat dua editor sekaligus, jadi
+   * "Body" saja membuat dua textarea, dua toolbar, dan dua tombol pratinjau
+   * bernama sama persis — pembaca layar tidak punya cara membedakannya.
+   */
+  context: string;
   defaultValue: string;
   error?: string;
   rows?: number;
@@ -95,6 +102,7 @@ export default function MarkdownEditor({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pendingSelection = useRef<[number, number] | null>(null);
   const previewId = useId();
+  const fieldId = useId();
 
   // Seleksi dipulihkan setelah React menulis ulang nilai textarea; tanpa ini
   // kursor melompat ke ujung tiap kali tombol toolbar ditekan.
@@ -126,15 +134,16 @@ export default function MarkdownEditor({
   return (
     <div className="flex flex-col gap-[7px]">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="micro">
+        <label htmlFor={fieldId} className="micro">
           {label}
           <span className="text-(--accent-ink)"> *</span>
-        </span>
+        </label>
         <button
           type="button"
           onClick={() => setShowPreview((open) => !open)}
           aria-expanded={showPreview}
           aria-controls={previewId}
+          aria-label={`${showPreview ? "Hide preview of" : "Preview"} ${context} ${label.toLowerCase()}`}
           className="r-tag ink-border lift-chip cursor-pointer px-3 py-1.5 text-[10px] font-bold tracking-[0.1em] uppercase"
         >
           {showPreview ? "Hide preview" : "Preview"}
@@ -143,7 +152,7 @@ export default function MarkdownEditor({
 
       <div
         role="toolbar"
-        aria-label={`${label} formatting`}
+        aria-label={`${context} ${label.toLowerCase()} formatting`}
         className="flex flex-wrap gap-1.5"
       >
         {TOOLS.map((tool) => (
@@ -162,6 +171,7 @@ export default function MarkdownEditor({
 
       <textarea
         ref={textareaRef}
+        id={fieldId}
         name={name}
         rows={rows}
         value={value}

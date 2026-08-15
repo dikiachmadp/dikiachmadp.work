@@ -204,6 +204,7 @@ export default function LogbookForm({
             <MarkdownEditor
               name={`translations.${code}.body`}
               label="Body"
+              context={legend}
               defaultValue={values.translations[code].body}
               error={err(`translations.${code}.body`)}
             />
