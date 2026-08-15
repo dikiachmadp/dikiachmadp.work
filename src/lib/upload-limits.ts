@@ -4,7 +4,7 @@
  * Ada dua batas berbeda dan keduanya harus ada:
  *
  * - `MAX_FILE_BYTES` — per berkas, ditegakkan di server oleh
- *   `uploadProjectImage()`. Ini yang menjaga Storage.
+ *   `uploadImage()`. Ini yang menjaga Storage.
  * - `MAX_TOTAL_BYTES` — untuk seluruh isi form sekaligus. Satu submit bisa
  *   membawa cover + logo + banyak gambar galeri, jadi total bisa jauh melebihi
  *   batas per berkas meski setiap berkasnya sah.

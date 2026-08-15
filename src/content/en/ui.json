@@ -26,7 +26,10 @@
     "switchToLight": "Switch to light mode",
     "switchToDark": "Switch to dark mode",
     "switchToLanguage": "Switch to {lang}",
-    "languageNames": { "en": "English", "id": "Bahasa Indonesia" },
+    "languageNames": {
+      "en": "English",
+      "id": "Bahasa Indonesia"
+    },
     "previousTestimonial": "Previous testimonial",
     "nextTestimonial": "Next testimonial",
     "ratingOutOfFive": "Rated 5 out of 5",
@@ -75,7 +78,14 @@
     "newProject": "New project",
     "recentProjects": "Recent projects",
     "inbox": "Inbox",
-    "nav": ["Dashboard", "Projects", "Testimonials", "Messages", "View site"],
+    "nav": [
+      "Dashboard",
+      "Projects",
+      "Logbook",
+      "Testimonials",
+      "Messages",
+      "View site"
+    ],
     "stats": ["projects", "featured", "new messages", "testimonials"],
     "status": {
       "live": "Live",

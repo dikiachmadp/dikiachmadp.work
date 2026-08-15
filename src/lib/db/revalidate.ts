@@ -16,3 +16,36 @@ export function revalidateProjectPaths(slug?: string) {
   // Tanpa ini project baru tidak masuk sitemap sampai deploy berikutnya.
   revalidatePath("/sitemap.xml");
 }
+
+/**
+ * Slug Logbook berbeda per bahasa, jadi yang direvalidasi adalah pasangan
+ * `{locale, slug}` — bukan satu slug untuk semua bahasa.
+ *
+ * `previous` wajib diperhitungkan: kalau hanya slug baru yang direvalidasi,
+ * URL lama tetap tersaji dari cache sampai ISR kedaluwarsa, dan pos yang
+ * dihapus tetap hidup di alamatnya yang lama. Itu persis dua celah yang
+ * tertinggal di `revalidateProjectPaths`.
+ */
+export function revalidateLogbookPaths({
+  slugs = [],
+  previousSlugs = [],
+}: {
+  slugs?: { locale: string; slug: string }[];
+  previousSlugs?: { locale: string; slug: string }[];
+} = {}) {
+  for (const locale of locales) {
+    // Kartu Logbook di halaman Studio ikut berubah setiap ada pos baru.
+    revalidatePath(`/${locale}/studio`);
+    revalidatePath(`/${locale}/logbook`);
+  }
+
+  const seen = new Set<string>();
+  for (const { locale, slug } of [...slugs, ...previousSlugs]) {
+    const path = `/${locale}/logbook/${slug}`;
+    if (seen.has(path)) continue;
+    seen.add(path);
+    revalidatePath(path);
+  }
+
+  revalidatePath("/sitemap.xml");
+}
