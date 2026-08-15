@@ -37,7 +37,19 @@ export async function generateMetadata({
     getProjectBySlug(validLocale, slug),
   ]);
 
-  if (!project) return { title: dict.ui.projectDetail.notFoundTitle };
+  /**
+   * Halaman ini menjawab 200 walau project-nya tidak ada — status tidak bisa
+   * diubah setelah respons mulai di-stream; lihat catatan panjang di
+   * `[locale]/[...not-found]/page.tsx`. Yang menjaga URL semacam ini keluar
+   * dari indeks adalah `noindex`, bukan angka statusnya, dan tanpa baris ini
+   * setiap slug yang salah ketik boleh terindeks sebagai halaman sungguhan.
+   */
+  if (!project) {
+    return {
+      title: dict.ui.projectDetail.notFoundTitle,
+      robots: { index: false, follow: false },
+    };
+  }
 
   return createMetadata({
     title: project.title,
