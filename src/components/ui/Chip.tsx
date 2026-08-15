@@ -34,16 +34,33 @@ export default function Chip({
     className,
   );
 
+  /**
+   * Status aktif sebelumnya hanya disampaikan lewat isian warna aksen. Yang
+   * memakai pembaca layar tidak punya cara tahu filter mana yang sedang
+   * dipilih, dan warna saja juga bukan penanda yang cukup.
+   *
+   * Atributnya berbeda menurut bentuknya: chip bertaut adalah navigasi, jadi
+   * `aria-current="page"`; chip bertombol adalah sakelar, jadi `aria-pressed`.
+   */
   if (href) {
     return (
-      <Link href={href} className={base}>
+      <Link
+        href={href}
+        aria-current={active ? "page" : undefined}
+        className={base}
+      >
         {children}
       </Link>
     );
   }
 
   return (
-    <button type="button" onClick={onClick} className={base}>
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active ?? false}
+      className={base}
+    >
       {children}
     </button>
   );

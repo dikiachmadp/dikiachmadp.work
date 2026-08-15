@@ -21,7 +21,10 @@ function flatten(row: ProjectWithTranslations, locale: Locale): Project {
     id: row.id,
     slug: row.slug,
     title: tr?.title ?? row.slug,
-    category: tr?.category ?? row.categoryKey,
+    // Kunci, bukan label. Labelnya milik copy UI dan dicari per locale saat
+    // render lewat `categoryLabel()` — menyimpannya per terjemahan berarti
+    // string yang sama diduplikasi tiap project dan bisa saling menyimpang.
+    categoryKey: row.categoryKey,
     year: row.year,
     date: row.date,
     client: tr?.client ?? "",
@@ -84,7 +87,6 @@ export async function getAllProjectSlugs(): Promise<string[]> {
 
 export type ProjectTranslationInput = {
   title: string;
-  category: string;
   client: string;
   description: string;
   role?: string;

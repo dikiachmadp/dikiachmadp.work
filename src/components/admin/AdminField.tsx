@@ -94,7 +94,12 @@ export function AdminSelect({
   onChange,
   ...props
 }: BaseProps & {
-  options: string[];
+  /**
+   * String polos kalau nilai dan labelnya sama. Bentuk `{value,label}` untuk
+   * kasus di mana yang dikirim berbeda dari yang dibaca — kategori project
+   * mengirim kunci stabil tapi menampilkan label berbahasa.
+   */
+  options: (string | { value: string; label: string })[];
   /** Isi keduanya untuk select terkendali; kosongkan untuk uncontrolled. */
   value?: string;
   onChange?: (value: string) => void;
@@ -113,11 +118,17 @@ export function AdminSelect({
           props.error && "border-(--accent-ink)",
         )}
       >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
+        {options.map((option) => {
+          const { value: optionValue, label } =
+            typeof option === "string"
+              ? { value: option, label: option }
+              : option;
+          return (
+            <option key={optionValue} value={optionValue}>
+              {label}
+            </option>
+          );
+        })}
       </select>
     </Shell>
   );

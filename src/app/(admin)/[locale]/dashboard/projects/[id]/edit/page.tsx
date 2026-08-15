@@ -4,7 +4,6 @@ import ProjectForm, {
   emptyProjectForm,
   type ProjectFormValues,
 } from "@/components/admin/ProjectForm";
-import { getCategoryLabels } from "@/lib/categories";
 import { getProjectForEdit } from "@/lib/db/projects";
 import { requireUser } from "@/lib/supabase/auth";
 
@@ -23,17 +22,13 @@ export default async function EditProjectPage({
   const { locale, id } = await params;
   await requireUser(locale);
 
-  const [project, categories] = await Promise.all([
-    getProjectForEdit(id),
-    getCategoryLabels(),
-  ]);
+  const project = await getProjectForEdit(id);
   if (!project) notFound();
 
   const translationFor = (lang: "en" | "id") => {
     const tr = project.translations.find((t) => t.locale === lang);
     return {
       title: tr?.title ?? "",
-      category: tr?.category ?? "",
       client: tr?.client ?? "",
       description: tr?.description ?? "",
       role: tr?.role ?? "",
@@ -69,7 +64,6 @@ export default async function EditProjectPage({
         action={updateProjectAction.bind(null, project.id)}
         locale={locale}
         values={values}
-        categories={categories}
         submitLabel="Save changes"
       />
     </>

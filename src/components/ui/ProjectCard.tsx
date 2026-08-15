@@ -4,6 +4,7 @@ import { Project, Locale } from "@/types/content";
 import Tag from "@/components/ui/Tag";
 import { cn, fill } from "@/lib/utils";
 import { uiDictionary } from "@/lib/ui-dictionary";
+import { categoryLabel } from "@/lib/categories";
 
 interface ProjectCardProps {
   project: Project;
@@ -20,7 +21,8 @@ export default function ProjectCard({
   className,
 }: ProjectCardProps) {
   const hasCover = Boolean(project.coverImage);
-  const meta = `${project.category} · ${project.year}`;
+  const category = categoryLabel(locale, project.categoryKey);
+  const meta = `${category} · ${project.year}`;
 
   return (
     <Link
@@ -47,7 +49,7 @@ export default function ProjectCard({
         ) : (
           <span className="font-tech text-[10px] tracking-[0.2em] text-(--soft) uppercase">
             {fill(uiDictionary(locale).a11y.projectShot, {
-              category: project.category.toLowerCase(),
+              category: category.toLowerCase(),
             })}
           </span>
         )}

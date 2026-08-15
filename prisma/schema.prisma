@@ -13,7 +13,8 @@ datasource db {
 model Project {
   id            String   @id @default(uuid())
   slug          String   @unique
-  // Kunci kategori stabil (slug dari label EN), untuk filter/sort.
+  // Identitas kategori. Satu-satunya sumbernya; labelnya per bahasa hidup di
+  // src/content/{en,id}/projects.json dan dicari lewat kunci ini saat render.
   categoryKey   String
   year          String
   date          String
@@ -39,8 +40,6 @@ model ProjectTranslation {
   projectId     String
   locale        String
   title         String
-  // Label kategori sesuai bahasa, dipakai UI filter.
-  category      String
   client        String
   description   String
   role          String?

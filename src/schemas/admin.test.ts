@@ -23,12 +23,10 @@ function buildProjectFormData(
     gallery: "/g/1.webp\n/g/2.webp",
     featured: "on",
     "translations.en.title": "New Project",
-    "translations.en.category": "Web Design",
     "translations.en.client": "Acme",
     "translations.en.description": "English description",
     "translations.en.contentBlocks": "Para one.\n\nPara two.",
     "translations.id.title": "Project Baru",
-    "translations.id.category": "Desain Web",
     "translations.id.client": "Acme",
     "translations.id.description": "Deskripsi Indonesia",
   };

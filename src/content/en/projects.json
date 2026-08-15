@@ -1,13 +1,33 @@
 {
   "categories": [
-    "All",
-    "Branding",
-    "UI/UX Design",
-    "3D Modeling",
-    "Packaging",
-    "Illustration",
-    "Animation",
-    "Web Design"
+    {
+      "key": "branding",
+      "label": "Branding"
+    },
+    {
+      "key": "ui-ux-design",
+      "label": "UI/UX Design"
+    },
+    {
+      "key": "3d-modeling",
+      "label": "3D Modeling"
+    },
+    {
+      "key": "packaging",
+      "label": "Packaging"
+    },
+    {
+      "key": "illustration",
+      "label": "Illustration"
+    },
+    {
+      "key": "animation",
+      "label": "Animation"
+    },
+    {
+      "key": "web-design",
+      "label": "Web Design"
+    }
   ],
   "items": [
     {

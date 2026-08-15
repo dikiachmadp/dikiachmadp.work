@@ -10,6 +10,7 @@ import Button from "@/components/ui/Button";
 import Tag from "@/components/ui/Tag";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, projectSchema } from "@/lib/structured-data";
+import { categoryLabel } from "@/lib/categories";
 import { Locale } from "@/types/content";
 import { cn, fill } from "@/lib/utils";
 
@@ -73,6 +74,7 @@ export default async function ProjectDetailPage({
   if (!project) notFound();
 
   const t = dict.ui.projectDetail;
+  const category = categoryLabel(validLocale, project.categoryKey);
   const hasCover = Boolean(project.coverImage);
   // Selama galeri kosong, panel crosshatch lama tetap tampil — begitu gambar
   // diunggah lewat CMS, gambar itu yang muncul.
@@ -101,7 +103,9 @@ export default async function ProjectDetailPage({
 
   return (
     <PageWrapper>
-      <JsonLd data={projectSchema(project, dict.siteConfig, validLocale)} />
+      <JsonLd
+        data={projectSchema(project, dict.siteConfig, validLocale, category)}
+      />
       <JsonLd
         data={breadcrumbSchema(
           [
@@ -127,7 +131,7 @@ export default async function ProjectDetailPage({
         </Button>
 
         <div className="text-[11px] font-bold tracking-[0.16em] text-(--soft) uppercase">
-          {project.category} · {project.year}
+          {category} · {project.year}
         </div>
         <h1 className="font-hand mt-1.5 mb-4 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
           {project.title}
@@ -155,7 +159,7 @@ export default async function ProjectDetailPage({
             ) : (
               <span className="font-tech text-[11px] tracking-[0.2em] text-(--soft) uppercase">
                 {fill(dict.ui.a11y.projectCover, {
-                  category: project.category.toLowerCase(),
+                  category: category.toLowerCase(),
                 })}
               </span>
             )}

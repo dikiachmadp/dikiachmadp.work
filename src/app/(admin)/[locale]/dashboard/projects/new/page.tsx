@@ -1,6 +1,5 @@
 import { createProjectAction } from "../actions";
 import ProjectForm, { emptyProjectForm } from "@/components/admin/ProjectForm";
-import { getCategoryLabels } from "@/lib/categories";
 import { requireUser } from "@/lib/supabase/auth";
 
 export default async function NewProjectPage({
@@ -10,7 +9,6 @@ export default async function NewProjectPage({
 }) {
   const { locale } = await params;
   await requireUser(locale);
-  const categories = await getCategoryLabels();
 
   return (
     <>
@@ -21,7 +19,6 @@ export default async function NewProjectPage({
         action={createProjectAction}
         locale={locale}
         values={emptyProjectForm}
-        categories={categories}
         submitLabel="Create project"
       />
     </>
