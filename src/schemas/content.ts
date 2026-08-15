@@ -233,6 +233,7 @@ export const PageHeaderSchema = z.object({
   services: HeaderDetailSchema,
   about: HeaderDetailSchema,
   studio: HeaderDetailSchema,
+  logbook: HeaderDetailSchema,
   contact: HeaderDetailSchema,
   legal: HeaderDetailSchema,
   privacy: HeaderDetailSchema,
@@ -299,6 +300,7 @@ export const UiSchema = z.object({
     loading: z.string(),
     success: z.string(),
     download: z.string(),
+    close: z.string(),
   }),
   states: z.object({
     empty: z.string(),
@@ -330,6 +332,12 @@ export const UiSchema = z.object({
     projectCover: z.string(),
     projectShot: z.string(),
     galleryPlaceholder: z.string(),
+    logbookGallery: z.string(),
+    enlargeImage: z.string(),
+    imageDialog: z.string(),
+    previousImage: z.string(),
+    nextImage: z.string(),
+    showImage: z.string(),
   }),
   // Dipakai error boundary, yang wajib Client Component dan karena itu tidak
   // bisa memanggil getDictionary() — ui.json diimpor langsung di sana.
@@ -362,6 +370,15 @@ export const UiSchema = z.object({
     visitBtn: z.string(),
     galleryLabel: z.string(),
     notFoundTitle: z.string(),
+  }),
+  logbook: z.object({
+    backBtn: z.string(),
+    share: z.string(),
+    shareCopied: z.string(),
+    notFoundTitle: z.string(),
+    empty: z.string(),
+    readPost: z.string(),
+    viewAll: z.string(),
   }),
   contactInfo: z.object({
     title: z.string(),

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import ConfirmSubmitButton from "@/components/interactive/ConfirmSubmitButton";
-import Pagination from "@/components/admin/Pagination";
+import Pagination from "@/components/ui/Pagination";
 import { getProjectsPage } from "@/lib/db/projects";
 import { pageCount, parsePageParam } from "@/lib/pagination";
 import { requireUser } from "@/lib/supabase/auth";

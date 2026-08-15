@@ -19,6 +19,11 @@
     "title": "Selamat datang di studio",
     "description": "Eksperimen, produk digital, dan catatan dari meja kerja."
   },
+  "logbook": {
+    "topTitle": "catatan dari meja kerja",
+    "title": "Logbook",
+    "description": "Catatan soal desain, kode, dan hal-hal yang meleset di antaranya."
+  },
   "contact": {
     "topTitle": "hubungi saya",
     "title": "Mari bekerja sama.",

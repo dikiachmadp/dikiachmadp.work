@@ -46,16 +46,6 @@
       "link": "https://kidstudio.gumroad.com/l/modern-theme",
       "isExternal": true,
       "badge": "OJS"
-    },
-    {
-      "id": "thought-01",
-      "type": "thoughts",
-      "title": "Multi-language architecture in Next.js",
-      "description": "Notes on structuring JSON-based localisation.",
-      "date": "2026-05-10",
-      "link": "/studio/thoughts/nextjs-architecture",
-      "isExternal": false,
-      "badge": "01"
     }
   ]
 }

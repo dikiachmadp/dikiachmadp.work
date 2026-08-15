@@ -1,14 +1,9 @@
-import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import Markdown from "@/components/logbook/Markdown";
 
-// JSX dihindari di sini supaya berkasnya tetap `.ts`: `jsx: "preserve"` di
-// tsconfig (yang dibutuhkan Next) membuat esbuild milik Vitest tidak mengubah
-// JSX menjadi pemanggilan fungsi.
-function render(markdown: string): string {
-  return renderToStaticMarkup(createElement(Markdown, null, markdown));
-}
+const render = (markdown: string): string =>
+  renderToStaticMarkup(<Markdown>{markdown}</Markdown>);
 
 /**
  * Isi tulisan datang dari form admin dan disimpan mentah sebagai Markdown.

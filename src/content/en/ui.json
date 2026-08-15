@@ -6,7 +6,8 @@
     "submit": "Send message",
     "loading": "Sending…",
     "success": "Sent! ✓",
-    "download": "Download CV"
+    "download": "Download CV",
+    "close": "Close"
   },
   "states": {
     "empty": "nothing here… try another word",
@@ -35,7 +36,13 @@
     "ratingOutOfFive": "Rated 5 out of 5",
     "projectCover": "{category} cover",
     "projectShot": "{category} shot",
-    "galleryPlaceholder": "detail shot {n}"
+    "galleryPlaceholder": "detail shot {n}",
+    "logbookGallery": "Gallery for {title}",
+    "enlargeImage": "Enlarge image",
+    "imageDialog": "{title} — enlarged image",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "showImage": "Show image {n}"
   },
   "errorPage": {
     "badge": "something spilled on this page",
@@ -66,6 +73,15 @@
     "visitBtn": "Visit live site",
     "galleryLabel": "Gallery",
     "notFoundTitle": "Project not found"
+  },
+  "logbook": {
+    "backBtn": "All posts",
+    "share": "Share",
+    "shareCopied": "Link copied ✓",
+    "notFoundTitle": "Post not found",
+    "empty": "Nothing here yet — the first entry is on its way.",
+    "readPost": "Read post",
+    "viewAll": "All posts"
   },
   "contactInfo": {
     "title": "Contact information",

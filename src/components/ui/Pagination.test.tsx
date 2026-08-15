@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import Pagination from "@/components/admin/Pagination";
+import Pagination from "@/components/ui/Pagination";
 
 const render = (props: {
   current: number;

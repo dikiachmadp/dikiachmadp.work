@@ -88,6 +88,45 @@ export function projectSchema(
   };
 }
 
+/**
+ * Pos Logbook. `BlogPosting`, bukan `CreativeWork` seperti Project: yang
+ * membedakan adalah tanggal terbit dan penulis, dan itulah yang dipakai mesin
+ * pencari untuk menampilkannya sebagai tulisan bertanggal.
+ */
+export function articleSchema(
+  post: {
+    slug: string;
+    title: string;
+    excerpt: string;
+    publishedAt: Date | null;
+    updatedAt: Date;
+    cover: { url: string } | null;
+  },
+  siteConfig: SiteConfig,
+  locale: Locale,
+) {
+  const url = `${siteConfig.url}/${locale}/logbook/${post.slug}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    url,
+    // `mainEntityOfPage` menandai bahwa halaman inilah tulisannya, bukan
+    // sekadar halaman yang menyebutkannya.
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    inLanguage: LANGUAGE[locale],
+    ...(post.publishedAt && { datePublished: post.publishedAt.toISOString() }),
+    dateModified: post.updatedAt.toISOString(),
+    author: { "@id": personId(siteConfig) },
+    publisher: { "@id": personId(siteConfig) },
+    ...(post.cover && {
+      image: absoluteUrl(siteConfig.url, post.cover.url),
+    }),
+  };
+}
+
 /** Jejak navigasi yang muncul di bawah judul hasil pencarian. */
 export function breadcrumbSchema(
   crumbs: { name: string; path: string }[],
