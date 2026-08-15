@@ -16,7 +16,6 @@ function buildProjectFormData(
     date: "2026-07-13",
     coverImage: "/covers/a.webp",
     logoUrl: "",
-    accent: "#112233",
     liveUrl: "https://example.com",
     tags: "Web Design, UI",
     tools: "React, TypeScript",

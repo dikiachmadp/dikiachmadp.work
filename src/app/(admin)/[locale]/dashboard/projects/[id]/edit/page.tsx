@@ -45,7 +45,6 @@ export default async function EditProjectPage({
     date: project.date,
     coverImage: project.coverImage,
     logoUrl: project.logoUrl ?? "",
-    accent: project.accent ?? "",
     featured: project.featured,
     liveUrl: project.liveUrl ?? "",
     isLivePreview: project.isLivePreview,

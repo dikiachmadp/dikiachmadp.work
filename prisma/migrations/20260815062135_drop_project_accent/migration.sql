@@ -1,0 +1,27 @@
+-- Membuang `Project.accent`.
+--
+-- Kolom ini melanggar dua aturan sekaligus, dan keduanya sudah ditulis sebagai
+-- prinsip di rencana Logbook:
+--
+--   1. Nol kolom tanpa input. Tidak ada satu pun field `accent` yang dirender
+--      `ProjectForm`, jadi `optionalText(formData, "accent")` selalu undefined
+--      dan `baseData()` menulis `accent: null`. Setiap penyimpanan proyek lewat
+--      dasbor menghapus warnanya — bug kehilangan data yang aktif, bukan
+--      teoretis.
+--   2. Nol kolom yang tidak dibaca. `flatten()` tidak pernah memasukkannya ke
+--      objek `Project`, dan `ProjectItemSchema` tidak punya field-nya. Tidak
+--      ada jalur apa pun yang bisa membuat nilainya tampil di layar.
+--
+-- Asal-usulnya: kolom warisan dari skema database yang sudah ada sebelum basis
+-- kode ini, ikut terbawa saat `0_init` dibakukan di commit 57e4dc6. Ia tidak
+-- pernah ada di konten JSON pra-CMS (12 item, nol yang punya `accent`) maupun
+-- di tabel `projects` snake_case yang sudah dihapus.
+--
+-- Ke-12 nilainya nyata dan jelas dipilih orang — #8b5a2b, #e2723f, dan
+-- seterusnya. Nilai itu dicadangkan ke berkas dan diserahkan ke pemilik repo
+-- sebelum migrasi ini dijalankan, karena kolom inilah satu-satunya jejaknya.
+-- Kalau suatu saat rona per proyek benar-benar dirancang, warnanya bisa
+-- dimasukkan kembali lewat migrasi aditif.
+
+-- AlterTable
+ALTER TABLE "Project" DROP COLUMN "accent";
