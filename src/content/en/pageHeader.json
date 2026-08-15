@@ -19,6 +19,11 @@
     "title": "Welcome to my studio",
     "description": "Experiments, digital products and notes from the desk."
   },
+  "logbook": {
+    "topTitle": "notes from the desk",
+    "title": "Logbook",
+    "description": "Notes on design, code, and the things that go wrong in between."
+  },
   "contact": {
     "topTitle": "get in touch",
     "title": "Let's work together.",

@@ -46,16 +46,6 @@
       "link": "https://kidstudio.gumroad.com/l/modern-theme",
       "isExternal": true,
       "badge": "OJS"
-    },
-    {
-      "id": "thought-01",
-      "type": "thoughts",
-      "title": "Arsitektur multi-bahasa di Next.js",
-      "description": "Catatan menyusun lokalisasi berbasis JSON.",
-      "date": "2026-05-10",
-      "link": "/studio/thoughts/nextjs-architecture",
-      "isExternal": false,
-      "badge": "01"
     }
   ]
 }

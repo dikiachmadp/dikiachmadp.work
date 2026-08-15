@@ -11,6 +11,18 @@ interface MetadataOptions {
     ogImage?: string;
   };
   locale: Locale;
+  /**
+   * Tiga field di bawah ini opsional supaya seluruh pemanggil lama tetap
+   * menghasilkan metadata yang persis sama seperti sebelumnya.
+   */
+  type?: "website" | "article";
+  publishedTime?: Date | null;
+  modifiedTime?: Date | null;
+  /**
+   * Gambar khusus halaman ini — cover pos Logbook. Boleh absolut (URL bucket
+   * Supabase) atau path dari /public. Kalau kosong, jatuh ke `siteConfig.ogImage`.
+   */
+  image?: string;
 }
 
 export const createMetadata = ({
@@ -19,13 +31,18 @@ export const createMetadata = ({
   path,
   siteConfig,
   locale,
+  type = "website",
+  publishedTime,
+  modifiedTime,
+  image,
 }: MetadataOptions): Metadata => {
   const baseUrl = siteConfig.url;
   const fullPath = `/${locale}${path}`;
   const canonicalUrl = `${baseUrl}${fullPath}`;
   // Tanpa ini setiap halaman selain beranda mengirim OG tag tanpa gambar.
-  const images = siteConfig.ogImage
-    ? [{ url: `${baseUrl}${siteConfig.ogImage}` }]
+  const ogImage = image ?? siteConfig.ogImage;
+  const images = ogImage
+    ? [{ url: ogImage.startsWith("http") ? ogImage : `${baseUrl}${ogImage}` }]
     : undefined;
 
   return {
@@ -37,7 +54,13 @@ export const createMetadata = ({
       description,
       url: canonicalUrl,
       siteName: siteConfig.siteName,
-      type: "website",
+      ...(type === "article"
+        ? {
+            type: "article",
+            publishedTime: publishedTime?.toISOString(),
+            modifiedTime: modifiedTime?.toISOString(),
+          }
+        : { type: "website" }),
       images,
     },
     alternates: {

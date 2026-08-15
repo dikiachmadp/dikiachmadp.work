@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { getAllPostSlugs } from "@/lib/db/logbook";
 import { getAllProjectSlugs } from "@/lib/db/projects";
 import { SITE_URL } from "@/lib/site-url";
 import { Locale } from "@/types/content";
@@ -17,14 +18,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/projects",
     "/services",
     "/studio",
+    "/logbook",
     "/privacy",
     "/legal",
   ];
 
-  // Slug tidak bergantung locale, jadi satu query cukup untuk kedua bahasa.
-  const slugs = process.env.SKIP_DB_STATIC_GEN
-    ? []
-    : await getAllProjectSlugs();
+  // Slug project tidak bergantung locale, jadi satu query cukup untuk kedua
+  // bahasa. Slug Logbook sebaliknya — beda per bahasa, dan pos yang belum
+  // diterjemahkan memang tidak ada di bahasa itu, jadi locale-nya ikut terbawa
+  // dari query alih-alih dikalikan di sini.
+  const [slugs, posts] = process.env.SKIP_DB_STATIC_GEN
+    ? [[], []]
+    : await Promise.all([getAllProjectSlugs(), getAllPostSlugs()]);
 
   const staticEntries = locales.flatMap((locale) =>
     staticRoutes.map((route) => ({
@@ -44,5 +49,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   );
 
-  return [...staticEntries, ...projectEntries];
+  // `lastModified` di sini tanggal asli pos, bukan `new Date()` seperti entri
+  // lain — pos yang tidak berubah tidak boleh tampak baru disunting tiap kali
+  // sitemap dibuat ulang.
+  const postEntries = posts.map((post) => ({
+    url: `${BASE_URL}/${post.locale}/logbook/${post.slug}`,
+    lastModified: post.updatedAt,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticEntries, ...projectEntries, ...postEntries];
 }

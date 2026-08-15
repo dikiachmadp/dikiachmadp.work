@@ -32,7 +32,13 @@ export default function Navbar({ navData, siteConfig, locale }: NavbarProps) {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 w-full border-b-2 border-(--line) bg-(--paper) transition-colors duration-[0.45s]">
+      {/* id-nya dipakai dialog layar penuh untuk menonaktifkan navbar di
+          belakangnya — lihat Gallery.tsx. Selector `nav` saja tidak cukup:
+          paginasi dan breadcrumb juga merender <nav>. */}
+      <nav
+        id="site-nav"
+        className="sticky top-0 z-50 w-full border-b-2 border-(--line) bg-(--paper) transition-colors duration-[0.45s]"
+      >
         <div className="main-container flex h-(--nav-h) items-center justify-between gap-2 sm:gap-6">
           <Logo
             locale={locale}

@@ -6,7 +6,8 @@
     "submit": "Kirim pesan",
     "loading": "Mengirim…",
     "success": "Terkirim! ✓",
-    "download": "Unduh CV"
+    "download": "Unduh CV",
+    "close": "Tutup"
   },
   "states": {
     "empty": "belum ada… coba kata lain",
@@ -35,7 +36,13 @@
     "ratingOutOfFive": "Dinilai 5 dari 5",
     "projectCover": "Sampul {category}",
     "projectShot": "Gambar {category}",
-    "galleryPlaceholder": "gambar detail {n}"
+    "galleryPlaceholder": "gambar detail {n}",
+    "logbookGallery": "Galeri untuk {title}",
+    "enlargeImage": "Perbesar gambar",
+    "imageDialog": "{title} — gambar diperbesar",
+    "previousImage": "Gambar sebelumnya",
+    "nextImage": "Gambar berikutnya",
+    "showImage": "Tampilkan gambar {n}"
   },
   "errorPage": {
     "badge": "ada yang tumpah di halaman ini",
@@ -66,6 +73,15 @@
     "visitBtn": "Kunjungi situs",
     "galleryLabel": "Galeri",
     "notFoundTitle": "Proyek tidak ditemukan"
+  },
+  "logbook": {
+    "backBtn": "Semua tulisan",
+    "share": "Bagikan",
+    "shareCopied": "Tautan tersalin ✓",
+    "notFoundTitle": "Tulisan tidak ditemukan",
+    "empty": "Belum ada apa-apa di sini — tulisan pertama sedang dalam perjalanan.",
+    "readPost": "Baca tulisan",
+    "viewAll": "Semua tulisan"
   },
   "contactInfo": {
     "title": "Informasi kontak",
