@@ -26,7 +26,10 @@
     "switchToLight": "Ganti ke mode terang",
     "switchToDark": "Ganti ke mode gelap",
     "switchToLanguage": "Ganti ke {lang}",
-    "languageNames": { "en": "English", "id": "Bahasa Indonesia" },
+    "languageNames": {
+      "en": "English",
+      "id": "Bahasa Indonesia"
+    },
     "previousTestimonial": "Testimoni sebelumnya",
     "nextTestimonial": "Testimoni berikutnya",
     "ratingOutOfFive": "Dinilai 5 dari 5",
@@ -75,7 +78,7 @@
     "newProject": "Proyek baru",
     "recentProjects": "Proyek terbaru",
     "inbox": "Kotak masuk",
-    "nav": ["Dasbor", "Proyek", "Testimoni", "Pesan", "Lihat situs"],
+    "nav": ["Dasbor", "Proyek", "Logbook", "Testimoni", "Pesan", "Lihat situs"],
     "stats": ["proyek", "unggulan", "pesan baru", "testimoni"],
     "status": {
       "live": "Tayang",

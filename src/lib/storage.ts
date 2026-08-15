@@ -23,12 +23,25 @@ const MAX_BYTES = MAX_FILE_BYTES;
 
 const readableTypes = Object.keys(ALLOWED_TYPES).join(", ");
 
+/**
+ * Prefix path di dalam bucket, mis. "my-project" atau "logbook/my-post".
+ * Bucket-nya satu untuk semua (`project-images`) supaya tidak perlu bucket baru
+ * plus policy SQL manual; pemisahannya cukup lewat prefix.
+ */
+const SAFE_PREFIX = /^[a-z0-9-]+(\/[a-z0-9-]+)*$/;
+
 // Upload gambar ke Supabase Storage (butuh sesi user login — policy bucket
 // hanya mengizinkan insert untuk role authenticated). Mengembalikan URL publik.
-export async function uploadProjectImage(
+export async function uploadImage(
   file: File,
-  slug: string,
+  pathPrefix: string,
 ): Promise<string> {
+  // Slug pemanggil sudah divalidasi di schema Zod masing-masing, tapi path
+  // bucket adalah tempat yang salah untuk mengandalkan kesopanan pemanggil.
+  if (!SAFE_PREFIX.test(pathPrefix)) {
+    throw new Error(`Prefix path tidak valid: "${pathPrefix}".`);
+  }
+
   const contentType = file.type.toLowerCase();
   const ext = ALLOWED_TYPES[contentType];
   if (!ext) {
@@ -47,9 +60,9 @@ export async function uploadProjectImage(
   }
 
   const supabase = await createClient();
-  // slug sudah divalidasi `^[a-z0-9-]+$` di projectFormSchema, dan ekstensinya
-  // dari tabel di atas — jadi tidak ada bagian path yang berasal dari klien.
-  const path = `${slug}/${crypto.randomUUID()}.${ext}`;
+  // Prefix sudah lolos SAFE_PREFIX dan ekstensinya dari tabel di atas — jadi
+  // tidak ada bagian path yang berasal dari klien.
+  const path = `${pathPrefix}/${crypto.randomUUID()}.${ext}`;
 
   const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
     contentType,
@@ -76,10 +89,11 @@ export function bucketPathFromUrl(url: string): string | null {
 }
 
 /**
- * Hapus gambar milik sebuah project. Tanpa ini menghapus project meninggalkan
- * berkas yatim yang tetap bisa diakses publik selamanya.
+ * Hapus gambar yang tidak lagi dirujuk baris mana pun. Tanpa ini, mengganti
+ * atau menghapus konten meninggalkan berkas yatim yang tetap bisa diakses
+ * publik selamanya.
  */
-export async function removeProjectImages(urls: string[]): Promise<void> {
+export async function removeImages(urls: string[]): Promise<void> {
   const paths = urls
     .map(bucketPathFromUrl)
     .filter((path): path is string => path !== null);
@@ -88,7 +102,7 @@ export async function removeProjectImages(urls: string[]): Promise<void> {
   const supabase = await createClient();
   const { error } = await supabase.storage.from(BUCKET).remove(paths);
   if (error) {
-    // Project-nya sudah terhapus; berkas yatim bukan alasan menggagalkan aksi.
-    console.error("Gagal menghapus gambar project:", error.message);
+    // Barisnya sudah tertulis; berkas yatim bukan alasan menggagalkan aksi.
+    console.error("Gagal menghapus gambar:", error.message);
   }
 }

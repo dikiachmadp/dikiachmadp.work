@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/supabase/auth";
-import { removeProjectImages, uploadProjectImage } from "@/lib/storage";
+import { removeImages, uploadImage } from "@/lib/storage";
 import {
   formValues,
   projectFormSchema,
@@ -60,13 +60,13 @@ async function parseAndUpload(
   try {
     const data = parsed.data;
     if (coverFile) {
-      data.coverImage = await uploadProjectImage(coverFile, data.slug);
+      data.coverImage = await uploadImage(coverFile, data.slug);
     }
     if (logoFile) {
-      data.logoUrl = await uploadProjectImage(logoFile, data.slug);
+      data.logoUrl = await uploadImage(logoFile, data.slug);
     }
     for (const file of galleryFiles) {
-      data.gallery.push(await uploadProjectImage(file, data.slug));
+      data.gallery.push(await uploadImage(file, data.slug));
     }
     return { ok: true, data };
   } catch (error) {
@@ -150,7 +150,7 @@ export async function deleteProjectAction(id: string, formData: FormData) {
   // delete() mengembalikan baris yang dihapus, jadi URL gambarnya masih ada di
   // tangan untuk dibersihkan — tanpa ini berkasnya tetap publik selamanya.
   const deleted = await deleteProjectById(id);
-  await removeProjectImages(
+  await removeImages(
     [deleted.coverImage, deleted.logoUrl, ...deleted.gallery].filter(
       (url): url is string => Boolean(url),
     ),

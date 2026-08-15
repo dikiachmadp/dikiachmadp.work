@@ -74,6 +74,101 @@ export const testimonialFormSchema = z.object({
 
 export type TestimonialFormValues = z.infer<typeof testimonialFormSchema>;
 
+// --- Logbook ---
+
+/** Batas isi tulisan, dihitung dalam byte UTF-8, bukan jumlah karakter. */
+export const MAX_BODY_BYTES = 100 * 1024;
+
+const logbookImageSchema = z.object({
+  url: z.string().min(1, "URL gambar wajib diisi"),
+  // Wajib: galeri tanpa teks alternatif tidak bisa diakses, dan `alt` inilah
+  // alasan gambar melekat pada terjemahan alih-alih pada pos.
+  alt: z.string().min(1, "Teks alternatif wajib diisi"),
+  caption: z.string().optional(),
+});
+
+const logbookBodySchema = z
+  .string()
+  .min(1, "Isi tulisan wajib diisi")
+  // Markdown gambar inline tidak didukung: next/image butuh dimensi yang tidak
+  // ada di `![]()`, dan repo ini nol `<img>` mentah.
+  .refine(
+    (value) => !value.includes("!["),
+    "Gambar inline Markdown tidak didukung — pakai galeri di bawah.",
+  )
+  .refine(
+    (value) => new TextEncoder().encode(value).length <= MAX_BODY_BYTES,
+    `Isi tulisan maksimal ${MAX_BODY_BYTES / 1024} kB.`,
+  );
+
+const logbookTranslationSchema = z.object({
+  slug: z
+    .string()
+    .min(1, "Slug wajib diisi")
+    .regex(/^[a-z0-9-]+$/, "Slug hanya huruf kecil, angka, dan tanda hubung"),
+  title: z.string().min(1, "Judul wajib diisi"),
+  excerpt: z.string().min(1, "Ringkasan wajib diisi"),
+  body: logbookBodySchema,
+  images: z.array(logbookImageSchema),
+});
+
+/**
+ * `datetime-local` mengirim waktu tanpa zona: "2026-08-15T09:30".
+ *
+ * Zonanya diperlakukan sebagai **UTC**, bukan zona peramban maupun zona server.
+ * Field-nya dirender di server (Vercel berjalan di UTC) tapi diisi admin di
+ * WIB; menafsirkannya sebagai "lokal" berarti nilai yang sama berpindah makna
+ * tergantung siapa yang merender. Label field-nya menyebut UTC.
+ */
+const localDateTimeSchema = z.union([
+  z.literal(""),
+  z
+    .string()
+    .regex(
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/,
+      "Tanggal terbit berformat YYYY-MM-DDTHH:MM",
+    ),
+]);
+
+export const logbookFormSchema = z
+  .object({
+    status: z.enum(["DRAFT", "PUBLISHED"]),
+    publishedAt: localDateTimeSchema,
+    translations: z.object({
+      // Terjemahan opsional per pos: blok bahasa yang dikosongkan seluruhnya
+      // berarti pos itu memang tidak ada di bahasa tersebut.
+      en: logbookTranslationSchema.nullable(),
+      id: logbookTranslationSchema.nullable(),
+    }),
+  })
+  .refine(
+    (data) => data.translations.en !== null || data.translations.id !== null,
+    {
+      message:
+        "Isi setidaknya satu bahasa — pos kosong tidak muncul di mana pun.",
+      path: ["translations"],
+    },
+  )
+  .transform((data) => ({
+    ...data,
+    // Draf tidak punya tanggal terbit. Pos terbit tanpa tanggal eksplisit
+    // dianggap terbit sekarang; mengisinya sendiri berarti menjadwalkan.
+    publishedAt:
+      data.status === "PUBLISHED"
+        ? data.publishedAt
+          ? new Date(`${data.publishedAt}Z`)
+          : new Date()
+        : null,
+  }));
+
+/** Kebalikan dari parsing di atas: `Date` → nilai `datetime-local` dalam UTC. */
+export function toDateTimeLocalUtc(date: Date | null | undefined): string {
+  if (!date) return "";
+  return date.toISOString().slice(0, 16);
+}
+
+export type LogbookFormParsed = z.infer<typeof logbookFormSchema>;
+
 // Ubah daftar isu Zod menjadi peta "path.bertitik" → pesan pertama.
 export function toFieldErrors(error: z.ZodError): Record<string, string> {
   const fieldErrors: Record<string, string> = {};
@@ -155,6 +250,60 @@ export function projectInputFromForm(formData: FormData) {
     translations: {
       en: translationFromForm(formData, "en"),
       id: translationFromForm(formData, "id"),
+    },
+  };
+}
+
+/**
+ * Galeri dikirim sebagai field berindeks (`…images.0.alt`, `…images.1.alt`, …)
+ * supaya urutannya adalah urutan di form, dan supaya path error Zod
+ * (`translations.en.images.0.alt`) langsung cocok dengan nama input tanpa
+ * pemetaan manual di `toFieldErrors`.
+ */
+function imagesFromForm(formData: FormData, locale: "en" | "id") {
+  const prefix = `translations.${locale}.images`;
+  const images: { url: string; alt: string; caption?: string }[] = [];
+
+  for (let index = 0; ; index++) {
+    // `url` selalu dirender (kosong untuk gambar yang baru diunggah), jadi
+    // ketiadaannya menandai akhir daftar.
+    if (formData.get(`${prefix}.${index}.url`) === null) break;
+    images.push({
+      url: text(formData, `${prefix}.${index}.url`),
+      alt: text(formData, `${prefix}.${index}.alt`),
+      caption: optionalText(formData, `${prefix}.${index}.caption`),
+    });
+  }
+  return images;
+}
+
+function logbookTranslationFromForm(formData: FormData, locale: "en" | "id") {
+  const p = (field: string) => `translations.${locale}.${field}`;
+  const translation = {
+    slug: text(formData, p("slug")),
+    title: text(formData, p("title")),
+    excerpt: text(formData, p("excerpt")),
+    body: text(formData, p("body")),
+    images: imagesFromForm(formData, locale),
+  };
+
+  const isEmpty =
+    !translation.slug &&
+    !translation.title &&
+    !translation.excerpt &&
+    !translation.body &&
+    translation.images.length === 0;
+
+  return isEmpty ? null : translation;
+}
+
+export function logbookInputFromForm(formData: FormData) {
+  return {
+    status: text(formData, "status") || "DRAFT",
+    publishedAt: text(formData, "publishedAt"),
+    translations: {
+      en: logbookTranslationFromForm(formData, "en"),
+      id: logbookTranslationFromForm(formData, "id"),
     },
   };
 }

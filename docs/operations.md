@@ -15,6 +15,32 @@ integration is off (see below).
 - `DATABASE_URL` — transaction pooler, port **6543**, used at runtime.
 - `DIRECT_URL` — session pooler, port **5432**, used by the Prisma CLI for DDL.
 
+### Writing a new migration
+
+Change `schema.prisma`, then generate the SQL:
+
+```
+npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --script
+```
+
+Save it as `prisma/migrations/<timestamp>_<name>/migration.sql` and apply with
+`npm run db:migrate`. Prisma 7 renamed these flags: `--from-schema-datasource`
+and `--to-schema-datamodel`, which older notes in this repo still mention, were
+removed.
+
+**Read what the diff produced before you save it.** It compares the live
+database against the schema, so anything in the database that is absent from
+`schema.prisma` comes back as a `DROP TABLE` — the command has no way to tell
+"not modelled yet" from "meant to be deleted". Until 2026-08-15 this repo had
+ten legacy snake_case tables that made the diff propose ten drops every single
+time; they are gone now (`20260815045258_drop_legacy_tables`) and the diff is
+clean, but the rule stands for anything created outside Prisma later.
+
+New tables also need their own RLS block — see `0_init` and
+`20260815040845_add_logbook`. `migrate diff` does not generate policies, and a
+table without one is readable through the Supabase Data API by anyone holding
+the anon key, which ships in the client bundle.
+
 `prisma/reconcile/sync-from-json.mjs` is a one-off script kept for the record:
 it pushed the JSON content into the database before the public pages switched
 to the DAL. It is idempotent but there is no reason to run it again.

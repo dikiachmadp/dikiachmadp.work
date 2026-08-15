@@ -53,6 +53,60 @@ model ProjectTranslation {
   @@index([locale])
 }
 
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+// Logbook. Berbeda dari Project: tidak ada kolom cover terpisah (cover adalah
+// gambar galeri dengan `order` terkecil), tidak ada tag, dan tanggalnya bertipe
+// tanggal. Gambar melekat pada translation karena `alt` wajib diterjemahkan.
+model LogbookPost {
+  id          String     @id @default(uuid())
+  status      PostStatus @default(DRAFT)
+  // null selama draft; terisi saat pos pertama kali diterbitkan.
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  translations LogbookPostTranslation[]
+
+  @@index([status, publishedAt(sort: Desc)])
+}
+
+model LogbookPostTranslation {
+  id      String @id @default(uuid())
+  postId  String
+  locale  String
+  slug    String
+  title   String
+  excerpt String
+  // Markdown GFM, bukan JSON longgar.
+  body    String
+
+  post   LogbookPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  images LogbookImage[]
+
+  @@unique([postId, locale])
+  // Slug unik per bahasa, bukan global — pos ID dan EN boleh berbagi slug.
+  @@unique([locale, slug])
+  @@index([locale, postId])
+}
+
+model LogbookImage {
+  id            String  @id @default(uuid())
+  translationId String
+  url           String
+  // Wajib: tanpa ini galeri tidak bisa diakses.
+  alt           String
+  caption       String?
+  order         Int     @default(0)
+
+  translation LogbookPostTranslation @relation(fields: [translationId], references: [id], onDelete: Cascade)
+
+  @@index([translationId, order])
+}
+
 model Testimonial {
   id         String   @id @default(uuid())
   locale     String   @default("en")

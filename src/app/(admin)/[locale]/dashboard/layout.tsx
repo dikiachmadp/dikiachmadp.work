@@ -20,12 +20,16 @@ export default async function DashboardLayout({
   const dict = await getDictionary(validLocale);
   const admin = dict.ui.admin;
 
+  // `admin.nav` adalah array berindeks di ui.json: menyisipkan item di tengah
+  // menggeser semua indeks setelahnya. Urutan di sini harus sama persis dengan
+  // urutan di kedua berkas ui.json.
   const navItems = [
     { label: admin.nav[0], href: `/${validLocale}/dashboard`, exact: true },
     { label: admin.nav[1], href: `/${validLocale}/dashboard/projects` },
-    { label: admin.nav[2], href: `/${validLocale}/dashboard/testimonials` },
-    { label: admin.nav[3], href: `/${validLocale}/dashboard/submissions` },
-    { label: admin.nav[4], href: `/${validLocale}`, exact: true },
+    { label: admin.nav[2], href: `/${validLocale}/dashboard/logbook` },
+    { label: admin.nav[3], href: `/${validLocale}/dashboard/testimonials` },
+    { label: admin.nav[4], href: `/${validLocale}/dashboard/submissions` },
+    { label: admin.nav[5], href: `/${validLocale}`, exact: true },
   ];
 
   return (
