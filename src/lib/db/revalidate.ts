@@ -34,7 +34,9 @@ export function revalidateLogbookPaths({
   previousSlugs?: { locale: string; slug: string }[];
 } = {}) {
   for (const locale of locales) {
-    // Kartu Logbook di halaman Studio ikut berubah setiap ada pos baru.
+    // Homepage menampilkan 3 pos terbaru, dan kartu di Studio ikut berubah
+    // setiap ada pos baru — keduanya basi tanpa ini, bukan cuma dua index-nya.
+    revalidatePath(`/${locale}`);
     revalidatePath(`/${locale}/studio`);
     revalidatePath(`/${locale}/logbook`);
   }

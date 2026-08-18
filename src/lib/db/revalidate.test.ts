@@ -20,6 +20,8 @@ describe("revalidateLogbookPaths", () => {
 
     expect(revalidated()).toEqual(
       expect.arrayContaining([
+        "/en",
+        "/id",
         "/en/logbook",
         "/id/logbook",
         "/en/studio",
