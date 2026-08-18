@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { estimateReadingMinutes, fill } from "./utils";
+import { estimateReadingMinutes, fill, formatPrice } from "./utils";
 import enUi from "@/content/en/ui.json";
 import idUi from "@/content/id/ui.json";
 
@@ -80,5 +80,30 @@ describe("estimateReadingMinutes", () => {
   it("respects a custom words-per-minute rate", () => {
     const words = Array.from({ length: 300 }, () => "word").join(" ");
     expect(estimateReadingMinutes(words, 100)).toBe(3);
+  });
+});
+
+describe("formatPrice", () => {
+  it("returns null when the price is null", () => {
+    expect(formatPrice(null, "USD", "en")).toBeNull();
+  });
+
+  it("returns null for a malformed price string", () => {
+    expect(formatPrice("not-a-number", "USD", "en")).toBeNull();
+  });
+
+  it("formats a whole number without decimals", () => {
+    expect(formatPrice("20", "USD", "en")).toBe("$20");
+  });
+
+  it("formats a fractional price with two decimals", () => {
+    expect(formatPrice("19.99", "USD", "en")).toBe("$19.99");
+  });
+
+  it("uses the id-ID locale format for the id locale", () => {
+    const result = formatPrice("150000", "IDR", "id");
+    // Indonesian formatting groups with dots — just assert it's not the
+    // English format rather than pin the exact separator characters.
+    expect(result).not.toBe(formatPrice("150000", "IDR", "en"));
   });
 });

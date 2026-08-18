@@ -22,24 +22,6 @@
       "link": "https://lab.dikiachmadp.work/kidlab",
       "isExternal": true,
       "badge": "PX"
-    },
-    {
-      "id": "store-01",
-      "type": "store",
-      "title": "OJS 3 CSS — Minimalist",
-      "description": "A clean, readable CSS template for academic journals on OJS 3.",
-      "link": "https://kidstudio.gumroad.com/l/minimalist-theme",
-      "isExternal": true,
-      "badge": "OJS"
-    },
-    {
-      "id": "store-02",
-      "type": "store",
-      "title": "OJS 3 CSS — Modern",
-      "description": "Bold typography and a contemporary look for scholarly publishing.",
-      "link": "https://kidstudio.gumroad.com/l/modern-theme",
-      "isExternal": true,
-      "badge": "OJS"
     }
   ]
 }

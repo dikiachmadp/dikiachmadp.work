@@ -2,19 +2,17 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionary";
+import { getPublishedProducts } from "@/lib/db/products";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import PageHeader from "@/components/layout/PageHeader";
 import SectionWrapper from "@/components/layout/SectionWrapper";
+import Button from "@/components/ui/Button";
+import ProductCard from "@/components/ui/ProductCard";
 import { Locale, StudioData, StudioItem } from "@/types/content";
 import { cn } from "@/lib/utils";
 
-/**
- * Kartu digital products dibatasi di sini juga — jumlah penuhnya baru punya
- * rumah sendiri (`/products`) setelah PR digital products. Sebelum itu,
- * `.slice` ini semata mencegah section tumbuh tak terbatas seiring `store`
- * bertambah di `studio.json`.
- */
+/** Jumlah produk terbaru yang dipajang; selebihnya lewat tombol lihat-semua. */
 const STORE_PREVIEW_COUNT = 3;
 
 interface PageProps {
@@ -38,17 +36,24 @@ export async function generateMetadata({
   });
 }
 
-type SectionKey = keyof StudioData["sections"];
-// Logbook pindah ke homepage dan punya halaman index sendiri di /logbook —
-// studio tidak lagi merender pos database di sini.
-const SECTION_ORDER: SectionKey[] = ["experiments", "store"];
+// Logbook pindah ke homepage dan punya halaman index sendiri di /logbook.
+// Digital products pindah ke database (dirender terpisah di bawah) — studio
+// tidak lagi merender salah satu dari database lewat items JSON.
+const SECTION_ORDER: (keyof StudioData["sections"])[] = ["experiments"];
 
 export default async function StudioPage({ params }: PageProps) {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
-  const dict = await getDictionary(validLocale);
+  const [dict, { products }] = await Promise.all([
+    getDictionary(validLocale),
+    getPublishedProducts(validLocale, {
+      page: 1,
+      perPage: STORE_PREVIEW_COUNT,
+    }),
+  ]);
   const header = dict.pageHeader.studio;
   const { sections, items } = dict.studio;
+  const storeSection = sections.store;
 
   const StudioCard = ({
     item,
@@ -91,6 +96,16 @@ export default async function StudioPage({ params }: PageProps) {
     );
   };
 
+  const sectionHeading = (section: { number: string; title: string }) => (
+    <div className="mb-4 flex items-center gap-3">
+      <span className="font-tech text-[12px] text-(--soft)">
+        {section.number}
+      </span>
+      <h2 className="font-hand text-[28px]">{section.title}</h2>
+      <span className="dashed-rule flex-1" />
+    </div>
+  );
+
   return (
     <PageWrapper>
       <SectionWrapper id="studio" spacing="sm">
@@ -103,24 +118,16 @@ export default async function StudioPage({ params }: PageProps) {
 
         {SECTION_ORDER.map((key) => {
           const section = sections[key];
-          const allItems = (items as StudioItem[]).filter(
+          const sectionItems = (items as StudioItem[]).filter(
             (item) => item.type === key,
           );
-          const sectionItems =
-            key === "store" ? allItems.slice(0, STORE_PREVIEW_COUNT) : allItems;
 
           // Bagian yang kosong tidak dirender sama sekali.
           if (sectionItems.length === 0) return null;
 
           return (
             <div key={key} id={section.id} className="mb-11">
-              <div className="mb-4 flex items-center gap-3">
-                <span className="font-tech text-[12px] text-(--soft)">
-                  {section.number}
-                </span>
-                <h2 className="font-hand text-[28px]">{section.title}</h2>
-                <span className="dashed-rule flex-1" />
-              </div>
+              {sectionHeading(section)}
               <div className="grid grid-cols-1 gap-[22px] lg:grid-cols-2">
                 {sectionItems.map((item, i) => (
                   <StudioCard
@@ -134,6 +141,31 @@ export default async function StudioPage({ params }: PageProps) {
             </div>
           );
         })}
+
+        {products.length > 0 && (
+          <div id={storeSection.id} className="mb-11">
+            {sectionHeading(storeSection)}
+            <div className="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
+              {products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  locale={validLocale}
+                />
+              ))}
+            </div>
+            <div className="mt-5">
+              <Button
+                href={`/${validLocale}/products`}
+                variant="secondary"
+                size="sm"
+                className="r-chip px-4 py-2 text-[12px]"
+              >
+                {dict.ui.products.viewAll} →
+              </Button>
+            </div>
+          </div>
+        )}
       </SectionWrapper>
     </PageWrapper>
   );

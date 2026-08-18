@@ -24,6 +24,11 @@
     "title": "Logbook",
     "description": "Notes on design, code, and the things that go wrong in between."
   },
+  "products": {
+    "topTitle": "from the store",
+    "title": "Digital Products",
+    "description": "Templates and assets, ready to drop into your own project."
+  },
   "contact": {
     "topTitle": "get in touch",
     "title": "Let's work together.",

@@ -20,6 +20,7 @@
     "allCategories": "All",
     "searchPlaceholder": "search projects…",
     "searchPlaceholderLogbook": "search logbook…",
+    "searchPlaceholderProducts": "search products…",
     "skipToContent": "Skip to content"
   },
   "a11y": {
@@ -87,6 +88,14 @@
     "prevPost": "Previous post",
     "nextPost": "Next post"
   },
+  "products": {
+    "backBtn": "All products",
+    "notFoundTitle": "Product not found",
+    "empty": "No products yet — check back soon.",
+    "viewAll": "View more products",
+    "buyBtn": "Get it",
+    "galleryLabel": "Gallery"
+  },
   "contactInfo": {
     "title": "Contact information",
     "findMe": "find me on"
@@ -103,11 +112,18 @@
       "Projects",
       "Logbook",
       "About",
+      "Products",
       "Testimonials",
       "Messages",
       "View site"
     ],
-    "stats": ["projects", "featured", "new messages", "testimonials"],
+    "stats": [
+      "projects",
+      "featured",
+      "new messages",
+      "testimonials",
+      "products"
+    ],
     "status": {
       "live": "Live",
       "draft": "Draft",

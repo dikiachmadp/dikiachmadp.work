@@ -59,3 +59,33 @@ export function revalidateAboutPaths() {
     revalidatePath(`/${locale}/about`);
   }
 }
+
+/**
+ * Slug berbeda per bahasa seperti Logbook, jadi yang direvalidasi adalah
+ * pasangan `{locale, slug}` — dan slug lama wajib ikut, atau URL yang baru
+ * di-rename tetap tersaji dari cache sampai ISR kedaluwarsa.
+ */
+export function revalidateProductPaths({
+  slugs = [],
+  previousSlugs = [],
+}: {
+  slugs?: { locale: string; slug: string }[];
+  previousSlugs?: { locale: string; slug: string }[];
+} = {}) {
+  for (const locale of locales) {
+    // Homepage tidak menampilkan produk, tapi Studio dan /products keduanya
+    // menampilkan katalognya.
+    revalidatePath(`/${locale}/studio`);
+    revalidatePath(`/${locale}/products`);
+  }
+
+  const seen = new Set<string>();
+  for (const { locale, slug } of [...slugs, ...previousSlugs]) {
+    const path = `/${locale}/products/${slug}`;
+    if (seen.has(path)) continue;
+    seen.add(path);
+    revalidatePath(path);
+  }
+
+  revalidatePath("/sitemap.xml");
+}

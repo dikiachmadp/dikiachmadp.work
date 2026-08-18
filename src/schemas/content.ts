@@ -166,7 +166,9 @@ export const StudioSchema = z.object({
   items: z.array(
     z.object({
       id: z.string(),
-      type: z.enum(["store", "experiments"]),
+      // "store" pindah ke database (lihat lib/db/products.ts) — item dengan
+      // tipe itu tidak lagi ditulis tangan di studio.json.
+      type: z.enum(["experiments"]),
       title: z.string(),
       link: z.string(),
       description: z.string().optional(),
@@ -210,6 +212,7 @@ export const PageHeaderSchema = z.object({
   about: HeaderDetailSchema,
   studio: HeaderDetailSchema,
   logbook: HeaderDetailSchema,
+  products: HeaderDetailSchema,
   contact: HeaderDetailSchema,
   legal: HeaderDetailSchema,
   privacy: HeaderDetailSchema,
@@ -290,6 +293,7 @@ export const UiSchema = z.object({
     allCategories: z.string(),
     searchPlaceholder: z.string(),
     searchPlaceholderLogbook: z.string(),
+    searchPlaceholderProducts: z.string(),
     skipToContent: z.string(),
   }),
   // Nama aksesibel dan teks alt: tidak pernah terlihat di layar, jadi paling
@@ -360,6 +364,14 @@ export const UiSchema = z.object({
     readTime: z.string(),
     prevPost: z.string(),
     nextPost: z.string(),
+  }),
+  products: z.object({
+    backBtn: z.string(),
+    notFoundTitle: z.string(),
+    empty: z.string(),
+    viewAll: z.string(),
+    buyBtn: z.string(),
+    galleryLabel: z.string(),
   }),
   contactInfo: z.object({
     title: z.string(),
