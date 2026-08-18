@@ -83,24 +83,40 @@ export default function Navbar({ navData, siteConfig, locale }: NavbarProps) {
               aria-label={a11y.toggleMenu}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
-              className="r-chip ink-border flex h-[34px] w-[38px] cursor-pointer flex-col items-center justify-center gap-[4px] bg-(--wash) transition-transform duration-200 outline-none hover:-translate-x-[2px] hover:-translate-y-[2px] lg:hidden"
+              className="r-chip ink-border relative flex h-[34px] w-[38px] cursor-pointer items-center justify-center bg-(--wash) transition-transform duration-200 outline-none hover:-translate-x-[2px] hover:-translate-y-[2px] lg:hidden"
             >
+              {/* All three bars anchor to the exact same center point
+                  (top-1/2 left-1/2, self-centered) instead of stacking in a
+                  gapped flex column. The old version derived its 6px offset
+                  from the column's gap + bar height, so open and closed never
+                  quite lined back up on the same axis — the middle bar's
+                  translate/opacity easing lagged the outer bars' rotation
+                  just enough to leave a visible third stroke mid-transition.
+                  Converging on one point removes that axis entirely: closed
+                  bars sit ±7px off-center via `calc(50% ± 7px)`, open bars
+                  return to dead center and rotate, and the middle bar is
+                  additionally squashed to zero width so no sliver survives
+                  at the crossing point. */}
               <span
                 className={cn(
-                  "h-[2px] w-4 bg-(--ink) transition-transform duration-300",
-                  mobileOpen && "translate-y-[6px] rotate-45",
+                  "absolute top-1/2 left-1/2 h-[2px] w-4 -translate-x-1/2 bg-(--ink) transition-all duration-300",
+                  mobileOpen
+                    ? "-translate-y-1/2 rotate-45"
+                    : "-translate-y-[calc(50%+7px)]",
                 )}
               />
               <span
                 className={cn(
-                  "h-[2px] w-4 bg-(--ink) transition-opacity duration-300",
-                  mobileOpen && "opacity-0",
+                  "absolute top-1/2 left-1/2 h-[2px] w-4 -translate-x-1/2 -translate-y-1/2 bg-(--ink) transition-all duration-300",
+                  mobileOpen && "scale-x-0 opacity-0",
                 )}
               />
               <span
                 className={cn(
-                  "h-[2px] w-4 bg-(--ink) transition-transform duration-300",
-                  mobileOpen && "-translate-y-[6px] -rotate-45",
+                  "absolute top-1/2 left-1/2 h-[2px] w-4 -translate-x-1/2 bg-(--ink) transition-all duration-300",
+                  mobileOpen
+                    ? "-translate-y-1/2 -rotate-45"
+                    : "translate-y-[calc(-50%+7px)]",
                 )}
               />
             </button>

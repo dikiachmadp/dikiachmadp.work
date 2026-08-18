@@ -4,19 +4,10 @@
     "bottom": "Studio"
   },
   "description": "Freelance designer in Bandung — brand identity, UI/UX, packaging and 3D. Six years of turning rough scribbles into things that ship.",
-  "annotation": "usually replies in a day",
   "ctaPrimary": "See the work",
   "ctaSecondary": "Start a project",
   "videoTag": "showreel '26",
   "craftBadge": ["6+ yrs", "of craft"],
-  "marquee": [
-    "brand identity",
-    "ui/ux",
-    "packaging",
-    "3d & motion",
-    "illustration",
-    "web design"
-  ],
   "availability": {
     "status": "Available for work",
     "isAvailable": true

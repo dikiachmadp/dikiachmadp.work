@@ -20,7 +20,7 @@ export default function ServicesCard({ service }: ServicesCardProps) {
         <h2 className="font-hand text-[25px]">{service.title}</h2>
       </div>
 
-      <p className="mt-2.5 mb-4 text-[15px] leading-[1.65] text-(--soft)">
+      <p className="m-justify mt-2.5 mb-4 text-[15px] leading-[1.65] text-(--soft)">
         {service.summary}
       </p>
 

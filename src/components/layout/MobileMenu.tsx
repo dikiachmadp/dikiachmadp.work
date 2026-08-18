@@ -66,7 +66,10 @@ export default function MobileMenu({
 
   if (!isOpen) return null;
 
-  const links = [...navData.main, ...navData.footer];
+  // Legal dan Privacy sengaja tidak ikut ke sini — keduanya sudah punya tempat
+  // di baris bawah footer, dan di sheet mobile mereka hanya menambah tujuh
+  // tombol berbobot visual sama tanpa pemisah dari lima menu utama.
+  const links = navData.main;
 
   return (
     <div

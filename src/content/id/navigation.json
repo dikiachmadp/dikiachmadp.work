@@ -5,20 +5,20 @@
       "path": "/projects"
     },
     {
-      "label": "Studio",
-      "path": "/studio"
+      "label": "Layanan",
+      "path": "/services"
     },
     {
       "label": "Tentang",
       "path": "/about"
     },
     {
-      "label": "Layanan",
-      "path": "/services"
-    },
-    {
       "label": "Kontak",
       "path": "/contact"
+    },
+    {
+      "label": "Studio",
+      "path": "/studio"
     }
   ],
   "footer": [

@@ -7,7 +7,6 @@ import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import Hero from "@/components/sections/Hero";
-import Marquee from "@/components/sections/Marquee";
 import StatBox from "@/components/ui/StatBox";
 import ProjectsGallery from "@/components/sections/ProjectsGallery";
 import ServicesPreview from "@/components/sections/ServicesPreview";
@@ -55,8 +54,6 @@ export default async function HomePage({ params }: PageProps) {
       <JsonLd data={websiteSchema(dict.siteConfig, validLocale)} />
 
       <Hero heroData={dict.hero} locale={validLocale} />
-
-      <Marquee items={dict.hero.marquee} />
 
       <SectionWrapper id="stats" spacing="md">
         <div className="grid grid-cols-1 gap-[22px] sm:grid-cols-3">

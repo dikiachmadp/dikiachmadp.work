@@ -18,13 +18,13 @@ export default function SectionHeading({
   return (
     <div
       className={cn(
-        "mb-[30px] flex flex-wrap items-end justify-between gap-5",
+        "mb-[30px] flex flex-col items-center gap-5 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between",
         className,
       )}
     >
-      <div>
-        {eyebrow && <div className="eyebrow">{eyebrow}</div>}
-        <h2 className="font-hand mt-0.5 text-[clamp(2rem,4vw,3.2rem)] leading-none">
+      <div className="w-full sm:w-auto">
+        {eyebrow && <div className="eyebrow m-center">{eyebrow}</div>}
+        <h2 className="font-hand m-center mt-0.5 text-[clamp(2rem,4vw,3.2rem)] leading-none">
           {title}
         </h2>
       </div>

@@ -130,13 +130,13 @@ export default async function ProjectDetailPage({
           ← {t.backBtn}
         </Button>
 
-        <div className="text-[11px] font-bold tracking-[0.16em] text-(--soft) uppercase">
+        <div className="m-center text-[11px] font-bold tracking-[0.16em] text-(--soft) uppercase">
           {category} · {project.year}
         </div>
-        <h1 className="font-hand mt-1.5 mb-4 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
+        <h1 className="font-hand m-center mt-1.5 mb-4 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
           {project.title}
         </h1>
-        <p className="mb-[30px] max-w-[640px] text-[17px] leading-[1.65] text-(--soft)">
+        <p className="m-justify mb-[30px] max-w-[640px] text-[17px] leading-[1.65] text-(--soft)">
           {project.description}
         </p>
 
@@ -154,7 +154,7 @@ export default async function ProjectDetailPage({
                 fill
                 sizes="(max-width: 980px) 100vw, 960px"
                 priority
-                className="photo-ink object-cover"
+                className="object-cover"
               />
             ) : (
               <span className="font-tech text-[11px] tracking-[0.2em] text-(--soft) uppercase">
@@ -227,7 +227,7 @@ export default async function ProjectDetailPage({
                       alt={`${project.title} — ${i + 1}`}
                       fill
                       sizes="(max-width: 640px) 100vw, 480px"
-                      className="photo-ink object-cover"
+                      className="object-cover"
                     />
                   </div>
                 ))
