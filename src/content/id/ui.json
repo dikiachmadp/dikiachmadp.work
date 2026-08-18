@@ -98,7 +98,15 @@
     "newProject": "Proyek baru",
     "recentProjects": "Proyek terbaru",
     "inbox": "Kotak masuk",
-    "nav": ["Dasbor", "Proyek", "Logbook", "Testimoni", "Pesan", "Lihat situs"],
+    "nav": [
+      "Dasbor",
+      "Proyek",
+      "Logbook",
+      "Tentang",
+      "Testimoni",
+      "Pesan",
+      "Lihat situs"
+    ],
     "stats": ["proyek", "unggulan", "pesan baru", "testimoni"],
     "status": {
       "live": "Tayang",

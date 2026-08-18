@@ -1,7 +1,9 @@
 import React from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionary";
+import { getAboutProfile } from "@/lib/db/about";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import SectionWrapper from "@/components/layout/SectionWrapper";
@@ -50,9 +52,17 @@ const DownloadIcon = () => (
 export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
-  const dict = await getDictionary(validLocale);
+  const [dict, about] = await Promise.all([
+    getDictionary(validLocale),
+    getAboutProfile(validLocale),
+  ]);
+
+  // Seed migrasi selalu mengisi satu baris profil; ini hanya jaring pengaman
+  // kalau baris itu pernah terhapus tanpa penggantinya lewat admin.
+  if (!about) notFound();
+
   const header = dict.pageHeader.about;
-  const { about, siteConfig } = dict;
+  const { siteConfig } = dict;
 
   return (
     <PageWrapper>
@@ -62,7 +72,7 @@ export default async function AboutPage({ params }: PageProps) {
             <div className="relative">
               <div className="r-portrait ink-border flat-6 relative aspect-square overflow-hidden bg-(--wash)">
                 <Image
-                  src="/foto.webp"
+                  src={about.portraitUrl || "/foto.webp"}
                   alt={siteConfig.fullName}
                   fill
                   // The 330px column only exists from lg up; below that the
@@ -83,9 +93,9 @@ export default async function AboutPage({ params }: PageProps) {
 
             <div className="flex flex-col gap-[11px]">
               <span className="font-note text-[19px] text-(--soft)">
-                {about.cv.note}
+                {about.cvNote}
               </span>
-              {about.cv.items.map((item, i) => (
+              {about.cvItems.map((item, i) => (
                 <Button
                   key={item.label}
                   href={item.href}

@@ -34,7 +34,9 @@ export function revalidateLogbookPaths({
   previousSlugs?: { locale: string; slug: string }[];
 } = {}) {
   for (const locale of locales) {
-    // Kartu Logbook di halaman Studio ikut berubah setiap ada pos baru.
+    // Homepage menampilkan 3 pos terbaru, dan kartu di Studio ikut berubah
+    // setiap ada pos baru — keduanya basi tanpa ini, bukan cuma dua index-nya.
+    revalidatePath(`/${locale}`);
     revalidatePath(`/${locale}/studio`);
     revalidatePath(`/${locale}/logbook`);
   }
@@ -48,4 +50,12 @@ export function revalidateLogbookPaths({
   }
 
   revalidatePath("/sitemap.xml");
+}
+
+// About tidak punya slug atau draft — satu halaman publik per locale, jadi
+// tidak ada pasangan lama/baru untuk dipertimbangkan seperti di Logbook.
+export function revalidateAboutPaths() {
+  for (const locale of locales) {
+    revalidatePath(`/${locale}/about`);
+  }
 }

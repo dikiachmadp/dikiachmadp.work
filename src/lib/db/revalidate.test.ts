@@ -4,7 +4,10 @@ vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 
 import { revalidatePath } from "next/cache";
-import { revalidateLogbookPaths } from "@/lib/db/revalidate";
+import {
+  revalidateAboutPaths,
+  revalidateLogbookPaths,
+} from "@/lib/db/revalidate";
 
 function revalidated(): string[] {
   return vi.mocked(revalidatePath).mock.calls.map(([path]) => path);
@@ -20,6 +23,8 @@ describe("revalidateLogbookPaths", () => {
 
     expect(revalidated()).toEqual(
       expect.arrayContaining([
+        "/en",
+        "/id",
         "/en/logbook",
         "/id/logbook",
         "/en/studio",
@@ -82,5 +87,15 @@ describe("revalidateLogbookPaths", () => {
     expect(
       revalidated().filter((path) => path === "/en/logbook/tetap"),
     ).toHaveLength(1);
+  });
+});
+
+describe("revalidateAboutPaths", () => {
+  it("refreshes the About page in both languages", () => {
+    revalidateAboutPaths();
+
+    expect(revalidated()).toEqual(
+      expect.arrayContaining(["/en/about", "/id/about"]),
+    );
   });
 });

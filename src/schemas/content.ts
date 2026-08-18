@@ -114,36 +114,6 @@ export const ServicesDataSchema = z.object({
   ),
 });
 
-export const AboutSchema = z.object({
-  biography: z.array(z.string()),
-  /** Handwritten sticker overlapping the portrait. */
-  sticker: z.string(),
-  experienceTitle: z.string(),
-  skillsTitle: z.string(),
-  cv: z.object({
-    note: z.string(),
-    items: z.array(
-      z.object({
-        label: z.string(),
-        href: z.string(),
-      }),
-    ),
-  }),
-  experience: z.array(
-    z.object({
-      year: z.string(),
-      role: z.string(),
-      place: z.string(),
-    }),
-  ),
-  skills: z.array(
-    z.object({
-      category: z.string(),
-      items: z.array(z.string()),
-    }),
-  ),
-});
-
 export const ContactSchema = z.object({
   /** Right-hand "Contact information" card. */
   info: z.array(

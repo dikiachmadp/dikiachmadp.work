@@ -129,3 +129,61 @@ model ContactSubmission {
 
   @@index([createdAt])
 }
+
+enum AboutEntryKind {
+  EXPERIENCE
+  CERTIFICATION
+}
+
+// Halaman About. Satu baris saja: bukan daftar seperti Project atau
+// LogbookPost, jadi tidak ada slug atau status draft — hanya profil yang
+// selalu tayang dan diedit di tempat lewat admin.
+model AboutProfile {
+  id          String   @id @default(uuid())
+  portraitUrl String?
+  updatedAt   DateTime @updatedAt
+
+  translations AboutProfileTranslation[]
+}
+
+model AboutProfileTranslation {
+  id                  String @id @default(uuid())
+  profileId           String
+  locale              String
+  // Satu entri per paragraf, seperti pola array String[] lain di schema ini.
+  biography           String[]
+  sticker             String
+  experienceTitle     String
+  skillsTitle         String
+  certificationsTitle String
+  cvNote              String
+  // Bentuknya stabil dan selalu diedit sekaligus lewat satu form, jadi tidak
+  // layak jadi tabel tersendiri — sama seperti Project.contentBlocks.
+  // skills:  { category: string, items: string[] }[]
+  // cvItems: { label: string, href: string }[]
+  skills              Json
+  cvItems             Json
+
+  profile AboutProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, locale])
+}
+
+// Pengalaman kerja dan sertifikasi. Baris per bahasa seperti Testimonial,
+// bukan tabel terjemahan — daftarnya boleh tidak sinkron antar bahasa, dan
+// menambah satu entri tidak pernah menuntut entri pasangannya di bahasa lain.
+model AboutEntry {
+  id       String         @id @default(uuid())
+  kind     AboutEntryKind
+  locale   String
+  order    Int            @default(0)
+  year     String
+  // Peran (EXPERIENCE) atau nama sertifikasi (CERTIFICATION).
+  title    String
+  // Tempat kerja (EXPERIENCE) atau penerbit (CERTIFICATION).
+  subtitle String
+  // Tautan verifikasi sertifikat; tidak berlaku untuk EXPERIENCE.
+  url      String?
+
+  @@index([kind, locale, order])
+}

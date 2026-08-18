@@ -13,7 +13,6 @@ export type ProjectCategory = z.infer<typeof schemas.ProjectCategorySchema>;
 /** Yang diterima komponen: label dari JSON + item dari database. */
 export type ProjectsData = ProjectsContent & { items: Project[] };
 export type ServicesData = z.infer<typeof schemas.ServicesDataSchema>;
-export type AboutData = z.infer<typeof schemas.AboutSchema>;
 export type ContactData = z.infer<typeof schemas.ContactSchema>;
 export type StudioData = z.infer<typeof schemas.StudioSchema>;
 export type StudioItem = StudioData["items"][number];
@@ -32,7 +31,6 @@ export interface FullDictionary {
   hero: HeroData;
   projects: ProjectsContent;
   services: ServicesData;
-  about: AboutData;
   contact: ContactData;
   studio: StudioData;
   footer: FooterData;

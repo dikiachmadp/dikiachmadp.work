@@ -95,12 +95,6 @@ const logbookImageSchema = z.object({
 const logbookBodySchema = z
   .string()
   .min(1, "Isi tulisan wajib diisi")
-  // Markdown gambar inline tidak didukung: next/image butuh dimensi yang tidak
-  // ada di `![]()`, dan repo ini nol `<img>` mentah.
-  .refine(
-    (value) => !value.includes("!["),
-    "Gambar inline Markdown tidak didukung — pakai galeri di bawah.",
-  )
   .refine(
     (value) => new TextEncoder().encode(value).length <= MAX_BODY_BYTES,
     `Isi tulisan maksimal ${MAX_BODY_BYTES / 1024} kB.`,
@@ -320,5 +314,146 @@ export function testimonialInputFromForm(formData: FormData) {
     avatarUrl: optionalText(formData, "avatarUrl"),
     projectRef: optionalText(formData, "projectRef"),
     order: text(formData, "order") || "0",
+  };
+}
+
+// --- About ---
+
+/**
+ * Skills sebagai satu baris per kategori: `Kategori: item satu, item dua`.
+ * Bentuk baris teks ini, bukan repeater klien, karena datanya jarang berubah
+ * dan strukturnya cuma dua tingkat — sama alasannya dengan `contentBlocks`
+ * Project memakai baris kosong sebagai pemisah alih-alih textarea per blok.
+ */
+export function parseSkillsText(
+  value: FormDataEntryValue | null,
+): { category: string; items: string[] }[] {
+  if (typeof value !== "string") return [];
+  return value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [category, rest = ""] = line.split(":");
+      return {
+        category: category.trim(),
+        items: rest
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean),
+      };
+    });
+}
+
+export function skillsToText(
+  skills: { category: string; items: string[] }[],
+): string {
+  return skills
+    .map((group) => `${group.category}: ${group.items.join(", ")}`)
+    .join("\n");
+}
+
+/** Satu baris per entri CV: `Label | href`. */
+export function parseCvItemsText(
+  value: FormDataEntryValue | null,
+): { label: string; href: string }[] {
+  if (typeof value !== "string") return [];
+  return value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [label = "", href = ""] = line.split("|");
+      return { label: label.trim(), href: href.trim() };
+    });
+}
+
+export function cvItemsToText(
+  items: { label: string; href: string }[],
+): string {
+  return items.map((item) => `${item.label} | ${item.href}`).join("\n");
+}
+
+const aboutSkillGroupSchema = z.object({
+  category: z.string().min(1, "Kategori wajib diisi"),
+  items: z.array(z.string()).min(1, "Minimal satu item"),
+});
+
+const aboutCvItemSchema = z.object({
+  label: z.string().min(1, "Label wajib diisi"),
+  href: z.string().min(1, "Tautan wajib diisi"),
+});
+
+const aboutProfileTranslationSchema = z.object({
+  biography: z.array(z.string()).min(1, "Biografi wajib diisi"),
+  sticker: z.string().min(1, "Teks sticker wajib diisi"),
+  experienceTitle: z.string().min(1, "Judul wajib diisi"),
+  skillsTitle: z.string().min(1, "Judul wajib diisi"),
+  certificationsTitle: z.string().min(1, "Judul wajib diisi"),
+  cvNote: z.string().min(1, "Catatan CV wajib diisi"),
+  skills: z.array(aboutSkillGroupSchema),
+  cvItems: z.array(aboutCvItemSchema),
+});
+
+// About selalu tampil di kedua bahasa — tidak seperti Logbook, blok bahasa
+// di sini wajib, bukan `.nullable()`.
+export const aboutProfileFormSchema = z.object({
+  portraitUrl: z.string().optional(),
+  translations: z.object({
+    en: aboutProfileTranslationSchema,
+    id: aboutProfileTranslationSchema,
+  }),
+});
+
+export type AboutProfileFormParsed = z.infer<typeof aboutProfileFormSchema>;
+
+function aboutProfileTranslationFromForm(
+  formData: FormData,
+  locale: "en" | "id",
+) {
+  const p = (field: string) => `translations.${locale}.${field}`;
+  return {
+    biography: splitParagraphs(formData.get(p("biography"))) ?? [],
+    sticker: text(formData, p("sticker")),
+    experienceTitle: text(formData, p("experienceTitle")),
+    skillsTitle: text(formData, p("skillsTitle")),
+    certificationsTitle: text(formData, p("certificationsTitle")),
+    cvNote: text(formData, p("cvNote")),
+    skills: parseSkillsText(formData.get(p("skills"))),
+    cvItems: parseCvItemsText(formData.get(p("cvItems"))),
+  };
+}
+
+export function aboutProfileInputFromForm(formData: FormData) {
+  return {
+    portraitUrl: optionalText(formData, "portraitUrl"),
+    translations: {
+      en: aboutProfileTranslationFromForm(formData, "en"),
+      id: aboutProfileTranslationFromForm(formData, "id"),
+    },
+  };
+}
+
+export const aboutEntryFormSchema = z.object({
+  kind: z.enum(["EXPERIENCE", "CERTIFICATION"]),
+  locale: z.enum(["en", "id"]),
+  order: z.coerce.number().int().min(0),
+  year: z.string().min(1, "Tahun wajib diisi"),
+  title: z.string().min(1, "Judul wajib diisi"),
+  subtitle: z.string().min(1, "Subjudul wajib diisi"),
+  url: z.union([z.url("URL tidak valid"), z.literal("")]).optional(),
+});
+
+export type AboutEntryFormValues = z.infer<typeof aboutEntryFormSchema>;
+
+export function aboutEntryInputFromForm(formData: FormData) {
+  return {
+    kind: text(formData, "kind") || "EXPERIENCE",
+    locale: text(formData, "locale") || "en",
+    order: text(formData, "order") || "0",
+    year: text(formData, "year"),
+    title: text(formData, "title"),
+    subtitle: text(formData, "subtitle"),
+    url: optionalText(formData, "url"),
   };
 }
