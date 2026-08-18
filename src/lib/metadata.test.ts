@@ -4,7 +4,7 @@ import { articleSchema } from "@/lib/structured-data";
 import type { SiteConfig } from "@/types/content";
 
 const siteConfig = {
-  siteName: "Kid-Studio",
+  siteName: "dikiachmadp",
   url: "https://dikiachmadp.work",
   ogImage: "/og.png",
 };
@@ -99,7 +99,7 @@ describe("createMetadata", () => {
 });
 
 const fullSiteConfig = {
-  siteName: "Kid-Studio",
+  siteName: "dikiachmadp",
   url: "https://dikiachmadp.work",
   fullName: "Diki Achmad Prasetya",
   ogImage: "/og.png",
