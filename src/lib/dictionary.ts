@@ -13,8 +13,6 @@ const loaders = {
     import(`@/content/${lang}/projects.json`).then((m) => m.default),
   services: (lang: Locale) =>
     import(`@/content/${lang}/services.json`).then((m) => m.default),
-  about: (lang: Locale) =>
-    import(`@/content/${lang}/about.json`).then((m) => m.default),
   contact: (lang: Locale) =>
     import(`@/content/${lang}/contact.json`).then((m) => m.default),
   studio: (lang: Locale) =>
@@ -43,7 +41,6 @@ export const getDictionary = async (lang: Locale): Promise<FullDictionary> => {
       loaders.hero(lang),
       loaders.projects(lang),
       loaders.services(lang),
-      loaders.about(lang),
       loaders.contact(lang),
       loaders.studio(lang),
       loaders.footer(lang),
@@ -61,16 +58,15 @@ export const getDictionary = async (lang: Locale): Promise<FullDictionary> => {
       hero: schemas.HeroSchema.parse(data[2]),
       projects: schemas.ProjectsContentSchema.parse(data[3]),
       services: schemas.ServicesDataSchema.parse(data[4]),
-      about: schemas.AboutSchema.parse(data[5]),
-      contact: schemas.ContactSchema.parse(data[6]),
-      studio: schemas.StudioSchema.parse(data[7]),
-      footer: schemas.FooterSchema.parse(data[8]),
-      pageHeader: schemas.PageHeaderSchema.parse(data[9]),
-      sections: schemas.SectionsSchema.parse(data[10]),
-      cta: schemas.CtaSchema.parse(data[11]),
-      privacy: schemas.PolicySchema.parse(data[12]),
-      legal: schemas.PolicySchema.parse(data[13]),
-      ui: schemas.UiSchema.parse(data[14]),
+      contact: schemas.ContactSchema.parse(data[5]),
+      studio: schemas.StudioSchema.parse(data[6]),
+      footer: schemas.FooterSchema.parse(data[7]),
+      pageHeader: schemas.PageHeaderSchema.parse(data[8]),
+      sections: schemas.SectionsSchema.parse(data[9]),
+      cta: schemas.CtaSchema.parse(data[10]),
+      privacy: schemas.PolicySchema.parse(data[11]),
+      legal: schemas.PolicySchema.parse(data[12]),
+      ui: schemas.UiSchema.parse(data[13]),
     };
   } catch (error) {
     console.error("Zod Validation Error:", error);

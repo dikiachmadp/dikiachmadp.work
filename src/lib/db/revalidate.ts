@@ -51,3 +51,11 @@ export function revalidateLogbookPaths({
 
   revalidatePath("/sitemap.xml");
 }
+
+// About tidak punya slug atau draft — satu halaman publik per locale, jadi
+// tidak ada pasangan lama/baru untuk dipertimbangkan seperti di Logbook.
+export function revalidateAboutPaths() {
+  for (const locale of locales) {
+    revalidatePath(`/${locale}/about`);
+  }
+}
