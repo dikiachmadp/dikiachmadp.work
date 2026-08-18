@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { getAllPostSlugs } from "@/lib/db/logbook";
 import { getAllProjectSlugs } from "@/lib/db/projects";
+import { getAllProductSlugs } from "@/lib/db/products";
 import { SITE_URL } from "@/lib/site-url";
 import { Locale } from "@/types/content";
 
@@ -19,17 +20,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/services",
     "/studio",
     "/logbook",
+    "/products",
     "/privacy",
     "/legal",
   ];
 
   // Slug project tidak bergantung locale, jadi satu query cukup untuk kedua
-  // bahasa. Slug Logbook sebaliknya — beda per bahasa, dan pos yang belum
-  // diterjemahkan memang tidak ada di bahasa itu, jadi locale-nya ikut terbawa
-  // dari query alih-alih dikalikan di sini.
-  const [slugs, posts] = process.env.SKIP_DB_STATIC_GEN
-    ? [[], []]
-    : await Promise.all([getAllProjectSlugs(), getAllPostSlugs()]);
+  // bahasa. Slug Logbook dan Digital Product sebaliknya — beda per bahasa,
+  // dan pos/produk yang belum diterjemahkan memang tidak ada di bahasa itu,
+  // jadi locale-nya ikut terbawa dari query alih-alih dikalikan di sini.
+  const [slugs, posts, products] = process.env.SKIP_DB_STATIC_GEN
+    ? [[], [], []]
+    : await Promise.all([
+        getAllProjectSlugs(),
+        getAllPostSlugs(),
+        getAllProductSlugs(),
+      ]);
 
   const staticEntries = locales.flatMap((locale) =>
     staticRoutes.map((route) => ({
@@ -59,5 +65,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...projectEntries, ...postEntries];
+  const productEntries = products.map((product) => ({
+    url: `${BASE_URL}/${product.locale}/products/${product.slug}`,
+    lastModified: product.updatedAt,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  return [
+    ...staticEntries,
+    ...projectEntries,
+    ...postEntries,
+    ...productEntries,
+  ];
 }

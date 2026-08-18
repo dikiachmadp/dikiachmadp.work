@@ -20,6 +20,7 @@
     "allCategories": "Semua",
     "searchPlaceholder": "cari proyek…",
     "searchPlaceholderLogbook": "cari logbook…",
+    "searchPlaceholderProducts": "cari produk…",
     "skipToContent": "Lompat ke konten"
   },
   "a11y": {
@@ -87,6 +88,14 @@
     "prevPost": "Tulisan sebelumnya",
     "nextPost": "Tulisan berikutnya"
   },
+  "products": {
+    "backBtn": "Semua produk",
+    "notFoundTitle": "Produk tidak ditemukan",
+    "empty": "Belum ada produk — coba lagi nanti.",
+    "viewAll": "Lihat produk lainnya",
+    "buyBtn": "Ambil sekarang",
+    "galleryLabel": "Galeri"
+  },
   "contactInfo": {
     "title": "Informasi kontak",
     "findMe": "temukan saya di"
@@ -103,11 +112,12 @@
       "Proyek",
       "Logbook",
       "Tentang",
+      "Produk",
       "Testimoni",
       "Pesan",
       "Lihat situs"
     ],
-    "stats": ["proyek", "unggulan", "pesan baru", "testimoni"],
+    "stats": ["proyek", "unggulan", "pesan baru", "testimoni", "produk"],
     "status": {
       "live": "Tayang",
       "draft": "Draf",

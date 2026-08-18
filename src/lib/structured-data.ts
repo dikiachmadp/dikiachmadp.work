@@ -96,6 +96,47 @@ export function projectSchema(
 }
 
 /**
+ * Digital product. `offers` hanya disertakan kalau harganya ada — produk
+ * tanpa harga tidak boleh menyiratkan gratis ("0 USD") ke mesin pencari.
+ */
+export function productSchema(
+  product: {
+    slug: string;
+    title: string;
+    summary: string;
+    coverImage: string;
+    price: string | null;
+    currency: string;
+    buyUrl: string;
+  },
+  siteConfig: SiteConfig,
+  locale: Locale,
+) {
+  const url = `${siteConfig.url}/${locale}/products/${product.slug}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.summary,
+    url,
+    inLanguage: LANGUAGE[locale],
+    ...(product.coverImage && {
+      image: absoluteUrl(siteConfig.url, product.coverImage),
+    }),
+    ...(product.price && {
+      offers: {
+        "@type": "Offer",
+        price: product.price,
+        priceCurrency: product.currency,
+        url: product.buyUrl,
+        availability: "https://schema.org/InStock",
+      },
+    }),
+  };
+}
+
+/**
  * Pos Logbook. `BlogPosting`, bukan `CreativeWork` seperti Project: yang
  * membedakan adalah tanggal terbit dan penulis, dan itulah yang dipakai mesin
  * pencari untuk menampilkannya sebagai tulisan bertanggal.

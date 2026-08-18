@@ -1,13 +1,13 @@
 /**
  * Plain `<form method="get">` instead of a client-side filter like
- * ProjectsExplorer: the logbook index is server-paginated and `body` is
- * deliberately stripped from index cards, so filtering client-side would mean
- * either pulling every post's summary to the browser regardless of page size,
- * or duplicating the query logic in two places. A GET form works without JS,
- * keeps the result shareable as a URL, and lets `getPublishedPosts` do the
- * filtering where the data already lives.
+ * ProjectsExplorer: server-paginated index pages (Logbook, Products) strip
+ * heavy fields (body/summary) from their index queries, so filtering
+ * client-side would mean either pulling every row to the browser regardless
+ * of page size, or duplicating the query logic in two places. A GET form
+ * works without JS, keeps the result shareable as a URL, and lets the DAL
+ * do the filtering where the data already lives.
  */
-export default function LogbookSearch({
+export default function SearchForm({
   basePath,
   query,
   placeholder,

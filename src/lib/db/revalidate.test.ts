@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import {
   revalidateAboutPaths,
   revalidateLogbookPaths,
+  revalidateProductPaths,
 } from "@/lib/db/revalidate";
 
 function revalidated(): string[] {
@@ -97,5 +98,42 @@ describe("revalidateAboutPaths", () => {
     expect(revalidated()).toEqual(
       expect.arrayContaining(["/en/about", "/id/about"]),
     );
+  });
+});
+
+describe("revalidateProductPaths", () => {
+  it("refreshes Studio and the products index in both languages", () => {
+    revalidateProductPaths();
+
+    expect(revalidated()).toEqual(
+      expect.arrayContaining([
+        "/en/studio",
+        "/id/studio",
+        "/en/products",
+        "/id/products",
+        "/sitemap.xml",
+      ]),
+    );
+  });
+
+  it("revalidates the old slug as well as the new one on a rename", () => {
+    revalidateProductPaths({
+      slugs: [{ locale: "en", slug: "judul-baru" }],
+      previousSlugs: [{ locale: "en", slug: "judul-lama" }],
+    });
+
+    expect(revalidated()).toContain("/en/products/judul-baru");
+    expect(revalidated()).toContain("/en/products/judul-lama");
+  });
+
+  it("does not revalidate the same path twice when the slug is unchanged", () => {
+    revalidateProductPaths({
+      slugs: [{ locale: "en", slug: "tetap" }],
+      previousSlugs: [{ locale: "en", slug: "tetap" }],
+    });
+
+    expect(
+      revalidated().filter((path) => path === "/en/products/tetap"),
+    ).toHaveLength(1);
   });
 });

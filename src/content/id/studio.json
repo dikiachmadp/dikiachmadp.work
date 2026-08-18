@@ -22,24 +22,6 @@
       "link": "https://lab.dikiachmadp.work/kidlab",
       "isExternal": true,
       "badge": "PX"
-    },
-    {
-      "id": "store-01",
-      "type": "store",
-      "title": "OJS 3 CSS — Minimalis",
-      "description": "Template CSS bersih dan mudah dibaca untuk jurnal akademik di OJS 3.",
-      "link": "https://kidstudio.gumroad.com/l/minimalist-theme",
-      "isExternal": true,
-      "badge": "OJS"
-    },
-    {
-      "id": "store-02",
-      "type": "store",
-      "title": "OJS 3 CSS — Modern",
-      "description": "Tipografi tegas dan tampilan kontemporer untuk penerbitan ilmiah.",
-      "link": "https://kidstudio.gumroad.com/l/modern-theme",
-      "isExternal": true,
-      "badge": "OJS"
     }
   ]
 }

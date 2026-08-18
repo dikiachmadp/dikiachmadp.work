@@ -187,3 +187,47 @@ model AboutEntry {
 
   @@index([kind, locale, order])
 }
+
+// Digital products. Cermin Project (gambar melekat di induk, bukan di
+// translation — tidak butuh `alt` per bahasa), tapi berdraf seperti
+// LogbookPost karena produk yang belum siap dijual tidak boleh terindeks.
+model DigitalProduct {
+  id          String     @id @default(uuid())
+  status      PostStatus @default(DRAFT)
+  // null selama draft; terisi saat produk pertama kali diterbitkan.
+  publishedAt DateTime?
+  featured    Boolean    @default(false)
+  order       Int        @default(0)
+  // Decimal, bukan Float — harga tidak boleh kena galat pembulatan biner.
+  price       Decimal?   @db.Decimal(10, 2)
+  currency    String     @default("USD")
+  buyUrl      String
+  coverImage  String
+  gallery     String[]
+  tags        String[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  translations DigitalProductTranslation[]
+
+  @@index([status, publishedAt(sort: Desc)])
+  @@index([order])
+}
+
+model DigitalProductTranslation {
+  id        String @id @default(uuid())
+  productId String
+  locale    String
+  slug      String
+  title     String
+  summary   String
+  // Markdown GFM, sama seperti LogbookPostTranslation.body.
+  body      String
+
+  product DigitalProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, locale])
+  // Slug unik per bahasa, bukan global — sama seperti Logbook.
+  @@unique([locale, slug])
+  @@index([locale, productId])
+}

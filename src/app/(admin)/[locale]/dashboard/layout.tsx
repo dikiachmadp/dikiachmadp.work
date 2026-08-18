@@ -28,9 +28,10 @@ export default async function DashboardLayout({
     { label: admin.nav[1], href: `/${validLocale}/dashboard/projects` },
     { label: admin.nav[2], href: `/${validLocale}/dashboard/logbook` },
     { label: admin.nav[3], href: `/${validLocale}/dashboard/about` },
-    { label: admin.nav[4], href: `/${validLocale}/dashboard/testimonials` },
-    { label: admin.nav[5], href: `/${validLocale}/dashboard/submissions` },
-    { label: admin.nav[6], href: `/${validLocale}`, exact: true },
+    { label: admin.nav[4], href: `/${validLocale}/dashboard/products` },
+    { label: admin.nav[5], href: `/${validLocale}/dashboard/testimonials` },
+    { label: admin.nav[6], href: `/${validLocale}/dashboard/submissions` },
+    { label: admin.nav[7], href: `/${validLocale}`, exact: true },
   ];
 
   return (

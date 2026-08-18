@@ -56,6 +56,7 @@ export default async function DashboardPage({
     },
     { value: String(counts.submissions), label: admin.stats[2] },
     { value: String(counts.testimonials), label: admin.stats[3] },
+    { value: String(counts.products), label: admin.stats[4] },
   ];
 
   // getProjects sudah mengurutkan berdasarkan date desc.
@@ -75,7 +76,7 @@ export default async function DashboardPage({
         {/* Tombol "new project" kembali di Fase 5 bersama form bilingualnya. */}
       </div>
 
-      <div className="mb-6 grid grid-cols-2 gap-3.5 lg:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-5">
         {stats.map((stat) => (
           <div
             key={stat.label}

@@ -42,3 +42,25 @@ export function estimateReadingMinutes(
   if (words === 0) return 1;
   return Math.max(1, Math.round(words / wordsPerMinute));
 }
+
+/**
+ * `price` is a `Decimal` serialized to string by the DAL (see
+ * lib/db/products.ts) — Prisma's `Decimal` type must not leak into a Client
+ * Component prop. `null` means "price not published" and is left to the
+ * caller to hide, not turned into a misleading "Free" here.
+ */
+export function formatPrice(
+  price: string | null,
+  currency: string,
+  locale: "en" | "id",
+): string | null {
+  if (!price) return null;
+  const amount = Number(price);
+  if (!Number.isFinite(amount)) return null;
+
+  return new Intl.NumberFormat(locale === "id" ? "id-ID" : "en-US", {
+    style: "currency",
+    currency,
+    minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
+  }).format(amount);
+}

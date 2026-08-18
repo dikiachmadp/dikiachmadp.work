@@ -457,3 +457,113 @@ export function aboutEntryInputFromForm(formData: FormData) {
     url: optionalText(formData, "url"),
   };
 }
+
+// --- Digital Products ---
+
+const digitalProductBodySchema = z
+  .string()
+  .min(1, "Isi wajib diisi")
+  .refine(
+    (value) => new TextEncoder().encode(value).length <= MAX_BODY_BYTES,
+    `Isi maksimal ${MAX_BODY_BYTES / 1024} kB.`,
+  );
+
+const digitalProductTranslationSchema = z.object({
+  slug: z
+    .string()
+    .min(1, "Slug wajib diisi")
+    .regex(/^[a-z0-9-]+$/, "Slug hanya huruf kecil, angka, dan tanda hubung"),
+  title: z.string().min(1, "Judul wajib diisi"),
+  summary: z.string().min(1, "Ringkasan wajib diisi"),
+  body: digitalProductBodySchema,
+});
+
+// Harga kosong berarti "belum ditetapkan", bukan gratis — dibedakan dari
+// "0.00" yang berarti produk memang gratis.
+const priceSchema = z.union([
+  z.literal(""),
+  z.string().regex(/^\d+(\.\d{1,2})?$/, "Harga berformat 19.99"),
+]);
+
+export const digitalProductFormSchema = z
+  .object({
+    status: z.enum(["DRAFT", "PUBLISHED"]),
+    publishedAt: localDateTimeSchema,
+    featured: z.boolean(),
+    order: z.coerce.number().int().min(0),
+    price: priceSchema,
+    currency: z.string().min(1, "Mata uang wajib diisi"),
+    buyUrl: z.url("URL tidak valid"),
+    coverImage: z.string().min(1, "Gambar cover wajib diisi (URL atau upload)"),
+    gallery: z.array(z.string()),
+    tags: z.array(z.string()),
+    translations: z.object({
+      // Terjemahan opsional per produk — sama seperti Logbook: blok bahasa
+      // yang dikosongkan seluruhnya berarti produk itu tidak ada di bahasa
+      // tersebut.
+      en: digitalProductTranslationSchema.nullable(),
+      id: digitalProductTranslationSchema.nullable(),
+    }),
+  })
+  .refine(
+    (data) => data.translations.en !== null || data.translations.id !== null,
+    {
+      message:
+        "Isi setidaknya satu bahasa — produk kosong tidak muncul di mana pun.",
+      path: ["translations"],
+    },
+  )
+  .transform((data) => ({
+    ...data,
+    price: data.price === "" ? null : data.price,
+    // Draf tidak punya tanggal terbit. Produk terbit tanpa tanggal eksplisit
+    // dianggap terbit sekarang — sama seperti Logbook.
+    publishedAt:
+      data.status === "PUBLISHED"
+        ? data.publishedAt
+          ? new Date(`${data.publishedAt}Z`)
+          : new Date()
+        : null,
+  }));
+
+export type DigitalProductFormParsed = z.infer<typeof digitalProductFormSchema>;
+
+function digitalProductTranslationFromForm(
+  formData: FormData,
+  locale: "en" | "id",
+) {
+  const p = (field: string) => `translations.${locale}.${field}`;
+  const translation = {
+    slug: text(formData, p("slug")),
+    title: text(formData, p("title")),
+    summary: text(formData, p("summary")),
+    body: text(formData, p("body")),
+  };
+
+  const isEmpty =
+    !translation.slug &&
+    !translation.title &&
+    !translation.summary &&
+    !translation.body;
+
+  return isEmpty ? null : translation;
+}
+
+export function digitalProductInputFromForm(formData: FormData) {
+  return {
+    status: text(formData, "status") || "DRAFT",
+    publishedAt: text(formData, "publishedAt"),
+    featured: formData.get("featured") === "on",
+    order: text(formData, "order") || "0",
+    price: text(formData, "price"),
+    currency: text(formData, "currency") || "USD",
+    buyUrl: text(formData, "buyUrl"),
+    coverImage: text(formData, "coverImage"),
+    gallery: splitLines(formData.get("gallery")),
+    tags: splitList(formData.get("tags")),
+    translations: {
+      en: digitalProductTranslationFromForm(formData, "en"),
+      id: digitalProductTranslationFromForm(formData, "id"),
+    },
+  };
+}
