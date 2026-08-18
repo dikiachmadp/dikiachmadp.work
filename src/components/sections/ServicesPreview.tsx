@@ -1,31 +1,51 @@
 import Link from "next/link";
-import { ServicesData, SectionsData, Locale } from "@/types/content";
+import { ServicesData, SectionsData, UiLabels, Locale } from "@/types/content";
 import { cn } from "@/lib/utils";
+import SectionHeading from "@/components/ui/SectionHeading";
+import Button from "@/components/ui/Button";
 
 interface ServicesPreviewProps {
   servicesData: ServicesData;
   sectionsData: SectionsData;
+  uiLabels: UiLabels;
   locale: Locale;
 }
+
+/** How many services show on the home page before "All services" takes over. */
+const PREVIEW_COUNT = 3;
 
 export default function ServicesPreview({
   servicesData,
   sectionsData,
+  uiLabels,
   locale,
 }: ServicesPreviewProps) {
   const section = sectionsData.services;
+  const preview = servicesData.items.slice(0, PREVIEW_COUNT);
+
+  if (preview.length === 0) return null;
 
   return (
     <>
-      {section.eyebrow && (
-        <div className="eyebrow m-center">{section.eyebrow}</div>
-      )}
-      <h2 className="font-hand m-center mt-0.5 mb-[30px] text-[clamp(2rem,4vw,3.2rem)] leading-none">
-        {section.title}
-      </h2>
+      <SectionHeading
+        eyebrow={section.eyebrow}
+        title={section.title}
+        action={
+          section.showButton ? (
+            <Button
+              href={`/${locale}/services`}
+              variant="secondary"
+              size="sm"
+              mirrored
+            >
+              {uiLabels.buttons.viewAllServices} →
+            </Button>
+          ) : null
+        }
+      />
 
       <div className="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
-        {servicesData.items.map((service, i) => (
+        {preview.map((service, i) => (
           <Link
             key={service.id}
             href={`/${locale}/services`}

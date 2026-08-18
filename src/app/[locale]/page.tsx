@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
 import { getProjects } from "@/lib/db/projects";
 import { getTestimonials } from "@/lib/db/testimonials";
+import { getPublishedPosts } from "@/lib/db/logbook";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import SectionWrapper from "@/components/layout/SectionWrapper";
@@ -11,10 +12,14 @@ import StatBox from "@/components/ui/StatBox";
 import ProjectsGallery from "@/components/sections/ProjectsGallery";
 import ServicesPreview from "@/components/sections/ServicesPreview";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
+import LogbookPreview from "@/components/sections/LogbookPreview";
 import CTASection from "@/components/sections/CTASection";
 import JsonLd from "@/components/seo/JsonLd";
 import { personSchema, websiteSchema } from "@/lib/structured-data";
 import { Locale } from "@/types/content";
+
+/** Jumlah kartu yang dipajang tiap section pratinjau di homepage. */
+const PREVIEW_COUNT = 3;
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -40,11 +45,13 @@ export async function generateMetadata({
 export default async function HomePage({ params }: PageProps) {
   const { locale } = await params;
   const validLocale = (locale === "id" ? "id" : "en") as Locale;
-  const [dict, featured, testimonials] = await Promise.all([
-    getDictionary(validLocale),
-    getProjects(validLocale, { featured: true }),
-    getTestimonials(validLocale),
-  ]);
+  const [dict, featured, testimonials, { posts: recentPosts }] =
+    await Promise.all([
+      getDictionary(validLocale),
+      getProjects(validLocale, { featured: true, take: PREVIEW_COUNT }),
+      getTestimonials(validLocale),
+      getPublishedPosts(validLocale, { page: 1, perPage: PREVIEW_COUNT }),
+    ]);
 
   return (
     <PageWrapper>
@@ -81,6 +88,7 @@ export default async function HomePage({ params }: PageProps) {
         <ServicesPreview
           servicesData={dict.services}
           sectionsData={dict.sections}
+          uiLabels={dict.ui}
           locale={validLocale}
         />
       </SectionWrapper>
@@ -89,6 +97,15 @@ export default async function HomePage({ params }: PageProps) {
         <TestimonialsSection
           testimonialsData={{ items: testimonials }}
           sectionsData={dict.sections}
+        />
+      </SectionWrapper>
+
+      <SectionWrapper id="logbook">
+        <LogbookPreview
+          posts={recentPosts}
+          sectionsData={dict.sections}
+          uiLabels={dict.ui}
+          locale={validLocale}
         />
       </SectionWrapper>
 

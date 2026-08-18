@@ -90,4 +90,35 @@ describe("pemetaan Markdown ke gaya situs", () => {
   it("supports GFM strikethrough", () => {
     expect(render("~~dicoret~~")).toContain("<del>");
   });
+
+  // Setiap <p> di HTML statis membawa class yang sama — pembedanya adalah
+  // varian `first:` Tailwind, yang jadi selektor CSS `:first-child` dan
+  // diputuskan browser saat layout, bukan di sini. Yang bisa diperiksa lewat
+  // markup statis hanyalah bahwa kaitannya benar-benar terpasang.
+  it("wires the drop-cap first-letter classes onto paragraphs", () => {
+    const html = render("Paragraf pertama.\n\nParagraf kedua.");
+
+    expect(html).toContain("first:first-letter:font-hand");
+  });
+
+  it("renders a Markdown image with a caption from its alt text", () => {
+    const html = render("![Sebuah tangkapan layar](https://example.com/a.png)");
+
+    expect(html).toContain('src="https://example.com/a.png"');
+    expect(html).toContain("<figcaption");
+    expect(html).toContain("Sebuah tangkapan layar");
+  });
+
+  it("skips the caption when the image has no alt text", () => {
+    const html = render("![](https://example.com/a.png)");
+
+    expect(html).not.toContain("<figcaption");
+  });
+
+  it("gives the blockquote a decorative opening quote mark", () => {
+    const html = render("> Kata-kata bijak.");
+
+    expect(html).toContain("aria-hidden");
+    expect(html).toContain("“");
+  });
 });

@@ -11,6 +11,13 @@ interface PaginationProps {
   basePath: string;
   /** Dibacakan pembaca layar, contoh: "Messages pages". */
   label: string;
+  /**
+   * Param lain yang harus ikut di setiap tautan halaman, misalnya `{ q:
+   * "design" }` dari kotak pencarian. Kosong secara default sehingga
+   * pemanggil yang tidak membawa query tambahan berperilaku persis seperti
+   * sebelumnya.
+   */
+  query?: Record<string, string>;
 }
 
 const linkBase =
@@ -22,9 +29,20 @@ export default function Pagination({
   perPage,
   basePath,
   label,
+  query,
 }: PaginationProps) {
   const pages = pageCount(total, perPage);
   if (pages <= 1) return null;
+
+  // Halaman pertama tidak perlu `page` — URL-nya tetap bersih — tapi param
+  // lain (`q`, filter, dst.) harus ikut di setiap halaman termasuk yang
+  // pertama, atau berpindah halaman diam-diam membuang pencarian aktif.
+  const hrefFor = (n: number) => {
+    const params = new URLSearchParams(query);
+    if (n > 1) params.set("page", String(n));
+    const qs = params.toString();
+    return qs ? `${basePath}?${qs}` : basePath;
+  };
 
   return (
     <nav
@@ -43,8 +61,7 @@ export default function Pagination({
         ) : (
           <Link
             key={n}
-            // Halaman pertama tidak perlu query — URL-nya tetap bersih.
-            href={n === 1 ? basePath : `${basePath}?page=${n}`}
+            href={hrefFor(n)}
             aria-current={n === current ? "page" : undefined}
             className={
               n === current

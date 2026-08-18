@@ -19,6 +19,7 @@
     "comingSoon": "Segera",
     "allCategories": "Semua",
     "searchPlaceholder": "cari proyek…",
+    "searchPlaceholderLogbook": "cari logbook…",
     "skipToContent": "Lompat ke konten"
   },
   "a11y": {
@@ -81,7 +82,10 @@
     "notFoundTitle": "Tulisan tidak ditemukan",
     "empty": "Belum ada apa-apa di sini — tulisan pertama sedang dalam perjalanan.",
     "readPost": "Baca tulisan",
-    "viewAll": "Semua tulisan"
+    "viewAll": "Semua tulisan",
+    "readTime": "{minutes} menit baca",
+    "prevPost": "Tulisan sebelumnya",
+    "nextPost": "Tulisan berikutnya"
   },
   "contactInfo": {
     "title": "Informasi kontak",

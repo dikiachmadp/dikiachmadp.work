@@ -19,6 +19,7 @@
     "comingSoon": "Coming soon",
     "allCategories": "All",
     "searchPlaceholder": "search projects…",
+    "searchPlaceholderLogbook": "search logbook…",
     "skipToContent": "Skip to content"
   },
   "a11y": {
@@ -81,7 +82,10 @@
     "notFoundTitle": "Post not found",
     "empty": "Nothing here yet — the first entry is on its way.",
     "readPost": "Read post",
-    "viewAll": "All posts"
+    "viewAll": "All posts",
+    "readTime": "{minutes} min read",
+    "prevPost": "Previous post",
+    "nextPost": "Next post"
   },
   "contactInfo": {
     "title": "Contact information",
