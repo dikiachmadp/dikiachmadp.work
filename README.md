@@ -1,7 +1,6 @@
 # dikiachmadp.work
 
-Personal portfolio and studio site for **Diki Achmad Prasetya** — freelance
-graphic designer, UI/UX designer, and 3D asset creator based in Bandung,
+Personal portfolio website for **Diki Achmad Prasetya** — Freelancer based in Bandung,
 Indonesia.
 
 **Live site:** [dikiachmadp.work](https://dikiachmadp.work)
