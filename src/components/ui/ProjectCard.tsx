@@ -44,7 +44,7 @@ export default function ProjectCard({
             alt={project.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1180px) 50vw, 376px"
-            className="photo-ink object-cover"
+            className="object-cover"
           />
         ) : (
           <span className="font-tech text-[10px] tracking-[0.2em] text-(--soft) uppercase">
@@ -76,7 +76,7 @@ export default function ProjectCard({
                   alt=""
                   width={26}
                   height={26}
-                  className="h-[26px] w-[26px] object-contain grayscale"
+                  className="h-[26px] w-[26px] object-contain"
                 />
               ) : (
                 <span className="font-hand text-[15px]">

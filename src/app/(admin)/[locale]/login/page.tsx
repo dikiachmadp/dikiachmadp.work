@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { login } from "./actions";
 
@@ -14,6 +15,28 @@ export default async function LoginPage({
   return (
     <main className="flex min-h-screen items-center justify-center px-[22px]">
       <div className="r-frame ink-border flat-5 w-full max-w-[380px] bg-(--paper) p-7">
+        {/* This route group has no Navbar, so it's the only way out of the
+            login screen for someone who changed their mind. Not the shared
+            Logo component: that one requires a wordmark + tagline pulled
+            from the dictionary, which this English-only admin page doesn't
+            load. */}
+        <Link
+          href={`/${locale}`}
+          aria-label="Back to homepage"
+          className="group mb-5 flex w-fit"
+        >
+          <span className="r-blob-alt ink-border flex h-[46px] w-[46px] shrink-0 items-center justify-center overflow-hidden bg-(--wash) transition-transform duration-300 ease-out group-hover:scale-105 group-hover:rotate-[-8deg]">
+            <Image
+              src="/logo.webp"
+              alt=""
+              width={34}
+              height={34}
+              priority
+              className="h-[34px] w-[34px] object-contain"
+            />
+          </span>
+        </Link>
+
         <p className="font-note m-0 text-[19px] text-(--soft)">control room</p>
         <h1 className="font-hand mb-5 text-[clamp(1.625rem,4.5vw,1.875rem)] leading-none">
           Admin Login

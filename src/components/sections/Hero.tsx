@@ -11,7 +11,10 @@ export default function Hero({ heroData, locale }: HeroProps) {
   return (
     <section className="main-container pt-16">
       <div className="grid grid-cols-1 items-center gap-[52px] lg:grid-cols-[1.05fr_0.95fr]">
-        <div>
+        {/* m-center here cascades to every text child below (badge, both
+            heading lines) instead of repeating the class on each one; the
+            description paragraph opts back out with its own m-justify. */}
+        <div className="m-center">
           <div className="r-chip ink-border mb-[26px] inline-flex items-center gap-[9px] bg-(--wash) px-3.5 py-[7px]">
             <span className="relative flex h-[9px] w-[9px]">
               <span className="anim-pulse-dot absolute inset-0 rounded-full bg-(--accent-ink)" />
@@ -50,33 +53,17 @@ export default function Hero({ heroData, locale }: HeroProps) {
             </svg>
           </div>
 
-          <p className="mb-[26px] max-w-[470px] text-[17px] leading-[1.65] text-(--soft)">
+          <p className="m-justify mb-[26px] max-w-[470px] text-[17px] leading-[1.65] text-(--soft)">
             {heroData.description}
           </p>
 
-          <div className="flex flex-wrap items-center gap-3.5">
+          <div className="flex flex-wrap items-center justify-center gap-3.5 sm:justify-start">
             <Button href={`/${locale}/projects`} variant="primary">
               {heroData.ctaPrimary}
             </Button>
             <Button href={`/${locale}/contact`} variant="secondary" mirrored>
               {heroData.ctaSecondary}
             </Button>
-            <span className="font-note flex items-center gap-[7px] text-[19px] text-(--soft)">
-              <svg
-                width="46"
-                height="26"
-                viewBox="0 0 46 26"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                aria-hidden
-              >
-                <path d="M2 20 C 12 2, 28 2, 40 10" />
-                <path d="M40 10 L 31 9 M40 10 L 37 18" />
-              </svg>
-              {heroData.annotation}
-            </span>
           </div>
         </div>
 

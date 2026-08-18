@@ -115,15 +115,15 @@ export default async function LogbookPostPage({ params }: PostPageProps) {
         {publishedAt && (
           <time
             dateTime={post.publishedAt?.toISOString()}
-            className="font-tech block text-[11px] tracking-[0.16em] text-(--soft) uppercase"
+            className="font-tech m-center block text-[11px] tracking-[0.16em] text-(--soft) uppercase"
           >
             {publishedAt}
           </time>
         )}
-        <h1 className="font-hand mt-1.5 mb-4 text-[clamp(2.2rem,5.2vw,3.6rem)] leading-none">
+        <h1 className="font-hand m-center mt-1.5 mb-4 text-[clamp(2.2rem,5.2vw,3.6rem)] leading-none">
           {post.title}
         </h1>
-        <p className="mb-[30px] text-[17px] leading-[1.65] text-(--soft)">
+        <p className="m-justify mb-[30px] text-[17px] leading-[1.65] text-(--soft)">
           {post.excerpt}
         </p>
 

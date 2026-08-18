@@ -55,7 +55,6 @@ export default function NotFoundContent({
             height={800}
             priority
             className="block h-auto w-full"
-            style={{ filter: "grayscale(1) contrast(1.1)" }}
           />
         </div>
       </div>

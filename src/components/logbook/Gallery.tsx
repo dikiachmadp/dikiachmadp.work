@@ -114,7 +114,7 @@ export default function Gallery({
             fill
             sizes="(max-width: 980px) 100vw, 960px"
             priority
-            className="photo-ink object-cover"
+            className="object-cover"
           />
         </button>
       </div>
@@ -154,7 +154,7 @@ export default function Gallery({
                 alt=""
                 fill
                 sizes="86px"
-                className="photo-ink object-cover"
+                className="object-cover"
               />
             </button>
           ))}

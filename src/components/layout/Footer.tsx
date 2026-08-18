@@ -61,7 +61,10 @@ export default function Footer({
             <span className="font-note text-[19px] text-(--soft)">
               {footerData.socialLabel}
             </span>
-            <div className="flex max-w-[300px] flex-wrap gap-2 md:justify-end">
+            {/* Fixed 4-column grid, not flex-wrap: with 7 icons that always
+                lays out 4 over 3 regardless of viewport width, instead of
+                wrapping wherever the 300px cap happened to break. */}
+            <div className="grid w-fit grid-cols-4 gap-2 md:ml-auto">
               {socials.map(([platform, url]) => (
                 <Social key={platform} platform={platform} url={url} />
               ))}

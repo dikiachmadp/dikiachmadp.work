@@ -159,15 +159,6 @@
   }
 }
 
-@keyframes marq {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 /* Sized for the 8px "available" dot, which is why it scales to 1.9. Anything
    larger than a dot wants pulseSoft instead. */
 @keyframes pulseDot {
@@ -247,6 +238,23 @@
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--soft);
+  }
+
+  /* Mobile-only alignment. Headings/eyebrows center; body copy justifies so
+     both edges line up instead of the usual ragged right. `text-wrap: pretty`
+     keeps justify from stranding a single short word on its own line, and
+     `hyphens: auto` needs the page's `lang` attribute — already set on <html>
+     in the locale layout. Scoped to <640px: above that, everything reverts to
+     its normal left-aligned, non-justified layout. */
+  @media (max-width: 639px) {
+    .m-center {
+      text-align: center;
+    }
+    .m-justify {
+      text-align: justify;
+      hyphens: auto;
+      text-wrap: pretty;
+    }
   }
 
   /* --- wobbly radii ------------------------------------------------------ */
@@ -389,10 +397,6 @@
     opacity: 0.45;
   }
 
-  .photo-ink {
-    filter: grayscale(1) contrast(1.12);
-  }
-
   /* --- animations -------------------------------------------------------- */
   .anim-rise {
     animation: riseIn 0.5s ease both;
@@ -402,9 +406,6 @@
   }
   .anim-wob {
     animation: wob 6s ease-in-out infinite;
-  }
-  .anim-marq {
-    animation: marq 26s linear infinite;
   }
   .anim-pulse-dot {
     animation: pulseDot 1.8s ease-in-out infinite;

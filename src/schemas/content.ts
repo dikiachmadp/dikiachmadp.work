@@ -32,16 +32,12 @@ export const HeroSchema = z.object({
     bottom: z.string(),
   }),
   description: z.string(),
-  /** Caveat note next to the hero buttons. */
-  annotation: z.string(),
   ctaPrimary: z.string(),
   ctaSecondary: z.string(),
   /** Rotated tag on the hero video frame. */
   videoTag: z.string(),
   /** Two lines inside the circular badge under the hero frame. */
   craftBadge: z.array(z.string()),
-  /** Items cycled through the full-bleed marquee strip. */
-  marquee: z.array(z.string()),
   availability: z.object({
     status: z.string(),
     isAvailable: z.boolean(),

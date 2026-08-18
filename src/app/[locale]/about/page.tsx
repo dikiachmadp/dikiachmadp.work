@@ -71,7 +71,6 @@ export default async function AboutPage({ params }: PageProps) {
                   sizes="(max-width: 1023px) 100vw, 330px"
                   priority
                   className="object-cover"
-                  style={{ filter: "grayscale(1) contrast(1.1)" }}
                 />
               </div>
               <span
@@ -102,7 +101,7 @@ export default async function AboutPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div>
+          <div className="m-center">
             <div className="eyebrow">{header.topTitle}</div>
             <h1 className="font-hand mt-0.5 mb-[18px] text-[clamp(2.2rem,4.8vw,3.6rem)] leading-none">
               {header.title}
@@ -110,7 +109,7 @@ export default async function AboutPage({ params }: PageProps) {
             {about.biography.map((paragraph, i) => (
               <p
                 key={i}
-                className="mb-3.5 max-w-[620px] text-[16px] leading-[1.75] text-(--soft)"
+                className="m-justify mb-3.5 max-w-[620px] text-[16px] leading-[1.75] text-(--soft)"
               >
                 {paragraph}
               </p>

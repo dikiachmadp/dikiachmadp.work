@@ -42,7 +42,7 @@ const components: Components = {
     </h4>
   ),
   p: ({ children }) => (
-    <p className="my-4 text-[15px] leading-[1.75] first:mt-0 last:mb-0">
+    <p className="m-justify my-4 text-[15px] leading-[1.75] first:mt-0 last:mb-0">
       {children}
     </p>
   ),

@@ -53,7 +53,7 @@ export default function PostCard({
             alt={post.cover.alt}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
-            className="photo-ink object-cover"
+            className="object-cover"
           />
         )}
       </span>
@@ -68,7 +68,7 @@ export default function PostCard({
         <span className="font-hand block text-[22px] leading-[1.2]">
           {post.title}
         </span>
-        <span className="block flex-1 text-[13px] leading-[1.6] text-(--soft)">
+        <span className="m-justify block flex-1 text-[13px] leading-[1.6] text-(--soft)">
           {post.excerpt}
         </span>
         <span className="mt-1 block text-[11px] font-bold tracking-[0.1em] uppercase">

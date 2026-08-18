@@ -54,7 +54,7 @@ export default function Showreel() {
       // from the surrounding copy. Naming it in the accessibility tree without
       // a text alternative would promise more than it delivers.
       aria-hidden
-      className="photo-ink h-full w-full object-cover"
+      className="h-full w-full object-cover"
     >
       <source src="/hero-video.mp4" type="video/mp4" />
     </video>
