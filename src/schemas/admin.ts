@@ -95,12 +95,6 @@ const logbookImageSchema = z.object({
 const logbookBodySchema = z
   .string()
   .min(1, "Isi tulisan wajib diisi")
-  // Markdown gambar inline tidak didukung: next/image butuh dimensi yang tidak
-  // ada di `![]()`, dan repo ini nol `<img>` mentah.
-  .refine(
-    (value) => !value.includes("!["),
-    "Gambar inline Markdown tidak didukung — pakai galeri di bawah.",
-  )
   .refine(
     (value) => new TextEncoder().encode(value).length <= MAX_BODY_BYTES,
     `Isi tulisan maksimal ${MAX_BODY_BYTES / 1024} kB.`,

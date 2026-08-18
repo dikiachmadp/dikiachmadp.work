@@ -117,16 +117,15 @@ describe("logbookFormSchema", () => {
     ).toHaveProperty("translations.en.slug");
   });
 
-  /**
-   * `![]()` tidak didukung: next/image butuh dimensi yang tidak ada di
-   * Markdown, dan repo ini nol `<img>` mentah di halaman publik.
-   */
-  it("rejects inline Markdown images and points at the gallery", () => {
+  // `![]()` didukung: Markdown.tsx merender lewat `<img>` biasa, bukan
+  // next/image, justru karena body bisa menunjuk ke host mana pun — jadi
+  // tidak ada lagi alasan menolaknya di sini.
+  it("accepts inline Markdown images", () => {
     const result = parse({
       "translations.en.body": "Teks\n\n![gambar](/g/x.webp)",
     });
 
-    expect(errors(result)["translations.en.body"]).toMatch(/galeri/i);
+    expect(errors(result)).not.toHaveProperty("translations.en.body");
   });
 
   it("rejects a body over the size limit", () => {
