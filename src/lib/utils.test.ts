@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { fill } from "./utils";
+import { estimateReadingMinutes, fill } from "./utils";
 import enUi from "@/content/en/ui.json";
 import idUi from "@/content/id/ui.json";
 
@@ -53,5 +53,32 @@ describe("the placeholders each locale actually uses", () => {
 
   it.each(keys)("%s asks for the same values in en and id", (key) => {
     expect(placeholders(idUi.a11y[key])).toEqual(placeholders(enUi.a11y[key]));
+  });
+
+  it("logbook.readTime asks for the same values in en and id", () => {
+    expect(placeholders(idUi.logbook.readTime)).toEqual(
+      placeholders(enUi.logbook.readTime),
+    );
+  });
+});
+
+describe("estimateReadingMinutes", () => {
+  it("floors at 1 minute for very short text", () => {
+    expect(estimateReadingMinutes("just a few words here")).toBe(1);
+  });
+
+  it("floors at 1 minute for empty text", () => {
+    expect(estimateReadingMinutes("")).toBe(1);
+  });
+
+  it("rounds to the nearest minute at 200 words per minute", () => {
+    const words = Array.from({ length: 450 }, () => "word").join(" ");
+    // 450 / 200 = 2.25 -> rounds to 2
+    expect(estimateReadingMinutes(words)).toBe(2);
+  });
+
+  it("respects a custom words-per-minute rate", () => {
+    const words = Array.from({ length: 300 }, () => "word").join(" ");
+    expect(estimateReadingMinutes(words, 100)).toBe(3);
   });
 });

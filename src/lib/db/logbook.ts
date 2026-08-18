@@ -104,12 +104,33 @@ const imagesInclude = { orderBy: { order: "asc" } } as const;
 
 export async function getPublishedPosts(
   locale: Locale,
-  { page = 1, perPage = 10 }: { page?: number; perPage?: number } = {},
+  {
+    page = 1,
+    perPage = 10,
+    query,
+  }: { page?: number; perPage?: number; query?: string } = {},
 ): Promise<{ posts: LogbookPostSummary[]; total: number }> {
-  // Query membawa hanya yang dibutuhkan: satu locale, satu halaman.
+  // Query membawa hanya yang dibutuhkan: satu locale, satu halaman. Pencarian
+  // difilter di server — bukan ditarik utuh dan disaring di klien seperti
+  // ProjectsExplorer — karena halaman ini sudah dipaginasi dan `toSummary()`
+  // sengaja membuang `body` dari kartu index; menarik semuanya ke klien
+  // membatalkan kedua keputusan itu.
+  const q = query?.trim();
   const where: Prisma.LogbookPostWhereInput = {
     ...publishedWhere(),
-    translations: { some: { locale } },
+    translations: {
+      some: {
+        locale,
+        ...(q
+          ? {
+              OR: [
+                { title: { contains: q, mode: "insensitive" } },
+                { excerpt: { contains: q, mode: "insensitive" } },
+              ],
+            }
+          : {}),
+      },
+    },
   };
 
   const [rows, total] = await Promise.all([
@@ -147,6 +168,57 @@ export async function getPostBySlug(
     },
   });
   return row ? flatten(row, locale) : null;
+}
+
+export type LogbookAdjacentPost = { slug: string; title: string };
+
+/**
+ * Tetangga kronologis satu pos, untuk navigasi sebelumnya/berikutnya di
+ * halaman detail. "Sebelumnya" = terbit lebih dulu, "berikutnya" = terbit
+ * lebih baru — arah yang sama dipakai daftar index (`publishedAt: "desc"`).
+ * Dua query kecil dengan `take: 1` masing-masing, bukan menarik seluruh
+ * daftar untuk mencari posisi pos ini di dalamnya.
+ */
+export async function getAdjacentPosts(
+  locale: Locale,
+  publishedAt: Date,
+): Promise<{
+  prev: LogbookAdjacentPost | null;
+  next: LogbookAdjacentPost | null;
+}> {
+  // `publishedWhere()` already constrains `publishedAt` (not null, <= now());
+  // spreading it and then setting `publishedAt` again would overwrite that
+  // constraint instead of narrowing it, so the two conditions are combined
+  // with `AND` rather than merged into one object.
+  const baseWhere = (cmp: "lt" | "gt"): Prisma.LogbookPostWhereInput => ({
+    AND: [
+      publishedWhere(),
+      { translations: { some: { locale } } },
+      { publishedAt: { [cmp]: publishedAt } },
+    ],
+  });
+
+  const [prevRow, nextRow] = await Promise.all([
+    prisma.logbookPost.findFirst({
+      where: baseWhere("lt"),
+      include: { translations: { where: { locale } } },
+      orderBy: { publishedAt: "desc" },
+    }),
+    prisma.logbookPost.findFirst({
+      where: baseWhere("gt"),
+      include: { translations: { where: { locale } } },
+      orderBy: { publishedAt: "asc" },
+    }),
+  ]);
+
+  const toAdjacent = (
+    row: (LogbookPost & { translations: LogbookPostTranslation[] }) | null,
+  ): LogbookAdjacentPost | null => {
+    const tr = row?.translations.find((t) => t.locale === locale);
+    return tr ? { slug: tr.slug, title: tr.title } : null;
+  };
+
+  return { prev: toAdjacent(prevRow), next: toAdjacent(nextRow) };
 }
 
 /**

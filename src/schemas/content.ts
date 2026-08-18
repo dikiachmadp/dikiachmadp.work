@@ -192,17 +192,11 @@ export const StudioSchema = z.object({
       number: z.string(),
       buttonLabel: z.string(),
     }),
-    thoughts: z.object({
-      id: z.string(),
-      title: z.string(),
-      number: z.string(),
-      buttonLabel: z.string(),
-    }),
   }),
   items: z.array(
     z.object({
       id: z.string(),
-      type: z.enum(["thoughts", "store", "experiments"]),
+      type: z.enum(["store", "experiments"]),
       title: z.string(),
       link: z.string(),
       description: z.string().optional(),
@@ -264,6 +258,7 @@ export const SectionsSchema = z.object({
   featuredProjects: SectionSchema,
   services: SectionSchema,
   testimonials: SectionSchema,
+  logbook: SectionSchema,
   cta: SectionSchema,
 });
 
@@ -324,6 +319,7 @@ export const UiSchema = z.object({
     comingSoon: z.string(),
     allCategories: z.string(),
     searchPlaceholder: z.string(),
+    searchPlaceholderLogbook: z.string(),
     skipToContent: z.string(),
   }),
   // Nama aksesibel dan teks alt: tidak pernah terlihat di layar, jadi paling
@@ -391,6 +387,9 @@ export const UiSchema = z.object({
     empty: z.string(),
     readPost: z.string(),
     viewAll: z.string(),
+    readTime: z.string(),
+    prevPost: z.string(),
+    nextPost: z.string(),
   }),
   contactInfo: z.object({
     title: z.string(),

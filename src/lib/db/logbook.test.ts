@@ -18,6 +18,7 @@ vi.mock("@/lib/prisma", () => ({
 import { prisma } from "@/lib/prisma";
 import {
   createPostWithTranslations,
+  getAdjacentPosts,
   getPostBySlug,
   getPublishedPosts,
   updatePostWithTranslations,
@@ -188,6 +189,79 @@ describe("query publik menyaring draf dan pos berjadwal", () => {
     const args = vi.mocked(prisma.logbookPost.findMany).mock.calls[0][0];
     expect(args?.skip).toBe(10);
     expect(args?.take).toBe(5);
+  });
+
+  it("folds a search query into the translations filter", async () => {
+    vi.mocked(prisma.logbookPost.findMany).mockResolvedValue([] as never);
+    vi.mocked(prisma.logbookPost.count).mockResolvedValue(0 as never);
+
+    await getPublishedPosts("en", { query: "  design  " });
+
+    const where = vi.mocked(prisma.logbookPost.findMany).mock.calls[0][0]
+      ?.where;
+    expect(where?.translations).toEqual({
+      some: {
+        locale: "en",
+        OR: [
+          { title: { contains: "design", mode: "insensitive" } },
+          { excerpt: { contains: "design", mode: "insensitive" } },
+        ],
+      },
+    });
+  });
+
+  it("leaves the translations filter untouched when the query is empty", async () => {
+    vi.mocked(prisma.logbookPost.findMany).mockResolvedValue([] as never);
+    vi.mocked(prisma.logbookPost.count).mockResolvedValue(0 as never);
+
+    await getPublishedPosts("en", { query: "   " });
+
+    const where = vi.mocked(prisma.logbookPost.findMany).mock.calls[0][0]
+      ?.where;
+    expect(where?.translations).toEqual({ some: { locale: "en" } });
+  });
+});
+
+describe("getAdjacentPosts", () => {
+  it("returns the older post as prev and the newer post as next", async () => {
+    const older = post([translation("en")]);
+    older.id = "older";
+    older.translations[0].slug = "older-slug";
+    older.translations[0].title = "Older Title";
+
+    const newer = post([translation("en")]);
+    newer.id = "newer";
+    newer.translations[0].slug = "newer-slug";
+    newer.translations[0].title = "Newer Title";
+
+    vi.mocked(prisma.logbookPost.findFirst)
+      .mockResolvedValueOnce(older as never)
+      .mockResolvedValueOnce(newer as never);
+
+    const result = await getAdjacentPosts("en", publishedAt);
+
+    expect(result.prev).toEqual({ slug: "older-slug", title: "Older Title" });
+    expect(result.next).toEqual({ slug: "newer-slug", title: "Newer Title" });
+  });
+
+  it("returns null at either edge of the timeline", async () => {
+    vi.mocked(prisma.logbookPost.findFirst).mockResolvedValue(null as never);
+
+    const result = await getAdjacentPosts("en", publishedAt);
+
+    expect(result).toEqual({ prev: null, next: null });
+  });
+
+  it("keeps the publication gate on both neighbour queries", async () => {
+    vi.mocked(prisma.logbookPost.findFirst).mockResolvedValue(null as never);
+
+    await getAdjacentPosts("en", publishedAt);
+
+    const calls = vi.mocked(prisma.logbookPost.findFirst).mock.calls;
+    for (const [args] of calls) {
+      const clauses = args?.where?.AND as Array<Record<string, unknown>>;
+      expect(clauses.some((c) => c.status === "PUBLISHED")).toBe(true);
+    }
   });
 });
 

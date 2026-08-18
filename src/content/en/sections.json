@@ -19,6 +19,13 @@
     "description": "What clients say about working together.",
     "showButton": false
   },
+  "logbook": {
+    "eyebrow": "notes from the desk",
+    "title": "Logbook",
+    "description": "Recent notes on design, code, and the things that go wrong in between.",
+    "showButton": true,
+    "buttonLabel": "viewAll"
+  },
   "cta": {
     "title": "Got something to build?",
     "description": "Tell me the messy version — I'll help shape it into something people remember.",

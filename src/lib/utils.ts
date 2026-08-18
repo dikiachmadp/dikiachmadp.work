@@ -27,3 +27,18 @@ export function fill(
     key in values ? String(values[key]) : whole,
   );
 }
+
+/**
+ * Rough reading time from a word count, rounded to whole minutes and floored
+ * at 1 — a one-paragraph post reading "0 min" looks broken, not honest.
+ * 200 wpm is the commonly cited average for adult silent reading; precision
+ * beyond that is not the point of a badge like this.
+ */
+export function estimateReadingMinutes(
+  text: string,
+  wordsPerMinute = 200,
+): number {
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  if (words === 0) return 1;
+  return Math.max(1, Math.round(words / wordsPerMinute));
+}

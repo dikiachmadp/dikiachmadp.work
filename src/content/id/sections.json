@@ -19,6 +19,13 @@
     "description": "Kata klien tentang bekerja bersama.",
     "showButton": false
   },
+  "logbook": {
+    "eyebrow": "catatan dari meja kerja",
+    "title": "Logbook",
+    "description": "Catatan terbaru soal desain, kode, dan hal-hal yang meleset di antaranya.",
+    "showButton": true,
+    "buttonLabel": "viewAll"
+  },
   "cta": {
     "title": "Punya ide yang mau dibangun?",
     "description": "Ceritakan versi berantakannya — saya bantu rapikan jadi sesuatu yang diingat orang.",

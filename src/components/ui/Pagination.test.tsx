@@ -7,6 +7,7 @@ const render = (props: {
   total: number;
   perPage?: number;
   basePath?: string;
+  query?: Record<string, string>;
 }) =>
   renderToStaticMarkup(
     <Pagination
@@ -15,6 +16,7 @@ const render = (props: {
       perPage={props.perPage ?? 25}
       basePath={props.basePath ?? "/id/dashboard/submissions"}
       label="Message pages"
+      query={props.query}
     />,
   );
 
@@ -40,6 +42,16 @@ describe("Pagination", () => {
     const html = render({ current: 2, total: 60 });
     expect(html).toContain('href="/id/dashboard/submissions"');
     expect(html).toContain('href="/id/dashboard/submissions?page=2"');
+  });
+
+  // Pencarian aktif tidak boleh hilang saat berpindah halaman, termasuk saat
+  // kembali ke halaman pertama yang tidak membawa `page`.
+  it("carries extra query params on every link, including the first page", () => {
+    const html = render({ current: 2, total: 60, query: { q: "design" } });
+    expect(html).toContain('href="/id/dashboard/submissions?q=design"');
+    expect(html).toContain(
+      'href="/id/dashboard/submissions?q=design&amp;page=2"',
+    );
   });
 
   it("marks the current page for assistive tech", () => {

@@ -54,12 +54,13 @@ function toStringArray(value: unknown): string[] | undefined {
 
 export async function getProjects(
   locale: Locale,
-  opts?: { featured?: boolean },
+  opts?: { featured?: boolean; take?: number },
 ): Promise<Project[]> {
   const rows = await prisma.project.findMany({
     where: opts?.featured ? { featured: true } : undefined,
     include: { translations: true },
     orderBy: { date: "desc" },
+    take: opts?.take,
   });
   return rows.map((row) => flatten(row, locale));
 }

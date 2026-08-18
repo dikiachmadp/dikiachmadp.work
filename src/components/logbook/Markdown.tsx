@@ -42,7 +42,16 @@ const components: Components = {
     </h4>
   ),
   p: ({ children }) => (
-    <p className="m-justify my-4 text-[15px] leading-[1.75] first:mt-0 last:mb-0">
+    <p
+      className={cn(
+        "m-justify my-4 text-[15px] leading-[1.75] first:mt-0 last:mb-0",
+        // `first:` targets `:first-child` of the shared parent — every block
+        // element in the tree (p, h2, ul, …) sits at that same level, so this
+        // only fires when the very first thing in the body is a paragraph,
+        // not on every paragraph in the post.
+        "first:first-letter:font-hand first:first-letter:float-left first:first-letter:mr-2 first:first-letter:text-[3.2rem] first:first-letter:leading-[0.8] first:first-letter:text-(--accent-ink)",
+      )}
+    >
       {children}
     </p>
   ),
@@ -70,7 +79,13 @@ const components: Components = {
     </ol>
   ),
   blockquote: ({ children }) => (
-    <blockquote className="r-card ink-border my-5 bg-(--wash) px-5 py-1 text-[15px] italic">
+    <blockquote className="r-card ink-border relative my-5 bg-(--wash) py-1 pr-5 pl-10 text-[15px] italic">
+      <span
+        aria-hidden
+        className="font-hand pointer-events-none absolute top-1 left-3 text-[2.75rem] leading-none text-(--accent-ink) opacity-60"
+      >
+        “
+      </span>
       {children}
     </blockquote>
   ),
@@ -123,6 +138,27 @@ const components: Components = {
     </td>
   ),
   strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+  // Plain `<img>`, not next/image: bodies are freeform Markdown, so a pasted
+  // URL can point anywhere — next/image would throw at request time for any
+  // host outside next.config's `images.remotePatterns` (only the Supabase
+  // storage bucket is allowlisted there).
+  img: ({ src, alt }) =>
+    typeof src !== "string" ? null : (
+      <figure className="my-6">
+        {/* eslint-disable-next-line @next/next/no-img-element -- freeform Markdown source, see comment above */}
+        <img
+          src={src}
+          alt={alt ?? ""}
+          loading="lazy"
+          className="ink-border r-card block w-full object-cover"
+        />
+        {alt && (
+          <figcaption className="mt-2 text-[13px] leading-[1.6] text-(--soft)">
+            {alt}
+          </figcaption>
+        )}
+      </figure>
+    ),
 };
 
 export default function Markdown({

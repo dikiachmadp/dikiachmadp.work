@@ -71,6 +71,16 @@ describe("getProjects", () => {
     expect(project.slug).toBe("website-ekonomi");
   });
 
+  it("meneruskan take ke findMany", async () => {
+    vi.mocked(prisma.project.findMany).mockResolvedValue([baseRow] as never);
+
+    await getProjects("en", { featured: true, take: 3 });
+
+    expect(prisma.project.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ take: 3, where: { featured: true } }),
+    );
+  });
+
   it("fallback ke translation en bila locale tidak tersedia", async () => {
     const onlyEnglish = {
       ...baseRow,
