@@ -1,75 +1,63 @@
 {
   "items": [
     {
-      "id": "brand-identity",
+      "id": "graphic-design",
       "order": 1,
-      "title": "Brand Identity",
-      "summary": "Logos, identity systems and guidelines built to last.",
+      "title": "Graphic Design",
+      "summary": "Visual design for different needs, from simple materials to complete visual assets.",
       "deliverables": [
-        "Logo design & variants",
-        "Typography & colour systems",
-        "Brand guidelines (PDF)",
-        "Stationery & social kit"
+        "Logo & visual identity",
+        "Print & promotional materials",
+        "Digital & social media assets",
+        "Layout & visual design"
       ]
     },
     {
-      "id": "ui-ux",
+      "id": "web-development",
       "order": 2,
-      "title": "UI/UX Design",
-      "summary": "Product design from wireframes to pixel-tight interfaces.",
+      "title": "Web & Development",
+      "summary": "Designing, building, and managing websites that are functional, clear, and easy to maintain.",
       "deliverables": [
-        "UX research & user flows",
-        "Wireframes & prototypes",
-        "UI design systems",
-        "Handoff & dev support"
+        "Website design & development",
+        "CMS & content management",
+        "Responsive interfaces",
+        "Website maintenance & troubleshooting"
       ]
     },
     {
-      "id": "packaging",
+      "id": "academic-publishing",
       "order": 3,
-      "title": "Packaging Design",
-      "summary": "Structural and graphic packaging that earns its shelf space.",
+      "title": "Academic Publishing",
+      "summary": "Managing and improving the digital side of academic journal publishing.",
       "deliverables": [
-        "Structural packaging design",
-        "Label & surface graphics",
-        "Dieline production files",
-        "3D packaging mockups"
+        "OJS setup & management",
+        "Journal website customization",
+        "Publishing workflow",
+        "Technical support for journals"
       ]
     },
     {
-      "id": "3d-modeling",
+      "id": "digital-solutions",
       "order": 4,
-      "title": "3D & Animation",
-      "summary": "Product visualisation, environments and motion.",
+      "title": "Digital Solutions",
+      "summary": "Building practical digital solutions around specific problems and workflows.",
       "deliverables": [
-        "3D product visualisation",
-        "Environment & prop modeling",
-        "Animation & motion graphics",
-        "Render passes & compositing"
+        "Digital workflow & process improvement",
+        "Custom web-based solutions",
+        "Database & content management",
+        "System integration"
       ]
     },
     {
-      "id": "illustration",
+      "id": "problem-solving",
       "order": 5,
-      "title": "Illustration",
-      "summary": "Custom illustration for editorial, brand and product.",
+      "title": "Problem Solving",
+      "summary": "Understanding unfamiliar problems, exploring the options, and finding a practical way forward.",
       "deliverables": [
-        "Editorial illustration",
-        "Spot & hero illustrations",
-        "Isometric & technical art",
-        "Character design"
-      ]
-    },
-    {
-      "id": "web-design",
-      "order": 6,
-      "title": "Web Design",
-      "summary": "Marketing sites and product pages, considered end to end.",
-      "deliverables": [
-        "Landing page design",
-        "Marketing site design",
-        "Responsive design systems",
-        "CMS-ready templates"
+        "Problem & workflow analysis",
+        "Technical research",
+        "Exploring possible approaches",
+        "Practical solution development"
       ]
     }
   ]

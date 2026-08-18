@@ -1,35 +1,36 @@
 {
   "featuredProjects": {
-    "eyebrow": "pilihan karya",
-    "title": "Proyek Unggulan",
-    "description": "Sebagian karya terbaru.",
+    "eyebrow": "beberapa hal yang",
+    "title": "pernah aku kerjakan",
+    "description": "Beberapa proyek yang mewakili pekerjaan yang pernah aku kerjakan.",
     "showButton": true,
-    "buttonLabel": "viewAllWork"
+    "buttonLabel": "lihat semua proyek"
   },
   "services": {
-    "eyebrow": "yang saya kerjakan",
-    "title": "Layanan",
-    "description": "Enam layanan inti, dari awal sampai selesai.",
+    "eyebrow": "hal yang bisa",
+    "title": "aku bantu",
+    "description": "Berbagai hal yang bisa aku bantu, mulai dari desain sampai solusi digital.",
     "showButton": true,
-    "buttonLabel": "viewAllServices"
+    "buttonLabel": "lihat semua"
   },
   "testimonials": {
-    "eyebrow": "kata mereka",
-    "title": "Testimoni",
-    "description": "Kata klien tentang bekerja bersama.",
+    "eyebrow": "apa kata mereka",
+    "title": "tentang pekerjaanku",
+    "description": "Cerita dan pengalaman dari orang-orang yang pernah bekerja denganku.",
     "showButton": false
   },
   "logbook": {
-    "eyebrow": "catatan dari meja kerja",
-    "title": "Logbook",
-    "description": "Catatan terbaru soal desain, kode, dan hal-hal yang meleset di antaranya.",
+    "eyebrow": "beberapa hal yang",
+    "title": "sedang aku pikirkan",
+    "description": "Catatan tentang pekerjaan, pembelajaran, masalah, solusi, dan berbagai hal yang aku temukan di sepanjang perjalanan.",
     "showButton": true,
-    "buttonLabel": "viewAll"
+    "buttonLabel": "lihat semua"
   },
   "cta": {
-    "title": "Punya ide yang mau dibangun?",
-    "description": "Ceritakan versi berantakannya — saya bantu rapikan jadi sesuatu yang diingat orang.",
+    "eyebrow": "jika ada sesuatu yang",
+    "title": "ingin kamu cari solusinya",
+    "description": "Ceritakan saja. Kita bisa mulai dari masalahnya dan mencari tahu bersama apa yang bisa dilakukan selanjutnya.",
     "showButton": true,
-    "buttonLabel": "contactMe"
+    "buttonLabel": "hubungi aku"
   }
 }

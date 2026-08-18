@@ -3,11 +3,11 @@
     "top": "Selamat datang di",
     "bottom": "Studio"
   },
-  "description": "Desainer lepas di Bandung — identitas brand, UI/UX, kemasan, dan 3D. Enam tahun mengubah coretan kasar jadi karya yang benar-benar dipakai.",
+  "description": "Banyak hal yang tidak aku ketahui, dan banyak hal yang belum bisa aku jawab. Tapi aku akan selalu berusaha untuk memahami dan menemukan jawabannya",
   "ctaPrimary": "Lihat karya",
   "ctaSecondary": "Mulai proyek",
   "videoTag": "showreel '26",
-  "craftBadge": ["6+ thn", "berkarya"],
+  "craftBadge": ["~10 thn", "berkarya"],
   "availability": {
     "status": "Terbuka untuk proyek",
     "isAvailable": true
@@ -26,12 +26,12 @@
     },
     {
       "id": "stat-2",
-      "value": "6+",
+      "value": "~10",
       "label": "tahun berkarya"
     },
     {
       "id": "stat-3",
-      "value": "10+",
+      "value": "~12",
       "label": "klien berulang"
     }
   ]

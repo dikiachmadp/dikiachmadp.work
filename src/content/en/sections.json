@@ -1,35 +1,36 @@
 {
   "featuredProjects": {
-    "eyebrow": "selected pieces",
-    "title": "Featured Projects",
-    "description": "A selection of recent work.",
+    "eyebrow": "some things I've",
+    "title": "worked on",
+    "description": "A few projects that represent the kind of work I've been involved in.",
     "showButton": true,
-    "buttonLabel": "viewAllWork"
+    "buttonLabel": "view all projects"
   },
   "services": {
-    "eyebrow": "what I do",
-    "title": "Services",
-    "description": "Six core services, start to finish.",
+    "eyebrow": "things I can",
+    "title": "help with",
+    "description": "Different things I can help with, from design to digital solutions.",
     "showButton": true,
-    "buttonLabel": "viewAllServices"
+    "buttonLabel": "view all"
   },
   "testimonials": {
-    "eyebrow": "kind words",
-    "title": "Testimonials",
-    "description": "What clients say about working together.",
+    "eyebrow": "what people say",
+    "title": "about my work",
+    "description": "Stories and experiences from people I've had the chance to work with.",
     "showButton": false
   },
   "logbook": {
-    "eyebrow": "notes from the desk",
-    "title": "Logbook",
-    "description": "Recent notes on design, code, and the things that go wrong in between.",
+    "eyebrow": "some things I've",
+    "title": "been thinking about",
+    "description": "Notes about work, learning, problems, solutions, and things I discover along the way.",
     "showButton": true,
-    "buttonLabel": "viewAll"
+    "buttonLabel": "view all"
   },
   "cta": {
-    "title": "Got something to build?",
-    "description": "Tell me the messy version — I'll help shape it into something people remember.",
+    "eyebrow": "if you have something",
+    "title": "worth figuring out",
+    "description": "Tell me about it. We can start with the problem and figure out what comes next.",
     "showButton": true,
-    "buttonLabel": "contactMe"
+    "buttonLabel": "get in touch"
   }
 }

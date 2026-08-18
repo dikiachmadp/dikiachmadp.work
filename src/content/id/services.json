@@ -1,75 +1,63 @@
 {
   "items": [
     {
-      "id": "brand-identity",
+      "id": "graphic-design",
       "order": 1,
-      "title": "Identitas Brand",
-      "summary": "Logo, sistem identitas, dan panduan brand yang tahan lama.",
+      "title": "Desain Grafis",
+      "summary": "Desain visual untuk berbagai kebutuhan, mulai dari materi sederhana hingga kebutuhan identitas visual.",
       "deliverables": [
-        "Desain logo & variannya",
-        "Sistem tipografi & warna",
-        "Panduan brand (PDF)",
-        "Kit stationery & sosial"
+        "Logo & identitas visual",
+        "Materi cetak & promosi",
+        "Aset digital & media sosial",
+        "Layout & desain visual"
       ]
     },
     {
-      "id": "ui-ux",
+      "id": "web-development",
       "order": 2,
-      "title": "Desain UI/UX",
-      "summary": "Desain produk dari wireframe hingga antarmuka rapi.",
+      "title": "Website & Pengembangan",
+      "summary": "Merancang, membangun, dan mengelola website yang berfungsi, jelas, dan mudah dikelola.",
       "deliverables": [
-        "Riset UX & alur pengguna",
-        "Wireframe & prototipe",
-        "Design system UI",
-        "Handoff & dukungan dev"
+        "Desain & pengembangan website",
+        "CMS & pengelolaan konten",
+        "Antarmuka responsif",
+        "Pemeliharaan & pemecahan masalah website"
       ]
     },
     {
-      "id": "packaging",
+      "id": "academic-publishing",
       "order": 3,
-      "title": "Desain Kemasan",
-      "summary": "Kemasan struktural dan grafis yang menonjol di rak.",
+      "title": "Penerbitan Akademik",
+      "summary": "Mengelola dan mengembangkan sisi digital dari penerbitan jurnal akademik.",
       "deliverables": [
-        "Desain struktur kemasan",
-        "Grafis label & permukaan",
-        "File produksi dieline",
-        "Mockup kemasan 3D"
+        "Pengaturan & pengelolaan OJS",
+        "Kustomisasi website jurnal",
+        "Alur kerja penerbitan",
+        "Dukungan teknis jurnal"
       ]
     },
     {
-      "id": "3d-modeling",
+      "id": "digital-solutions",
       "order": 4,
-      "title": "3D & Animasi",
-      "summary": "Visualisasi produk, environment, dan motion.",
+      "title": "Solusi Digital",
+      "summary": "Membangun solusi digital yang praktis berdasarkan kebutuhan dan masalah yang ingin diselesaikan.",
       "deliverables": [
-        "Visualisasi produk 3D",
-        "Modeling environment & prop",
-        "Animasi & motion graphics",
-        "Render pass & compositing"
+        "Perbaikan alur kerja & proses digital",
+        "Solusi berbasis web",
+        "Database & pengelolaan konten",
+        "Integrasi sistem"
       ]
     },
     {
-      "id": "illustration",
+      "id": "problem-solving",
       "order": 5,
-      "title": "Ilustrasi",
-      "summary": "Ilustrasi kustom untuk editorial, brand, dan produk.",
+      "title": "Pemecahan Masalah",
+      "summary": "Memahami masalah yang belum familiar, mengeksplorasi berbagai pilihan, dan mencari cara yang paling masuk akal untuk menyelesaikannya.",
       "deliverables": [
-        "Ilustrasi editorial",
-        "Ilustrasi spot & hero",
-        "Art isometrik & teknis",
-        "Desain karakter"
-      ]
-    },
-    {
-      "id": "web-design",
-      "order": 6,
-      "title": "Desain Web",
-      "summary": "Situs marketing dan halaman produk, dipikirkan menyeluruh.",
-      "deliverables": [
-        "Desain landing page",
-        "Desain situs marketing",
-        "Design system responsif",
-        "Template siap CMS"
+        "Analisis masalah & alur kerja",
+        "Riset teknis",
+        "Eksplorasi berbagai pendekatan",
+        "Pengembangan solusi praktis"
       ]
     }
   ]

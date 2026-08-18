@@ -1,47 +1,47 @@
 {
   "projects": {
-    "topTitle": "arsip berjalan",
-    "title": "Semua Karya",
-    "description": "Proyek branding, UI/UX, kemasan, 3D, dan ilustrasi."
+    "topTitle": "beberapa hal yang",
+    "title": "pernah aku kerjakan",
+    "description": "Kumpulan proyek yang pernah aku kerjakan di bidang desain, website, penerbitan akademik, dan solusi digital."
   },
   "services": {
-    "topTitle": "layanan",
-    "title": "Yang bisa saya kerjakan",
-    "description": "Enam layanan inti. Semua dimulai dari sketsa dan berakhir dengan file yang siap dipakai."
+    "topTitle": "hal yang bisa",
+    "title": "aku bantu",
+    "description": "Setiap masalah membutuhkan pendekatan yang berbeda. Aku belajar, mengeksplorasi, dan membangun solusi yang praktis dan bisa digunakan."
   },
   "about": {
-    "topTitle": "halo, saya",
+    "topTitle": "halo, aku",
     "title": "Diki Achmad Prasetya",
-    "description": "Desainer lepas yang berbasis di Bandung, Indonesia."
+    "description": "Seseorang yang senang belajar dan memecahkan masalah melalui desain, teknologi, dan penerbitan akademik."
   },
   "studio": {
-    "topTitle": "studio & eksperimen",
-    "title": "Selamat datang di studio",
-    "description": "Eksperimen, produk digital, dan catatan dari meja kerja."
+    "topTitle": "hal yang sedang",
+    "title": "aku eksplorasi",
+    "description": "Eksperimen, ide, produk digital, dan berbagai hal yang sedang aku pelajari."
   },
   "logbook": {
-    "topTitle": "catatan dari meja kerja",
-    "title": "Logbook",
-    "description": "Catatan soal desain, kode, dan hal-hal yang meleset di antaranya."
+    "topTitle": "catatan tentang",
+    "title": "apa yang aku kerjakan",
+    "description": "Catatan tentang pekerjaan, pembelajaran, masalah, solusi, dan berbagai hal yang aku temukan di sepanjang perjalanan."
   },
   "products": {
-    "topTitle": "dari etalase",
-    "title": "Produk Digital",
-    "description": "Template dan aset, siap dipakai langsung di proyekmu."
+    "topTitle": "beberapa hal yang",
+    "title": "pernah aku buat",
+    "description": "Tools, template, dan produk digital yang dibuat untuk menyelesaikan masalah praktis."
   },
   "contact": {
-    "topTitle": "hubungi saya",
-    "title": "Mari bekerja sama.",
-    "description": "Kirim pesan dan saya balas secepatnya — biasanya dalam sehari."
+    "topTitle": "kalau ingin",
+    "title": "mari bicara",
+    "description": "Punya ide, masalah, atau sesuatu yang ingin dicari solusinya? Kirim pesan dan mari kita bicarakan."
   },
   "legal": {
-    "topTitle": "Terakhir diperbarui: Mei 2026",
-    "title": "Ketentuan Hukum",
-    "description": "Harap baca ketentuan ini sebelum menggunakan situs. Dengan mengakses dikiachmadp.work Anda terikat pada ketentuan ini."
+    "topTitle": "tentang aturan",
+    "title": "penggunaan website",
+    "description": "Baca ketentuan ini sebelum menggunakan website. Dengan mengakses dikiachmadp.work, kamu menyetujui ketentuan yang berlaku."
   },
   "privacy": {
-    "topTitle": "Terakhir diperbarui: Mei 2026",
-    "title": "Kebijakan Privasi",
-    "description": "Kebijakan ini menjelaskan data apa yang dikumpulkan saat Anda mengunjungi situs ini dan bagaimana penanganannya."
+    "topTitle": "tentang bagaimana",
+    "title": "data kamu digunakan",
+    "description": "Kebijakan ini menjelaskan informasi apa yang dikumpulkan ketika kamu mengunjungi website ini dan bagaimana informasi tersebut digunakan."
   }
 }

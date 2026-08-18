@@ -1,47 +1,47 @@
 {
   "projects": {
-    "topTitle": "running archive",
-    "title": "All Work",
-    "description": "Projects across branding, UI/UX, packaging, 3D and illustration."
+    "topTitle": "some things I've",
+    "title": "worked on",
+    "description": "A collection of projects I've worked on across design, websites, academic publishing, and digital solutions."
   },
   "services": {
-    "topTitle": "services offered",
-    "title": "What I can do for you",
-    "description": "Six core services. Every engagement starts with a sketch and ends with files you can actually use."
+    "topTitle": "things I can",
+    "title": "help with",
+    "description": "Every problem needs a different approach. I learn, explore, and build practical solutions that work."
   },
   "about": {
     "topTitle": "hello, I'm",
     "title": "Diki Achmad Prasetya",
-    "description": "Freelance designer based in Bandung, Indonesia."
+    "description": "Someone who enjoys learning and solving problems through design, technology, and academic publishing."
   },
   "studio": {
-    "topTitle": "studio & play",
-    "title": "Welcome to my studio",
-    "description": "Experiments, digital products and notes from the desk."
+    "topTitle": "things I'm",
+    "title": "exploring",
+    "description": "Experiments, ideas, digital products, and things I'm learning along the way."
   },
   "logbook": {
-    "topTitle": "notes from the desk",
-    "title": "Logbook",
-    "description": "Notes on design, code, and the things that go wrong in between."
+    "topTitle": "notes on",
+    "title": "what I'm working on",
+    "description": "Notes about work, learning, problems, solutions, and things I discover along the way."
   },
   "products": {
-    "topTitle": "from the store",
-    "title": "Digital Products",
-    "description": "Templates and assets, ready to drop into your own project."
+    "topTitle": "some things I've",
+    "title": "made",
+    "description": "Tools, templates, and digital products built to solve practical problems."
   },
   "contact": {
-    "topTitle": "get in touch",
-    "title": "Let's work together.",
-    "description": "Drop a message and I'll get back to you as soon as I can — usually within a day."
+    "topTitle": "if you'd like to",
+    "title": "let's talk",
+    "description": "Have an idea, a problem, or something worth figuring out? Drop me a message and let's talk."
   },
   "legal": {
-    "topTitle": "Last updated: May 2026",
-    "title": "Legal Notice",
-    "description": "Please read these terms before using this website. By accessing dikiachmadp.work you agree to be bound by them."
+    "topTitle": "about the rules for",
+    "title": "using this website",
+    "description": "Please read these terms before using this website. By accessing dikiachmadp.work, you agree to these terms."
   },
   "privacy": {
-    "topTitle": "Last updated: May 2026",
-    "title": "Privacy Policy",
-    "description": "This policy explains what is collected when you visit this site and how it is handled."
+    "topTitle": "about how your",
+    "title": "data is used",
+    "description": "This policy explains what information is collected when you visit this website and how it is handled."
   }
 }
