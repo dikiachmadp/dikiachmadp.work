@@ -129,7 +129,7 @@ export default async function ProductDetailPage({
                 fill
                 sizes="(max-width: 980px) 100vw, 960px"
                 priority
-                className="object-cover"
+                className="object-contain"
               />
             ) : (
               <span className="font-tech text-[11px] tracking-[0.2em] text-(--soft) uppercase">
@@ -193,7 +193,7 @@ export default async function ProductDetailPage({
                     alt={`${product.title} — ${i + 1}`}
                     fill
                     sizes="(max-width: 640px) 100vw, 480px"
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
               ))}
