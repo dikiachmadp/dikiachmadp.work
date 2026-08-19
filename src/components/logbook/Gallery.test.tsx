@@ -48,6 +48,16 @@ describe("Gallery", () => {
     expect(html).toContain('aria-label="Show image 3"');
   });
 
+  it("shows the persistent prev/next controls and counter from two images onward", () => {
+    expect(render(1)).not.toContain(ui.a11y.previousImage);
+
+    const html = render(3);
+    expect(html).toContain(`aria-label="${ui.a11y.previousImage}"`);
+    expect(html).toContain(`aria-label="${ui.a11y.nextImage}"`);
+    expect(html).toContain("01");
+    expect(html).toContain("03");
+  });
+
   // Thumbnail aktif ditandai `aria-current`, dan hanya satu; warna border saja
   // tidak terbaca pembaca layar.
   it("marks exactly one thumbnail as current", () => {
@@ -64,6 +74,20 @@ describe("Gallery", () => {
 
   it("shows the caption of the image on display", () => {
     expect(render(2)).toContain("Keterangan pertama");
+  });
+
+  it("shows a floating date stamp only when dateLabel is given", () => {
+    expect(render(1)).not.toContain("15 August 2026");
+
+    const html = renderToStaticMarkup(
+      <Gallery
+        images={images(1)}
+        title="Sebuah pos"
+        ui={ui}
+        dateLabel="15 August 2026"
+      />,
+    );
+    expect(html).toContain("15 August 2026");
   });
 
   // Thumbnail mengulang gambar yang namanya sudah dibacakan tombolnya, jadi

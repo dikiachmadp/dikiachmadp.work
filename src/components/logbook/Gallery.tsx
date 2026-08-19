@@ -25,10 +25,15 @@ export default function Gallery({
   images,
   title,
   ui,
+  dateLabel,
 }: {
   images: LogbookImageItem[];
   title: string;
   ui: UiLabels;
+  /** Post's published date, pre-formatted for the locale (see
+   *  `PostCard.formatPublishedAt`) — shown as a floating stamp on the frame.
+   *  Omitted (draft preview, no date yet) simply skips the stamp. */
+  dateLabel?: string;
 }) {
   const [active, setActive] = useState(0);
   const [zoomed, setZoomed] = useState(false);
@@ -100,29 +105,70 @@ export default function Gallery({
 
   return (
     <section aria-label={galleryLabel} className="mb-9">
-      <div className="r-frame ink-border flat-5 bg-(--wash) p-2.5">
-        <button
-          ref={openerRef}
-          type="button"
-          onClick={() => setZoomed(true)}
-          aria-label={a11y.enlargeImage}
-          className="r-frame-inner ink-border relative block aspect-video w-full cursor-zoom-in overflow-hidden"
-        >
-          <Image
-            src={current.url}
-            alt={current.alt}
-            fill
-            sizes="(max-width: 980px) 100vw, 960px"
-            priority
-            className="object-cover"
-          />
-        </button>
+      <div className="relative">
+        <div className="r-frame ink-border flat-5 bg-(--wash) p-2.5">
+          <button
+            ref={openerRef}
+            type="button"
+            onClick={() => setZoomed(true)}
+            aria-label={a11y.enlargeImage}
+            className="r-frame-inner ink-border relative block aspect-video w-full cursor-zoom-in overflow-hidden"
+          >
+            <Image
+              src={current.url}
+              alt={current.alt}
+              fill
+              sizes="(max-width: 980px) 100vw, 960px"
+              priority
+              className="object-cover"
+            />
+          </button>
+        </div>
+
+        {dateLabel && (
+          <span
+            aria-hidden
+            className="r-tag ink-border flat-3 font-note absolute -top-4 right-6 rotate-3 bg-(--paper) px-3 pt-0.5 pb-1 text-[19px]"
+          >
+            {dateLabel}
+          </span>
+        )}
       </div>
 
       {current.caption && (
-        <p className="mt-2.5 mb-0 text-[13px] leading-[1.6] text-(--soft)">
+        <p className="font-note mt-3.5 mb-0 text-[20px] leading-[1.35] text-(--soft)">
           {current.caption}
         </p>
+      )}
+
+      {count > 1 && (
+        <div className="mt-3 mb-3 flex flex-wrap items-end justify-between gap-4">
+          <span className="font-note text-[22px] leading-none text-(--soft)">
+            {ui.logbook.moreFromLog}
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => step(-1)}
+              aria-label={a11y.previousImage}
+              className="r-tag ink-border cursor-pointer bg-(--paper) px-2.5 py-1 text-[13px] leading-[1.2] font-bold"
+            >
+              ←
+            </button>
+            <span className="font-tech min-w-[52px] text-center text-[11px] tracking-[0.14em] text-(--soft)">
+              {String(active + 1).padStart(2, "0")} /{" "}
+              {String(count).padStart(2, "0")}
+            </span>
+            <button
+              type="button"
+              onClick={() => step(1)}
+              aria-label={a11y.nextImage}
+              className="r-tag ink-border cursor-pointer bg-(--paper) px-2.5 py-1 text-[13px] leading-[1.2] font-bold"
+            >
+              →
+            </button>
+          </div>
+        </div>
       )}
 
       {count > 1 && (

@@ -86,7 +86,13 @@
     "viewAll": "Semua tulisan",
     "readTime": "{minutes} menit baca",
     "prevPost": "Tulisan sebelumnya",
-    "nextPost": "Tulisan berikutnya"
+    "nextPost": "Tulisan berikutnya",
+    "logBadge": "Log {n}",
+    "moreFromLog": "lagi dari log ini",
+    "whatILearnedEyebrow": "tiga hal yang layak disimpan",
+    "whatILearnedHeading": "Apa yang Saya Pelajari",
+    "endOfLog": "akhir log {n}",
+    "nextEntrySoon": "entri berikutnya, segera"
   },
   "products": {
     "backBtn": "Semua produk",
