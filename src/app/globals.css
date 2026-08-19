@@ -257,6 +257,17 @@
     }
   }
 
+  /* Always-justified body copy — the unconditional counterpart to
+     `.m-justify` above, for long-form reading copy (Logbook post body, its
+     pull-quote excerpt, takeaway items) that should stay justified at every
+     width, not just below 640px. Same `hyphens`/`text-wrap` pairing and the
+     same `lang`-attribute dependency. */
+  .justify-body {
+    text-align: justify;
+    hyphens: auto;
+    text-wrap: pretty;
+  }
+
   /* --- wobbly radii ------------------------------------------------------ */
   .r-btn {
     border-radius: 26px 10px 28px 11px / 11px 28px 10px 26px;

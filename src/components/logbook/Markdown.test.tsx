@@ -91,14 +91,14 @@ describe("pemetaan Markdown ke gaya situs", () => {
     expect(render("~~dicoret~~")).toContain("<del>");
   });
 
-  // Setiap <p> di HTML statis membawa class yang sama — pembedanya adalah
-  // varian `first:` Tailwind, yang jadi selektor CSS `:first-child` dan
-  // diputuskan browser saat layout, bukan di sini. Yang bisa diperiksa lewat
-  // markup statis hanyalah bahwa kaitannya benar-benar terpasang.
-  it("wires the drop-cap first-letter classes onto paragraphs", () => {
+  // Badan tulisan tetap rata kanan-kiri di semua lebar layar — beda dari
+  // `.m-justify` yang dipakai di tempat lain di situs (cuma <640px), badan
+  // Logbook/produk dianggap bacaan panjang yang lebih enak dibaca rata
+  // di kedua sisi bahkan di desktop.
+  it("keeps every paragraph justified regardless of viewport width", () => {
     const html = render("Paragraf pertama.\n\nParagraf kedua.");
 
-    expect(html).toContain("first:first-letter:font-hand");
+    expect(html.match(/class="justify-body /g)).toHaveLength(2);
   });
 
   it("renders a Markdown image with a caption from its alt text", () => {

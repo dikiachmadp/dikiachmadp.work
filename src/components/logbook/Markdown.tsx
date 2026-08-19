@@ -42,16 +42,7 @@ const components: Components = {
     </h4>
   ),
   p: ({ children }) => (
-    <p
-      className={cn(
-        "m-justify my-4 text-[15px] leading-[1.75] first:mt-0 last:mb-0",
-        // `first:` targets `:first-child` of the shared parent — every block
-        // element in the tree (p, h2, ul, …) sits at that same level, so this
-        // only fires when the very first thing in the body is a paragraph,
-        // not on every paragraph in the post.
-        "first:first-letter:font-hand first:first-letter:float-left first:first-letter:mr-2 first:first-letter:text-[3.2rem] first:first-letter:leading-[0.8] first:first-letter:text-(--accent-ink)",
-      )}
-    >
+    <p className="justify-body my-4 text-[15px] leading-[1.75] first:mt-0 last:mb-0">
       {children}
     </p>
   ),

@@ -183,7 +183,7 @@ export default async function LogbookPostPage({ params }: PostPageProps) {
             </span>
           </h1>
 
-          <p className="m-justify mb-[30px] border-l-[3px] border-(--accent-ink) pl-5 text-[20px] leading-[1.7] text-(--ink)">
+          <p className="justify-body mb-[30px] border-l-[3px] border-(--accent-ink) pl-5 text-[20px] leading-[1.7] text-(--ink)">
             {post.excerpt}
           </p>
 
@@ -216,7 +216,7 @@ export default async function LogbookPostPage({ params }: PostPageProps) {
                       aria-hidden
                       className="mt-2.5 h-2.5 w-2.5 rotate-45 bg-(--accent-ink)"
                     />
-                    <span className="m-justify text-[16px] leading-[1.75]">
+                    <span className="justify-body text-[16px] leading-[1.75]">
                       {item}
                     </span>
                   </li>
