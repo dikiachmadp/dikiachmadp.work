@@ -26,9 +26,9 @@ function project(id: string, categoryKey: string): Project {
 }
 
 const items = [
-  project("a", "web-design"),
-  project("b", "packaging"),
-  project("c", "web-design"),
+  project("a", "web-development"),
+  project("b", "graphic-design"),
+  project("c", "web-development"),
 ];
 
 const render = () =>
@@ -49,9 +49,9 @@ describe("ProjectsExplorer di locale id", () => {
   it("labels the chips in Indonesian", () => {
     const html = render();
 
-    expect(html).toContain("Desain Web");
-    expect(html).toContain("Kemasan");
-    expect(html).toContain("Ilustrasi");
+    expect(html).toContain("Website &amp; Pengembangan");
+    expect(html).toContain("Penerbitan Akademik");
+    expect(html).toContain("Solusi Digital");
   });
 
   // Dulu chip "All" adalah entri literal di dalam daftar kategori dan
@@ -75,8 +75,8 @@ describe("ProjectsExplorer di locale id", () => {
   it("labels the cards from the same key lookup as the chips", () => {
     const html = render();
 
-    expect(html).toContain("Desain Web · 2026");
-    expect(html).not.toContain("Web Design · 2026");
+    expect(html).toContain("Website &amp; Pengembangan · 2026");
+    expect(html).not.toContain("Web &amp; Development · 2026");
   });
 
   /**

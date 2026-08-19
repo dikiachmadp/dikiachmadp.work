@@ -1,32 +1,24 @@
 {
   "categories": [
     {
-      "key": "branding",
-      "label": "Branding"
+      "key": "graphic-design",
+      "label": "Graphic Design"
     },
     {
-      "key": "ui-ux-design",
-      "label": "UI/UX Design"
+      "key": "web-development",
+      "label": "Web & Development"
     },
     {
-      "key": "3d-modeling",
-      "label": "3D Modeling"
+      "key": "academic-publishing",
+      "label": "Academic Publishing"
     },
     {
-      "key": "packaging",
-      "label": "Packaging"
+      "key": "digital-solutions",
+      "label": "Digital Solutions"
     },
     {
-      "key": "illustration",
-      "label": "Illustration"
-    },
-    {
-      "key": "animation",
-      "label": "Animation"
-    },
-    {
-      "key": "web-design",
-      "label": "Web Design"
+      "key": "problem-solving",
+      "label": "Problem Solving"
     }
   ]
 }

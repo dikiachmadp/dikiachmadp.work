@@ -1,32 +1,24 @@
 {
   "categories": [
     {
-      "key": "branding",
-      "label": "Branding"
+      "key": "graphic-design",
+      "label": "Desain Grafis"
     },
     {
-      "key": "ui-ux-design",
-      "label": "Desain UI/UX"
+      "key": "web-development",
+      "label": "Website & Pengembangan"
     },
     {
-      "key": "3d-modeling",
-      "label": "Pemodelan 3D"
+      "key": "academic-publishing",
+      "label": "Penerbitan Akademik"
     },
     {
-      "key": "packaging",
-      "label": "Kemasan"
+      "key": "digital-solutions",
+      "label": "Solusi Digital"
     },
     {
-      "key": "illustration",
-      "label": "Ilustrasi"
-    },
-    {
-      "key": "animation",
-      "label": "Animasi"
-    },
-    {
-      "key": "web-design",
-      "label": "Desain Web"
+      "key": "problem-solving",
+      "label": "Pemecahan Masalah"
     }
   ]
 }
