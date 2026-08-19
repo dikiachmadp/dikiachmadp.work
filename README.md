@@ -12,9 +12,15 @@ Indonesia.
 ## Features
 
 - Bilingual portfolio (English / Indonesian) with locale-aware routing
+- Services, project categories, and case studies aligned to five core
+  offerings: graphic design, web development, academic publishing, digital
+  solutions, and problem solving
+- Digital Products store with an admin-managed catalog
+- Database-backed About page (bio, skills, experience, certifications) with
+  a dedicated admin editor
 - Logbook (blog) with independent slugs per language
-- Admin dashboard for managing projects, logbook posts, testimonials, and
-  contact submissions
+- Admin dashboard for managing projects, digital products, about content,
+  logbook posts, testimonials, and contact submissions
 - Contact form with rate limiting
 - PWA manifest and JSON-LD structured data for search and AI assistants
 

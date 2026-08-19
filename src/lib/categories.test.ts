@@ -35,16 +35,13 @@ describe("daftar kategori", () => {
   // Inti dari seluruh perubahan ini: label ID memang berbeda dari EN. Kalau
   // test ini gagal, kategori kembali tidak diterjemahkan.
   it("actually translates the labels that have an Indonesian form", () => {
-    expect(categoryLabel("id", "web-design")).toBe("Desain Web");
-    expect(categoryLabel("id", "packaging")).toBe("Kemasan");
-    expect(categoryLabel("id", "illustration")).toBe("Ilustrasi");
-    expect(categoryLabel("en", "web-design")).toBe("Web Design");
-  });
-
-  // "Branding" memang dipakai apa adanya di Indonesia, jadi label yang sama
-  // di sini bukan terjemahan yang terlewat.
-  it("leaves loanwords alone", () => {
-    expect(categoryLabel("id", "branding")).toBe("Branding");
+    expect(categoryLabel("id", "web-development")).toBe(
+      "Website & Pengembangan",
+    );
+    expect(categoryLabel("id", "academic-publishing")).toBe(
+      "Penerbitan Akademik",
+    );
+    expect(categoryLabel("en", "web-development")).toBe("Web & Development");
   });
 });
 
@@ -61,6 +58,6 @@ describe("categoryLabel", () => {
   });
 
   it("does not fall back to the English label for a known key", () => {
-    expect(categoryLabel("id", "3d-modeling")).toBe("Pemodelan 3D");
+    expect(categoryLabel("id", "digital-solutions")).toBe("Solusi Digital");
   });
 });

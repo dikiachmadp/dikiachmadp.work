@@ -11,7 +11,7 @@ function buildProjectFormData(
 ): FormData {
   const base: Record<string, string> = {
     slug: "project-baru",
-    categoryKey: "web-design",
+    categoryKey: "web-development",
     year: "2026",
     date: "2026-07-13",
     coverImage: "/covers/a.webp",
