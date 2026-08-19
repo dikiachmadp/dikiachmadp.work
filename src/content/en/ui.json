@@ -86,7 +86,13 @@
     "viewAll": "All posts",
     "readTime": "{minutes} min read",
     "prevPost": "Previous post",
-    "nextPost": "Next post"
+    "nextPost": "Next post",
+    "logBadge": "Log {n}",
+    "moreFromLog": "more from this log",
+    "whatILearnedEyebrow": "three things worth keeping",
+    "whatILearnedHeading": "What I Learned",
+    "endOfLog": "end of log {n}",
+    "nextEntrySoon": "next entry, soon"
   },
   "products": {
     "backBtn": "All products",

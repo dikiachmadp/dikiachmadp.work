@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionary";
 import {
   getAdjacentPosts,
   getAllPostSlugs,
+  getLogNumber,
   getPostBySlug,
 } from "@/lib/db/logbook";
 import { createMetadata } from "@/lib/metadata";
 import { estimateReadingMinutes, fill } from "@/lib/utils";
+import { extractTakeaways } from "@/lib/logbook-takeaways";
 import PageWrapper from "@/components/layout/PageWrapper";
 import Button from "@/components/ui/Button";
 import JsonLd from "@/components/seo/JsonLd";
 import Gallery from "@/components/logbook/Gallery";
 import Markdown from "@/components/logbook/Markdown";
+import ReadingRail from "@/components/logbook/ReadingRail";
 import { formatPublishedAt } from "@/components/logbook/PostCard";
 import ShareButton from "@/components/logbook/ShareButton";
 import { articleSchema, breadcrumbSchema } from "@/lib/structured-data";
@@ -86,20 +88,35 @@ export default async function LogbookPostPage({ params }: PostPageProps) {
 
   if (!post) notFound();
 
-  // Tetangga kronologis butuh publishedAt pos ini, jadi menunggu post di atas
-  // selesai dulu — tidak bisa ikut Promise.all bersama query yang menghasilkannya.
-  const adjacent = post.publishedAt
-    ? await getAdjacentPosts(validLocale, post.publishedAt)
-    : { prev: null, next: null };
+  // Tetangga kronologis dan nomor log keduanya butuh publishedAt pos ini,
+  // jadi menunggu post di atas selesai dulu — tidak bisa ikut Promise.all
+  // bersama query yang menghasilkannya. `getPostBySlug` selalu memfilter
+  // pos terbit, jadi publishedAt di sini tidak pernah null di praktiknya;
+  // guard-nya tetap ada karena tipenya `Date | null`.
+  const [adjacent, logNumber] = post.publishedAt
+    ? await Promise.all([
+        getAdjacentPosts(validLocale, post.publishedAt),
+        getLogNumber(validLocale, post.publishedAt),
+      ])
+    : ([{ prev: null, next: null }, 1] as const);
 
   const t = dict.ui.logbook;
   const publishedAt = formatPublishedAt(post.publishedAt, validLocale);
   const readTime = fill(t.readTime, {
     minutes: estimateReadingMinutes(post.body),
   });
-  // Cover naik jadi gambar hero di atas judul; sisanya (kalau ada) tetap
-  // tampil di galeri di bawah body — tanpa ini foto yang sama muncul dua kali.
-  const restImages = post.images.slice(1);
+  const logLabel = fill(t.logBadge, { n: String(logNumber).padStart(3, "0") });
+  const endOfLogLabel = fill(t.endOfLog, {
+    n: String(logNumber).padStart(3, "0"),
+  });
+
+  // "What I Learned" adalah panel opsional: pos yang menutup badannya dengan
+  // heading + daftar yang cocok dengan `t.whatILearnedHeading` mendapatkan
+  // panelnya diangkat keluar dari badan tulisan; yang lain tidak berubah.
+  const { body, items: takeaways } = extractTakeaways(
+    post.body,
+    t.whatILearnedHeading,
+  );
 
   return (
     <PageWrapper>
@@ -121,115 +138,161 @@ export default async function LogbookPostPage({ params }: PostPageProps) {
         )}
       />
 
-      <article className="mx-auto w-full max-w-[820px] px-[22px] pt-11">
-        <Button
-          href={`/${validLocale}/logbook`}
-          variant="secondary"
-          size="sm"
-          className="r-chip mb-[26px] px-4 py-2 text-[12px]"
-        >
-          ← {t.backBtn}
-        </Button>
-
-        {post.cover && (
-          <div className="ink-border flat-6 relative mb-7 aspect-[16/9] w-full overflow-hidden">
-            <Image
-              src={post.cover.url}
-              alt={post.cover.alt}
-              fill
-              sizes="(max-width: 980px) 100vw, 820px"
-              priority
-              className="object-cover"
-            />
-          </div>
-        )}
-
-        {/* `justify-center`, not `m-center` — this row is a flex container,
-            and text-align has no effect on how flex items are positioned. */}
-        <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 sm:justify-start">
-          {publishedAt && (
-            <time
-              dateTime={post.publishedAt?.toISOString()}
-              className="font-tech block text-[11px] tracking-[0.16em] text-(--soft) uppercase"
-            >
-              {publishedAt}
-            </time>
-          )}
-          {publishedAt && (
-            <span aria-hidden className="text-(--soft)">
-              ·
-            </span>
-          )}
-          <span className="font-tech block text-[11px] tracking-[0.16em] text-(--soft) uppercase">
-            {readTime}
-          </span>
-        </div>
-
-        <h1 className="font-hand m-center mt-1.5 mb-4 text-[clamp(2.2rem,5.2vw,3.6rem)] leading-none">
-          {post.title}
-        </h1>
-
-        <p className="ink-border-dashed r-card m-justify mb-[30px] bg-(--wash) px-5 py-4 text-[17px] leading-[1.65] text-(--soft)">
-          {post.excerpt}
-        </p>
-
-        {restImages.length > 0 && (
-          <>
-            <div className="dashed-rule mb-9" />
-            <Gallery images={restImages} title={post.title} ui={dict.ui} />
-          </>
-        )}
-
-        <div className="dashed-rule mb-9" />
-
-        <Markdown className="max-w-none">{post.body}</Markdown>
-
-        <div className="mt-11 flex items-center gap-3 border-t-2 border-dashed border-(--line) pt-7">
-          <ShareButton
-            title={post.title}
-            label={t.share}
-            copiedLabel={t.shareCopied}
-          />
-        </div>
-
-        {(adjacent.prev || adjacent.next) && (
-          <nav
-            aria-label={`${t.prevPost} / ${t.nextPost}`}
-            className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2"
+      <ReadingRail logNumber={logNumber}>
+        <article className="mx-auto w-full max-w-[820px] px-[22px] pt-11">
+          <Button
+            href={`/${validLocale}/logbook`}
+            variant="secondary"
+            size="sm"
+            className="r-chip mb-[26px] px-4 py-2 text-[12px]"
           >
-            {adjacent.prev ? (
-              <Link
-                href={`/${validLocale}/logbook/${adjacent.prev.slug}`}
-                className="ink-border flat-3 lift-card-sm r-card block bg-(--paper) p-4"
+            ← {t.backBtn}
+          </Button>
+
+          <div className="mb-4.5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:justify-start">
+            <span className="r-tag bg-(--accent) px-3 py-1.5 text-[10px] font-bold tracking-[0.18em] text-white uppercase">
+              {logLabel}
+            </span>
+            {publishedAt && (
+              <time
+                dateTime={post.publishedAt?.toISOString()}
+                className="font-tech block text-[11px] tracking-[0.16em] text-(--soft) uppercase"
               >
-                <span className="block text-[11px] font-bold tracking-[0.1em] text-(--soft) uppercase">
-                  ← {t.prevPost}
-                </span>
-                <span className="font-hand mt-1 block text-[17px] leading-[1.2]">
-                  {adjacent.prev.title}
-                </span>
-              </Link>
-            ) : (
-              <span />
+                {publishedAt}
+              </time>
             )}
-            {adjacent.next ? (
-              <Link
-                href={`/${validLocale}/logbook/${adjacent.next.slug}`}
-                className="ink-border flat-3 lift-card-sm r-card-alt block bg-(--paper) p-4 text-right"
-              >
-                <span className="block text-[11px] font-bold tracking-[0.1em] text-(--soft) uppercase">
-                  {t.nextPost} →
-                </span>
-                <span className="font-hand mt-1 block text-[17px] leading-[1.2]">
-                  {adjacent.next.title}
-                </span>
-              </Link>
-            ) : (
-              <span />
+            {publishedAt && (
+              <span
+                aria-hidden
+                className="h-1.5 w-1.5 rotate-45 bg-(--ink) opacity-35"
+              />
             )}
-          </nav>
-        )}
-      </article>
+            <span className="font-tech block text-[11px] tracking-[0.16em] text-(--soft) uppercase">
+              {readTime}
+            </span>
+          </div>
+
+          <h1 className="font-hand m-center mt-1.5 mb-4 text-[clamp(2.2rem,5.2vw,3.6rem)] leading-none">
+            <span
+              style={{
+                backgroundImage:
+                  "linear-gradient(transparent 62%, color-mix(in srgb, var(--accent-ink) 26%, transparent) 62%, color-mix(in srgb, var(--accent-ink) 26%, transparent) 94%, transparent 94%)",
+              }}
+            >
+              {post.title}
+            </span>
+          </h1>
+
+          <p className="m-justify mb-[30px] border-l-[3px] border-(--accent-ink) pl-5 text-[20px] leading-[1.7] text-(--ink)">
+            {post.excerpt}
+          </p>
+
+          <Gallery
+            images={post.images}
+            title={post.title}
+            ui={dict.ui}
+            dateLabel={publishedAt}
+          />
+
+          <div className="dashed-rule mb-9" />
+
+          <Markdown className="max-w-none">{body}</Markdown>
+
+          {takeaways.length > 0 && (
+            <section className="r-panel flat-6 ink-border mt-[46px] bg-(--wash) px-8 py-[30px]">
+              <span className="font-note block text-[21px] leading-[1.1] text-(--soft)">
+                {t.whatILearnedEyebrow}
+              </span>
+              <h2 className="font-hand mt-1 mb-5 text-[clamp(1.5rem,3.5vw,1.9rem)] leading-[1.2]">
+                {t.whatILearnedHeading}
+              </h2>
+              <ul className="m-0 flex list-none flex-col gap-4 p-0">
+                {takeaways.map((item) => (
+                  <li
+                    key={item}
+                    className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3.5"
+                  >
+                    <span
+                      aria-hidden
+                      className="mt-2.5 h-2.5 w-2.5 rotate-45 bg-(--accent-ink)"
+                    />
+                    <span className="m-justify text-[16px] leading-[1.75]">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <div className="mt-9 flex items-center gap-3">
+            <span
+              aria-hidden
+              className="h-2.5 w-2.5 rotate-45 bg-(--accent-ink)"
+            />
+            <span className="font-note text-[20px] text-(--soft)">
+              {endOfLogLabel}
+            </span>
+            <span className="dashed-rule flex-1" />
+          </div>
+
+          <div className="mt-[30px] flex flex-wrap items-center gap-3 border-t-2 border-dashed border-(--line) pt-7">
+            <ShareButton
+              title={post.title}
+              label={t.share}
+              copiedLabel={t.shareCopied}
+            />
+            <Button
+              href={`/${validLocale}/logbook`}
+              variant="secondary"
+              size="sm"
+            >
+              {t.viewAll} →
+            </Button>
+            <span className="font-note ml-auto text-[19px] text-(--soft)">
+              {t.nextEntrySoon}
+            </span>
+          </div>
+
+          {(adjacent.prev || adjacent.next) && (
+            <nav
+              aria-label={`${t.prevPost} / ${t.nextPost}`}
+              className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2"
+            >
+              {adjacent.prev ? (
+                <Link
+                  href={`/${validLocale}/logbook/${adjacent.prev.slug}`}
+                  className="ink-border flat-3 lift-card-sm r-card block bg-(--paper) p-4"
+                >
+                  <span className="block text-[11px] font-bold tracking-[0.1em] text-(--soft) uppercase">
+                    ← {t.prevPost}
+                  </span>
+                  <span className="font-hand mt-1 block text-[17px] leading-[1.2]">
+                    {adjacent.prev.title}
+                  </span>
+                </Link>
+              ) : (
+                <span />
+              )}
+              {adjacent.next ? (
+                <Link
+                  href={`/${validLocale}/logbook/${adjacent.next.slug}`}
+                  className="ink-border flat-3 lift-card-sm r-card-alt block bg-(--paper) p-4 text-right"
+                >
+                  <span className="block text-[11px] font-bold tracking-[0.1em] text-(--soft) uppercase">
+                    {t.nextPost} →
+                  </span>
+                  <span className="font-hand mt-1 block text-[17px] leading-[1.2]">
+                    {adjacent.next.title}
+                  </span>
+                </Link>
+              ) : (
+                <span />
+              )}
+            </nav>
+          )}
+        </article>
+      </ReadingRail>
     </PageWrapper>
   );
 }

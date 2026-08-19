@@ -364,6 +364,12 @@ export const UiSchema = z.object({
     readTime: z.string(),
     prevPost: z.string(),
     nextPost: z.string(),
+    logBadge: z.string(),
+    moreFromLog: z.string(),
+    whatILearnedEyebrow: z.string(),
+    whatILearnedHeading: z.string(),
+    endOfLog: z.string(),
+    nextEntrySoon: z.string(),
   }),
   products: z.object({
     backBtn: z.string(),

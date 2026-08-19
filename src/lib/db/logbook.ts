@@ -222,6 +222,27 @@ export async function getAdjacentPosts(
 }
 
 /**
+ * 1-indexed chronological rank of this post among published posts in
+ * `locale` — the "Log 001" badge. Not a stored field: recomputed from
+ * publish order so older posts never need a manual number, at the cost of
+ * later numbers shifting if an older post is ever backdated in above it.
+ */
+export async function getLogNumber(
+  locale: Locale,
+  publishedAt: Date,
+): Promise<number> {
+  return prisma.logbookPost.count({
+    where: {
+      AND: [
+        publishedWhere(),
+        { translations: { some: { locale } } },
+        { publishedAt: { lte: publishedAt } },
+      ],
+    },
+  });
+}
+
+/**
  * Untuk sitemap dan `generateStaticParams`. Slug berbeda per bahasa, jadi
  * locale-nya ikut — daftar slug polos tidak cukup di sini.
  */
