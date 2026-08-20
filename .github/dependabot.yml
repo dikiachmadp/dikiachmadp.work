@@ -1,0 +1,23 @@
+version: 2
+updates:
+  # Dependency npm — Prisma, Next, Supabase, dsb.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      # Minor + patch dikelompokkan jadi satu PR supaya tidak membanjiri
+      # inbox. Mayor tetap berdiri sendiri karena butuh peninjauan satu-satu
+      # (breaking change) — lihat catatan "Never run prisma db push/migrate
+      # dev/migrate reset against production" di docs/operations.md untuk
+      # kenapa upgrade Prisma khususnya tidak boleh sembarangan.
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Action yang dipakai CI (.github/workflows/ci.yml, keep-supabase-alive.yml).
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
