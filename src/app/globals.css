@@ -242,17 +242,16 @@
 
   /* Mobile-only alignment. Headings/eyebrows center; body copy justifies so
      both edges line up instead of the usual ragged right. `text-wrap: pretty`
-     keeps justify from stranding a single short word on its own line, and
-     `hyphens: auto` needs the page's `lang` attribute — already set on <html>
-     in the locale layout. Scoped to <640px: above that, everything reverts to
-     its normal left-aligned, non-justified layout. */
+     keeps justify from stranding a single short word on its own line. No
+     `hyphens: auto` — mid-word breaks hurt readability more than the ragged
+     edge they're meant to fix. Scoped to <640px: above that, everything
+     reverts to its normal left-aligned, non-justified layout. */
   @media (max-width: 639px) {
     .m-center {
       text-align: center;
     }
     .m-justify {
       text-align: justify;
-      hyphens: auto;
       text-wrap: pretty;
     }
   }
@@ -260,11 +259,10 @@
   /* Always-justified body copy — the unconditional counterpart to
      `.m-justify` above, for long-form reading copy (Logbook post body, its
      pull-quote excerpt, takeaway items) that should stay justified at every
-     width, not just below 640px. Same `hyphens`/`text-wrap` pairing and the
-     same `lang`-attribute dependency. */
+     width, not just below 640px. Same `text-wrap: pretty` pairing, no
+     `hyphens: auto` for the same readability reason. */
   .justify-body {
     text-align: justify;
-    hyphens: auto;
     text-wrap: pretty;
   }
 

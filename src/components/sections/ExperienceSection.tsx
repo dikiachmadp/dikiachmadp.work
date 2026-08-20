@@ -1,5 +1,4 @@
 import type { AboutProfileData } from "@/lib/db/about";
-import Tag from "@/components/ui/Tag";
 import { cn } from "@/lib/utils";
 
 interface ExperienceSectionProps {
@@ -7,8 +6,9 @@ interface ExperienceSectionProps {
 }
 
 /**
- * Experience rows, the certifications list (only rendered when there is at
- * least one), and the two skill cards in the About page's right column.
+ * Experience rows and the certifications list (only rendered when there is
+ * at least one) in the About page's right column. Skills live in the left
+ * sidebar instead — see about/page.tsx.
  */
 export default function ExperienceSection({
   aboutData,
@@ -113,36 +113,6 @@ export default function ExperienceSection({
           </div>
         </>
       )}
-
-      <div className="dashed-rule my-9" />
-
-      <h2 className="font-hand mb-3.5 text-[26px]">{aboutData.skillsTitle}</h2>
-      <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2">
-        {aboutData.skills.map((group, i) => (
-          <div
-            key={group.category}
-            className={cn(
-              "ink-border lift-card-sm flat-3 bg-(--wash) p-[18px]",
-              i % 2 === 0 ? "r-card-alt" : "r-card",
-              i % 2 === 1 && "lift-card-sm-cw",
-            )}
-          >
-            <div className="mb-2.5 text-[10px] font-bold tracking-[0.18em] text-(--soft) uppercase">
-              {group.category}
-            </div>
-            <div className="flex flex-wrap gap-[7px]">
-              {group.items.map((item) => (
-                <Tag
-                  key={item}
-                  className="bg-(--paper) text-[12px] font-semibold tracking-normal text-(--ink) normal-case"
-                >
-                  {item}
-                </Tag>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
     </>
   );
 }
