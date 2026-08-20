@@ -21,6 +21,8 @@ interface ButtonProps {
   rel?: string;
   download?: boolean;
   "aria-label"?: string;
+  "aria-expanded"?: boolean;
+  "aria-controls"?: string;
 }
 
 const sizeStyles: Record<ButtonSize, string> = {

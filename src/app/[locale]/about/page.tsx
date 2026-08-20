@@ -5,11 +5,14 @@ import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionary";
 import { getAboutProfile } from "@/lib/db/about";
 import { createMetadata } from "@/lib/metadata";
+import { cn } from "@/lib/utils";
 import PageWrapper from "@/components/layout/PageWrapper";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import ExperienceSection from "@/components/sections/ExperienceSection";
+import BiographyReveal from "@/components/sections/BiographyReveal";
 import CTASection from "@/components/sections/CTASection";
 import Button from "@/components/ui/Button";
+import Tag from "@/components/ui/Tag";
 import { Locale } from "@/types/content";
 
 interface PageProps {
@@ -63,6 +66,7 @@ export default async function AboutPage({ params }: PageProps) {
 
   const header = dict.pageHeader.about;
   const { siteConfig } = dict;
+  const [leadParagraph, ...restParagraphs] = about.biography;
 
   return (
     <PageWrapper>
@@ -116,6 +120,36 @@ export default async function AboutPage({ params }: PageProps) {
                 </Button>
               ))}
             </div>
+
+            {about.skills.length > 0 && (
+              <div className="flex flex-col gap-3">
+                <h2 className="font-hand text-[20px]">{about.skillsTitle}</h2>
+                {about.skills.map((group, i) => (
+                  <div
+                    key={group.category}
+                    className={cn(
+                      "ink-border lift-card-sm flat-3 bg-(--wash) p-4",
+                      i % 2 === 0 ? "r-card-alt" : "r-card",
+                      i % 2 === 1 && "lift-card-sm-cw",
+                    )}
+                  >
+                    <div className="mb-2 text-[10px] font-bold tracking-[0.18em] text-(--soft) uppercase">
+                      {group.category}
+                    </div>
+                    <div className="flex flex-wrap gap-[7px]">
+                      {group.items.map((item) => (
+                        <Tag
+                          key={item}
+                          className="bg-(--paper) text-[12px] font-semibold tracking-normal text-(--ink) normal-case"
+                        >
+                          {item}
+                        </Tag>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="m-center">
@@ -130,14 +164,16 @@ export default async function AboutPage({ params }: PageProps) {
                 {header.title}
               </span>
             </h1>
-            {about.biography.map((paragraph, i) => (
-              <p
-                key={i}
-                className="m-justify mb-3.5 max-w-[620px] text-[16px] leading-[1.75] text-(--soft)"
-              >
-                {paragraph}
+            {leadParagraph && (
+              <p className="justify-body mb-5 border-l-[3px] border-(--accent-ink) pl-5 text-[18px] leading-[1.65] text-(--ink)">
+                {leadParagraph}
               </p>
-            ))}
+            )}
+
+            <BiographyReveal
+              paragraphs={restParagraphs}
+              labels={dict.ui.aboutPage}
+            />
 
             <div className="dashed-rule my-9" />
 

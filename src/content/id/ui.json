@@ -112,6 +112,10 @@
     "title": "Informasi kontak",
     "findMe": "temukan saya di"
   },
+  "aboutPage": {
+    "readMore": "Lanjut baca",
+    "showLess": "Tampilkan lebih sedikit"
+  },
   "admin": {
     "panelLabel": "ruang kendali",
     "greeting": "selamat datang, Diki",

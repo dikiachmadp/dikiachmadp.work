@@ -112,6 +112,10 @@
     "title": "Contact information",
     "findMe": "find me on"
   },
+  "aboutPage": {
+    "readMore": "Keep reading",
+    "showLess": "Show less"
+  },
   "admin": {
     "panelLabel": "control room",
     "greeting": "welcome back, Diki",
