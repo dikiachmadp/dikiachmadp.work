@@ -15,6 +15,27 @@ const ContactRequestSchema = z.object({
   website: z.string().optional(),
 });
 
+/**
+ * Route handler tidak punya batas ukuran body bawaan — `bodySizeLimit` di
+ * next.config.ts hanya berlaku untuk server action, bukan route handler ini.
+ * Zod menolak payload berlebih di `ContactRequestSchema`, tapi penolakan itu
+ * terjadi *setelah* seluruh body diurai ke memori oleh `request.json()`.
+ * Skema penuh maksimum sekitar 5,5 KB teks; 16 KB memberi kelonggaran besar
+ * untuk overhead JSON dan Unicode multi-byte sambil tetap menutup payload
+ * megabyte-an sebelum sempat diurai.
+ */
+const MAX_BODY_BYTES = 16 * 1024;
+
+/**
+ * `Content-Length` bisa absen pada request `chunked` — form asli selalu
+ * mengirimkannya lewat `fetch`, jadi header yang hilang atau tidak terurai
+ * diperlakukan sebagai tolak, bukan diloloskan.
+ */
+function isBodyTooLarge(headers: Headers): boolean {
+  const length = Number(headers.get("content-length"));
+  return !Number.isFinite(length) || length <= 0 || length > MAX_BODY_BYTES;
+}
+
 function sanitizeHtml(str: string): string {
   return str.replace(/[<>&"']/g, (char) => {
     switch (char) {
@@ -43,6 +64,10 @@ export async function POST(request: Request) {
       { error: "Too many requests. Please try again later." },
       { status: 429 },
     );
+  }
+
+  if (isBodyTooLarge(request.headers)) {
+    return NextResponse.json({ error: "Payload too large." }, { status: 413 });
   }
 
   try {

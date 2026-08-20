@@ -55,6 +55,13 @@ const securityHeaders = [
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
   },
+  // Memutus referensi `window.opener` dari popup lintas-origin. Aman di sini:
+  // alur auth Supabase berbasis redirect (lihat
+  // src/app/(admin)/[locale]/auth/callback/route.ts), bukan popup.
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+  // Menutup pembacaan lintas-domain gaya Flash/PDF reader lama. Relevan
+  // karena /CV_Diki.pdf dilayani dari origin ini.
+  { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
 ];
 
 const nextConfig: NextConfig = {
