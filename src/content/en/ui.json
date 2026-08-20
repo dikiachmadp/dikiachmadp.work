@@ -39,7 +39,7 @@
     "projectCover": "{category} cover",
     "projectShot": "{category} shot",
     "galleryPlaceholder": "detail shot {n}",
-    "logbookGallery": "Gallery for {title}",
+    "imageGallery": "Gallery for {title}",
     "enlargeImage": "Enlarge image",
     "imageDialog": "{title} — enlarged image",
     "previousImage": "Previous image",
@@ -74,7 +74,13 @@
     "backBtn": "Back to projects",
     "visitBtn": "Visit live site",
     "galleryLabel": "Gallery",
-    "notFoundTitle": "Project not found"
+    "notFoundTitle": "Project not found",
+    "moreShots": "more from this project",
+    "share": "Share",
+    "shareCopied": "Link copied ✓",
+    "prevProject": "Previous project",
+    "nextProject": "Next project",
+    "endOfProject": "end of case study"
   },
   "logbook": {
     "backBtn": "All posts",

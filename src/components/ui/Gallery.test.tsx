@@ -1,16 +1,15 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import Gallery from "@/components/logbook/Gallery";
+import Gallery, { type GalleryImage } from "@/components/ui/Gallery";
 import { UiSchema } from "@/schemas/content";
 import en from "@/content/en/ui.json";
 import id from "@/content/id/ui.json";
-import type { LogbookImageItem } from "@/lib/db/logbook";
 
 // Label asli, bukan fixture: kalau sebuah kunci hilang dari salah satu bahasa,
 // test ini gagal di sini alih-alih tampil sebagai nama aksesibel kosong.
 const ui = UiSchema.parse(en);
 
-function images(count: number): LogbookImageItem[] {
+function images(count: number): GalleryImage[] {
   return Array.from({ length: count }, (_, i) => ({
     id: `img-${i}`,
     url: `/g/${i}.webp`,
@@ -21,7 +20,12 @@ function images(count: number): LogbookImageItem[] {
 
 const render = (count: number) =>
   renderToStaticMarkup(
-    <Gallery images={images(count)} title="Sebuah pos" ui={ui} />,
+    <Gallery
+      images={images(count)}
+      title="Sebuah pos"
+      ui={ui}
+      moreLabel="more from this log"
+    />,
   );
 
 describe("Gallery", () => {
@@ -85,6 +89,7 @@ describe("Gallery", () => {
         title="Sebuah pos"
         ui={ui}
         dateLabel="15 August 2026"
+        moreLabel="more from this log"
       />,
     );
     expect(html).toContain("15 August 2026");
@@ -113,7 +118,7 @@ describe("label galeri ada di kedua bahasa", () => {
     const idA11y = UiSchema.parse(id).a11y;
 
     for (const key of [
-      "logbookGallery",
+      "imageGallery",
       "enlargeImage",
       "imageDialog",
       "previousImage",
