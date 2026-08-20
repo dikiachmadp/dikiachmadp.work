@@ -389,10 +389,6 @@ export const UiSchema = z.object({
     title: z.string(),
     findMe: z.string(),
   }),
-  aboutPage: z.object({
-    readMore: z.string(),
-    showLess: z.string(),
-  }),
   admin: z.object({
     panelLabel: z.string(),
     greeting: z.string(),

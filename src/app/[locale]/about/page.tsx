@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import PageWrapper from "@/components/layout/PageWrapper";
 import SectionWrapper from "@/components/layout/SectionWrapper";
 import ExperienceSection from "@/components/sections/ExperienceSection";
-import BiographyReveal from "@/components/sections/BiographyReveal";
 import CTASection from "@/components/sections/CTASection";
 import Button from "@/components/ui/Button";
 import Tag from "@/components/ui/Tag";
@@ -165,15 +164,19 @@ export default async function AboutPage({ params }: PageProps) {
               </span>
             </h1>
             {leadParagraph && (
-              <p className="justify-body mb-5 border-l-[3px] border-(--accent-ink) pl-5 text-[18px] leading-[1.65] text-(--ink)">
+              <p className="justify-body mb-5 border-l-[3px] border-(--accent-ink) pl-5 text-[18px] leading-[1.65] font-medium text-(--ink)">
                 {leadParagraph}
               </p>
             )}
 
-            <BiographyReveal
-              paragraphs={restParagraphs}
-              labels={dict.ui.aboutPage}
-            />
+            {restParagraphs.map((paragraph, i) => (
+              <div key={i}>
+                <div className="dashed-rule my-4" />
+                <p className="justify-body text-[16px] leading-[1.75] text-(--ink)">
+                  {paragraph}
+                </p>
+              </div>
+            ))}
 
             <div className="dashed-rule my-9" />
 
