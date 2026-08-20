@@ -36,7 +36,6 @@ export default function Gallery({
   ui,
   dateLabel,
   moreLabel,
-  fit = "cover",
 }: {
   images: GalleryImage[];
   title: string;
@@ -49,10 +48,6 @@ export default function Gallery({
    *  this project" — caller-owned copy instead of a Logbook-specific string
    *  baked into this shared component. */
   moreLabel: string;
-  /** `"cover"` crops to fill the frame (Logbook's original behaviour);
-   *  `"contain"` shows the whole image letterboxed, for sources whose aspect
-   *  ratio shouldn't be cropped (project screenshots). */
-  fit?: "cover" | "contain";
 }) {
   const [active, setActive] = useState(0);
   const [zoomed, setZoomed] = useState(false);
@@ -133,13 +128,19 @@ export default function Gallery({
             aria-label={a11y.enlargeImage}
             className="r-frame-inner ink-border relative block aspect-video w-full cursor-zoom-in overflow-hidden"
           >
+            {/* `object-contain`, bukan `object-cover`: gambar di sini diunggah
+                admin dengan rasio bebas (tangkapan layar ultrawide, potret,
+                apa pun), sementara bingkainya rasio tetap. `cover` memotong
+                sisi yang tidak muat — pada gambar 2.5:1 di bingkai 16:9 itu
+                membuang ~29% lebarnya. `contain` memuat utuh; sisa ruangnya
+                jatuh ke `--wash` milik bingkai luar. */}
             <Image
               src={current.url}
               alt={current.alt}
               fill
               sizes="(max-width: 980px) 100vw, 960px"
               priority
-              className={fit === "contain" ? "object-contain" : "object-cover"}
+              className="object-contain"
             />
           </button>
         </div>
@@ -219,7 +220,7 @@ export default function Gallery({
                 alt=""
                 fill
                 sizes="86px"
-                className="object-cover"
+                className="object-contain"
               />
             </button>
           ))}

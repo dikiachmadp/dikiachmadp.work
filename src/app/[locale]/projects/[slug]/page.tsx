@@ -312,7 +312,6 @@ export default async function ProjectDetailPage({
                 title={project.title}
                 ui={dict.ui}
                 moreLabel={t.moreShots}
-                fit="contain"
               />
             </div>
           )}

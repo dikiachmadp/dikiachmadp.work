@@ -44,7 +44,7 @@ export default function ProjectCard({
             alt={project.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1180px) 50vw, 376px"
-            className="object-cover"
+            className="object-contain"
           />
         ) : (
           <span className="font-tech text-[10px] tracking-[0.2em] text-(--soft) uppercase">

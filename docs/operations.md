@@ -146,7 +146,7 @@ repo. Re-check them after any project change:
   are built from `SITE_URL`, and this list is the second lock on where a
   recovery token may land.
 
-Verified 2026-08-14: signup off, one account in `auth.users`. Both are readable
+Verified 2026-08-20: signup off, one account in `auth.users`. Both are readable
 without the dashboard — `GET /auth/v1/settings` with the anon key reports
 `disable_signup`, and `select email from auth.users` covers the second. The
 redirect URL list has no read path short of the Management API, so it is the
