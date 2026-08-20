@@ -93,7 +93,12 @@ export default function ProjectsExplorer({
       {visible.length > 0 ? (
         <div className="grid grid-cols-1 gap-[26px] sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((project) => (
-            <ProjectCard key={project.id} project={project} locale={locale} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              locale={locale}
+              showLogo
+            />
           ))}
         </div>
       ) : (
