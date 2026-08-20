@@ -20,7 +20,6 @@ import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, projectSchema } from "@/lib/structured-data";
 import { categoryLabel } from "@/lib/categories";
 import { Locale } from "@/types/content";
-import { cn, fill } from "@/lib/utils";
 
 interface ProjectDetailPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -85,10 +84,20 @@ export default async function ProjectDetailPage({
 
   const t = dict.ui.projectDetail;
   const category = categoryLabel(validLocale, project.categoryKey);
-  const hasCover = Boolean(project.coverImage);
-  // Selama galeri kosong, tidak ada seksi galeri sama sekali — begitu gambar
-  // diunggah lewat CMS, seksinya muncul dengan gambar itu.
-  const gallery = project.gallery ?? [];
+  // Sama seperti Logbook (di sana `cover` cuma alias untuk `images[0]`, lihat
+  // `lib/db/logbook.ts`): tidak ada kotak cover terpisah di sini. `coverImage`
+  // digabung jadi elemen pertama, lalu satu `<Gallery>` yang merender semuanya
+  // — gambar pertama besar, sisanya jadi strip thumbnail. `Set` membuang
+  // duplikat kalau admin sempat menaruh URL yang sama di cover & di galeri;
+  // `filter(Boolean)` menjaga kasus `coverImage` kosong (data lama) supaya
+  // tidak masuk sebagai item kosong.
+  const galleryImages = Array.from(
+    new Set([project.coverImage, ...(project.gallery ?? [])].filter(Boolean)),
+  ).map((src, i) => ({
+    id: src,
+    url: src,
+    alt: `${project.title} — ${i + 1}`,
+  }));
   // Deskripsi sudah tampil sebagai pull-quote di bawah judul; tanpa
   // contentBlocks, seksi "About the project" tidak dirender sama sekali
   // supaya deskripsinya tidak tercetak dua kali.
@@ -206,79 +215,57 @@ export default async function ProjectDetailPage({
             ← {t.backBtn}
           </Button>
 
-          <div className="mb-4.5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:justify-start">
-            <span className="r-tag bg-(--accent) px-3 py-1.5 text-[10px] font-bold tracking-[0.18em] text-white uppercase">
-              {category}
-            </span>
-            <span className="font-tech block text-[11px] tracking-[0.16em] text-(--soft) uppercase">
-              {project.year}
-            </span>
-          </div>
-
-          <h1 className="font-hand m-center mt-1.5 mb-4 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
-            <span
-              style={{
-                backgroundImage:
-                  "linear-gradient(transparent 62%, color-mix(in srgb, var(--accent-ink) 26%, transparent) 62%, color-mix(in srgb, var(--accent-ink) 26%, transparent) 94%, transparent 94%)",
-              }}
-            >
-              {project.title}
-            </span>
-          </h1>
-
-          <p className="justify-body mb-[34px] max-w-[640px] border-l-[3px] border-(--accent-ink) pl-5 text-[17px] leading-[1.7] text-(--ink)">
-            {project.description}
-          </p>
-
-          <div className="relative mb-11">
-            <div className="r-frame ink-border flat-5 bg-(--wash) p-2.5">
-              <div
-                className={cn(
-                  "r-frame-inner ink-border relative flex aspect-video items-center justify-center overflow-hidden",
-                  !hasCover && "crosshatch",
-                )}
-              >
-                {hasCover ? (
-                  <Image
-                    src={project.coverImage}
-                    alt={project.title}
-                    fill
-                    sizes="(max-width: 980px) 100vw, 960px"
-                    priority
-                    className="object-contain"
-                  />
-                ) : (
-                  <span className="font-tech text-[11px] tracking-[0.2em] text-(--soft) uppercase">
-                    {fill(dict.ui.a11y.projectCover, {
-                      category: category.toLowerCase(),
-                    })}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <span
-              aria-hidden
-              className="r-tag ink-border flat-3 font-note absolute -top-4 right-6 rotate-3 bg-(--paper) px-3 pt-0.5 pb-1 text-[19px]"
-            >
-              {project.year}
-            </span>
-
+          <div className="mb-9 flex flex-col gap-5 sm:flex-row sm:items-start">
             {project.logoUrl && (
-              <span
-                aria-hidden
-                className="r-blob ink-border flat-3 absolute -bottom-4 left-6 flex h-[52px] w-[52px] -rotate-3 items-center justify-center overflow-hidden bg-(--paper)"
-              >
+              <span className="r-blob ink-border flat-3 mx-auto flex h-[130px] w-[130px] shrink-0 items-center justify-center overflow-hidden bg-(--paper) sm:mx-0">
                 <Image
                   src={project.logoUrl}
                   alt=""
-                  width={34}
-                  height={34}
-                  className="h-[34px] w-[34px] object-contain"
+                  width={86}
+                  height={86}
+                  className="h-[86px] w-[86px] object-contain"
                 />
               </span>
             )}
+
+            <div className="min-w-0 flex-1">
+              <div className="mb-4.5 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:justify-start">
+                <span className="r-tag bg-(--accent) px-3 py-1.5 text-[10px] font-bold tracking-[0.18em] text-white uppercase">
+                  {category}
+                </span>
+                <span className="font-tech block text-[11px] tracking-[0.16em] text-(--soft) uppercase">
+                  {project.year}
+                </span>
+              </div>
+
+              <h1 className="font-hand m-center mt-1.5 mb-4 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
+                <span
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(transparent 62%, color-mix(in srgb, var(--accent-ink) 26%, transparent) 62%, color-mix(in srgb, var(--accent-ink) 26%, transparent) 94%, transparent 94%)",
+                  }}
+                >
+                  {project.title}
+                </span>
+              </h1>
+
+              <p className="justify-body max-w-[640px] border-l-[3px] border-(--accent-ink) pl-5 text-[17px] leading-[1.7] text-(--ink)">
+                {project.description}
+              </p>
+            </div>
           </div>
+
+          {galleryImages.length > 0 && (
+            <div className="mb-11">
+              <Gallery
+                images={galleryImages}
+                title={project.title}
+                ui={dict.ui}
+                dateLabel={project.year}
+                moreLabel={t.moreShots}
+              />
+            </div>
+          )}
 
           {blocks.length > 0 ? (
             <div className="grid grid-cols-1 items-start gap-9 lg:grid-cols-[1fr_260px]">
@@ -298,22 +285,6 @@ export default async function ProjectDetailPage({
             </div>
           ) : (
             <div className="mx-auto w-full max-w-[360px]">{factsAside}</div>
-          )}
-
-          {gallery.length > 0 && (
-            <div className="mt-11">
-              <h2 className="font-hand mb-4 text-[28px]">{t.galleryLabel}</h2>
-              <Gallery
-                images={gallery.map((src, i) => ({
-                  id: src,
-                  url: src,
-                  alt: `${project.title} — ${i + 1}`,
-                }))}
-                title={project.title}
-                ui={dict.ui}
-                moreLabel={t.moreShots}
-              />
-            </div>
           )}
 
           <div className="dashed-rule mt-11 mb-9" />
