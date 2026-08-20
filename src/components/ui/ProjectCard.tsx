@@ -28,7 +28,7 @@ export default function ProjectCard({
     <Link
       href={`/${locale}/projects/${project.slug}`}
       className={cn(
-        "r-card ink-border flat-3 lift-card block overflow-hidden bg-(--paper)",
+        "r-card ink-border flat-3 lift-card flex flex-col overflow-hidden bg-(--paper)",
         className,
       )}
     >
@@ -55,7 +55,7 @@ export default function ProjectCard({
         )}
       </div>
 
-      <div className="px-[18px] pt-4 pb-[18px]">
+      <div className="flex flex-1 flex-col px-[18px] pt-4 pb-[18px]">
         <div className="flex items-start justify-between gap-3">
           <div>
             <div className="micro">{meta}</div>
@@ -87,7 +87,13 @@ export default function ProjectCard({
           )}
         </div>
 
-        <div className="mt-3.5 flex flex-wrap gap-[7px]">
+        {project.description && (
+          <p className="m-justify mt-2 line-clamp-3 text-[13px] leading-[1.6] text-(--soft)">
+            {project.description}
+          </p>
+        )}
+
+        <div className="mt-auto flex flex-wrap gap-[7px] pt-3.5">
           {project.tags.map((tag) => (
             <Tag key={tag}>{tag}</Tag>
           ))}

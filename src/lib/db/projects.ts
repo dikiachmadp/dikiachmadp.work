@@ -84,6 +84,54 @@ export async function getAllProjectSlugs(): Promise<string[]> {
   return rows.map((row) => row.slug);
 }
 
+export type ProjectAdjacent = { slug: string; title: string };
+
+/**
+ * Tetangga di urutan tampilan (`date: "desc"`, sama seperti `getProjects`)
+ * untuk navigasi sebelumnya/berikutnya di halaman detail.
+ *
+ * Beda dari `getAdjacentPosts` Logbook (`lib/db/logbook.ts`), yang memakai
+ * dua query `lt`/`gt` pada `publishedAt` (datetime): kolom `date` proyek
+ * adalah string "YYYY-MM-DD" tanpa jam, jadi dua proyek bertanggal sama jauh
+ * lebih mungkin — perbandingan `lt`/`gt` bisa melompati tetangga yang
+ * sebenarnya. Katalog proyek juga kecil (portofolio, bukan blog), jadi satu
+ * `findMany` yang menarik seluruh urutan lalu mencari indeks slug ini lebih
+ * murah sekaligus deterministik, dibanding dua query yang bisa salah pada
+ * tanggal kembar.
+ */
+export async function getAdjacentProjects(
+  locale: Locale,
+  slug: string,
+): Promise<{ prev: ProjectAdjacent | null; next: ProjectAdjacent | null }> {
+  const rows = await prisma.project.findMany({
+    select: {
+      slug: true,
+      translations: {
+        where: { locale: { in: [locale, "en"] } },
+        select: { locale: true, title: true },
+      },
+    },
+    orderBy: { date: "desc" },
+  });
+
+  const list: ProjectAdjacent[] = rows.map((row) => {
+    const tr =
+      row.translations.find((t) => t.locale === locale) ??
+      row.translations.find((t) => t.locale === "en");
+    return { slug: row.slug, title: tr?.title ?? row.slug };
+  });
+
+  const index = list.findIndex((item) => item.slug === slug);
+  if (index === -1) return { prev: null, next: null };
+
+  return {
+    // Terurut terbaru → terlama: "sebelumnya" (terbit lebih dulu) ada di
+    // indeks berikutnya, "berikutnya" (lebih baru) ada di indeks sebelumnya.
+    prev: list[index + 1] ?? null,
+    next: index > 0 ? list[index - 1] : null,
+  };
+}
+
 // --- Fungsi admin ---
 
 export type ProjectTranslationInput = {

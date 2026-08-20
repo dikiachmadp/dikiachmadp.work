@@ -3,9 +3,10 @@
 import { type ReactNode, useEffect, useState } from "react";
 
 /**
- * Scroll-progress chrome wrapped around a Logbook post's content: a thin
- * accent bar that docks under the sticky navbar, plus a desktop-only
- * vertical rail repeating the log number and the live read percentage.
+ * Scroll-progress chrome wrapped around a detail page's content (Logbook
+ * post or Project case study): a thin accent bar that docks under the
+ * sticky navbar, plus a desktop-only vertical rail repeating a short label
+ * and the live read percentage.
  *
  * Owns the scroll listener itself and renders the two-column layout (rail +
  * content) around `children`, so the article in `page.tsx` doesn't need to
@@ -16,14 +17,14 @@ import { type ReactNode, useEffect, useState } from "react";
  * for free, with no prop or context threaded through `Navbar.tsx` itself.
  */
 export default function ReadingRail({
-  logNumber,
+  label,
   children,
 }: {
-  logNumber: number;
+  /** Short vertical-rail label, e.g. `"log 003"` or a project's category. */
+  label: string;
   children: ReactNode;
 }) {
   const [pct, setPct] = useState(0);
-  const label = "log " + String(logNumber).padStart(3, "0");
 
   useEffect(() => {
     const onScroll = () => {

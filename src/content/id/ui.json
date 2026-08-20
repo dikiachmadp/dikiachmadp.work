@@ -39,7 +39,7 @@
     "projectCover": "Sampul {category}",
     "projectShot": "Gambar {category}",
     "galleryPlaceholder": "gambar detail {n}",
-    "logbookGallery": "Galeri untuk {title}",
+    "imageGallery": "Galeri untuk {title}",
     "enlargeImage": "Perbesar gambar",
     "imageDialog": "{title} — gambar diperbesar",
     "previousImage": "Gambar sebelumnya",
@@ -74,7 +74,13 @@
     "backBtn": "Kembali ke proyek",
     "visitBtn": "Kunjungi situs",
     "galleryLabel": "Galeri",
-    "notFoundTitle": "Proyek tidak ditemukan"
+    "notFoundTitle": "Proyek tidak ditemukan",
+    "moreShots": "lagi dari proyek ini",
+    "share": "Bagikan",
+    "shareCopied": "Tautan tersalin ✓",
+    "prevProject": "Proyek sebelumnya",
+    "nextProject": "Proyek berikutnya",
+    "endOfProject": "akhir studi kasus"
   },
   "logbook": {
     "backBtn": "Semua tulisan",

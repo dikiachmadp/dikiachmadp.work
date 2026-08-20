@@ -11,7 +11,11 @@ vi.mock("@/lib/prisma", () => ({
 }));
 
 import { prisma } from "@/lib/prisma";
-import { getProjectBySlug, getProjects } from "@/lib/db/projects";
+import {
+  getAdjacentProjects,
+  getProjectBySlug,
+  getProjects,
+} from "@/lib/db/projects";
 
 const baseRow = {
   id: "p1",
@@ -119,6 +123,75 @@ describe("getProjects", () => {
     const [project] = await getProjects("en");
 
     expect(project.contentBlocks).toBeUndefined();
+  });
+});
+
+describe("getAdjacentProjects", () => {
+  // Terurut terbaru → terlama, meniru `orderBy: { date: "desc" }`.
+  const rows = [
+    {
+      slug: "terbaru",
+      translations: [{ locale: "en", title: "Newest" }],
+    },
+    {
+      slug: "tengah-1",
+      translations: [{ locale: "en", title: "Middle One" }],
+    },
+    {
+      // Tanggal kembar dengan "tengah-1" di dunia nyata — urutannya di sini
+      // yang menentukan tetangga, bukan perbandingan tanggal, jadi kasus ini
+      // tetap benar walau `date` sama.
+      slug: "tengah-2",
+      translations: [{ locale: "en", title: "Middle Two" }],
+    },
+    {
+      slug: "terlama",
+      translations: [{ locale: "en", title: "Oldest" }],
+    },
+  ];
+
+  it("mengembalikan prev (lebih lama) dan next (lebih baru) untuk item tengah", async () => {
+    vi.mocked(prisma.project.findMany).mockResolvedValue(rows as never);
+
+    const { prev, next } = await getAdjacentProjects("en", "tengah-1");
+
+    expect(prev).toEqual({ slug: "tengah-2", title: "Middle Two" });
+    expect(next).toEqual({ slug: "terbaru", title: "Newest" });
+  });
+
+  it("next null untuk proyek terbaru", async () => {
+    vi.mocked(prisma.project.findMany).mockResolvedValue(rows as never);
+
+    const { prev, next } = await getAdjacentProjects("en", "terbaru");
+
+    expect(next).toBeNull();
+    expect(prev).toEqual({ slug: "tengah-1", title: "Middle One" });
+  });
+
+  it("prev null untuk proyek terlama", async () => {
+    vi.mocked(prisma.project.findMany).mockResolvedValue(rows as never);
+
+    const { prev, next } = await getAdjacentProjects("en", "terlama");
+
+    expect(prev).toBeNull();
+    expect(next).toEqual({ slug: "tengah-2", title: "Middle Two" });
+  });
+
+  it("mengembalikan null/null bila slug tidak ditemukan", async () => {
+    vi.mocked(prisma.project.findMany).mockResolvedValue(rows as never);
+
+    const { prev, next } = await getAdjacentProjects("en", "tidak-ada");
+
+    expect(prev).toBeNull();
+    expect(next).toBeNull();
+  });
+
+  it("fallback ke translation en bila locale tidak tersedia", async () => {
+    vi.mocked(prisma.project.findMany).mockResolvedValue(rows as never);
+
+    const { next } = await getAdjacentProjects("id", "tengah-1");
+
+    expect(next).toEqual({ slug: "terbaru", title: "Newest" });
   });
 });
 

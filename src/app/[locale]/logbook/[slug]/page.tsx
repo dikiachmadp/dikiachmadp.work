@@ -14,9 +14,9 @@ import { extractTakeaways } from "@/lib/logbook-takeaways";
 import PageWrapper from "@/components/layout/PageWrapper";
 import Button from "@/components/ui/Button";
 import JsonLd from "@/components/seo/JsonLd";
-import Gallery from "@/components/logbook/Gallery";
+import Gallery from "@/components/ui/Gallery";
 import Markdown from "@/components/logbook/Markdown";
-import ReadingRail from "@/components/logbook/ReadingRail";
+import ReadingRail from "@/components/ui/ReadingRail";
 import { formatPublishedAt } from "@/components/logbook/PostCard";
 import ShareButton from "@/components/logbook/ShareButton";
 import { articleSchema, breadcrumbSchema } from "@/lib/structured-data";
@@ -106,6 +106,9 @@ export default async function LogbookPostPage({ params }: PostPageProps) {
     minutes: estimateReadingMinutes(post.body),
   });
   const logLabel = fill(t.logBadge, { n: String(logNumber).padStart(3, "0") });
+  // Distinct from `logLabel` above ("Log 003", the badge near the title) —
+  // this is the compact lowercase form the vertical rail repeats.
+  const railLabel = "log " + String(logNumber).padStart(3, "0");
   const endOfLogLabel = fill(t.endOfLog, {
     n: String(logNumber).padStart(3, "0"),
   });
@@ -138,7 +141,7 @@ export default async function LogbookPostPage({ params }: PostPageProps) {
         )}
       />
 
-      <ReadingRail logNumber={logNumber}>
+      <ReadingRail label={railLabel}>
         <article className="mx-auto w-full max-w-[820px] px-[22px] pt-11">
           <Button
             href={`/${validLocale}/logbook`}
@@ -192,6 +195,7 @@ export default async function LogbookPostPage({ params }: PostPageProps) {
             title={post.title}
             ui={dict.ui}
             dateLabel={publishedAt}
+            moreLabel={t.moreFromLog}
           />
 
           <div className="dashed-rule mb-9" />

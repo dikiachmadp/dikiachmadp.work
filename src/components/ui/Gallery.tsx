@@ -3,12 +3,21 @@
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { LogbookImageItem } from "@/lib/db/logbook";
 import type { UiLabels } from "@/types/content";
 import { cn, fill } from "@/lib/utils";
 
+/** Structurally what Logbook's `LogbookImageItem` and a mapped project
+ *  `gallery: string[]` both already satisfy — no import from either domain. */
+export type GalleryImage = {
+  id: string;
+  url: string;
+  alt: string;
+  caption?: string;
+};
+
 /**
- * Galeri pos Logbook. Bentuknya mengikuti jumlah gambar:
+ * Galeri gambar dipakai ulang di halaman detail Logbook dan Project. Bentuknya
+ * mengikuti jumlah gambar:
  *
  * - **0** — tidak dirender sama sekali; tidak ada bingkai kosong yang tersisa.
  * - **1** — satu gambar besar, tanpa baris thumbnail yang tak ada gunanya.
@@ -26,14 +35,19 @@ export default function Gallery({
   title,
   ui,
   dateLabel,
+  moreLabel,
 }: {
-  images: LogbookImageItem[];
+  images: GalleryImage[];
   title: string;
   ui: UiLabels;
   /** Post's published date, pre-formatted for the locale (see
    *  `PostCard.formatPublishedAt`) — shown as a floating stamp on the frame.
    *  Omitted (draft preview, no date yet) simply skips the stamp. */
   dateLabel?: string;
+  /** Label above the thumbnail row, e.g. "more from this log" / "more from
+   *  this project" — caller-owned copy instead of a Logbook-specific string
+   *  baked into this shared component. */
+  moreLabel: string;
 }) {
   const [active, setActive] = useState(0);
   const [zoomed, setZoomed] = useState(false);
@@ -101,7 +115,7 @@ export default function Gallery({
   if (count === 0) return null;
 
   const current = images[active];
-  const galleryLabel = fill(a11y.logbookGallery, { title });
+  const galleryLabel = fill(a11y.imageGallery, { title });
 
   return (
     <section aria-label={galleryLabel} className="mb-9">
@@ -150,7 +164,7 @@ export default function Gallery({
       {count > 1 && (
         <div className="mt-3 mb-3 flex flex-wrap items-end justify-between gap-4">
           <span className="font-note text-[22px] leading-none text-(--soft)">
-            {ui.logbook.moreFromLog}
+            {moreLabel}
           </span>
           <div className="flex items-center gap-2">
             <button
