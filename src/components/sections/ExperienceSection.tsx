@@ -15,18 +15,30 @@ export default function ExperienceSection({
 }: ExperienceSectionProps) {
   return (
     <>
-      <h2 className="font-hand mt-[30px] mb-3.5 text-[26px]">
+      <h2 className="font-hand mb-3.5 text-[26px]">
         {aboutData.experienceTitle}
       </h2>
       <div className="flex flex-col gap-3">
-        {aboutData.experience.map((entry) => (
+        {aboutData.experience.map((entry, i) => (
           <div
             key={entry.id}
-            className="ink-border grid grid-cols-1 items-center gap-4 bg-(--paper) px-[18px] py-3.5 transition-all duration-[0.22s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-[5px_5px_0_var(--line)] sm:grid-cols-[170px_1fr]"
-            style={{ borderRadius: "20px 8px 22px 9px / 9px 22px 8px 20px" }}
+            className={cn(
+              "ink-border flat-3 lift-card-sm grid grid-cols-1 items-center gap-4 bg-(--paper) px-[18px] py-3.5 sm:grid-cols-[170px_1fr]",
+              i % 2 === 0 ? "r-card-alt" : "r-card",
+              i % 2 === 1 && "lift-card-sm-cw",
+            )}
           >
-            <span className="font-tech text-[11px] tracking-[0.1em] text-(--soft)">
-              {entry.year}
+            <span className="flex items-center gap-2.5">
+              <span
+                className="ink-border block h-3 w-3 shrink-0 bg-(--accent-ink)"
+                style={{
+                  borderRadius: "54% 46% 48% 52% / 50% 52% 48% 50%",
+                }}
+                aria-hidden
+              />
+              <span className="font-tech text-[11px] tracking-[0.1em] text-(--soft)">
+                {entry.year}
+              </span>
             </span>
             <span>
               <strong className="font-hand text-[19px]">{entry.title}</strong>
@@ -44,15 +56,26 @@ export default function ExperienceSection({
           selagi kosong, bukan menjanjikan judul tanpa isi. */}
       {aboutData.certifications.length > 0 && (
         <>
-          <h2 className="font-hand mt-[30px] mb-3.5 text-[26px]">
+          <div className="dashed-rule my-9" />
+
+          <h2 className="font-hand mb-3.5 text-[26px]">
             {aboutData.certificationsTitle}
           </h2>
           <div className="flex flex-col gap-3">
-            {aboutData.certifications.map((entry) => {
+            {aboutData.certifications.map((entry, i) => {
               const body = (
                 <>
-                  <span className="font-tech text-[11px] tracking-[0.1em] text-(--soft)">
-                    {entry.year}
+                  <span className="flex items-center gap-2.5">
+                    <span
+                      className="ink-border block h-3 w-3 shrink-0 bg-(--accent-ink)"
+                      style={{
+                        borderRadius: "54% 46% 48% 52% / 50% 52% 48% 50%",
+                      }}
+                      aria-hidden
+                    />
+                    <span className="font-tech text-[11px] tracking-[0.1em] text-(--soft)">
+                      {entry.year}
+                    </span>
                   </span>
                   <span>
                     <strong className="font-hand text-[19px]">
@@ -65,11 +88,11 @@ export default function ExperienceSection({
                   </span>
                 </>
               );
-              const rowClass =
-                "ink-border grid grid-cols-1 items-center gap-4 bg-(--paper) px-[18px] py-3.5 transition-all duration-[0.22s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:shadow-[5px_5px_0_var(--line)] sm:grid-cols-[170px_1fr]";
-              const rowStyle = {
-                borderRadius: "20px 8px 22px 9px / 9px 22px 8px 20px",
-              };
+              const rowClass = cn(
+                "ink-border flat-3 lift-card-sm grid grid-cols-1 items-center gap-4 bg-(--paper) px-[18px] py-3.5 sm:grid-cols-[170px_1fr]",
+                i % 2 === 0 ? "r-card-alt" : "r-card",
+                i % 2 === 1 && "lift-card-sm-cw",
+              );
 
               return entry.url ? (
                 <a
@@ -78,12 +101,11 @@ export default function ExperienceSection({
                   target="_blank"
                   rel="noopener noreferrer"
                   className={rowClass}
-                  style={rowStyle}
                 >
                   {body}
                 </a>
               ) : (
-                <div key={entry.id} className={rowClass} style={rowStyle}>
+                <div key={entry.id} className={rowClass}>
                   {body}
                 </div>
               );
@@ -92,16 +114,17 @@ export default function ExperienceSection({
         </>
       )}
 
-      <h2 className="font-hand mt-[30px] mb-3.5 text-[26px]">
-        {aboutData.skillsTitle}
-      </h2>
+      <div className="dashed-rule my-9" />
+
+      <h2 className="font-hand mb-3.5 text-[26px]">{aboutData.skillsTitle}</h2>
       <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2">
         {aboutData.skills.map((group, i) => (
           <div
             key={group.category}
             className={cn(
-              "ink-border flat-3 bg-(--wash) p-[18px]",
+              "ink-border lift-card-sm flat-3 bg-(--wash) p-[18px]",
               i % 2 === 0 ? "r-card-alt" : "r-card",
+              i % 2 === 1 && "lift-card-sm-cw",
             )}
           >
             <div className="mb-2.5 text-[10px] font-bold tracking-[0.18em] text-(--soft) uppercase">

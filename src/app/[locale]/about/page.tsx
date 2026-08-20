@@ -69,7 +69,14 @@ export default async function AboutPage({ params }: PageProps) {
       <SectionWrapper id="about" spacing="sm">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[330px_1fr]">
           <div className="flex flex-col gap-[30px]">
-            <div className="relative">
+            <div className="anim-float relative">
+              {/* Bentuk dekoratif mengisi ruang kosong di belakang potret,
+                  senada dengan craft-badge Hero yang mengintip di sudut
+                  frame video. */}
+              <span
+                className="crosshatch ink-border absolute -top-4 -right-4 -z-10 h-16 w-16 rounded-full bg-(--wash)"
+                aria-hidden
+              />
               <div className="r-portrait ink-border flat-6 relative aspect-square overflow-hidden bg-(--wash)">
                 <Image
                   src={about.portraitUrl || "/foto.webp"}
@@ -114,7 +121,14 @@ export default async function AboutPage({ params }: PageProps) {
           <div className="m-center">
             <div className="eyebrow">{header.topTitle}</div>
             <h1 className="font-hand mt-0.5 mb-[18px] text-[clamp(2.2rem,4.8vw,3.6rem)] leading-none">
-              {header.title}
+              <span
+                style={{
+                  backgroundImage:
+                    "linear-gradient(transparent 62%, color-mix(in srgb, var(--accent-ink) 26%, transparent) 62%, color-mix(in srgb, var(--accent-ink) 26%, transparent) 94%, transparent 94%)",
+                }}
+              >
+                {header.title}
+              </span>
             </h1>
             {about.biography.map((paragraph, i) => (
               <p
@@ -124,6 +138,8 @@ export default async function AboutPage({ params }: PageProps) {
                 {paragraph}
               </p>
             ))}
+
+            <div className="dashed-rule my-9" />
 
             <ExperienceSection aboutData={about} />
           </div>
