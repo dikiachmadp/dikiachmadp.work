@@ -215,7 +215,7 @@ export default async function ProjectDetailPage({
             ← {t.backBtn}
           </Button>
 
-          <div className="mb-9 flex flex-col gap-5 sm:flex-row sm:items-start">
+          <div className="mb-9 flex flex-col gap-5 sm:flex-row-reverse sm:items-start">
             {project.logoUrl && (
               <span className="r-blob ink-border flat-3 mx-auto flex h-[130px] w-[130px] shrink-0 items-center justify-center overflow-hidden bg-(--paper) sm:mx-0">
                 <Image
