@@ -23,7 +23,7 @@ jobs:
       UPSTASH_REDIS_REST_TOKEN: "dummy-token"
       SKIP_DB_STATIC_GEN: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v4
         with:
