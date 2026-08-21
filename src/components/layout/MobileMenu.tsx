@@ -81,7 +81,7 @@ export default function MobileMenu({
       tabIndex={-1}
       className="fixed inset-x-0 top-(--nav-h) bottom-0 z-40 overflow-y-auto bg-(--paper) outline-none lg:hidden"
     >
-      <div className="main-container flex flex-col gap-2 py-8">
+      <div className="main-container flex flex-col items-center gap-2 py-8">
         {links.map((item, index) => {
           const fullPath = `/${locale}${item.path === "/" ? "" : item.path}`;
           const isActive =

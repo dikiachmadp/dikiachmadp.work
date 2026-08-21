@@ -44,9 +44,9 @@ export default function TestimonialsSection({
           </div>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 max-md:items-center max-md:text-center">
           <div
-            className="flex gap-1"
+            className="flex gap-1 max-md:justify-center"
             role="img"
             aria-label={a11y.ratingOutOfFive}
           >
@@ -68,7 +68,7 @@ export default function TestimonialsSection({
             &ldquo;{quote.content}&rdquo;
           </blockquote>
 
-          <div className="flex gap-2.5">
+          <div className="flex gap-2.5 max-md:justify-center">
             <button
               type="button"
               onClick={() => step(-1)}

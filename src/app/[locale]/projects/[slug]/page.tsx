@@ -123,9 +123,9 @@ export default async function ProjectDetailPage({
     dict.pageHeader.projects.title;
 
   const factsAside = (
-    <aside className="r-panel ink-border flat-6 flex flex-col gap-4 bg-(--paper) p-6">
+    <aside className="r-panel ink-border flat-6 flex flex-col gap-4 bg-(--paper) p-6 max-sm:items-center max-sm:text-center">
       {facts.length > 0 && (
-        <div className="flex flex-col gap-3.5">
+        <div className="flex flex-col gap-3.5 max-sm:items-center">
           {facts.map((fact) => (
             <div key={fact.label}>
               <div className="micro">{fact.label}</div>
@@ -144,7 +144,7 @@ export default async function ProjectDetailPage({
       {tools.length > 0 && (
         <div>
           <div className="micro mb-2">{t.tools}</div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 max-sm:justify-center">
             {tools.map((tool) => (
               <Tag key={tool} className="px-3 py-[5px]">
                 {tool}
@@ -157,7 +157,7 @@ export default async function ProjectDetailPage({
       {project.tags.length > 0 && (
         <div>
           <div className="micro mb-2">{t.techStack}</div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 max-sm:justify-center">
             {project.tags.map((tag) => (
               <Tag key={tag} className="px-3 py-[5px]">
                 {tag}
@@ -210,7 +210,7 @@ export default async function ProjectDetailPage({
             href={`/${validLocale}/projects`}
             variant="secondary"
             size="sm"
-            className="r-chip mb-[26px] px-4 py-2 text-[12px]"
+            className="r-chip mb-[26px] px-4 py-2 text-[12px] max-sm:mx-auto max-sm:flex max-sm:w-fit"
           >
             ← {t.backBtn}
           </Button>
@@ -300,7 +300,7 @@ export default async function ProjectDetailPage({
             <span className="dashed-rule flex-1" />
           </div>
 
-          <div className="mt-[30px] flex flex-wrap items-center gap-3 border-t-2 border-dashed border-(--line) pt-7">
+          <div className="mt-[30px] flex flex-wrap items-center gap-3 border-t-2 border-dashed border-(--line) pt-7 max-sm:justify-center">
             <ShareButton
               title={project.title}
               label={t.share}
@@ -323,7 +323,7 @@ export default async function ProjectDetailPage({
               {adjacent.prev ? (
                 <Link
                   href={`/${validLocale}/projects/${adjacent.prev.slug}`}
-                  className="ink-border flat-3 lift-card-sm r-card block bg-(--paper) p-4"
+                  className="ink-border flat-3 lift-card-sm r-card block bg-(--paper) p-4 max-sm:text-center"
                 >
                   <span className="block text-[11px] font-bold tracking-[0.1em] text-(--soft) uppercase">
                     ← {t.prevProject}
@@ -338,7 +338,7 @@ export default async function ProjectDetailPage({
               {adjacent.next ? (
                 <Link
                   href={`/${validLocale}/projects/${adjacent.next.slug}`}
-                  className="ink-border flat-3 lift-card-sm r-card-alt block bg-(--paper) p-4 text-right"
+                  className="ink-border flat-3 lift-card-sm r-card-alt block bg-(--paper) p-4 max-sm:text-center sm:text-right"
                 >
                   <span className="block text-[11px] font-bold tracking-[0.1em] text-(--soft) uppercase">
                     {t.nextProject} →

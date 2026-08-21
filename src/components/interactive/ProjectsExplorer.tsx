@@ -39,8 +39,8 @@ export default function ProjectsExplorer({
 
   return (
     <>
-      <div className="mb-[30px] flex flex-wrap items-center justify-between gap-2.5 border-b-2 border-dashed border-(--line) pb-[22px]">
-        <div className="flex flex-wrap gap-2">
+      <div className="mb-[30px] flex flex-wrap items-center justify-between gap-2.5 border-b-2 border-dashed border-(--line) pb-[22px] max-sm:flex-col max-sm:items-center">
+        <div className="flex flex-wrap gap-2 max-sm:justify-center">
           {/* Chip "semua" dirender terpisah, bukan sebagai entri palsu di dalam
               daftar kategori — dulu ia ikut di sana sebagai label "All" yang
               harus dikecualikan lagi di beberapa tempat. */}

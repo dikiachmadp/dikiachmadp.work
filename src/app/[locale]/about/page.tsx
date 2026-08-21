@@ -122,7 +122,9 @@ export default async function AboutPage({ params }: PageProps) {
 
             {about.skills.length > 0 && (
               <div className="flex flex-col gap-3">
-                <h2 className="font-hand text-[20px]">{about.skillsTitle}</h2>
+                <h2 className="font-hand m-center text-[20px]">
+                  {about.skillsTitle}
+                </h2>
                 {about.skills.map((group, i) => (
                   <div
                     key={group.category}
@@ -132,10 +134,10 @@ export default async function AboutPage({ params }: PageProps) {
                       i % 2 === 1 && "lift-card-sm-cw",
                     )}
                   >
-                    <div className="mb-2 text-[10px] font-bold tracking-[0.18em] text-(--soft) uppercase">
+                    <div className="mb-2 text-[10px] font-bold tracking-[0.18em] text-(--soft) uppercase max-sm:text-center">
                       {group.category}
                     </div>
-                    <div className="flex flex-wrap gap-[7px]">
+                    <div className="flex flex-wrap gap-[7px] max-sm:justify-center">
                       {group.items.map((item) => (
                         <Tag
                           key={item}
