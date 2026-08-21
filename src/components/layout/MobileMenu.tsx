@@ -81,7 +81,7 @@ export default function MobileMenu({
       tabIndex={-1}
       className="fixed inset-x-0 top-(--nav-h) bottom-0 z-40 overflow-y-auto bg-(--paper) outline-none lg:hidden"
     >
-      <div className="main-container flex flex-col items-center gap-2 py-8">
+      <div className="main-container flex flex-col gap-2 py-8">
         {links.map((item, index) => {
           const fullPath = `/${locale}${item.path === "/" ? "" : item.path}`;
           const isActive =
@@ -94,7 +94,7 @@ export default function MobileMenu({
               href={fullPath}
               onClick={onClose}
               className={cn(
-                "ink-border flat-3 lift-btn font-hand px-5 py-3 text-[22px]",
+                "ink-border flat-3 lift-btn font-hand px-5 py-3 text-center text-[22px]",
                 index % 2 === 0 ? "r-btn" : "r-btn-alt",
                 isActive ? "bg-(--wash)" : "bg-(--paper)",
               )}
@@ -104,7 +104,7 @@ export default function MobileMenu({
           );
         })}
 
-        <div className="mt-4 w-fit sm:hidden">
+        <div className="mx-auto mt-4 w-fit sm:hidden">
           <LanguageToggle />
         </div>
       </div>
