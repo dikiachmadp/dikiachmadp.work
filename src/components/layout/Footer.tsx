@@ -42,7 +42,7 @@ export default function Footer({
     <footer className="mt-24 border-t-2 border-(--line) bg-(--wash) transition-colors duration-[0.45s]">
       <div className="main-container pt-[38px] pb-[26px]">
         <div className="grid grid-cols-1 items-end gap-8 pb-6 md:grid-cols-[1fr_auto]">
-          <div>
+          <div className="max-md:text-center">
             <div className="r-chip ink-border mb-3 inline-flex items-center gap-2 bg-(--paper) px-3 py-[5px]">
               <span className="anim-pulse-dot h-2 w-2 rounded-full bg-(--accent-ink)" />
               <span className="text-[9px] font-bold tracking-[0.16em] uppercase">
@@ -57,14 +57,14 @@ export default function Footer({
             </p>
           </div>
 
-          <div className="flex flex-col items-start gap-2.5 md:items-end">
+          <div className="flex flex-col items-center gap-2.5 md:items-end">
             <span className="font-note text-[19px] text-(--soft)">
               {footerData.socialLabel}
             </span>
-            {/* Fixed 4-column grid, not flex-wrap: with 7 icons that always
-                lays out 4 over 3 regardless of viewport width, instead of
+            {/* Fixed 3-column grid, not flex-wrap: with 6 icons that always
+                lays out 3 over 3 regardless of viewport width, instead of
                 wrapping wherever the 300px cap happened to break. */}
-            <div className="grid w-fit grid-cols-4 gap-2 md:ml-auto">
+            <div className="grid w-fit grid-cols-3 gap-2 md:ml-auto">
               {socials.map(([platform, url]) => (
                 <Social key={platform} platform={platform} url={url} />
               ))}
@@ -72,11 +72,11 @@ export default function Footer({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t-2 border-dashed border-(--line) pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t-2 border-dashed border-(--line) pt-4 max-md:flex-col max-md:items-center max-md:text-center">
           <p className="m-0 text-[10px] font-semibold tracking-[0.06em] text-(--soft) uppercase">
             {footerData.copyright}
           </p>
-          <div className="flex flex-wrap gap-2.5">
+          <div className="flex flex-wrap gap-2.5 max-md:justify-center">
             {bottomLinks.map((item, i) => (
               <Link
                 key={item.label}

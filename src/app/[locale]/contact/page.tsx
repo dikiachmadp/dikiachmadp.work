@@ -41,11 +41,11 @@ export default async function ContactPage({ params }: PageProps) {
       <SectionWrapper id="contact" spacing="sm">
         <div className="grid grid-cols-1 items-start gap-11 lg:grid-cols-[1fr_340px]">
           <div>
-            <div className="eyebrow">{header.topTitle}</div>
-            <h1 className="font-hand mt-0.5 mb-2.5 text-[clamp(2.4rem,5.4vw,4rem)] leading-none">
+            <div className="eyebrow m-center">{header.topTitle}</div>
+            <h1 className="font-hand m-center mt-0.5 mb-2.5 text-[clamp(2.4rem,5.4vw,4rem)] leading-none">
               {header.title}
             </h1>
-            <p className="mb-7 max-w-[520px] text-[16px] leading-[1.6] text-(--soft)">
+            <p className="m-justify mb-7 max-w-[520px] text-[16px] leading-[1.6] text-(--soft)">
               {header.description}
             </p>
 
@@ -54,7 +54,7 @@ export default async function ContactPage({ params }: PageProps) {
 
           <div className="flex flex-col gap-[18px]">
             <div
-              className="ink-border flat-3 bg-(--wash) p-[22px]"
+              className="ink-border flat-3 bg-(--wash) p-[22px] max-sm:text-center"
               style={{
                 borderRadius: "12px 28px 13px 30px / 30px 13px 28px 12px",
               }}
@@ -73,7 +73,7 @@ export default async function ContactPage({ params }: PageProps) {
             </div>
 
             <div
-              className="ink-border flat-3 bg-(--paper) p-[22px]"
+              className="ink-border flat-3 bg-(--paper) p-[22px] max-sm:text-center"
               style={{
                 borderRadius: "28px 12px 30px 13px / 13px 30px 12px 28px",
               }}
@@ -81,7 +81,7 @@ export default async function ContactPage({ params }: PageProps) {
               <div className="font-note mb-3 text-[20px]">
                 {dict.ui.contactInfo.findMe}
               </div>
-              <div className="flex flex-wrap gap-[9px]">
+              <div className="flex flex-wrap gap-[9px] max-sm:justify-center">
                 {socials.map(([platform, url]) => (
                   <Social
                     key={platform}
