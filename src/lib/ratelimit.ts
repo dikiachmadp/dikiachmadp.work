@@ -31,6 +31,7 @@ export function clientIp(headers: Headers): string {
 }
 
 let contactLimiter: Ratelimit | undefined;
+let checkoutLimiter: Ratelimit | undefined;
 let loginLimiter: Ratelimit | undefined;
 let loginEmailLimiter: Ratelimit | undefined;
 
@@ -42,6 +43,23 @@ export function getContactLimiter(): Ratelimit {
     prefix: "ratelimit:contact",
   });
   return contactLimiter;
+}
+
+/**
+ * Pembuatan sesi checkout: 10 per 10 menit per IP.
+ *
+ * Jauh lebih longgar dari form kontak karena mencoba beberapa nominal sebelum
+ * benar-benar jadi itu perilaku yang wajar, bukan penyalahgunaan. Yang
+ * dijaga di sini kuota API Polar, bukan spam — uangnya sendiri sudah dilindungi
+ * Polar.
+ */
+export function getCheckoutLimiter(): Ratelimit {
+  checkoutLimiter ??= new Ratelimit({
+    redis: getRedis(),
+    limiter: Ratelimit.slidingWindow(10, "10 m"),
+    prefix: "ratelimit:checkout",
+  });
+  return checkoutLimiter;
 }
 
 /** Login admin: 5 percobaan per 15 menit per IP. */

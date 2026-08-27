@@ -106,7 +106,16 @@
     "empty": "Belum ada produk — coba lagi nanti.",
     "viewAll": "Lihat produk lainnya",
     "buyBtn": "Ambil sekarang",
-    "galleryLabel": "Galeri"
+    "galleryLabel": "Galeri",
+    "tipPrompt": "Gratis diambil. Bayar sesuai yang kamu rasa pantas.",
+    "freeLabel": "Gratis",
+    "tipCustom": "Lainnya",
+    "tipCustomLabel": "Nominal dalam dolar AS",
+    "getFreeBtn": "Ambil gratis",
+    "payBtn": "Bayar",
+    "checkoutError": "Checkout gagal dibuka. Coba lagi.",
+    "thanksTitle": "Terima kasih",
+    "thanksBody": "Tautan unduhan sedang menuju kotak masukmu. Kalau dalam beberapa menit belum sampai, cek folder spam."
   },
   "contactInfo": {
     "title": "Informasi kontak",
