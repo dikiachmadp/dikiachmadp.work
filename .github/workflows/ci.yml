@@ -22,6 +22,9 @@ jobs:
       UPSTASH_REDIS_REST_URL: "https://dummy.upstash.io"
       UPSTASH_REDIS_REST_TOKEN: "dummy-token"
       SKIP_DB_STATIC_GEN: "1"
+      POLAR_ACCESS_TOKEN: "polar_oat_dummy"
+      POLAR_WEBHOOK_SECRET: "polar_whs_dummy"
+      POLAR_SERVER: "sandbox"
     steps:
       - uses: actions/checkout@v7
 

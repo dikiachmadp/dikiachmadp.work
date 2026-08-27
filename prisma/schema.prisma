@@ -201,7 +201,18 @@ model DigitalProduct {
   // Decimal, bukan Float — harga tidak boleh kena galat pembulatan biner.
   price       Decimal?   @db.Decimal(10, 2)
   currency    String     @default("USD")
-  buyUrl      String
+  // Tautan toko eksternal (Gumroad dsb). Opsional sejak checkout on-site ada:
+  // produk yang dijual lewat Polar tidak punya URL luar sama sekali.
+  buyUrl      String?
+  // ID produk di Polar. Terisi -> tombol beli membuka checkout di halaman ini.
+  // Kosong -> jatuh balik ke `buyUrl`, perilaku sebelum fitur ini ada.
+  polarProductId String?
+  // Menyalakan panel "bayar sesukanya". Produknya sendiri harus dikonfigurasi
+  // Pay What You Want di Polar; menyalakan ini tanpa itu membuat Polar menolak
+  // `amount` yang dikirim.
+  pwywEnabled   Boolean  @default(false)
+  // Sen USD. Batas bawah yang ditawarkan UI — Polar tetap penentu akhirnya.
+  pwywMinAmount Int      @default(0)
   coverImage  String
   gallery     String[]
   tags        String[]
@@ -209,6 +220,7 @@ model DigitalProduct {
   updatedAt   DateTime   @updatedAt
 
   translations DigitalProductTranslation[]
+  orders       Order[]
 
   @@index([status, publishedAt(sort: Desc)])
   @@index([order])
@@ -230,4 +242,26 @@ model DigitalProductTranslation {
   // Slug unik per bahasa, bukan global — sama seperti Logbook.
   @@unique([locale, slug])
   @@index([locale, productId])
+}
+
+// Checkout yang benar-benar selesai dibayar, direkam dari webhook `order.paid`
+// Polar. Bukan salinan dasbor Polar: `polarOrderId` yang unik itulah kunci
+// idempotensinya — webhook boleh datang dua kali, dan barisnya tetap satu.
+model Order {
+  id              String   @id @default(uuid())
+  polarOrderId    String   @unique
+  polarCheckoutId String?
+  // SetNull, bukan Cascade: menghapus produk tidak boleh menghapus riwayat
+  // transaksinya.
+  productId       String?
+  email           String
+  // Sen. Nol untuk produk gratis yang diambil tanpa tip.
+  amount          Int
+  currency        String   @default("USD")
+  createdAt       DateTime @default(now())
+
+  product DigitalProduct? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt(sort: Desc)])
+  @@index([productId])
 }

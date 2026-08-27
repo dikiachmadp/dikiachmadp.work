@@ -107,7 +107,7 @@ export function productSchema(
     coverImage: string;
     price: string | null;
     currency: string;
-    buyUrl: string;
+    buyUrl: string | null;
   },
   siteConfig: SiteConfig,
   locale: Locale,
@@ -129,7 +129,9 @@ export function productSchema(
         "@type": "Offer",
         price: product.price,
         priceCurrency: product.currency,
-        url: product.buyUrl,
+        // Produk yang dijual lewat Polar tidak punya toko eksternal; halaman
+        // produk itu sendirilah tempat penawarannya berada.
+        url: product.buyUrl ?? url,
         availability: "https://schema.org/InStock",
       },
     }),

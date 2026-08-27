@@ -115,6 +115,47 @@ describe("digitalProductFormSchema", () => {
     expect(errors(parse({ coverImage: "" }))).toHaveProperty("coverImage");
   });
 
+  it("accepts a Polar product without an external store URL", () => {
+    const result = parse({ buyUrl: "", polarProductId: "prod_123" });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      // Kosong disimpan sebagai null, bukan "", supaya "tidak dijual di luar"
+      // terbaca sama di database dan di UI.
+      expect(result.data.buyUrl).toBeNull();
+      expect(result.data.polarProductId).toBe("prod_123");
+    }
+  });
+
+  it("accepts an external store URL without a Polar product", () => {
+    const result = parse({ buyUrl: "https://gumroad.com/l/x" });
+
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.data.polarProductId).toBeNull();
+  });
+
+  it("rejects a product with no way to buy it at all", () => {
+    expect(errors(parse({ buyUrl: "", polarProductId: "" }))).toHaveProperty(
+      "polarProductId",
+    );
+  });
+
+  it("rejects a negative minimum amount", () => {
+    expect(errors(parse({ pwywMinAmount: "-1" }))).toHaveProperty(
+      "pwywMinAmount",
+    );
+  });
+
+  it("reads the pay-what-you-want checkbox and minimum", () => {
+    const result = parse({ pwywEnabled: "on", pwywMinAmount: "300" });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.pwywEnabled).toBe(true);
+      expect(result.data.pwywMinAmount).toBe(300);
+    }
+  });
+
   it("clears the date on a draft", () => {
     const result = parse({ status: "DRAFT" });
 
