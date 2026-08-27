@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { extractTakeaways } from "./logbook-takeaways";
+import { extractTakeaways, TAKEAWAYS_MARKER } from "./logbook-takeaways";
 
 describe("extractTakeaways", () => {
   it("returns the body unchanged when the heading is absent", () => {
@@ -74,6 +74,61 @@ describe("extractTakeaways", () => {
     expect(extractTakeaways(body, "What I Learned")).toEqual({
       body,
       items: [],
+    });
+  });
+
+  // Badan tulisan Indonesia di database memakai marker Inggris; heading versi
+  // locale ada di `ui.json`. Keduanya harus sama-sama diterima.
+  describe("with several accepted headings", () => {
+    const headings = ["Apa yang Saya Pelajari", TAKEAWAYS_MARKER];
+
+    it("matches the canonical English marker in a translated body", () => {
+      const body = [
+        "Paragraf pembuka.",
+        "",
+        "## What I Learned",
+        "",
+        "- Pelajaran pertama",
+        "- Pelajaran kedua",
+      ].join("\n");
+
+      const result = extractTakeaways(body, headings);
+      expect(result.items).toEqual(["Pelajaran pertama", "Pelajaran kedua"]);
+      expect(result.body).toBe("Paragraf pembuka.");
+    });
+
+    it("matches the translated heading too", () => {
+      const body = "Paragraf.\n\n## Apa yang Saya Pelajari\n\n- Satu";
+      expect(extractTakeaways(body, headings).items).toEqual(["Satu"]);
+    });
+
+    it("still picks the last match when both forms appear", () => {
+      const body = [
+        "## Apa yang Saya Pelajari",
+        "",
+        "- Bagian lama",
+        "",
+        "## What I Learned",
+        "",
+        "- Bagian penutup",
+      ].join("\n");
+
+      const result = extractTakeaways(body, headings);
+      expect(result.items).toEqual(["Bagian penutup"]);
+      expect(result.body).toContain("Bagian lama");
+    });
+
+    it("returns the body unchanged when no candidate matches", () => {
+      const body = "Paragraf.\n\n## Penutup\n\n- Bukan takeaway";
+      expect(extractTakeaways(body, headings)).toEqual({ body, items: [] });
+    });
+
+    // Pos di database disimpan dengan line ending CRLF.
+    it("handles CRLF line endings", () => {
+      const body = "Paragraf.\r\n\r\n## What I Learned\r\n\r\n- Satu\r\n- Dua";
+      const result = extractTakeaways(body, headings);
+      expect(result.items).toEqual(["Satu", "Dua"]);
+      expect(result.body).toBe("Paragraf.");
     });
   });
 });
