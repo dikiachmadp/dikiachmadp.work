@@ -1,6 +1,13 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
 import type { Locale } from "@/types/content";
+import {
+  ProductLandingSchema,
+  landingImageUrls,
+  localizeLanding,
+  type LocalizedProductLanding,
+  type ProductLanding,
+} from "@/schemas/product-landing";
 import type {
   DigitalProduct,
   DigitalProductTranslation,
@@ -30,6 +37,8 @@ export type DigitalProductSummary = {
 export type DigitalProductDetail = DigitalProductSummary & {
   body: string;
   gallery: string[];
+  /** Seksi halaman jualan, sudah diratakan ke satu bahasa. */
+  landing: LocalizedProductLanding;
   updatedAt: Date;
   /**
    * Hanya di detail, bukan di summary: kartu indeks tidak membuka checkout,
@@ -40,6 +49,28 @@ export type DigitalProductDetail = DigitalProductSummary & {
   /** Sen. */
   pwywMinAmount: number;
 };
+
+/**
+ * Kolom `landing` bertipe `Json`, jadi Prisma menyerahkannya sebagai nilai
+ * bebas — bentuknya diperiksa saat **baca**, bukan hanya saat tulis. Baris
+ * yang bentuknya tidak dikenali menghasilkan landing kosong plus catatan di
+ * log: halaman produk tidak boleh mati gara-gara satu seksi cacat.
+ */
+function readLanding(
+  value: unknown,
+  locale: Locale,
+  productId: string,
+): LocalizedProductLanding {
+  const parsed = ProductLandingSchema.safeParse(value ?? {});
+  if (!parsed.success) {
+    console.error(
+      `Landing produk ${productId} tidak valid; seksinya dilewati.`,
+      parsed.error.issues,
+    );
+    return {};
+  }
+  return localizeLanding(parsed.data, locale);
+}
 
 /**
  * Meratakan produk + terjemahan untuk satu locale. **Tanpa fallback ke
@@ -61,6 +92,7 @@ function flatten(
     body: tr.body,
     coverImage: row.coverImage,
     gallery: row.gallery,
+    landing: readLanding(row.landing, locale, row.id),
     price: row.price ? row.price.toString() : null,
     currency: row.currency,
     buyUrl: row.buyUrl,
@@ -210,6 +242,7 @@ export type DigitalProductInput = {
   coverImage: string;
   gallery: string[];
   tags: string[];
+  landing: ProductLanding;
   /** Terjemahan opsional per produk: `null` berarti produk tidak ada di bahasa itu. */
   translations: Record<Locale, DigitalProductTranslationInput | null>;
 };
@@ -259,6 +292,9 @@ function productData(input: DigitalProductInput) {
     coverImage: input.coverImage,
     gallery: input.gallery,
     tags: input.tags,
+    // Prisma menerima objek biasa untuk kolom Json; bentuknya sudah dijamin
+    // oleh ProductLandingSchema di lapisan form.
+    landing: input.landing,
   };
 }
 
@@ -336,7 +372,7 @@ export async function deleteProductById(id: string) {
     const [product, translations] = await Promise.all([
       tx.digitalProduct.findUnique({
         where: { id },
-        select: { coverImage: true, gallery: true },
+        select: { coverImage: true, gallery: true, landing: true },
       }),
       tx.digitalProductTranslation.findMany({
         where: { productId: id },
@@ -345,9 +381,15 @@ export async function deleteProductById(id: string) {
     ]);
     await tx.digitalProduct.delete({ where: { id } });
 
+    // Gambar di dalam seksi ikut dikumpulkan, bukan hanya cover dan galeri —
+    // tanpa ini menghapus produk meninggalkan berkas yatim di bucket.
+    const parsedLanding = ProductLandingSchema.safeParse(
+      product?.landing ?? {},
+    );
     const imageUrls = [
       ...(product?.coverImage ? [product.coverImage] : []),
       ...(product?.gallery ?? []),
+      ...(parsedLanding.success ? landingImageUrls(parsedLanding.data) : []),
     ];
 
     return {

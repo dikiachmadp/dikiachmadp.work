@@ -10,6 +10,7 @@ import Button from "@/components/ui/Button";
 import Tag from "@/components/ui/Tag";
 import Markdown from "@/components/logbook/Markdown";
 import BuyPanel from "@/components/products/BuyPanel";
+import ProductLanding from "@/components/product/ProductLanding";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, productSchema } from "@/lib/structured-data";
 import { Locale } from "@/types/content";
@@ -141,7 +142,14 @@ export default async function ProductDetailPage({
         </div>
 
         <div className="grid grid-cols-1 items-start gap-9 lg:grid-cols-[1fr_260px]">
-          <Markdown className="max-w-none">{product.body}</Markdown>
+          {/* Pembungkusnya tetap dirender walau body kosong: produk yang
+              seluruh isinya ada di seksi halaman jualan tidak boleh membuat
+              kolom aside melompat ke kolom pertama. */}
+          <div className="min-w-0">
+            {product.body.trim() !== "" && (
+              <Markdown className="max-w-none">{product.body}</Markdown>
+            )}
+          </div>
 
           <aside className="r-card-alt ink-border flat-3 flex flex-col gap-3.5 bg-(--paper) p-5">
             {price && (
@@ -178,6 +186,8 @@ export default async function ProductDetailPage({
             />
           </aside>
         </div>
+
+        <ProductLanding landing={product.landing} ui={dict.ui} />
 
         {product.gallery.length > 0 && (
           <div className="mt-11">

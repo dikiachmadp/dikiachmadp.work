@@ -115,7 +115,13 @@
     "payBtn": "Bayar",
     "checkoutError": "Checkout gagal dibuka. Coba lagi.",
     "thanksTitle": "Terima kasih",
-    "thanksBody": "Tautan unduhan sedang menuju kotak masukmu. Kalau dalam beberapa menit belum sampai, cek folder spam."
+    "thanksBody": "Tautan unduhan sedang menuju kotak masukmu. Kalau dalam beberapa menit belum sampai, cek folder spam.",
+    "demoBtn": "Lihat demo",
+    "recommendedBadge": "Disarankan",
+    "includedLabel": "Termasuk",
+    "notIncludedLabel": "Tidak termasuk",
+    "beforeLabel": "Sebelum",
+    "afterLabel": "Sesudah"
   },
   "contactInfo": {
     "title": "Informasi kontak",

@@ -35,7 +35,7 @@ model Project {
 }
 
 model ProjectTranslation {
-  id            String @id @default(uuid())
+  id            String  @id @default(uuid())
   projectId     String
   locale        String
   title         String
@@ -147,7 +147,7 @@ model AboutProfile {
 }
 
 model AboutProfileTranslation {
-  id                  String @id @default(uuid())
+  id                  String   @id @default(uuid())
   profileId           String
   locale              String
   // Satu entri per paragraf, seperti pola array String[] lain di schema ini.
@@ -216,6 +216,12 @@ model DigitalProduct {
   coverImage  String
   gallery     String[]
   tags        String[]
+  // Seksi halaman jualan (delapan slot bernama), kontraknya
+  // src/schemas/product-landing.ts. Disimpan sebagai jsonb, bukan tabel
+  // sendiri: isinya tidak pernah di-query, hanya dibaca utuh bersama
+  // produknya — jadi satu query, bukan tujuh join. Aturan evolusinya ada di
+  // kepala berkas skema itu.
+  landing     Json       @default("{}")
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 

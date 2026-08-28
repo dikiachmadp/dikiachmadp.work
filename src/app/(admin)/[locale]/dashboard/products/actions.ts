@@ -17,6 +17,7 @@ import {
   type DigitalProductInput,
 } from "@/lib/db/products";
 import { revalidateProductPaths } from "@/lib/db/revalidate";
+import { LANDING_SLOTS, type ProductLanding } from "@/schemas/product-landing";
 import { pageQuery } from "@/lib/pagination";
 
 const UPLOAD_PLACEHOLDER = "__upload__";
@@ -35,6 +36,39 @@ function formLocale(formData: FormData): "en" | "id" {
 function fileFrom(formData: FormData, name: string): File | null {
   const value = formData.get(name);
   return value instanceof File && value.size > 0 ? value : null;
+}
+
+/**
+ * Gambar di dalam seksi halaman jualan. Field URL-nya kosong untuk gambar yang
+ * baru dipilih; berkasnya datang lewat input tersembunyi bersebelahan
+ * (`…beforeImageFile`), lalu URL hasil unggahan ditulis balik ke itemnya.
+ *
+ * Daftar field gambarnya dibaca dari `LANDING_SLOTS`, bukan ditulis ulang —
+ * menambah field gambar baru di satu tabel otomatis ikut terunggah di sini.
+ */
+async function uploadLandingImages(
+  landing: ProductLanding,
+  formData: FormData,
+  pathPrefix: string,
+) {
+  for (const spec of LANDING_SLOTS) {
+    const section = landing[spec.slot];
+    if (!section) continue;
+
+    const imageFields = spec.fields.filter((field) => field.kind === "image");
+    if (imageFields.length === 0) continue;
+
+    const items = section.items as Record<string, unknown>[];
+    for (const [index, item] of items.entries()) {
+      for (const field of imageFields) {
+        const file = fileFrom(
+          formData,
+          `landing.${spec.slot}.items.${index}.${field.name}File`,
+        );
+        if (file) item[field.name] = await uploadImage(file, pathPrefix);
+      }
+    }
+  }
 }
 
 /**
@@ -83,6 +117,7 @@ async function parseAndUpload(
     for (const file of galleryFiles) {
       data.gallery.push(await uploadImage(file, `products/${slugPrefix}`));
     }
+    await uploadLandingImages(data.landing, formData, `products/${slugPrefix}`);
     return { ok: true, data };
   } catch (error) {
     return {

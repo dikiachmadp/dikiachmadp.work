@@ -10,10 +10,16 @@ import {
   AdminSelect,
   AdminTextarea,
 } from "./AdminField";
+import LandingSectionEditor, {
+  emptyLandingState,
+  landingStateFromValue,
+  type LandingState,
+} from "./LandingSectionEditor";
 import MarkdownEditor from "./MarkdownEditor";
 import SubmitButton from "./SubmitButton";
 import { uploadRejectionReason } from "@/lib/upload-limits";
 import { initialFormState, type FormState } from "@/schemas/admin";
+import { LANDING_SLOTS, type ProductLanding } from "@/schemas/product-landing";
 
 const LANGS = [
   { code: "en", legend: "English" },
@@ -45,6 +51,8 @@ export interface ProductFormValues {
   coverImage: string;
   gallery: string;
   tags: string;
+  /** Seksi halaman jualan apa adanya dari database. */
+  landing: ProductLanding;
   translations: Record<Lang, ProductTranslationValues>;
 }
 
@@ -69,6 +77,7 @@ export const emptyProductForm: ProductFormValues = {
   coverImage: "",
   gallery: "",
   tags: "",
+  landing: {},
   translations: { en: { ...emptyTranslation }, id: { ...emptyTranslation } },
 };
 
@@ -87,6 +96,14 @@ export default function ProductForm({
 }) {
   const [state, formAction] = useActionState(action, initialFormState);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  // Seksi disimpan di state, bukan sebagai input tak terkendali: berkas gambar
+  // yang belum diunggah tidak bisa hidup di DOM, dan React me-reset form
+  // setiap kali server action selesai.
+  const [landing, setLanding] = useState<LandingState>(() =>
+    values.landing
+      ? landingStateFromValue(values.landing)
+      : emptyLandingState(),
+  );
 
   const guardUploadSize = (event: React.FormEvent<HTMLFormElement>) => {
     const files = Array.from(
@@ -259,6 +276,19 @@ export default function ProductForm({
         />
         <AdminFile name="galleryFiles" label="Upload gallery images" multiple />
       </AdminFieldset>
+
+      {LANDING_SLOTS.map((spec) => (
+        <AdminFieldset key={spec.slot} legend={spec.legend}>
+          <LandingSectionEditor
+            spec={spec}
+            section={landing[spec.slot]}
+            onChange={(section) =>
+              setLanding((current) => ({ ...current, [spec.slot]: section }))
+            }
+            fieldErrors={state.fieldErrors}
+          />
+        </AdminFieldset>
+      ))}
 
       {LANGS.map(({ code, legend }) => (
         <AdminFieldset key={code} legend={legend}>

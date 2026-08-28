@@ -393,6 +393,13 @@ export const UiSchema = z.object({
     checkoutError: z.string(),
     thanksTitle: z.string(),
     thanksBody: z.string(),
+    // Label untuk seksi halaman jualan (src/components/product/*).
+    demoBtn: z.string(),
+    recommendedBadge: z.string(),
+    includedLabel: z.string(),
+    notIncludedLabel: z.string(),
+    beforeLabel: z.string(),
+    afterLabel: z.string(),
   }),
   contactInfo: z.object({
     title: z.string(),
