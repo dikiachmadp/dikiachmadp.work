@@ -7,6 +7,7 @@ import ProductForm, {
 } from "@/components/admin/ProductForm";
 import { getProductForEdit } from "@/lib/db/products";
 import { toDateTimeLocalUtc } from "@/schemas/admin";
+import { ProductLandingSchema } from "@/schemas/product-landing";
 import { requireUser } from "@/lib/supabase/auth";
 
 export default async function EditProductPage({
@@ -43,6 +44,9 @@ export default async function EditProductPage({
     coverImage: product.coverImage,
     gallery: product.gallery.join("\n"),
     tags: product.tags.join(", "),
+    // Kolom Json bertipe bebas; bentuk yang tidak dikenali dibuka sebagai
+    // seksi kosong supaya form tetap bisa dibuka dan diperbaiki.
+    landing: ProductLandingSchema.safeParse(product.landing ?? {}).data ?? {},
     translations: { en: translationFor("en"), id: translationFor("id") },
   };
 

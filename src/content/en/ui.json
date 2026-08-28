@@ -106,7 +106,13 @@
     "empty": "No products yet — check back soon.",
     "viewAll": "View more products",
     "buyBtn": "Get it",
-    "galleryLabel": "Gallery"
+    "galleryLabel": "Gallery",
+    "demoBtn": "View demo",
+    "recommendedBadge": "Recommended",
+    "includedLabel": "Included",
+    "notIncludedLabel": "Not included",
+    "beforeLabel": "Before",
+    "afterLabel": "After"
   },
   "contactInfo": {
     "title": "Contact information",

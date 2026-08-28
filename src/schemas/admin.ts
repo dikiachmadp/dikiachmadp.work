@@ -1,5 +1,10 @@
 import { z } from "zod";
 import { projectCategories } from "@/lib/categories";
+import {
+  LANDING_SLOTS,
+  ProductLandingSchema,
+  type LandingSlotSpec,
+} from "@/schemas/product-landing";
 
 // Schema validasi form admin. Dipakai server action lewat safeParse;
 // error per field dikembalikan ke client melalui FormState.
@@ -497,6 +502,7 @@ export const digitalProductFormSchema = z
     coverImage: z.string().min(1, "Gambar cover wajib diisi (URL atau upload)"),
     gallery: z.array(z.string()),
     tags: z.array(z.string()),
+    landing: ProductLandingSchema,
     translations: z.object({
       // Terjemahan opsional per produk — sama seperti Logbook: blok bahasa
       // yang dikosongkan seluruhnya berarti produk itu tidak ada di bahasa
@@ -549,6 +555,74 @@ function digitalProductTranslationFromForm(
   return isEmpty ? null : translation;
 }
 
+/**
+ * Seksi halaman jualan. Sama seperti `imagesFromForm`, isinya dikirim sebagai
+ * field berindeks (`landing.faq.items.0.question.id`) supaya urutannya adalah
+ * urutan di form dan path galat Zod langsung cocok dengan nama input tanpa
+ * pemetaan manual di `toFieldErrors`.
+ *
+ * Daftar field-nya tidak ditulis ulang di sini — dibaca dari `LANDING_SLOTS`
+ * di product-landing.ts, jadi menambah field cukup menyunting satu tabel.
+ */
+function localizedTextFromForm(formData: FormData, prefix: string) {
+  return {
+    en: text(formData, `${prefix}.en`),
+    id: text(formData, `${prefix}.id`),
+  };
+}
+
+function landingItemFromForm(
+  formData: FormData,
+  spec: LandingSlotSpec,
+  prefix: string,
+) {
+  const item: Record<string, unknown> = {};
+  for (const field of spec.fields) {
+    const name = `${prefix}.${field.name}`;
+    if (field.kind === "flag") {
+      item[field.name] = formData.get(name) === "on";
+    } else if (field.kind === "lines") {
+      item[field.name] = {
+        en: splitLines(formData.get(`${name}.en`)),
+        id: splitLines(formData.get(`${name}.id`)),
+      };
+    } else if (field.localized) {
+      item[field.name] = localizedTextFromForm(formData, name);
+    } else {
+      item[field.name] = text(formData, name);
+    }
+  }
+  return item;
+}
+
+export function landingFromForm(formData: FormData) {
+  const landing: Record<string, unknown> = {};
+
+  for (const spec of LANDING_SLOTS) {
+    const prefix = `landing.${spec.slot}`;
+    const heading = localizedTextFromForm(formData, `${prefix}.heading`);
+    const intro = localizedTextFromForm(formData, `${prefix}.intro`);
+    const items: Record<string, unknown>[] = [];
+
+    for (let index = 0; ; index++) {
+      // Penanda tersembunyi yang selalu dirender tiap item; ketiadaannya
+      // menandai akhir daftar. Tidak bisa memakai field biasa — checkbox yang
+      // tidak dicentang dan gambar yang belum diunggah sama-sama absen.
+      if (formData.get(`${prefix}.items.${index}.present`) === null) break;
+      items.push(
+        landingItemFromForm(formData, spec, `${prefix}.items.${index}`),
+      );
+    }
+
+    // Seksi tanpa judul dan tanpa item tidak disimpan sama sekali, jadi
+    // mengosongkannya di form benar-benar menghapusnya dari halaman.
+    if (heading.en === "" && heading.id === "" && items.length === 0) continue;
+    landing[spec.slot] = { heading, intro, items };
+  }
+
+  return landing;
+}
+
 export function digitalProductInputFromForm(formData: FormData) {
   return {
     status: text(formData, "status") || "DRAFT",
@@ -561,6 +635,7 @@ export function digitalProductInputFromForm(formData: FormData) {
     coverImage: text(formData, "coverImage"),
     gallery: splitLines(formData.get("gallery")),
     tags: splitList(formData.get("tags")),
+    landing: landingFromForm(formData),
     translations: {
       en: digitalProductTranslationFromForm(formData, "en"),
       id: digitalProductTranslationFromForm(formData, "id"),

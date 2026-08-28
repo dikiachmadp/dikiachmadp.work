@@ -106,7 +106,13 @@
     "empty": "Belum ada produk — coba lagi nanti.",
     "viewAll": "Lihat produk lainnya",
     "buyBtn": "Ambil sekarang",
-    "galleryLabel": "Galeri"
+    "galleryLabel": "Galeri",
+    "demoBtn": "Lihat demo",
+    "recommendedBadge": "Disarankan",
+    "includedLabel": "Termasuk",
+    "notIncludedLabel": "Tidak termasuk",
+    "beforeLabel": "Sebelum",
+    "afterLabel": "Sesudah"
   },
   "contactInfo": {
     "title": "Informasi kontak",

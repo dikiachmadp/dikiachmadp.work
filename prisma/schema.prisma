@@ -35,7 +35,7 @@ model Project {
 }
 
 model ProjectTranslation {
-  id            String @id @default(uuid())
+  id            String  @id @default(uuid())
   projectId     String
   locale        String
   title         String
@@ -147,7 +147,7 @@ model AboutProfile {
 }
 
 model AboutProfileTranslation {
-  id                  String @id @default(uuid())
+  id                  String   @id @default(uuid())
   profileId           String
   locale              String
   // Satu entri per paragraf, seperti pola array String[] lain di schema ini.
@@ -205,10 +205,17 @@ model DigitalProduct {
   coverImage  String
   gallery     String[]
   tags        String[]
+  // Seksi halaman jualan (delapan slot bernama), kontraknya
+  // src/schemas/product-landing.ts. Disimpan sebagai jsonb, bukan tabel
+  // sendiri: isinya tidak pernah di-query, hanya dibaca utuh bersama
+  // produknya — jadi satu query, bukan tujuh join. Aturan evolusinya ada di
+  // kepala berkas skema itu.
+  landing     Json       @default("{}")
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
   translations DigitalProductTranslation[]
+  orders       Order[]
 
   @@index([status, publishedAt(sort: Desc)])
   @@index([order])
@@ -230,4 +237,30 @@ model DigitalProductTranslation {
   // Slug unik per bahasa, bukan global — sama seperti Logbook.
   @@unique([locale, slug])
   @@index([locale, productId])
+}
+
+/// Catatan pesanan dari Polar.
+///
+/// Tabel ini sudah ada di database sejak 2026-08-27 tetapi **belum ada kode
+/// yang mengisinya**: rute checkout dan penerima webhook-nya tidak pernah
+/// tersimpan di repo. Modelnya dipertahankan di sini supaya schema, riwayat
+/// migrasi, dan database tetap sepakat; isinya diisi kalau checkout tertanam
+/// jadi dibangun. Polar berjalan sebagai merchant of record, jadi invoice dan
+/// bukti pembayaran tetap urusan Polar — tabel ini hanya untuk catatan sendiri.
+model Order {
+  id              String   @id @default(uuid())
+  polarOrderId    String   @unique
+  polarCheckoutId String?
+  /// Null saat produknya dihapus — riwayat pesanan tidak ikut hilang.
+  productId       String?
+  email           String
+  /// Satuan terkecil mata uang (sen), sesuai bentuk yang dipakai Polar.
+  amount          Int
+  currency        String   @default("USD")
+  createdAt       DateTime @default(now())
+
+  product DigitalProduct? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt(sort: Desc)])
+  @@index([productId])
 }

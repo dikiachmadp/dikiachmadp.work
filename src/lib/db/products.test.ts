@@ -19,6 +19,7 @@ vi.mock("@/lib/prisma", () => ({
 import { prisma } from "@/lib/prisma";
 import {
   createProductWithTranslations,
+  deleteProductById,
   getProductBySlug,
   getPublishedProducts,
   updateProductWithTranslations,
@@ -40,8 +41,12 @@ function translation(locale: string) {
   };
 }
 
-function product(translations: ReturnType<typeof translation>[]) {
+function product(
+  translations: ReturnType<typeof translation>[],
+  landing: unknown = {},
+) {
   return {
+    landing,
     id: "p1",
     status: "PUBLISHED" as const,
     publishedAt,
@@ -193,12 +198,18 @@ describe("query publik menyaring draf dan produk berjadwal", () => {
 
 type Call = { model: string; method: string; args: unknown };
 
-function fakeTx(existing: Record<string, unknown>[] = []) {
+function fakeTx(
+  existing: Record<string, unknown>[] = [],
+  stored: Record<string, unknown> | null = null,
+) {
   const calls: Call[] = [];
   const record = (model: string, method: string) => (args: unknown) => {
     calls.push({ model, method, args });
     if (model === "digitalProductTranslation" && method === "findMany") {
       return Promise.resolve(existing);
+    }
+    if (model === "digitalProduct" && method === "findUnique") {
+      return Promise.resolve(stored);
     }
     if (method === "upsert") {
       const locale = (
@@ -214,6 +225,7 @@ function fakeTx(existing: Record<string, unknown>[] = []) {
       create: record("digitalProduct", "create"),
       update: record("digitalProduct", "update"),
       delete: record("digitalProduct", "delete"),
+      findUnique: record("digitalProduct", "findUnique"),
     },
     digitalProductTranslation: {
       findMany: record("digitalProductTranslation", "findMany"),
@@ -242,6 +254,7 @@ function input(
     coverImage: "/covers/a.webp",
     gallery: [],
     tags: ["OJS"],
+    landing: {},
     translations: {
       en: {
         slug: "new-en",
@@ -281,6 +294,97 @@ describe("updateProductWithTranslations", () => {
     expect(result.previousSlugs).toEqual([
       { locale: "en", slug: "old-en" },
       { locale: "id", slug: "old-id" },
+    ]);
+  });
+});
+
+// --- Landing ---
+
+const bucket =
+  "https://dwkzfyiqtbminddhmqra.supabase.co/storage/v1/object/public/project-images";
+
+function faqLanding(headingId: string) {
+  return {
+    faq: {
+      heading: { en: "FAQ", id: headingId },
+      intro: { en: "", id: "" },
+      items: [
+        {
+          question: { en: "What?", id: "Apa?" },
+          answer: { en: "This.", id: "Ini." },
+        },
+      ],
+    },
+  };
+}
+
+describe("landing", () => {
+  it("flattens the stored {en, id} pairs down to the requested locale", async () => {
+    vi.mocked(prisma.digitalProduct.findFirst).mockResolvedValue(
+      product([translation("id")], faqLanding("Tanya jawab")) as never,
+    );
+
+    const result = await getProductBySlug("id", "slug-id");
+
+    expect(result?.landing.faq?.heading).toBe("Tanya jawab");
+    expect(result?.landing.faq?.items[0].question).toBe("Apa?");
+  });
+
+  it("drops a section that has no heading in this locale", async () => {
+    vi.mocked(prisma.digitalProduct.findFirst).mockResolvedValue(
+      product([translation("id")], faqLanding("")) as never,
+    );
+
+    const result = await getProductBySlug("id", "slug-id");
+
+    expect(result?.landing.faq).toBeUndefined();
+  });
+
+  it("survives a malformed landing column instead of throwing", async () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.mocked(prisma.digitalProduct.findFirst).mockResolvedValue(
+      product([translation("id")], { faq: "bukan objek" }) as never,
+    );
+
+    const result = await getProductBySlug("id", "slug-id");
+
+    // Halaman produk tetap tayang; hanya seksinya yang hilang.
+    expect(result?.title).toBe("Title id");
+    expect(result?.landing).toEqual({});
+    expect(error).toHaveBeenCalled();
+    error.mockRestore();
+  });
+});
+
+describe("deleteProductById", () => {
+  it("collects section images too, not just the cover and gallery", async () => {
+    fakeTx([], {
+      coverImage: `${bucket}/cover.webp`,
+      gallery: [`${bucket}/g1.webp`],
+      landing: {
+        proof: {
+          heading: { en: "Proof", id: "Bukti" },
+          intro: { en: "", id: "" },
+          items: [
+            {
+              title: { en: "x", id: "x" },
+              detail: { en: "", id: "" },
+              beforeImage: `${bucket}/before.webp`,
+              beforeLabel: { en: "", id: "" },
+              afterImage: "",
+              afterLabel: { en: "", id: "" },
+            },
+          ],
+        },
+      },
+    });
+
+    const deleted = await deleteProductById("p1");
+
+    expect(deleted.imageUrls).toEqual([
+      `${bucket}/cover.webp`,
+      `${bucket}/g1.webp`,
+      `${bucket}/before.webp`,
     ]);
   });
 });
