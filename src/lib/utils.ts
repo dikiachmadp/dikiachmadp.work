@@ -64,3 +64,24 @@ export function formatPrice(
     minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
   }).format(amount);
 }
+
+/**
+ * Memformat nominal transaksi yang datang dari Polar.
+ *
+ * Polar mengirim setiap nominal dalam satuan terkecil mata uangnya — termasuk
+ * untuk rupiah, yang di dunia nyata tidak punya sen: Rp149.000 tiba sebagai
+ * 14.900.000. Karena itu pembaginya selalu 100, dan `minimumFractionDigits`
+ * dibiarkan ditentukan `Intl` supaya rupiah tidak berakhir sebagai "Rp149.000,00".
+ *
+ * Berbeda dari `formatPrice`, yang memformat harga katalog dari kolom Decimal.
+ */
+export function formatCents(
+  amount: number,
+  currency: string,
+  locale: "en" | "id",
+): string {
+  return new Intl.NumberFormat(locale === "id" ? "id-ID" : "en-US", {
+    style: "currency",
+    currency: currency.toUpperCase(),
+  }).format(amount / 100);
+}

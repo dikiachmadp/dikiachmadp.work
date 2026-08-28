@@ -8,6 +8,9 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(),
       count: vi.fn(),
     },
+    digitalProductTranslation: {
+      findMany: vi.fn(),
+    },
   },
 }));
 
@@ -22,12 +25,17 @@ function input(overrides: Partial<RecordOrderInput> = {}): RecordOrderInput {
     email: "buyer@example.com",
     amount: 500,
     currency: "USD",
+    locale: "id",
     ...overrides,
   };
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.mocked(prisma.digitalProductTranslation.findMany).mockResolvedValue([
+    { locale: "en", title: "OJS Restyle Kit 3.3" },
+    { locale: "id", title: "OJS Restyle Kit 3.3 (ID)" },
+  ] as never);
 });
 
 describe("recordOrder", () => {
@@ -82,5 +90,59 @@ describe("recordOrder", () => {
 
     const call = vi.mocked(prisma.order.upsert).mock.calls[0][0];
     expect(call.create).toMatchObject({ productId: null });
+  });
+  /**
+   * Nomor dan token tanda terima diisi DEFAULT di basis data, bukan di sini.
+   * Kalau salah satunya sampai muncul di payload — cabang mana pun — webhook
+   * yang diulang bisa menerbitkan ulang token, dan tautan tanda terima yang
+   * sudah ada di kotak masuk pembeli langsung mati.
+   */
+  it("never writes the receipt number or token itself", async () => {
+    await recordOrder(input());
+
+    const call = vi.mocked(prisma.order.upsert).mock.calls[0][0];
+    for (const payload of [call.create, call.update]) {
+      expect(payload).not.toHaveProperty("orderNumber");
+      expect(payload).not.toHaveProperty("receiptToken");
+    }
+  });
+
+  /**
+   * Judul produk dan bahasa dokumen adalah potret keadaan saat transaksi.
+   * Menulisnya ulang saat webhook diulang berarti tanda terima yang sudah
+   * dikirim berubah isinya kalau judul produknya sejak itu diganti.
+   */
+  it("writes the product title and locale snapshot only when the row is created", async () => {
+    await recordOrder(input());
+
+    const call = vi.mocked(prisma.order.upsert).mock.calls[0][0];
+    expect(call.create).toMatchObject({
+      productTitle: "OJS Restyle Kit 3.3 (ID)",
+      locale: "id",
+    });
+    expect(call.update).not.toHaveProperty("productTitle");
+    expect(call.update).not.toHaveProperty("locale");
+  });
+
+  it("falls back to any translation when the buyer's language is missing", async () => {
+    vi.mocked(prisma.digitalProductTranslation.findMany).mockResolvedValue([
+      { locale: "en", title: "English only" },
+    ] as never);
+
+    await recordOrder(input({ locale: "id" }));
+
+    const call = vi.mocked(prisma.order.upsert).mock.calls[0][0];
+    // Judul dalam bahasa yang keliru masih jauh lebih baik daripada tanda
+    // terima yang tidak menyebutkan barang apa pun.
+    expect(call.create).toMatchObject({ productTitle: "English only" });
+  });
+
+  it("records an empty product title when the order has no product", async () => {
+    await recordOrder(input({ productId: null }));
+
+    const call = vi.mocked(prisma.order.upsert).mock.calls[0][0];
+    expect(call.create).toMatchObject({ productTitle: "" });
+    // Tidak ada gunanya menanyakan terjemahan produk yang tidak ada.
+    expect(prisma.digitalProductTranslation.findMany).not.toHaveBeenCalled();
   });
 });

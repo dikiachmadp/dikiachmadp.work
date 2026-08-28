@@ -472,3 +472,77 @@ summary:focus-visible,
 .skip-link:focus-visible {
   transform: translateY(0);
 }
+
+/* ==========================================================================
+   Cetak
+   --------------------------------------------------------------------------
+   Halaman tanda terima tidak punya penghasil PDF di sisi peladen: pembeli
+   menyimpannya lewat dialog cetak peramban. Jadi blok ini bukan pemanis —
+   inilah yang menentukan rupa PDF yang mereka simpan.
+
+   Sengaja di luar setiap @layer, dengan alasan yang sama seperti aturan
+   focus-visible di atas: gaya tanpa layer selalu menang atas gaya ber-layer
+   berapa pun kekhususannya, jadi ia mengalahkan utility Tailwind tanpa perlu
+   satu pun !important.
+   ========================================================================== */
+
+@media print {
+  @page {
+    margin: 16mm;
+  }
+
+  /* Tinta gelap di atas kertas hangat itu tepat di layar; di atas kertas
+     sungguhan ia menghabiskan tinta tanpa menambah keterbacaan. Mode gelap
+     ikut dipaksa terang — tidak ada yang mau mencetak halaman hitam pekat,
+     dan pembeli yang menyimpan tanda terima memang sering sedang bermode
+     gelap. `--dot` dibuat transparan supaya tekstur titik tidak ikut tercetak
+     seandainya ada elemen yang memakainya langsung. */
+  :root,
+  :root[data-theme="dark"] {
+    --paper: #ffffff;
+    --ink: #000000;
+    --line: #000000;
+    --soft: #444444;
+    --wash: #ffffff;
+    --accent: #000000;
+    --accent-ink: #000000;
+    --dot: transparent;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  /* Kelengkapan situs yang tidak berarti apa-apa di atas kertas. Lapisan
+     tekstur kertas dimatikan lewat `print:hidden` di komponennya sendiri:
+     keduanya `fixed`, dan elemen fixed diulang di setiap halaman cetak. */
+  #site-nav,
+  footer,
+  .skip-link,
+  #sticky-buy {
+    display: none;
+  }
+
+  /* Bayangan rata khas tema ini tercetak sebagai balok kelabu pekat. */
+  .flat-3,
+  .flat-5,
+  .flat-6 {
+    box-shadow: none;
+  }
+
+  /* Lembar dokumennya sendiri: sudut elips dirender tidak rapi oleh sebagian
+     driver cetak, dan lembarnya tidak boleh terbelah antar halaman. */
+  .doc-sheet {
+    border-radius: 0;
+    border-width: 1px;
+    break-inside: avoid;
+  }
+
+  /* Tanpa ini dokumennya tercetak sebagai kolom sempit di tengah halaman,
+     dikelilingi margin ganda: margin @page ditambah padding halaman web. */
+  .doc-page {
+    max-width: none;
+    padding: 0;
+  }
+}

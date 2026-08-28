@@ -2,7 +2,9 @@ import { Webhooks } from "@polar-sh/nextjs";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { env } from "@/lib/env";
-import { recordOrder } from "@/lib/db/orders";
+import { markReceiptSent, recordOrder } from "@/lib/db/orders";
+import { sendReceiptEmail } from "@/lib/emails/receipt";
+import { escapeHtml } from "@/lib/emails/escape";
 
 /**
  * Endpoint webhook Polar, berlangganan `order.paid`.
@@ -12,25 +14,6 @@ import { recordOrder } from "@/lib/db/orders";
  * src/proxy.ts sudah mengecualikan /api, jadi request ini tidak lewat
  * middleware auth.
  */
-
-function sanitizeHtml(str: string): string {
-  return str.replace(/[<>&"']/g, (char) => {
-    switch (char) {
-      case "<":
-        return "&lt;";
-      case ">":
-        return "&gt;";
-      case "&":
-        return "&amp;";
-      case '"':
-        return "&quot;";
-      case "'":
-        return "&#39;";
-      default:
-        return char;
-    }
-  });
-}
 
 async function notify(email: string, amount: number, currency: string) {
   const resend = new Resend(env.RESEND_API_KEY);
@@ -53,7 +36,7 @@ async function notify(email: string, amount: number, currency: string) {
         <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
           <h2>Someone bought something</h2>
           <p><strong>Amount:</strong> ${formatted}</p>
-          <p><strong>Buyer:</strong> ${email ? sanitizeHtml(email) : "(no email on the order)"}</p>
+          <p><strong>Buyer:</strong> ${email ? escapeHtml(email) : "(no email on the order)"}</p>
           <p>Polar handles the file delivery — nothing to do here.</p>
         </div>
       `,
@@ -80,8 +63,9 @@ const handler = Webhooks({
      * sebaliknya. Keduanya menelan error, karena melempar dari sini membuat
      * Polar mengulang webhook yang sebenarnya sudah tercatat.
      */
+    let order: Awaited<ReturnType<typeof recordOrder>> | null = null;
     try {
-      await recordOrder({
+      order = await recordOrder({
         polarOrderId: data.id,
         polarCheckoutId: data.checkoutId ?? null,
         productId:
@@ -91,6 +75,12 @@ const handler = Webhooks({
         email,
         amount: data.totalAmount,
         currency: data.currency,
+        // Ditaruh di metadata checkout oleh /api/checkout. Kalau hilang,
+        // dokumennya terbit dalam bahasa Inggris — bukan alasan untuk gagal.
+        locale:
+          typeof data.metadata?.locale === "string"
+            ? data.metadata.locale
+            : "en",
       });
     } catch (error) {
       console.error("Order not stored:", error);
@@ -100,6 +90,28 @@ const handler = Webhooks({
       await notify(email, data.totalAmount, data.currency);
     } catch (error) {
       console.error("Order notification email failed:", error);
+    }
+
+    /**
+     * Jalur ketiga: tanda terima untuk pembelinya sendiri.
+     *
+     * Penjaganya `receiptSentAt`, bukan "apakah baris ini baru dibuat". Dua
+     * sifat yang didapat sekaligus: webhook yang diulang tidak mengirim email
+     * kedua, dan tanda terima yang gagal terkirim di percobaan pertama masih
+     * punya kesempatan terkirim di percobaan berikutnya. Ditandai *setelah*
+     * Resend menerima, bukan sebelum — kalau tidak, satu galat SMTP membuat
+     * tanda terimanya hilang selamanya tanpa jejak.
+     *
+     * Dilewati kalau pencatatannya gagal: tanpa baris, tidak ada token, dan
+     * tanpa token tidak ada dokumen untuk ditautkan.
+     */
+    if (order && !order.receiptSentAt) {
+      try {
+        const { sent } = await sendReceiptEmail(order);
+        if (sent) await markReceiptSent(order.id);
+      } catch (error) {
+        console.error("Receipt email failed:", error);
+      }
     }
   },
 });

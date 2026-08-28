@@ -31,7 +31,8 @@ export default async function DashboardLayout({
     { label: admin.nav[4], href: `/${validLocale}/dashboard/products` },
     { label: admin.nav[5], href: `/${validLocale}/dashboard/testimonials` },
     { label: admin.nav[6], href: `/${validLocale}/dashboard/submissions` },
-    { label: admin.nav[7], href: `/${validLocale}`, exact: true },
+    { label: admin.nav[7], href: `/${validLocale}/dashboard/orders` },
+    { label: admin.nav[8], href: `/${validLocale}`, exact: true },
   ];
 
   return (

@@ -266,6 +266,37 @@ model Order {
   currency        String   @default("USD")
   createdAt       DateTime @default(now())
 
+  // --- Tanda terima bermerek -------------------------------------------
+  // Nomor yang dibaca manusia, mis. DAP-2026-0007. Nilainya dari SEQUENCE
+  // Postgres lewat DEFAULT kolom, bukan dari menghitung baris lalu menambah
+  // satu — dua webhook yang tiba bersamaan akan menerbitkan nomor kembar.
+  //
+  // Nomornya berlanjut lintas tahun; tahun di depan cuma awalan, bukan
+  // penghitung yang di-nol-kan. Sekali sebuah nomor terbit ia tidak boleh
+  // dipakai ulang, dan mengulang penghitung tiap Januari membuat itu mungkin.
+  orderNumber     String   @unique @default(dbgenerated("('DAP-' || to_char(now(), 'YYYY') || '-' || lpad(nextval('\"Order_number_seq\"')::text, 4, '0'))"))
+  // Satu-satunya yang menjaga halaman tanda terima adalah ketidakterkaan token
+  // ini, jadi ia acak kuat — bukan id order Polar dan bukan uuid berurutan.
+  //
+  // Keduanya sengaja `dbgenerated`, bukan dibuat di kode aplikasi: dengan
+  // begitu keduanya hanya pernah muncul di jalur INSERT. Webhook Polar boleh
+  // datang berulang kali, dan payload `update` secara struktural tidak mungkin
+  // menyentuh kolom ini — tautan tanda terima yang sudah telanjur ada di kotak
+  // masuk pembeli karena itu tidak bisa mati.
+  receiptToken    String   @unique @default(dbgenerated("replace(gen_random_uuid()::text, '-', '')"))
+  // Cuplikan judul saat dibeli, bukan dibaca lewat relasi. Judul dan harga
+  // produk berubah; tanda terima harus menyatakan apa yang berlaku saat
+  // transaksi. Ini juga yang membuat dokumennya tetap utuh setelah produknya
+  // dihapus — relasinya memang sudah SetNull justru untuk itu.
+  productTitle    String   @default("")
+  // Bahasa yang dipilih pembeli saat checkout; menentukan bahasa dokumen dan
+  // emailnya. Datang dari metadata checkout.
+  locale          String   @default("en")
+  // Null berarti tanda terimanya belum pernah terkirim. Inilah penanda yang
+  // membuat webhook berulang tidak mengirim email dua kali, sekaligus yang
+  // membuat email yang sempat gagal masih bisa dikirim ulang.
+  receiptSentAt   DateTime?
+
   product DigitalProduct? @relation(fields: [productId], references: [id], onDelete: SetNull)
 
   @@index([createdAt(sort: Desc)])

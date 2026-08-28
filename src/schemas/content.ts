@@ -417,6 +417,34 @@ export const UiSchema = z.object({
       unlimitedUse: z.string(),
     }),
   }),
+  /**
+   * Dokumen tanda terima dan email pengantarnya. Satu kumpulan label untuk
+   * keduanya: nomor yang sama, barang yang sama, dan catatan merchant of
+   * record yang sama harus berbunyi identik di halaman maupun di kotak masuk.
+   */
+  receipt: z.object({
+    title: z.string(),
+    brandSuffix: z.string(),
+    numberLabel: z.string(),
+    dateLabel: z.string(),
+    billedToLabel: z.string(),
+    itemLabel: z.string(),
+    amountLabel: z.string(),
+    totalLabel: z.string(),
+    freeLabel: z.string(),
+    deletedProduct: z.string(),
+    paymentNote: z.string(),
+    deliveryNote: z.string(),
+    printBtn: z.string(),
+    viewProduct: z.string(),
+    notFoundTitle: z.string(),
+    notFoundBody: z.string(),
+    emailSubject: z.string(),
+    emailHeading: z.string(),
+    emailBody: z.string(),
+    emailCta: z.string(),
+    emailFooter: z.string(),
+  }),
   contactInfo: z.object({
     title: z.string(),
     findMe: z.string(),
