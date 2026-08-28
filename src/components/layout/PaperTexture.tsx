@@ -10,7 +10,7 @@ export default function PaperTexture() {
     <>
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-0 opacity-70"
+        className="pointer-events-none fixed inset-0 z-0 opacity-70 print:hidden"
         style={{
           backgroundImage:
             "radial-gradient(var(--dot) 1.4px, transparent 1.4px)",
@@ -19,7 +19,7 @@ export default function PaperTexture() {
       />
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 z-0"
+        className="pointer-events-none fixed inset-0 z-0 print:hidden"
         style={{
           opacity: 0.055,
           backgroundImage: `url("${NOISE_SVG}")`,

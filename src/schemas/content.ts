@@ -400,6 +400,50 @@ export const UiSchema = z.object({
     notIncludedLabel: z.string(),
     beforeLabel: z.string(),
     afterLabel: z.string(),
+    // Label khusus etalase halaman detail produk (src/components/product/*).
+    whatYouGet: z.string(),
+    imagesCount: z.string(),
+    compareHint: z.string(),
+    compareSlider: z.string(),
+    anchorNav: z.string(),
+    closingTitle: z.string(),
+    backToBuy: z.string(),
+    // Janji yang berlaku sama untuk setiap produk digital, jadi tetap di
+    // kamus alih-alih ikut masuk ke kolom `landing` tiap produk.
+    assurance: z.object({
+      instantDownload: z.string(),
+      securePayment: z.string(),
+      receiptByEmail: z.string(),
+      unlimitedUse: z.string(),
+    }),
+  }),
+  /**
+   * Dokumen tanda terima dan email pengantarnya. Satu kumpulan label untuk
+   * keduanya: nomor yang sama, barang yang sama, dan catatan merchant of
+   * record yang sama harus berbunyi identik di halaman maupun di kotak masuk.
+   */
+  receipt: z.object({
+    title: z.string(),
+    brandSuffix: z.string(),
+    numberLabel: z.string(),
+    dateLabel: z.string(),
+    billedToLabel: z.string(),
+    itemLabel: z.string(),
+    amountLabel: z.string(),
+    totalLabel: z.string(),
+    freeLabel: z.string(),
+    deletedProduct: z.string(),
+    paymentNote: z.string(),
+    deliveryNote: z.string(),
+    printBtn: z.string(),
+    viewProduct: z.string(),
+    notFoundTitle: z.string(),
+    notFoundBody: z.string(),
+    emailSubject: z.string(),
+    emailHeading: z.string(),
+    emailBody: z.string(),
+    emailCta: z.string(),
+    emailFooter: z.string(),
   }),
   contactInfo: z.object({
     title: z.string(),

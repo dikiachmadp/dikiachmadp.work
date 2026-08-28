@@ -115,13 +115,26 @@
     "payBtn": "Pay",
     "checkoutError": "Could not open checkout. Please try again.",
     "thanksTitle": "Thank you",
-    "thanksBody": "Your download link is on its way to your inbox. If it hasn't arrived in a few minutes, check your spam folder.",
+    "thanksBody": "Your download link is on its way to your inbox, along with a receipt from dikiachmadp.work | Digital Products. If neither has arrived in a few minutes, check your spam folder.",
     "demoBtn": "View demo",
     "recommendedBadge": "Recommended",
     "includedLabel": "Included",
     "notIncludedLabel": "Not included",
     "beforeLabel": "Before",
-    "afterLabel": "After"
+    "afterLabel": "After",
+    "whatYouGet": "What you get",
+    "imagesCount": "{count} images",
+    "compareHint": "Drag to compare",
+    "compareSlider": "Before and after comparison: {title}",
+    "anchorNav": "Jump to a section",
+    "closingTitle": "Ready when you are",
+    "backToBuy": "Get it now",
+    "assurance": {
+      "instantDownload": "Instant download",
+      "securePayment": "Secure payment",
+      "receiptByEmail": "Receipt by email",
+      "unlimitedUse": "Yours to keep"
+    }
   },
   "contactInfo": {
     "title": "Contact information",
@@ -142,6 +155,7 @@
       "Products",
       "Testimonials",
       "Messages",
+      "Orders",
       "View site"
     ],
     "stats": [
@@ -157,5 +171,28 @@
       "archived": "Archived"
     },
     "logout": "Log out"
+  },
+  "receipt": {
+    "title": "Receipt",
+    "brandSuffix": "Digital Products",
+    "numberLabel": "Receipt no.",
+    "dateLabel": "Date",
+    "billedToLabel": "Billed to",
+    "itemLabel": "Item",
+    "amountLabel": "Amount",
+    "totalLabel": "Total paid",
+    "freeLabel": "Free",
+    "deletedProduct": "Product no longer listed",
+    "paymentNote": "Payment was processed by Polar Software Inc., which acts as merchant of record for this sale and issues the tax invoice for it. This document is your order confirmation from dikiachmadp.work.",
+    "deliveryNote": "Your download link was sent by Polar to the address above.",
+    "printBtn": "Print / Save as PDF",
+    "viewProduct": "View the product",
+    "notFoundTitle": "Receipt not found",
+    "notFoundBody": "This link is no longer valid. Check the most recent email about your order, or get in touch.",
+    "emailSubject": "Your receipt {number} — dikiachmadp.work",
+    "emailHeading": "Thank you for your order",
+    "emailBody": "Here is your receipt from dikiachmadp.work | Digital Products. Your download link is delivered separately by Polar.",
+    "emailCta": "View your receipt",
+    "emailFooter": "You are receiving this because you completed a purchase at dikiachmadp.work."
   }
 }

@@ -1,5 +1,5 @@
 import Markdown from "@/components/logbook/Markdown";
-import SectionShell from "./SectionShell";
+import SectionShell, { type SectionTone } from "./SectionShell";
 import type { LocalizedLandingSection } from "@/schemas/product-landing";
 
 type ListSectionData = LocalizedLandingSection<"features">;
@@ -13,13 +13,20 @@ export default function ListSection({
   id,
   section,
   layout,
+  tone,
 }: {
   id: string;
   section: ListSectionData;
   layout: "points" | "cards" | "specs";
+  tone?: SectionTone;
 }) {
   return (
-    <SectionShell id={id} heading={section.heading} intro={section.intro}>
+    <SectionShell
+      id={id}
+      heading={section.heading}
+      intro={section.intro}
+      tone={tone}
+    >
       {layout === "specs" ? (
         <dl className="ink-border r-card m-0 grid grid-cols-1 gap-px overflow-hidden bg-(--line) sm:grid-cols-2">
           {section.items.map((item) => (

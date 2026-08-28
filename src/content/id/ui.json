@@ -115,13 +115,26 @@
     "payBtn": "Bayar",
     "checkoutError": "Checkout gagal dibuka. Coba lagi.",
     "thanksTitle": "Terima kasih",
-    "thanksBody": "Tautan unduhan sedang menuju kotak masukmu. Kalau dalam beberapa menit belum sampai, cek folder spam.",
+    "thanksBody": "Tautan unduhanmu sedang menuju kotak masuk, bersama tanda terima dari dikiachmadp.work | Digital Products. Kalau keduanya belum sampai dalam beberapa menit, coba periksa folder spam.",
     "demoBtn": "Lihat demo",
     "recommendedBadge": "Disarankan",
     "includedLabel": "Termasuk",
     "notIncludedLabel": "Tidak termasuk",
     "beforeLabel": "Sebelum",
-    "afterLabel": "Sesudah"
+    "afterLabel": "Sesudah",
+    "whatYouGet": "Yang kamu dapat",
+    "imagesCount": "{count} gambar",
+    "compareHint": "Geser untuk membandingkan",
+    "compareSlider": "Perbandingan sebelum dan sesudah: {title}",
+    "anchorNav": "Lompat ke seksi",
+    "closingTitle": "Kapan pun kamu siap",
+    "backToBuy": "Ambil sekarang",
+    "assurance": {
+      "instantDownload": "Unduh seketika",
+      "securePayment": "Pembayaran aman",
+      "receiptByEmail": "Tanda terima via email",
+      "unlimitedUse": "Jadi milikmu"
+    }
   },
   "contactInfo": {
     "title": "Informasi kontak",
@@ -142,6 +155,7 @@
       "Produk",
       "Testimoni",
       "Pesan",
+      "Pesanan",
       "Lihat situs"
     ],
     "stats": ["proyek", "unggulan", "pesan baru", "testimoni", "produk"],
@@ -151,5 +165,28 @@
       "archived": "Arsip"
     },
     "logout": "Keluar"
+  },
+  "receipt": {
+    "title": "Tanda Terima",
+    "brandSuffix": "Digital Products",
+    "numberLabel": "No. tanda terima",
+    "dateLabel": "Tanggal",
+    "billedToLabel": "Ditagihkan kepada",
+    "itemLabel": "Barang",
+    "amountLabel": "Jumlah",
+    "totalLabel": "Total dibayar",
+    "freeLabel": "Gratis",
+    "deletedProduct": "Produk sudah tidak terdaftar",
+    "paymentNote": "Pembayaran diproses oleh Polar Software Inc. selaku merchant of record untuk penjualan ini, dan Polar pula yang menerbitkan invoice pajaknya. Dokumen ini adalah konfirmasi pesanan dari dikiachmadp.work.",
+    "deliveryNote": "Tautan unduhanmu dikirim Polar ke alamat di atas.",
+    "printBtn": "Cetak / Simpan PDF",
+    "viewProduct": "Lihat produk",
+    "notFoundTitle": "Tanda terima tidak ditemukan",
+    "notFoundBody": "Tautan ini sudah tidak berlaku. Periksa email terakhir tentang pesananmu, atau hubungi saya.",
+    "emailSubject": "Tanda terima {number} — dikiachmadp.work",
+    "emailHeading": "Terima kasih atas pesananmu",
+    "emailBody": "Ini tanda terima dari dikiachmadp.work | Digital Products. Tautan unduhanmu dikirim terpisah oleh Polar.",
+    "emailCta": "Lihat tanda terima",
+    "emailFooter": "Kamu menerima email ini karena menyelesaikan pembelian di dikiachmadp.work."
   }
 }
