@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
-import SectionShell from "./SectionShell";
+import SectionShell, { type SectionTone } from "./SectionShell";
 import { cn } from "@/lib/utils";
 import type { LocalizedLandingSection } from "@/schemas/product-landing";
 
@@ -22,16 +22,23 @@ export default function VariantsSection({
   id,
   section,
   demoLabel,
+  tone,
 }: {
   id: string;
   section: VariantsData;
   demoLabel: string;
+  tone?: SectionTone;
 }) {
   const [active, setActive] = useState(0);
   const variant = section.items[active] ?? section.items[0];
 
   return (
-    <SectionShell id={id} heading={section.heading} intro={section.intro}>
+    <SectionShell
+      id={id}
+      heading={section.heading}
+      intro={section.intro}
+      tone={tone}
+    >
       <div
         role="tablist"
         aria-label={section.heading}

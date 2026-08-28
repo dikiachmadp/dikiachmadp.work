@@ -46,6 +46,7 @@ export default function ProductLanding({
                 id={slot}
                 section={section}
                 layout={spec.layout ?? "points"}
+                tone={spec.tone}
               />
             ) : null;
           }
@@ -58,6 +59,7 @@ export default function ProductLanding({
                 id={slot}
                 section={section}
                 ui={ui}
+                tone={spec.tone}
               />
             ) : null;
           }
@@ -70,6 +72,7 @@ export default function ProductLanding({
                 id={slot}
                 section={section}
                 demoLabel={ui.products.demoBtn}
+                tone={spec.tone}
               />
             ) : null;
           }
@@ -77,21 +80,38 @@ export default function ProductLanding({
           case "tiers": {
             const section = landing[slot];
             return section ? (
-              <TiersSection key={slot} id={slot} section={section} ui={ui} />
+              <TiersSection
+                key={slot}
+                id={slot}
+                section={section}
+                ui={ui}
+                tone={spec.tone}
+              />
             ) : null;
           }
 
           case "faq": {
             const section = landing[slot];
             return section ? (
-              <FaqSection key={slot} id={slot} section={section} />
+              <FaqSection
+                key={slot}
+                id={slot}
+                section={section}
+                tone={spec.tone}
+              />
             ) : null;
           }
 
           case "gallery": {
             const section = landing[slot];
             return section ? (
-              <GallerySection key={slot} id={slot} section={section} ui={ui} />
+              <GallerySection
+                key={slot}
+                id={slot}
+                section={section}
+                ui={ui}
+                tone={spec.tone}
+              />
             ) : null;
           }
         }

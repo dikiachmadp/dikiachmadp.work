@@ -121,7 +121,20 @@
     "includedLabel": "Termasuk",
     "notIncludedLabel": "Tidak termasuk",
     "beforeLabel": "Sebelum",
-    "afterLabel": "Sesudah"
+    "afterLabel": "Sesudah",
+    "whatYouGet": "Yang kamu dapat",
+    "imagesCount": "{count} gambar",
+    "compareHint": "Geser untuk membandingkan",
+    "compareSlider": "Perbandingan sebelum dan sesudah: {title}",
+    "anchorNav": "Lompat ke seksi",
+    "closingTitle": "Kapan pun kamu siap",
+    "backToBuy": "Ambil sekarang",
+    "assurance": {
+      "instantDownload": "Unduh seketika",
+      "securePayment": "Pembayaran aman",
+      "receiptByEmail": "Tanda terima via email",
+      "unlimitedUse": "Jadi milikmu"
+    }
   },
   "contactInfo": {
     "title": "Informasi kontak",

@@ -400,6 +400,22 @@ export const UiSchema = z.object({
     notIncludedLabel: z.string(),
     beforeLabel: z.string(),
     afterLabel: z.string(),
+    // Label khusus etalase halaman detail produk (src/components/product/*).
+    whatYouGet: z.string(),
+    imagesCount: z.string(),
+    compareHint: z.string(),
+    compareSlider: z.string(),
+    anchorNav: z.string(),
+    closingTitle: z.string(),
+    backToBuy: z.string(),
+    // Janji yang berlaku sama untuk setiap produk digital, jadi tetap di
+    // kamus alih-alih ikut masuk ke kolom `landing` tiap produk.
+    assurance: z.object({
+      instantDownload: z.string(),
+      securePayment: z.string(),
+      receiptByEmail: z.string(),
+      unlimitedUse: z.string(),
+    }),
   }),
   contactInfo: z.object({
     title: z.string(),

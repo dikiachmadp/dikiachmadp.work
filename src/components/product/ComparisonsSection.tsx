@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Markdown from "@/components/logbook/Markdown";
-import SectionShell from "./SectionShell";
+import SectionShell, { type SectionTone } from "./SectionShell";
+import BeforeAfterSlider from "./BeforeAfterSlider";
 import type { LocalizedLandingSection } from "@/schemas/product-landing";
 import type { UiLabels } from "@/types/content";
 
@@ -8,9 +9,11 @@ type ComparisonsData = LocalizedLandingSection<"proof">;
 type ComparisonItem = ComparisonsData["items"][number];
 
 /**
- * Pasangan gambar sebelum/sesudah. Item tanpa gambar dirender sebagai teks
- * saja — sebagian perbaikan memang tidak bisa ditunjukkan dalam satu tangkapan
- * layar, dan itu bukan alasan untuk menyembunyikannya.
+ * Bukti sebelum/sesudah. Sepasang gambar lengkap tampil sebagai pembagi yang
+ * bisa digeser; item yang hanya punya salah satunya tetap tampil sebagai satu
+ * bingkai; item tanpa gambar sama sekali dirender sebagai teks saja — sebagian
+ * perbaikan memang tidak bisa ditunjukkan dalam satu tangkapan layar, dan itu
+ * bukan alasan untuk menyembunyikannya.
  */
 function Frame({
   src,
@@ -24,6 +27,8 @@ function Frame({
   return (
     <figure className="m-0">
       <div className="r-frame ink-border flat-3 bg-(--wash) p-2">
+        {/* Bingkai tunggal ini masih berasio tetap: tanpa pasangan untuk
+            dibandingkan, kotak yang seragam justru lebih tenang dibaca. */}
         <div className="r-frame-inner ink-border relative aspect-[16/10] overflow-hidden">
           <Image
             src={src}
@@ -42,8 +47,11 @@ function Frame({
 }
 
 function Comparison({ item, ui }: { item: ComparisonItem; ui: UiLabels }) {
-  const hasImages = Boolean(item.beforeImage || item.afterImage);
   const t = ui.products;
+  const beforeLabel = item.beforeLabel || t.beforeLabel;
+  const afterLabel = item.afterLabel || t.afterLabel;
+  const hasPair = Boolean(item.beforeImage && item.afterImage);
+  const single = item.beforeImage || item.afterImage;
 
   return (
     <article className="flex flex-col gap-4">
@@ -56,23 +64,26 @@ function Comparison({ item, ui }: { item: ComparisonItem; ui: UiLabels }) {
         <Markdown className="text-[15px]">{item.detail}</Markdown>
       )}
 
-      {hasImages && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {item.beforeImage && (
+      {hasPair ? (
+        <BeforeAfterSlider
+          beforeImage={item.beforeImage}
+          afterImage={item.afterImage}
+          beforeLabel={beforeLabel}
+          afterLabel={afterLabel}
+          title={item.title}
+          hint={t.compareHint}
+          sliderLabel={t.compareSlider}
+        />
+      ) : (
+        single && (
+          <div className="sm:max-w-[520px]">
             <Frame
-              src={item.beforeImage}
-              alt={`${item.title} — ${item.beforeLabel || t.beforeLabel}`}
-              label={item.beforeLabel || t.beforeLabel}
+              src={single}
+              alt={`${item.title} — ${item.beforeImage ? beforeLabel : afterLabel}`}
+              label={item.beforeImage ? beforeLabel : afterLabel}
             />
-          )}
-          {item.afterImage && (
-            <Frame
-              src={item.afterImage}
-              alt={`${item.title} — ${item.afterLabel || t.afterLabel}`}
-              label={item.afterLabel || t.afterLabel}
-            />
-          )}
-        </div>
+          </div>
+        )
       )}
     </article>
   );
@@ -82,14 +93,21 @@ export default function ComparisonsSection({
   id,
   section,
   ui,
+  tone,
 }: {
   id: string;
   section: ComparisonsData;
   ui: UiLabels;
+  tone?: SectionTone;
 }) {
   return (
-    <SectionShell id={id} heading={section.heading} intro={section.intro}>
-      <div className="flex flex-col gap-11">
+    <SectionShell
+      id={id}
+      heading={section.heading}
+      intro={section.intro}
+      tone={tone}
+    >
+      <div className="flex flex-col gap-12">
         {section.items.map((item, index) => (
           <Comparison key={`${item.title}-${index}`} item={item} ui={ui} />
         ))}

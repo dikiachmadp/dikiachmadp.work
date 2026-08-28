@@ -1,5 +1,5 @@
 import Button from "@/components/ui/Button";
-import SectionShell from "./SectionShell";
+import SectionShell, { type SectionTone } from "./SectionShell";
 import { cn } from "@/lib/utils";
 import type { LocalizedLandingSection } from "@/schemas/product-landing";
 import type { UiLabels } from "@/types/content";
@@ -43,31 +43,46 @@ export default function TiersSection({
   id,
   section,
   ui,
+  tone,
 }: {
   id: string;
   section: TiersData;
   ui: UiLabels;
+  tone?: SectionTone;
 }) {
   const t = ui.products;
 
   return (
-    <SectionShell id={id} heading={section.heading} intro={section.intro}>
+    <SectionShell
+      id={id}
+      heading={section.heading}
+      intro={section.intro}
+      tone={tone}
+    >
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {section.items.map((tier) => (
           <div
             key={tier.name}
             className={cn(
               "r-card ink-border relative flex flex-col gap-4 bg-(--paper) p-5",
-              tier.recommended ? "flat-5" : "flat-3",
+              // Perbedaannya bukan sekadar bayangan: paket yang disarankan
+              // duduk sedikit lebih tinggi dan kepalanya berisian aksen, jadi
+              // matanya jatuh ke sana lebih dulu tanpa perlu membaca pitanya.
+              tier.recommended ? "flat-5 lg:-mt-2.5" : "flat-3",
             )}
           >
             {tier.recommended && (
-              <span className="r-tag ink-border absolute -top-3 right-4 bg-(--accent) px-2.5 py-1 text-[10px] font-bold tracking-[0.1em] uppercase">
+              <span className="r-tag ink-border absolute -top-3 right-4 bg-(--accent) px-2.5 py-1 text-[10px] font-bold tracking-[0.1em] text-white uppercase">
                 {t.recommendedBadge}
               </span>
             )}
 
-            <div>
+            <div
+              className={cn(
+                tier.recommended &&
+                  "r-card-alt ink-border -mx-2 -mt-2 bg-(--wash) px-4 py-3",
+              )}
+            >
               <h3 className="font-hand m-0 text-[24px] leading-[1.15]">
                 {tier.name}
               </h3>

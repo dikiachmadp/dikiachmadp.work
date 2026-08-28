@@ -222,6 +222,12 @@ export type LandingSlotSpec = {
   itemLabel: string;
   /** Tata letak render. Ditentukan kode, tidak pernah disimpan sebagai data. */
   layout?: "points" | "cards" | "specs";
+  /**
+   * Nada permukaan seksi. Sama seperti `layout`: keputusan desain, bukan data.
+   * Selang-selingnya yang membuat halaman ini terbaca sebagai etalase alih-alih
+   * satu kolom artikel yang panjang.
+   */
+  tone?: "plain" | "wash";
   /** Item dianggap kosong kalau semua field ini kosong di bahasa itu. */
   requires: string[];
   fields: LandingFieldSpec[];
@@ -239,13 +245,18 @@ export const LANDING_SLOTS: LandingSlotSpec[] = [
     hint: "Bantahan atas keberatan terbesar pembaca, ditaruh paling atas.",
     itemLabel: "Poin",
     layout: "points",
+    tone: "wash",
     requires: ["label", "detail"],
     fields: listFields,
   },
   {
     slot: "proof",
     legend: "2 · Bukti",
-    hint: "Perbandingan sebelum/sesudah. Item tanpa gambar dirender sebagai teks saja.",
+    hint:
+      "Perbandingan sebelum/sesudah, ditampilkan sebagai pembagi yang bisa digeser. " +
+      "Pakai sepasang gambar berasio sama — kotaknya mengikuti bentuk gambar " +
+      '"sebelum", jadi pasangan yang berbeda rasio akan terlihat terpotong saat disapu. ' +
+      "Item tanpa gambar dirender sebagai teks saja.",
     itemLabel: "Bukti",
     requires: ["title", "beforeImage", "afterImage"],
     fields: [
@@ -296,6 +307,7 @@ export const LANDING_SLOTS: LandingSlotSpec[] = [
     legend: "4 · Varian",
     hint: "Pilihan warna atau ragam. Tautan kosong berarti tombolnya tidak dirender.",
     itemLabel: "Varian",
+    tone: "wash",
     requires: ["name"],
     fields: [
       { name: "name", label: "Nama", kind: "text", localized: true },
@@ -332,6 +344,7 @@ export const LANDING_SLOTS: LandingSlotSpec[] = [
     legend: "5 · Paket",
     hint: "Tautan checkout wajib https://. Paket tanpa tautan tombolnya dinonaktifkan.",
     itemLabel: "Paket",
+    tone: "wash",
     requires: ["name"],
     fields: [
       { name: "name", label: "Nama paket", kind: "text", localized: true },

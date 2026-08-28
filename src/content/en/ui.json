@@ -121,7 +121,20 @@
     "includedLabel": "Included",
     "notIncludedLabel": "Not included",
     "beforeLabel": "Before",
-    "afterLabel": "After"
+    "afterLabel": "After",
+    "whatYouGet": "What you get",
+    "imagesCount": "{count} images",
+    "compareHint": "Drag to compare",
+    "compareSlider": "Before and after comparison: {title}",
+    "anchorNav": "Jump to a section",
+    "closingTitle": "Ready when you are",
+    "backToBuy": "Get it now",
+    "assurance": {
+      "instantDownload": "Instant download",
+      "securePayment": "Secure payment",
+      "receiptByEmail": "Receipt by email",
+      "unlimitedUse": "Yours to keep"
+    }
   },
   "contactInfo": {
     "title": "Contact information",

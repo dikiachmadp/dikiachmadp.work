@@ -129,7 +129,7 @@ export default function BuyPanel({
                 className={cn(
                   "r-chip ink-border cursor-pointer px-3 py-[7px] text-[12px] font-bold",
                   !isCustom && selected === preset
-                    ? "bg-(--accent) text-(--accent-ink)"
+                    ? "bg-(--accent) text-white"
                     : "bg-(--wash)",
                 )}
               >
@@ -141,7 +141,7 @@ export default function BuyPanel({
               onClick={() => setIsCustom(true)}
               className={cn(
                 "r-chip ink-border cursor-pointer px-3 py-[7px] text-[12px] font-bold",
-                isCustom ? "bg-(--accent) text-(--accent-ink)" : "bg-(--wash)",
+                isCustom ? "bg-(--accent) text-white" : "bg-(--wash)",
               )}
             >
               {labels.tipCustom}

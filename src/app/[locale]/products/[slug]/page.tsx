@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionary";
@@ -7,14 +6,17 @@ import { getAllProductSlugs, getProductBySlug } from "@/lib/db/products";
 import { createMetadata } from "@/lib/metadata";
 import PageWrapper from "@/components/layout/PageWrapper";
 import Button from "@/components/ui/Button";
-import Tag from "@/components/ui/Tag";
 import Markdown from "@/components/logbook/Markdown";
-import BuyPanel from "@/components/products/BuyPanel";
 import ProductLanding from "@/components/product/ProductLanding";
+import ProductShowcase from "@/components/product/ProductShowcase";
+import ProductAnchorNav from "@/components/product/ProductAnchorNav";
+import BuyBox from "@/components/product/BuyBox";
+import StickyBuyBar from "@/components/product/StickyBuyBar";
+import ClosingCta from "@/components/product/ClosingCta";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, productSchema } from "@/lib/structured-data";
 import { Locale } from "@/types/content";
-import { cn, formatPrice } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 
 interface ProductDetailPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -76,8 +78,24 @@ export default async function ProductDetailPage({
   if (!product) notFound();
 
   const t = dict.ui.products;
-  const hasCover = Boolean(product.coverImage);
   const price = formatPrice(product.price, product.currency, validLocale);
+
+  /**
+   * Sampul dan galeri jadi satu deret di etalase. Di-dedup karena sampul
+   * lazimnya juga gambar pertama galeri — pola yang sama dipakai halaman
+   * detail Project.
+   */
+  const showcaseImages = Array.from(
+    new Set([product.coverImage, ...product.gallery].filter(Boolean)),
+  ).map((url, index) => ({
+    id: url,
+    url,
+    alt: `${product.title} — ${index + 1}`,
+  }));
+
+  // Bilah lengket tidak dirender untuk produk yang memang belum bisa dibeli:
+  // tombol yang tidak membawa ke mana-mana lebih buruk daripada tidak ada.
+  const isBuyable = Boolean(product.polarProductId || product.buyUrl);
 
   const productsLabel =
     dict.navigation.main.find((item) => item.path === "/products")?.label ??
@@ -100,7 +118,9 @@ export default async function ProductDetailPage({
         )}
       />
 
-      <div className="mx-auto w-full max-w-[980px] px-[22px] pt-11">
+      {/* Ruang bawah lebih lega di ponsel: di sana bilah beli berlabuh di
+          tepi bawah layar dan akan menutupi baris terakhir halaman. */}
+      <div className="mx-auto w-full max-w-[980px] px-[22px] pt-11 pb-[110px] md:pb-16">
         <Button
           href={`/${validLocale}/products`}
           variant="secondary"
@@ -113,104 +133,50 @@ export default async function ProductDetailPage({
         <h1 className="font-hand m-center mt-1.5 mb-4 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
           {product.title}
         </h1>
-        <p className="m-justify mb-[30px] max-w-[640px] text-[17px] leading-[1.65] text-(--soft)">
+        <p className="m-justify mb-[34px] max-w-[680px] text-[17px] leading-[1.65] text-(--soft)">
           {product.summary}
         </p>
 
-        <div className="r-frame ink-border flat-5 mb-[34px] bg-(--wash) p-2.5">
-          <div
-            className={cn(
-              "r-frame-inner ink-border relative flex aspect-video items-center justify-center overflow-hidden",
-              !hasCover && "crosshatch",
-            )}
-          >
-            {hasCover ? (
-              <Image
-                src={product.coverImage}
-                alt={product.title}
-                fill
-                sizes="(max-width: 980px) 100vw, 960px"
-                priority
-                className="object-contain"
-              />
-            ) : (
-              <span className="font-tech text-[11px] tracking-[0.2em] text-(--soft) uppercase">
-                {product.title}
-              </span>
-            )}
-          </div>
+        {/* Etalase dan kartu beli berdampingan, bukan spanduk lebar di atas
+            aside sempit. Inilah susunan yang membedakan halaman jualan dari
+            halaman tulisan: gambar barangnya dan cara membelinya terlihat
+            bersamaan, tanpa perlu menggulir sedikit pun. */}
+        <div className="grid grid-cols-1 items-start gap-9 lg:grid-cols-[1fr_360px]">
+          <ProductShowcase
+            images={showcaseImages}
+            title={product.title}
+            ui={dict.ui}
+          />
+          <BuyBox product={product} locale={validLocale} ui={dict.ui} />
         </div>
 
-        <div className="grid grid-cols-1 items-start gap-9 lg:grid-cols-[1fr_260px]">
-          {/* Pembungkusnya tetap dirender walau body kosong: produk yang
-              seluruh isinya ada di seksi halaman jualan tidak boleh membuat
-              kolom aside melompat ke kolom pertama. */}
-          <div className="min-w-0">
-            {product.body.trim() !== "" && (
-              <Markdown className="max-w-none">{product.body}</Markdown>
-            )}
+        <ProductAnchorNav landing={product.landing} label={t.anchorNav} />
+
+        {product.body.trim() !== "" && (
+          <div className="mt-9 min-w-0">
+            <Markdown className="max-w-none">{product.body}</Markdown>
           </div>
-
-          <aside className="r-card-alt ink-border flat-3 flex flex-col gap-3.5 bg-(--paper) p-5">
-            {price && (
-              <div>
-                <div className="micro">
-                  {validLocale === "id" ? "Harga" : "Price"}
-                </div>
-                <div className="font-hand mt-0.5 text-[26px] leading-[1.2]">
-                  {price}
-                </div>
-              </div>
-            )}
-
-            {product.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {product.tags.map((tag) => (
-                  <Tag key={tag} className="px-3 py-[5px]">
-                    {tag}
-                  </Tag>
-                ))}
-              </div>
-            )}
-
-            <div className="h-0.5 bg-(--line) opacity-25" />
-
-            <BuyPanel
-              slug={product.slug}
-              locale={validLocale}
-              labels={t}
-              polarProductId={product.polarProductId}
-              buyUrl={product.buyUrl}
-              pwywEnabled={product.pwywEnabled}
-              pwywMinAmount={product.pwywMinAmount}
-            />
-          </aside>
-        </div>
+        )}
 
         <ProductLanding landing={product.landing} ui={dict.ui} />
 
-        {product.gallery.length > 0 && (
-          <div className="mt-11">
-            <h2 className="font-hand mb-4 text-[28px]">{t.galleryLabel}</h2>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              {product.gallery.map((src, i) => (
-                <div
-                  key={src}
-                  className="r-card ink-border relative aspect-[4/3] overflow-hidden bg-(--wash) transition-all duration-[0.25s] ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:rotate-[-0.8deg] hover:shadow-[6px_6px_0_var(--line)]"
-                >
-                  <Image
-                    src={src}
-                    alt={`${product.title} — ${i + 1}`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 480px"
-                    className="object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+        {isBuyable && (
+          <ClosingCta
+            title={t.closingTitle}
+            price={price}
+            label={t.backToBuy}
+          />
         )}
       </div>
+
+      {isBuyable && (
+        <StickyBuyBar
+          title={product.title}
+          price={price}
+          image={product.coverImage || null}
+          label={t.backToBuy}
+        />
+      )}
     </PageWrapper>
   );
 }

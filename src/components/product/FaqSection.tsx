@@ -1,5 +1,5 @@
 import Markdown from "@/components/logbook/Markdown";
-import SectionShell from "./SectionShell";
+import SectionShell, { type SectionTone } from "./SectionShell";
 import type { LocalizedLandingSection } from "@/schemas/product-landing";
 
 type FaqData = LocalizedLandingSection<"faq">;
@@ -12,12 +12,19 @@ type FaqData = LocalizedLandingSection<"faq">;
 export default function FaqSection({
   id,
   section,
+  tone,
 }: {
   id: string;
   section: FaqData;
+  tone?: SectionTone;
 }) {
   return (
-    <SectionShell id={id} heading={section.heading} intro={section.intro}>
+    <SectionShell
+      id={id}
+      heading={section.heading}
+      intro={section.intro}
+      tone={tone}
+    >
       <div className="flex flex-col gap-2.5">
         {section.items.map((item) => (
           <details
