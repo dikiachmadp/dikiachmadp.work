@@ -498,7 +498,14 @@ export const digitalProductFormSchema = z
     order: z.coerce.number().int().min(0),
     price: priceSchema,
     currency: z.string().min(1, "Mata uang wajib diisi"),
-    buyUrl: z.url("URL tidak valid"),
+    // Boleh kosong sejak checkout on-site ada — produk yang dijual lewat Polar
+    // tidak punya toko eksternal. `.refine()` di bawah yang memastikan produk
+    // tidak berakhir tanpa cara beli sama sekali.
+    buyUrl: z.union([z.url("URL tidak valid"), z.literal("")]),
+    polarProductId: z.string(),
+    pwywEnabled: z.boolean(),
+    // Sen. Angka, bukan dolar, supaya tidak ada pembulatan biner di jalan.
+    pwywMinAmount: z.coerce.number().int().min(0),
     coverImage: z.string().min(1, "Gambar cover wajib diisi (URL atau upload)"),
     gallery: z.array(z.string()),
     tags: z.array(z.string()),
@@ -519,9 +526,18 @@ export const digitalProductFormSchema = z
       path: ["translations"],
     },
   )
+  // Produk tanpa keduanya tidak bisa dibeli lewat jalur mana pun: tombolnya
+  // tidak punya tujuan. Lebih baik ditolak di sini daripada terbit sebagai
+  // halaman buntu.
+  .refine((data) => data.polarProductId !== "" || data.buyUrl !== "", {
+    message: "Isi Polar product ID atau URL toko eksternal.",
+    path: ["polarProductId"],
+  })
   .transform((data) => ({
     ...data,
     price: data.price === "" ? null : data.price,
+    buyUrl: data.buyUrl === "" ? null : data.buyUrl,
+    polarProductId: data.polarProductId === "" ? null : data.polarProductId,
     // Draf tidak punya tanggal terbit. Produk terbit tanpa tanggal eksplisit
     // dianggap terbit sekarang — sama seperti Logbook.
     publishedAt:
@@ -632,6 +648,9 @@ export function digitalProductInputFromForm(formData: FormData) {
     price: text(formData, "price"),
     currency: text(formData, "currency") || "USD",
     buyUrl: text(formData, "buyUrl"),
+    polarProductId: text(formData, "polarProductId"),
+    pwywEnabled: formData.get("pwywEnabled") === "on",
+    pwywMinAmount: text(formData, "pwywMinAmount") || "0",
     coverImage: text(formData, "coverImage"),
     gallery: splitLines(formData.get("gallery")),
     tags: splitList(formData.get("tags")),

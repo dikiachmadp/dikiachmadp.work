@@ -27,7 +27,8 @@ export type DigitalProductSummary = {
   /** String, bukan `Decimal` Prisma — tipe itu tidak boleh bocor ke komponen klien. */
   price: string | null;
   currency: string;
-  buyUrl: string;
+  /** `null` untuk produk yang dijual lewat Polar — tidak ada toko eksternal. */
+  buyUrl: string | null;
   tags: string[];
   featured: boolean;
   publishedAt: Date | null;
@@ -39,6 +40,14 @@ export type DigitalProductDetail = DigitalProductSummary & {
   /** Seksi halaman jualan, sudah diratakan ke satu bahasa. */
   landing: LocalizedProductLanding;
   updatedAt: Date;
+  /**
+   * Hanya di detail, bukan di summary: kartu indeks tidak membuka checkout,
+   * jadi tidak ada gunanya mengirim ID ini ke halaman daftar.
+   */
+  polarProductId: string | null;
+  pwywEnabled: boolean;
+  /** Sen. */
+  pwywMinAmount: number;
 };
 
 /**
@@ -87,6 +96,9 @@ function flatten(
     price: row.price ? row.price.toString() : null,
     currency: row.currency,
     buyUrl: row.buyUrl,
+    polarProductId: row.polarProductId,
+    pwywEnabled: row.pwywEnabled,
+    pwywMinAmount: row.pwywMinAmount,
     tags: row.tags,
     featured: row.featured,
     publishedAt: row.publishedAt,
@@ -223,7 +235,10 @@ export type DigitalProductInput = {
   order: number;
   price: string | null;
   currency: string;
-  buyUrl: string;
+  buyUrl: string | null;
+  polarProductId: string | null;
+  pwywEnabled: boolean;
+  pwywMinAmount: number;
   coverImage: string;
   gallery: string[];
   tags: string[];
@@ -271,6 +286,9 @@ function productData(input: DigitalProductInput) {
     price: input.price,
     currency: input.currency,
     buyUrl: input.buyUrl,
+    polarProductId: input.polarProductId,
+    pwywEnabled: input.pwywEnabled,
+    pwywMinAmount: input.pwywMinAmount,
     coverImage: input.coverImage,
     gallery: input.gallery,
     tags: input.tags,

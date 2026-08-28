@@ -9,6 +9,7 @@ import PageWrapper from "@/components/layout/PageWrapper";
 import Button from "@/components/ui/Button";
 import Tag from "@/components/ui/Tag";
 import Markdown from "@/components/logbook/Markdown";
+import BuyPanel from "@/components/products/BuyPanel";
 import ProductLanding from "@/components/product/ProductLanding";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, productSchema } from "@/lib/structured-data";
@@ -174,16 +175,15 @@ export default async function ProductDetailPage({
 
             <div className="h-0.5 bg-(--line) opacity-25" />
 
-            <Button
-              href={product.buyUrl}
-              target="_blank"
-              variant="primary"
-              size="sm"
-              fullWidth
-              className="r-chip py-[11px] text-[13px]"
-            >
-              {t.buyBtn} ↗
-            </Button>
+            <BuyPanel
+              slug={product.slug}
+              locale={validLocale}
+              labels={t}
+              polarProductId={product.polarProductId}
+              buyUrl={product.buyUrl}
+              pwywEnabled={product.pwywEnabled}
+              pwywMinAmount={product.pwywMinAmount}
+            />
           </aside>
         </div>
 

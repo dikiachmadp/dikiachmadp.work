@@ -34,6 +34,12 @@ const csp = [
   "media-src 'self'",
   // Pipeline gambar Next memakai worker dari blob URL.
   "worker-src 'self' blob:",
+  // Overlay checkout Polar adalah iframe ke domain mereka. `default-src 'self'`
+  // membuat frame-src efektif 'self', jadi tanpa baris ini iframe-nya ditolak
+  // dengan "Refused to frame". Ini satu-satunya pelonggaran yang dibutuhkan:
+  // paket embed-nya di-bundle Next sebagai first-party, bukan ditarik dari CDN,
+  // jadi script-src tidak ikut tersentuh.
+  "frame-src https://polar.sh https://*.polar.sh",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

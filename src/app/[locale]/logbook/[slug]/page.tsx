@@ -10,7 +10,7 @@ import {
 } from "@/lib/db/logbook";
 import { createMetadata } from "@/lib/metadata";
 import { estimateReadingMinutes, fill } from "@/lib/utils";
-import { extractTakeaways } from "@/lib/logbook-takeaways";
+import { extractTakeaways, TAKEAWAYS_MARKER } from "@/lib/logbook-takeaways";
 import PageWrapper from "@/components/layout/PageWrapper";
 import Button from "@/components/ui/Button";
 import JsonLd from "@/components/seo/JsonLd";
@@ -114,12 +114,15 @@ export default async function LogbookPostPage({ params }: PostPageProps) {
   });
 
   // "What I Learned" adalah panel opsional: pos yang menutup badannya dengan
-  // heading + daftar yang cocok dengan `t.whatILearnedHeading` mendapatkan
-  // panelnya diangkat keluar dari badan tulisan; yang lain tidak berubah.
-  const { body, items: takeaways } = extractTakeaways(
-    post.body,
+  // heading + daftar bullet mendapatkan panelnya diangkat keluar dari badan
+  // tulisan; yang lain tidak berubah. Dua bentuk heading diterima — versi
+  // locale (`t.whatILearnedHeading`) dan marker kanonik berbahasa Inggris yang
+  // dipakai badan tulisan di semua bahasa. Judul panel tetap dari kamus, jadi
+  // marker Inggris di pos ID tetap tampil sebagai "Apa yang Saya Pelajari".
+  const { body, items: takeaways } = extractTakeaways(post.body, [
     t.whatILearnedHeading,
-  );
+    TAKEAWAYS_MARKER,
+  ]);
 
   return (
     <PageWrapper>

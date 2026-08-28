@@ -55,6 +55,9 @@ function product(
     price: { toString: () => "19.99" },
     currency: "USD",
     buyUrl: "https://gumroad.com/l/x",
+    polarProductId: null,
+    pwywEnabled: false,
+    pwywMinAmount: 0,
     coverImage: "/covers/a.webp",
     gallery: [],
     tags: ["OJS"],
@@ -192,6 +195,26 @@ describe("query publik menyaring draf dan produk berjadwal", () => {
       some: { locale: "id", slug: "apa-pun" },
     });
   });
+
+  it("carries the checkout fields through to the detail shape", async () => {
+    vi.mocked(prisma.digitalProduct.findFirst).mockResolvedValue({
+      ...product([translation("en")]),
+      polarProductId: "prod_123",
+      pwywEnabled: true,
+      pwywMinAmount: 300,
+    } as never);
+
+    const detail = await getProductBySlug("en", "a-product");
+
+    expect(detail).toMatchObject({
+      polarProductId: "prod_123",
+      pwywEnabled: true,
+      pwywMinAmount: 300,
+    });
+    // Decimal Prisma tidak boleh bocor ke komponen klien; ia sudah jadi string
+    // sebelum meninggalkan lapisan ini.
+    expect(typeof detail?.price).toBe("string");
+  });
 });
 
 // --- Fungsi tulis ---
@@ -251,6 +274,9 @@ function input(
     price: "19.99",
     currency: "USD",
     buyUrl: "https://gumroad.com/l/x",
+    polarProductId: null,
+    pwywEnabled: false,
+    pwywMinAmount: 0,
     coverImage: "/covers/a.webp",
     gallery: [],
     tags: ["OJS"],

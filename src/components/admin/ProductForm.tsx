@@ -44,6 +44,10 @@ export interface ProductFormValues {
   price: string;
   currency: string;
   buyUrl: string;
+  polarProductId: string;
+  pwywEnabled: boolean;
+  /** Sen, sebagai string karena berasal dari input form. */
+  pwywMinAmount: string;
   coverImage: string;
   gallery: string;
   tags: string;
@@ -67,6 +71,9 @@ export const emptyProductForm: ProductFormValues = {
   price: "",
   currency: "USD",
   buyUrl: "",
+  polarProductId: "",
+  pwywEnabled: false,
+  pwywMinAmount: "0",
   coverImage: "",
   gallery: "",
   tags: "",
@@ -213,13 +220,38 @@ export default function ProductForm({
           />
           <AdminField
             name="buyUrl"
-            label="Buy URL"
-            required
+            label="External store URL"
+            hint="Only for products sold elsewhere. Leave empty when Polar handles it."
             placeholder="https://gumroad.com/l/…"
             defaultValue={v("buyUrl", values.buyUrl)}
             error={err("buyUrl")}
           />
         </div>
+      </AdminFieldset>
+
+      <AdminFieldset legend="On-site checkout (Polar)">
+        <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+          <AdminField
+            name="polarProductId"
+            label="Polar product ID"
+            hint="Fill this in and the buy button opens checkout on the page itself."
+            defaultValue={v("polarProductId", values.polarProductId)}
+            error={err("polarProductId")}
+          />
+          <AdminField
+            name="pwywMinAmount"
+            label="Minimum amount (cents)"
+            type="number"
+            hint="0 lets people take it for free. Polar still has the final say."
+            defaultValue={v("pwywMinAmount", values.pwywMinAmount)}
+            error={err("pwywMinAmount")}
+          />
+        </div>
+        <AdminCheckbox
+          name="pwywEnabled"
+          label="Pay what you want"
+          defaultChecked={values.pwywEnabled}
+        />
       </AdminFieldset>
 
       <AdminFieldset legend="Images">

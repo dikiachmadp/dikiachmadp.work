@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/lib/dictionary";
-import { getAboutProfile } from "@/lib/db/about";
+import { getAboutProfile, type AboutProfileData } from "@/lib/db/about";
 import { createMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 import PageWrapper from "@/components/layout/PageWrapper";
@@ -50,6 +50,46 @@ const DownloadIcon = () => (
     <path d="M12 3v12M7 12l5 5 5-5M4 20h16" />
   </svg>
 );
+
+/**
+ * Rendered twice further down — once pinned in the profile sidebar for
+ * `lg` and up, once inlined between the bio and Experience for mobile,
+ * each toggled with `hidden`/`lg:hidden` rather than reordered with CSS
+ * `order` because the two spots live in separate grid columns.
+ */
+function SkillsBlock({ about }: { about: AboutProfileData }) {
+  if (about.skills.length === 0) return null;
+
+  return (
+    <div className="flex flex-col gap-3">
+      <h2 className="font-hand m-center text-[20px]">{about.skillsTitle}</h2>
+      {about.skills.map((group, i) => (
+        <div
+          key={group.category}
+          className={cn(
+            "ink-border lift-card-sm flat-3 bg-(--wash) p-4",
+            i % 2 === 0 ? "r-card-alt" : "r-card",
+            i % 2 === 1 && "lift-card-sm-cw",
+          )}
+        >
+          <div className="mb-2 text-[10px] font-bold tracking-[0.18em] text-(--soft) uppercase max-sm:text-center">
+            {group.category}
+          </div>
+          <div className="flex flex-wrap gap-[7px] max-sm:justify-center">
+            {group.items.map((item) => (
+              <Tag
+                key={item}
+                className="bg-(--paper) text-[12px] font-semibold tracking-normal text-(--ink) normal-case"
+              >
+                {item}
+              </Tag>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default async function AboutPage({ params }: PageProps) {
   const { locale } = await params;
@@ -120,37 +160,12 @@ export default async function AboutPage({ params }: PageProps) {
               ))}
             </div>
 
-            {about.skills.length > 0 && (
-              <div className="flex flex-col gap-3">
-                <h2 className="font-hand m-center text-[20px]">
-                  {about.skillsTitle}
-                </h2>
-                {about.skills.map((group, i) => (
-                  <div
-                    key={group.category}
-                    className={cn(
-                      "ink-border lift-card-sm flat-3 bg-(--wash) p-4",
-                      i % 2 === 0 ? "r-card-alt" : "r-card",
-                      i % 2 === 1 && "lift-card-sm-cw",
-                    )}
-                  >
-                    <div className="mb-2 text-[10px] font-bold tracking-[0.18em] text-(--soft) uppercase max-sm:text-center">
-                      {group.category}
-                    </div>
-                    <div className="flex flex-wrap gap-[7px] max-sm:justify-center">
-                      {group.items.map((item) => (
-                        <Tag
-                          key={item}
-                          className="bg-(--paper) text-[12px] font-semibold tracking-normal text-(--ink) normal-case"
-                        >
-                          {item}
-                        </Tag>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* lg+ only: below that, this same block reappears further down
+                between the bio and Experience — see the `lg:hidden` block
+                past restParagraphs. */}
+            <div className="hidden lg:block">
+              <SkillsBlock about={about} />
+            </div>
           </div>
 
           <div className="m-center">
@@ -179,6 +194,13 @@ export default async function AboutPage({ params }: PageProps) {
                 </p>
               </div>
             ))}
+
+            {/* Below lg, Skills lives here instead of the sidebar — see the
+                `hidden lg:block` copy up in the left column. */}
+            <div className="lg:hidden">
+              <div className="dashed-rule my-9" />
+              <SkillsBlock about={about} />
+            </div>
 
             <div className="dashed-rule my-9" />
 
