@@ -22,11 +22,21 @@ export type RecordOrderInput = {
  * jadi no-op, supaya koreksi dari Polar tetap masuk.
  */
 export async function recordOrder(input: RecordOrderInput) {
-  const { polarOrderId, ...rest } = input;
+  const { polarOrderId, currency, ...rest } = input;
+
+  /**
+   * Polar mengirim kode mata uang dalam huruf kecil (`idr`, `usd`), sedangkan
+   * `DigitalProduct.currency` menyimpannya dalam huruf besar. Tanpa
+   * penyeragaman ini, mengelompokkan pemasukan per mata uang menghasilkan dua
+   * kelompok untuk mata uang yang sama. Dinormalkan saat masuk, bukan saat
+   * dibaca, supaya kolomnya hanya pernah berisi satu ejaan.
+   */
+  const data = { ...rest, currency: currency.toUpperCase() };
+
   return prisma.order.upsert({
     where: { polarOrderId },
-    create: { polarOrderId, ...rest },
-    update: rest,
+    create: { polarOrderId, ...data },
+    update: data,
   });
 }
 

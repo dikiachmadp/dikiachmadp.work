@@ -62,6 +62,21 @@ describe("recordOrder", () => {
     expect(call.create).toMatchObject({ amount: 0 });
   });
 
+  /**
+   * Polar mengirim `idr`/`usd`, sementara kolom yang sama di DigitalProduct
+   * berisi huruf besar. Dua ejaan untuk satu mata uang akan memecah laporan
+   * pemasukan nanti.
+   */
+  it("normalises the currency Polar sends to upper case", async () => {
+    await recordOrder(input({ currency: "idr", amount: 14_900_000 }));
+
+    const call = vi.mocked(prisma.order.upsert).mock.calls[0][0];
+    expect(call.create).toMatchObject({ currency: "IDR" });
+    // Juga di cabang update, kalau tidak webhook yang diulang justru
+    // mengembalikan ejaan huruf kecilnya.
+    expect(call.update).toMatchObject({ currency: "IDR" });
+  });
+
   it("accepts an order that is not tied to a known product", async () => {
     await recordOrder(input({ productId: null }));
 
