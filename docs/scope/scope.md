@@ -11,28 +11,29 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 ## At a glance
 
-| #   | Feature                                   | Phase   | Status   |
-| --- | ----------------------------------------- | ------- | -------- |
-| A   | Bilingual routing & locale copy           | Shipped | existing |
-| B   | Design system & theme                     | Shipped | existing |
-| C   | Data model & migrations                   | Shipped | existing |
-| D   | Data access layer                         | Shipped | existing |
-| E   | Admin auth & allowlist                    | Shipped | existing |
-| F   | Admin dashboard                           | Shipped | existing |
-| G   | Portfolio projects                        | Shipped | existing |
-| H   | Logbook                                   | Shipped | existing |
-| I   | About page                                | Shipped | existing |
-| J   | Digital product catalog & landing builder | Shipped | existing |
-| K   | On site checkout & pay what you want      | Shipped | existing |
-| L   | Orders, receipts & Polar webhook          | Shipped | existing |
-| M   | Contact form & submissions inbox          | Shipped | existing |
-| N   | Testimonials                              | Shipped | existing |
-| O   | Marketing & legal pages                   | Shipped | existing |
-| P   | SEO & structured data                     | Shipped | existing |
-| Q   | Security headers & rate limiting          | Shipped | existing |
-| R   | Coding standards & tooling                | Shipped | existing |
-| 1   | Product analytics                         | Slice 1 | planned  |
-| 2   | Error monitoring                          | Slice 1 | planned  |
+| #   | Feature                                   | Phase   | Status      |
+| --- | ----------------------------------------- | ------- | ----------- |
+| A   | Bilingual routing & locale copy           | Shipped | existing    |
+| B   | Design system & theme                     | Shipped | existing    |
+| C   | Data model & migrations                   | Shipped | existing    |
+| D   | Data access layer                         | Shipped | existing    |
+| E   | Admin auth & allowlist                    | Shipped | existing    |
+| F   | Admin dashboard                           | Shipped | existing    |
+| G   | Portfolio projects                        | Shipped | existing    |
+| H   | Logbook                                   | Shipped | existing    |
+| I   | About page                                | Shipped | existing    |
+| J   | Digital product catalog & landing builder | Shipped | existing    |
+| K   | On site checkout & pay what you want      | Shipped | existing    |
+| L   | Orders, receipts & Polar webhook          | Shipped | existing    |
+| M   | Contact form & submissions inbox          | Shipped | existing    |
+| N   | Testimonials                              | Shipped | existing    |
+| O   | Marketing & legal pages                   | Shipped | existing    |
+| P   | SEO & structured data                     | Shipped | existing    |
+| Q   | Security headers & rate limiting          | Shipped | existing    |
+| R   | Coding standards & tooling                | Shipped | existing    |
+| 3   | Digital product storefront rebuild        | Slice 1 | in-progress |
+| 1   | Product analytics                         | Slice 2 | planned     |
+| 2   | Error monitoring                          | Slice 2 | planned     |
 
 ## Shipped
 
@@ -111,7 +112,29 @@ Enforced CSP with the reasoning recorded, plus four Upstash limiters keyed on th
 
 Six stage CI, ESLint with the DAL import ban, Prettier, husky pre commit, and the `AGENTS.md` context files. code in `.github/workflows/ci.yml`, `eslint.config.mjs`
 
-## Slice 1: Observability
+## Slice 1: Storefront rebuild
+
+The store already sells, but its content model works against it. The buy card's
+"what you get" list is read from whichever pricing tier is flagged recommended,
+so a product with one file and one price cannot look worth buying without
+inventing a tier table it does not have. One vertical pass through the schema,
+the admin form, and the public page.
+
+### 3. Digital product storefront rebuild · in-progress
+
+Publishing a simple product costs 55 form inputs and a pricing tier it does not need, and the detail page reads as an article rather than a shop. Make the typing proportional to the product, and put the purchase decision first.
+**Done when:** a product with a cover, a price, one language, and a list of what the buyer gets can be published without opening the sales page tab at all, and a complex product can order its own sections.
+
+spec [0001](../specs/0001-product-storefront-rebuild/index.md)
+
+- [x] Design it (spec): `/architect product storefront rebuild`
+- [ ] Build it: `/develop product storefront rebuild`
+  - [ ] Thin thread through every layer for a simple product: migration, block contract, data access layer, Product tab, new buy card - AC-1 to AC-4, AC-6 to AC-9, AC-11 to AC-13
+  - [ ] Thicken it: block builder, the six block renderers, anchor nav, catalog card - AC-5, AC-10
+- [ ] Verify it: `/check verify product storefront rebuild`
+- [ ] Test it: `/test product storefront rebuild`
+
+## Slice 2: Observability
 
 Nothing measures this site and nothing reports its failures. Both strands run
 end to end through the real app, narrow on purpose: a small set of events and
@@ -141,6 +164,7 @@ Out of scope for this pass, kept so the plan stays honest.
 - **Lead capture**: a service enquiry path sharper than the general contact form, and a newsletter · needs a decision
 - **Content discovery**: category filters on projects, search on the logbook, indexable category pages · needs a decision
 - **Store expansion**: buyer library, coupons, bundles, product reviews · needs a decision
+- **Product page depth**: related products and cross recommendations, clickable tags (`getPublishedProducts` already takes a `tag` parameter that no UI sends), reviews and ratings, release and updated dates, a visible breadcrumb · from spec 0001 · needs a decision
 
 ## Legend
 
