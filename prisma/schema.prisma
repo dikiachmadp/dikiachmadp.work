@@ -216,12 +216,14 @@ model DigitalProduct {
   coverImage  String
   gallery     String[]
   tags        String[]
-  // Seksi halaman jualan (delapan slot bernama), kontraknya
-  // src/schemas/product-landing.ts. Disimpan sebagai jsonb, bukan tabel
+  // Tautan pratinjau/demo. Kosong -> tombol demo tidak dirender sama sekali.
+  demoUrl     String?
+  // Halaman jualan sebagai daftar blok berurutan, kontraknya
+  // src/schemas/product-blocks.ts. Disimpan sebagai jsonb, bukan tabel
   // sendiri: isinya tidak pernah di-query, hanya dibaca utuh bersama
-  // produknya — jadi satu query, bukan tujuh join. Aturan evolusinya ada di
-  // kepala berkas skema itu.
-  landing     Json       @default("{}")
+  // produknya — jadi satu query, bukan tujuh join. Urutan tampil = urutan
+  // larik; aturan evolusinya ada di kepala berkas skema itu.
+  blocks      Json       @default("[]")
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
@@ -239,8 +241,12 @@ model DigitalProductTranslation {
   slug      String
   title     String
   summary   String
-  // Markdown GFM, sama seperti LogbookPostTranslation.body.
+  // Markdown GFM, sama seperti LogbookPostTranslation.body. Boleh string
+  // kosong: produk yang seluruh ceritanya diceritakan blok tidak butuh prosa.
   body      String
+  // "Apa yang kamu dapat", satu butir per elemen. Melekat di terjemahan karena
+  // isinya kalimat, bukan aset — beda dari gambar yang melekat di induk.
+  deliverables String[] @default([])
 
   product DigitalProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
 

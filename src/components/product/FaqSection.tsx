@@ -1,8 +1,6 @@
 import Markdown from "@/components/logbook/Markdown";
 import SectionShell, { type SectionTone } from "./SectionShell";
-import type { LocalizedLandingSection } from "@/schemas/product-landing";
-
-type FaqData = LocalizedLandingSection<"faq">;
+import type { LocalizedBlockOf } from "@/schemas/product-blocks";
 
 /**
  * `<details>`/`<summary>` asli, bukan akordeon buatan sendiri: keyboard,
@@ -10,23 +8,21 @@ type FaqData = LocalizedLandingSection<"faq">;
  * JavaScript klien.
  */
 export default function FaqSection({
-  id,
-  section,
+  block,
   tone,
 }: {
-  id: string;
-  section: FaqData;
+  block: LocalizedBlockOf<"faq">;
   tone?: SectionTone;
 }) {
   return (
     <SectionShell
-      id={id}
-      heading={section.heading}
-      intro={section.intro}
+      id={block.id}
+      heading={block.heading}
+      intro={block.intro}
       tone={tone}
     >
       <div className="flex flex-col gap-2.5">
-        {section.items.map((item) => (
+        {block.items.map((item) => (
           <details
             key={item.question}
             className="r-card ink-border group bg-(--paper) px-5 py-4"

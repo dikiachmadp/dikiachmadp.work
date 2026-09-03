@@ -1,14 +1,20 @@
 import { z } from "zod";
 
 /**
- * Halaman jualan produk digital: delapan seksi bernama, semuanya opsional,
- * disimpan sebagai satu kolom `jsonb` di `DigitalProduct.landing`.
+ * Halaman jualan produk digital: daftar blok berurutan, disimpan sebagai satu
+ * kolom `jsonb` di `DigitalProduct.blocks`.
  *
- * **Template tetap, bukan penyusun blok.** Urutan seksi ditentukan kode (lihat
- * `LANDING_SLOTS`) dan mengikuti pola halaman jualan: kail → bantahan keberatan
- * → bukti → kelengkapan → pilihan → sisa keraguan. Admin mengisi *makna*, kode
- * yang menentukan *rupa* — jadi mengubah desain halaman produk cukup mengubah
- * satu komponen, dan mustahil ada produk yang tampil rusak karena salah susun.
+ * **Daftar blok, bukan template tetap.** Pendahulunya (`product-landing.ts`)
+ * punya delapan seksi bernama yang urutannya dikunci kode. Itu menjamin halaman
+ * selalu tersusun masuk akal, tapi juga berarti produk sederhana tidak bisa
+ * terbit tanpa mengarang isi seksi yang tidak dipunyainya. Sekarang pemilik
+ * menambah blok yang ia butuhkan, dalam urutan yang ia mau — dan yang esensial
+ * (sampul, harga, "apa yang kamu dapat") sudah pindah ke kolom sendiri, jadi
+ * produk dengan nol blok tetap punya halaman yang lengkap.
+ *
+ * **Rupa tetap milik kode.** Yang disimpan cuma makna: jenis blok, judul,
+ * pengantar, dan itemnya. Urutan tampil adalah urutan larik; nada latar
+ * dihitung dari indeks blok saat render dan tidak pernah disimpan.
  *
  * **Aturan evolusi skema.** Kolom `jsonb` tidak ikut bermigrasi: baris lama
  * tetap berbentuk lama saat kode berubah. Karena itu — jangan pernah mengganti
@@ -26,6 +32,7 @@ import { z } from "zod";
 // Bukan angka hiasan: tanpa batas, satu tempelan tak sengaja bisa menaruh
 // baris multi-MB yang ikut terkirim di setiap render halaman produk.
 
+export const MAX_BLOCKS_PER_PRODUCT = 12;
 export const MAX_ITEMS_PER_SECTION = 24;
 export const MAX_LIST_ENTRIES = 20;
 const SHORT = 300;
@@ -50,7 +57,7 @@ export function isSafeLinkUrl(value: string): boolean {
   }
 }
 
-const BUCKET_PATH_PREFIX = "/storage/v1/object/public/";
+export const BUCKET_PATH_PREFIX = "/storage/v1/object/public/";
 
 /**
  * Gambar hanya boleh dari hasil unggahan sendiri atau aset lokal. `next/image`
@@ -73,12 +80,12 @@ export function isSafeImageUrl(value: string): boolean {
   );
 }
 
-const linkUrlSchema = z
+export const linkUrlSchema = z
   .string()
   .max(500)
   .refine(isSafeLinkUrl, "Tautan harus https:// atau path yang diawali /");
 
-const imageUrlSchema = z
+export const imageUrlSchema = z
   .string()
   .max(500)
   .refine(
@@ -99,11 +106,23 @@ const localizedLines = (max: number) =>
 
 export type LocalizedText = z.infer<ReturnType<typeof localizedText>>;
 
-// --- Enam bentuk seksi ---------------------------------------------------
+// --- Enam jenis blok -----------------------------------------------------
 // Field kosong berarti "tidak diisi". Tidak ada `.optional()` di level field
 // supaya bolak-balik FormData tidak pernah ambigu antara kosong dan hilang.
 
-const sectionHead = {
+/**
+ * Dicetak di penyunting sebagai uuid lalu ikut bolak-balik lewat input
+ * tersembunyi. Bentuknya dikunci ke karakter yang aman untuk fragmen URL:
+ * nilainya berakhir di atribut `id` blok dan di `href="#…"` jangkarnya.
+ */
+const blockIdSchema = z
+  .string()
+  .min(1)
+  .max(64)
+  .regex(/^[A-Za-z0-9_-]+$/, "ID blok tidak valid");
+
+const blockHead = {
+  id: blockIdSchema,
   heading: localizedText(SHORT),
   intro: localizedText(MEDIUM),
 };
@@ -111,15 +130,27 @@ const sectionHead = {
 const items = <T extends z.ZodTypeAny>(item: T) =>
   z.array(item).max(MAX_ITEMS_PER_SECTION);
 
-const listSection = z.object({
-  ...sectionHead,
+export const LIST_STYLES = ["points", "cards", "specs"] as const;
+export type ListStyle = (typeof LIST_STYLES)[number];
+
+/**
+ * `positioning`, `features`, dan `specs` dulunya tiga slot terpisah dengan
+ * daftar field yang identik; yang membedakan cuma tata letaknya. Ketiganya
+ * lebur jadi satu jenis dengan `style` — tiga penyunting dan tiga perender
+ * yang nyaris kembar hilang bersamanya.
+ */
+const listBlock = z.object({
+  ...blockHead,
+  kind: z.literal("list"),
+  style: z.enum(LIST_STYLES).default("points"),
   items: items(
     z.object({ label: localizedText(SHORT), detail: localizedText(MEDIUM) }),
   ),
 });
 
-const comparisonsSection = z.object({
-  ...sectionHead,
+const comparisonBlock = z.object({
+  ...blockHead,
+  kind: z.literal("comparison"),
   items: items(
     z.object({
       title: localizedText(SHORT),
@@ -132,13 +163,23 @@ const comparisonsSection = z.object({
   ),
 });
 
-const variantsSection = z.object({
-  ...sectionHead,
+const variantsBlock = z.object({
+  ...blockHead,
+  kind: z.literal("variants"),
   items: items(
     z.object({
       name: localizedText(SHORT),
-      // Nilainya masuk ke atribut `style`, jadi bentuknya dikunci.
-      hex: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Warna berformat #1f4433"),
+      /**
+       * Boleh kosong. Dulu wajib berformat `#1f4433`, yang memaksa varian
+       * yang sebenarnya bukan warna (format berkas, ukuran) mengarang satu.
+       * Kosong berarti kotak warnanya tidak dirender sama sekali.
+       */
+      hex: z
+        .string()
+        .refine(
+          (value) => value === "" || /^#[0-9a-fA-F]{6}$/.test(value),
+          "Warna berformat #1f4433, atau kosongkan",
+        ),
       description: localizedText(MEDIUM),
       image: imageUrlSchema,
       // Kosong berarti demo untuk varian ini belum ada — tombolnya tidak
@@ -148,8 +189,9 @@ const variantsSection = z.object({
   ),
 });
 
-const tiersSection = z.object({
-  ...sectionHead,
+const tiersBlock = z.object({
+  ...blockHead,
+  kind: z.literal("tiers"),
   items: items(
     z.object({
       name: localizedText(SHORT),
@@ -165,93 +207,95 @@ const tiersSection = z.object({
   ),
 });
 
-const faqSection = z.object({
-  ...sectionHead,
+const faqBlock = z.object({
+  ...blockHead,
+  kind: z.literal("faq"),
   items: items(
     z.object({ question: localizedText(SHORT), answer: localizedText(LONG) }),
   ),
 });
 
-const gallerySection = z.object({
-  ...sectionHead,
+const galleryBlock = z.object({
+  ...blockHead,
+  kind: z.literal("gallery"),
   items: items(
     z.object({ image: imageUrlSchema, caption: localizedText(SHORT) }),
   ),
 });
 
-// --- Delapan slot --------------------------------------------------------
+export const blockSchema = z.discriminatedUnion("kind", [
+  listBlock,
+  comparisonBlock,
+  variantsBlock,
+  tiersBlock,
+  faqBlock,
+  galleryBlock,
+]);
 
-export const ProductLandingSchema = z.object({
-  positioning: listSection.optional(),
-  proof: comparisonsSection.optional(),
-  features: listSection.optional(),
-  variants: variantsSection.optional(),
-  tiers: tiersSection.optional(),
-  specs: listSection.optional(),
-  faq: faqSection.optional(),
-  gallery: gallerySection.optional(),
-});
+export const productBlocksSchema = z
+  .array(blockSchema)
+  .max(MAX_BLOCKS_PER_PRODUCT);
 
-export type ProductLanding = z.infer<typeof ProductLandingSchema>;
-export type LandingSlot = keyof ProductLanding;
+export type Block = z.infer<typeof blockSchema>;
+export type ProductBlocks = z.infer<typeof productBlocksSchema>;
+export type BlockKind = Block["kind"];
 
 // --- Tabel deskriptor ----------------------------------------------------
 /**
- * Satu sumber kebenaran untuk urutan seksi, label form, dan daftar field.
- * Form admin merender dari tabel ini, parser FormData membacanya dari sini,
- * dan komponen render mengambil `layout` dari sini — jadi menambah field
- * berarti menyunting satu tabel, bukan tiga berkas.
+ * Satu sumber kebenaran untuk label form dan daftar field tiap jenis blok.
+ *
+ * Ini kontrak, bukan detail penyunting. Empat pihak berjalan di atasnya —
+ * `blocksFromForm()`, `uploadBlockImages()`, `blockImageUrls()`, dan penyunting
+ * blok — dan tanpa tabel ini keenam jenis akan tumbuh jadi enam percabangan
+ * tulis tangan di empat berkas berbeda, persis duplikasi yang dihapus rombakan
+ * ini. Menambah field berarti menyunting satu tabel.
  */
 
-export type LandingFieldKind =
+export type BlockFieldKind =
   "text" | "textarea" | "lines" | "image" | "url" | "color" | "flag";
 
-export type LandingFieldSpec = {
+export type BlockFieldSpec = {
   name: string;
   label: string;
-  kind: LandingFieldKind;
+  kind: BlockFieldKind;
   /** Dirender sebagai sepasang input EN/ID dan disimpan sebagai `{en, id}`. */
   localized: boolean;
   hint?: string;
 };
 
-export type LandingSlotSpec = {
-  slot: LandingSlot;
-  legend: string;
+export type BlockKindSpec = {
+  kind: BlockKind;
+  /** Ditampilkan di menu "tambah blok". */
+  label: string;
   hint: string;
   itemLabel: string;
-  /** Tata letak render. Ditentukan kode, tidak pernah disimpan sebagai data. */
-  layout?: "points" | "cards" | "specs";
-  /**
-   * Nada permukaan seksi. Sama seperti `layout`: keputusan desain, bukan data.
-   * Selang-selingnya yang membuat halaman ini terbaca sebagai etalase alih-alih
-   * satu kolom artikel yang panjang.
-   */
-  tone?: "plain" | "wash";
+  /** Hanya `list`: pilihan tata letak yang tersedia. */
+  styles?: readonly ListStyle[];
   /** Item dianggap kosong kalau semua field ini kosong di bahasa itu. */
   requires: string[];
-  fields: LandingFieldSpec[];
+  fields: BlockFieldSpec[];
 };
 
-const listFields: LandingFieldSpec[] = [
+const listFields: BlockFieldSpec[] = [
   { name: "label", label: "Label", kind: "text", localized: true },
   { name: "detail", label: "Penjelasan", kind: "textarea", localized: true },
 ];
 
-export const LANDING_SLOTS: LandingSlotSpec[] = [
-  {
-    slot: "positioning",
-    legend: "1 · Posisi produk",
-    hint: "Bantahan atas keberatan terbesar pembaca, ditaruh paling atas.",
+export const BLOCK_KIND_SPECS: Record<BlockKind, BlockKindSpec> = {
+  list: {
+    kind: "list",
+    label: "Daftar poin",
+    hint:
+      "Satu bentuk data, tiga tata letak: poin bernomor, kisi kartu, atau " +
+      "tabel label/nilai. Dipakai untuk posisi produk, fitur, dan syarat.",
     itemLabel: "Poin",
-    layout: "points",
-    tone: "wash",
+    styles: LIST_STYLES,
     requires: ["label", "detail"],
     fields: listFields,
   },
-  {
-    slot: "proof",
-    legend: "2 · Bukti",
+  comparison: {
+    kind: "comparison",
+    label: "Perbandingan",
     hint:
       "Perbandingan sebelum/sesudah, ditampilkan sebagai pembagi yang bisa digeser. " +
       "Pakai sepasang gambar berasio sama — kotaknya mengikuti bentuk gambar " +
@@ -293,21 +337,11 @@ export const LANDING_SLOTS: LandingSlotSpec[] = [
       },
     ],
   },
-  {
-    slot: "features",
-    legend: "3 · Fitur",
-    hint: "Dirender sebagai kisi kartu.",
-    itemLabel: "Fitur",
-    layout: "cards",
-    requires: ["label", "detail"],
-    fields: listFields,
-  },
-  {
-    slot: "variants",
-    legend: "4 · Varian",
+  variants: {
+    kind: "variants",
+    label: "Varian",
     hint: "Pilihan warna atau ragam. Tautan kosong berarti tombolnya tidak dirender.",
     itemLabel: "Varian",
-    tone: "wash",
     requires: ["name"],
     fields: [
       { name: "name", label: "Nama", kind: "text", localized: true },
@@ -316,7 +350,7 @@ export const LANDING_SLOTS: LandingSlotSpec[] = [
         label: "Warna",
         kind: "color",
         localized: false,
-        hint: "Format #1f4433.",
+        hint: "Format #1f4433. Kosongkan bila varian ini bukan soal warna.",
       },
       {
         name: "description",
@@ -339,12 +373,11 @@ export const LANDING_SLOTS: LandingSlotSpec[] = [
       },
     ],
   },
-  {
-    slot: "tiers",
-    legend: "5 · Paket",
+  tiers: {
+    kind: "tiers",
+    label: "Paket",
     hint: "Tautan checkout wajib https://. Paket tanpa tautan tombolnya dinonaktifkan.",
     itemLabel: "Paket",
-    tone: "wash",
     requires: ["name"],
     fields: [
       { name: "name", label: "Nama paket", kind: "text", localized: true },
@@ -390,18 +423,9 @@ export const LANDING_SLOTS: LandingSlotSpec[] = [
       },
     ],
   },
-  {
-    slot: "specs",
-    legend: "6 · Syarat",
-    hint: "Dirender sebagai tabel label/nilai.",
-    itemLabel: "Syarat",
-    layout: "specs",
-    requires: ["label", "detail"],
-    fields: listFields,
-  },
-  {
-    slot: "faq",
-    legend: "7 · Tanya jawab",
+  faq: {
+    kind: "faq",
+    label: "Tanya jawab",
     hint: "Jawaban mendukung Markdown, jadi boleh memuat tautan.",
     itemLabel: "Butir",
     requires: ["question"],
@@ -410,10 +434,10 @@ export const LANDING_SLOTS: LandingSlotSpec[] = [
       { name: "answer", label: "Jawaban", kind: "textarea", localized: true },
     ],
   },
-  {
-    slot: "gallery",
-    legend: "8 · Galeri",
-    hint: "Tangkapan layar berketerangan di bagian bawah halaman.",
+  gallery: {
+    kind: "gallery",
+    label: "Galeri",
+    hint: "Tangkapan layar berketerangan.",
     itemLabel: "Gambar",
     requires: ["image"],
     fields: [
@@ -421,22 +445,20 @@ export const LANDING_SLOTS: LandingSlotSpec[] = [
       { name: "caption", label: "Keterangan", kind: "text", localized: true },
     ],
   },
-];
+};
 
-export const LANDING_SLOT_BY_NAME: Record<LandingSlot, LandingSlotSpec> =
-  Object.fromEntries(LANDING_SLOTS.map((spec) => [spec.slot, spec])) as Record<
-    LandingSlot,
-    LandingSlotSpec
-  >;
+/** Urutan tetap untuk menu "tambah blok". */
+export const BLOCK_KINDS = Object.keys(BLOCK_KIND_SPECS) as BlockKind[];
 
-/** Semua URL gambar di dalam landing — dipakai saat menghapus produk. */
-export function landingImageUrls(landing: ProductLanding): string[] {
+/** Semua URL gambar di dalam blok — dipakai saat menghapus produk. */
+export function blockImageUrls(blocks: ProductBlocks): string[] {
   const urls: string[] = [];
-  for (const spec of LANDING_SLOTS) {
-    const section = landing[spec.slot];
-    if (!section) continue;
-    const imageFields = spec.fields.filter((f) => f.kind === "image");
-    for (const item of section.items as Record<string, unknown>[]) {
+  for (const block of blocks) {
+    const imageFields = BLOCK_KIND_SPECS[block.kind].fields.filter(
+      (field) => field.kind === "image",
+    );
+    if (imageFields.length === 0) continue;
+    for (const item of block.items as Record<string, unknown>[]) {
       for (const field of imageFields) {
         const value = item[field.name];
         if (typeof value === "string" && value !== "") urls.push(value);
@@ -459,9 +481,11 @@ type Localize<T> = T extends { en: infer V; id: infer V }
       ? { [K in keyof T]: Localize<T[K]> }
       : T;
 
-export type LocalizedProductLanding = Localize<ProductLanding>;
-export type LocalizedLandingSection<S extends LandingSlot> = NonNullable<
-  LocalizedProductLanding[S]
+export type LocalizedBlock = Localize<Block>;
+/** Satu jenis blok yang sudah dilokalkan, mis. `LocalizedBlockOf<"tiers">`. */
+export type LocalizedBlockOf<K extends BlockKind> = Extract<
+  LocalizedBlock,
+  { kind: K }
 >;
 
 function localizeValue(value: unknown, locale: Locale): unknown {
@@ -472,7 +496,7 @@ function localizeValue(value: unknown, locale: Locale): unknown {
     const record = value as Record<string, unknown>;
     const keys = Object.keys(record);
     // Satu-satunya objek berkunci tepat {en, id} di skema ini adalah teks
-    // dwibahasa — tidak ada seksi atau item yang berbentuk begitu.
+    // dwibahasa — tidak ada blok atau item yang berbentuk begitu.
     if (keys.length === 2 && "en" in record && "id" in record) {
       return record[locale];
     }
@@ -486,7 +510,7 @@ function localizeValue(value: unknown, locale: Locale): unknown {
   return value;
 }
 
-function hasContent(spec: LandingSlotSpec, item: Record<string, unknown>) {
+function hasContent(spec: BlockKindSpec, item: Record<string, unknown>) {
   return spec.requires.some((name) => {
     const value = item[name];
     if (Array.isArray(value)) return value.length > 0;
@@ -495,36 +519,30 @@ function hasContent(spec: LandingSlotSpec, item: Record<string, unknown>) {
 }
 
 /**
- * Membuang seksi yang tidak layak tayang di bahasa ini: judulnya kosong, atau
+ * Membuang blok yang tidak layak tayang di bahasa ini: judulnya kosong, atau
  * tidak menyisakan satu pun item yang terisi. Produk yang hanya diterjemahkan
- * sebagian karena itu tidak pernah menampilkan seksi setengah jadi.
+ * sebagian karena itu tidak pernah menampilkan blok setengah jadi.
+ *
+ * Urutan larik dipertahankan apa adanya — itulah urutan yang dipilih pemilik.
  */
-export function localizeLanding(
-  landing: ProductLanding,
+export function localizeBlocks(
+  blocks: ProductBlocks,
   locale: Locale,
-): LocalizedProductLanding {
-  const result: Record<string, unknown> = {};
+): LocalizedBlock[] {
+  const result: LocalizedBlock[] = [];
 
-  for (const spec of LANDING_SLOTS) {
-    const section = landing[spec.slot];
-    if (!section) continue;
-
-    const localized = localizeValue(section, locale) as {
+  for (const block of blocks) {
+    const spec = BLOCK_KIND_SPECS[block.kind];
+    const localized = localizeValue(block, locale) as {
       heading: string;
-      intro: string;
       items: Record<string, unknown>[];
     };
 
     const items = localized.items.filter((item) => hasContent(spec, item));
     if (localized.heading.trim() === "" || items.length === 0) continue;
 
-    result[spec.slot] = { ...localized, items };
+    result.push({ ...localized, items } as LocalizedBlock);
   }
 
-  return result as LocalizedProductLanding;
-}
-
-/** Benar kalau tidak ada satu pun seksi yang layak tayang. */
-export function isLandingEmpty(landing: LocalizedProductLanding): boolean {
-  return Object.keys(landing).length === 0;
+  return result;
 }
