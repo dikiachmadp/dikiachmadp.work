@@ -125,12 +125,12 @@ the admin form, and the public page.
 Publishing a simple product costs 55 form inputs and a pricing tier it does not need, and the detail page reads as an article rather than a shop. Make the typing proportional to the product, and put the purchase decision first.
 **Done when:** a product with a cover, a price, one language, and a list of what the buyer gets can be published without opening the sales page tab at all, and a complex product can order its own sections.
 
-spec [0001](../specs/0001-product-storefront-rebuild/index.md)
+spec [0001](../specs/0001-product-storefront-rebuild/index.md) · code in `src/schemas/product-blocks.ts`, `src/lib/db/products.ts`, `src/components/admin/`, `src/components/product/`, `prisma/migrations/20260902041500_product_blocks/`
 
 - [x] Design it (spec): `/architect product storefront rebuild`
-- [ ] Build it: `/develop product storefront rebuild`
-  - [ ] Thin thread through every layer for a simple product: migration, block contract, data access layer, Product tab, new buy card - AC-1 to AC-4, AC-6 to AC-9, AC-11 to AC-13
-  - [ ] Thicken it: block builder, the six block renderers, anchor nav, catalog card - AC-5, AC-10
+- [x] Build it: `/develop product storefront rebuild`
+  - [x] Thin thread through every layer for a simple product: migration, block contract, data access layer, Product tab, new buy card - AC-1 to AC-4, AC-6 to AC-9, AC-11 to AC-13
+  - [x] Thicken it: block builder, the six block renderers, anchor nav, catalog card - AC-5, AC-10
 - [ ] Verify it: `/check verify product storefront rebuild`
 - [ ] Test it: `/test product storefront rebuild`
 

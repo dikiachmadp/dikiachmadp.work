@@ -102,6 +102,7 @@ export default async function ProductsIndexPage({
                 key={product.id}
                 product={product}
                 locale={validLocale}
+                ui={dict.ui}
               />
             ))}
           </div>

@@ -78,7 +78,7 @@ export default function ProductShowcase({
             aria-hidden
             className="r-tag ink-border flat-3 font-note absolute -top-4 right-6 rotate-3 bg-(--paper) px-3 pt-0.5 pb-1 text-[19px]"
           >
-            {fill(t.imagesCount, { count })}
+            {fill(count === 1 ? t.imagesCountOne : t.imagesCount, { count })}
           </span>
         )}
       </div>

@@ -2,11 +2,11 @@ import Image from "next/image";
 import Markdown from "@/components/logbook/Markdown";
 import SectionShell, { type SectionTone } from "./SectionShell";
 import BeforeAfterSlider from "./BeforeAfterSlider";
-import type { LocalizedLandingSection } from "@/schemas/product-landing";
+import type { LocalizedBlockOf } from "@/schemas/product-blocks";
 import type { UiLabels } from "@/types/content";
 
-type ComparisonsData = LocalizedLandingSection<"proof">;
-type ComparisonItem = ComparisonsData["items"][number];
+type ComparisonBlock = LocalizedBlockOf<"comparison">;
+type ComparisonItem = ComparisonBlock["items"][number];
 
 /**
  * Bukti sebelum/sesudah. Sepasang gambar lengkap tampil sebagai pembagi yang
@@ -90,25 +90,23 @@ function Comparison({ item, ui }: { item: ComparisonItem; ui: UiLabels }) {
 }
 
 export default function ComparisonsSection({
-  id,
-  section,
+  block,
   ui,
   tone,
 }: {
-  id: string;
-  section: ComparisonsData;
+  block: ComparisonBlock;
   ui: UiLabels;
   tone?: SectionTone;
 }) {
   return (
     <SectionShell
-      id={id}
-      heading={section.heading}
-      intro={section.intro}
+      id={block.id}
+      heading={block.heading}
+      intro={block.intro}
       tone={tone}
     >
       <div className="flex flex-col gap-12">
-        {section.items.map((item, index) => (
+        {block.items.map((item, index) => (
           <Comparison key={`${item.title}-${index}`} item={item} ui={ui} />
         ))}
       </div>

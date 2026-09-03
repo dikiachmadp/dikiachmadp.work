@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { estimateReadingMinutes, fill, formatPrice } from "./utils";
+import {
+  estimateReadingMinutes,
+  fill,
+  formatPrice,
+  isFreePrice,
+  priceLabel,
+} from "./utils";
 import enUi from "@/content/en/ui.json";
 import idUi from "@/content/id/ui.json";
 
@@ -105,5 +111,54 @@ describe("formatPrice", () => {
     // Indonesian formatting groups with dots — just assert it's not the
     // English format rather than pin the exact separator characters.
     expect(result).not.toBe(formatPrice("150000", "IDR", "en"));
+  });
+});
+
+/**
+ * Tiga keadaan harga yang tidak boleh saling tertukar. Yang paling mahal
+ * kalau tertukar adalah "belum ditetapkan" dibaca sebagai gratis: tombol beli
+ * memilih labelnya dari sini, dan pernah menawarkan produk $49 secara
+ * cuma-cuma karena keputusan itu tidak pernah melihat harganya.
+ */
+describe("isFreePrice", () => {
+  it("membaca nol sebagai gratis, apa pun bentuk desimalnya", () => {
+    expect(isFreePrice("0")).toBe(true);
+    expect(isFreePrice("0.00")).toBe(true);
+  });
+
+  it("harga di atas nol bukan gratis", () => {
+    expect(isFreePrice("49")).toBe(false);
+    expect(isFreePrice("0.01")).toBe(false);
+  });
+
+  it("harga yang belum ditetapkan bukan gratis", () => {
+    expect(isFreePrice(null)).toBe(false);
+    expect(isFreePrice("")).toBe(false);
+  });
+
+  it("nilai yang tidak masuk akal bukan gratis", () => {
+    expect(isFreePrice("gratis")).toBe(false);
+  });
+});
+
+describe("priceLabel", () => {
+  it("sepakat dengan isFreePrice soal apa yang disebut gratis", () => {
+    expect(priceLabel("0.00", "USD", "en", "Free")).toBe("Free");
+    expect(priceLabel(null, "USD", "en", "Free")).toBeNull();
+    expect(priceLabel("49", "USD", "en", "Free")).toBe("$49");
+  });
+
+  it("memakai mata uang produknya, diformat per bahasa", () => {
+    // `Intl` memisahkan simbol dan angka dengan spasi tak terpisah (U+00A0),
+    // bukan spasi biasa. Dinormalkan di sini supaya yang diuji adalah
+    // formatnya, bukan jenis spasinya.
+    const plain = (value: string | null) => value?.replace(/\u00a0/g, " ");
+
+    expect(plain(priceLabel("149000", "IDR", "en", "Free"))).toBe(
+      "IDR 149,000",
+    );
+    expect(plain(priceLabel("149000", "IDR", "id", "Gratis"))).toBe(
+      "Rp 149.000",
+    );
   });
 });

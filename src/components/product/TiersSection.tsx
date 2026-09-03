@@ -1,10 +1,8 @@
 import Button from "@/components/ui/Button";
 import SectionShell, { type SectionTone } from "./SectionShell";
 import { cn } from "@/lib/utils";
-import type { LocalizedLandingSection } from "@/schemas/product-landing";
+import type { LocalizedBlockOf } from "@/schemas/product-blocks";
 import type { UiLabels } from "@/types/content";
-
-type TiersData = LocalizedLandingSection<"tiers">;
 
 function EntryList({
   label,
@@ -40,13 +38,11 @@ function EntryList({
 }
 
 export default function TiersSection({
-  id,
-  section,
+  block,
   ui,
   tone,
 }: {
-  id: string;
-  section: TiersData;
+  block: LocalizedBlockOf<"tiers">;
   ui: UiLabels;
   tone?: SectionTone;
 }) {
@@ -54,13 +50,13 @@ export default function TiersSection({
 
   return (
     <SectionShell
-      id={id}
-      heading={section.heading}
-      intro={section.intro}
+      id={block.id}
+      heading={block.heading}
+      intro={block.intro}
       tone={tone}
     >
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        {section.items.map((tier) => (
+        {block.items.map((tier) => (
           <div
             key={tier.name}
             className={cn(

@@ -16,7 +16,7 @@ import ClosingCta from "@/components/product/ClosingCta";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, productSchema } from "@/lib/structured-data";
 import { Locale } from "@/types/content";
-import { formatPrice } from "@/lib/utils";
+import { priceLabel } from "@/lib/utils";
 
 interface ProductDetailPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -78,7 +78,12 @@ export default async function ProductDetailPage({
   if (!product) notFound();
 
   const t = dict.ui.products;
-  const price = formatPrice(product.price, product.currency, validLocale);
+  const price = priceLabel(
+    product.price,
+    product.currency,
+    validLocale,
+    t.freeLabel,
+  );
 
   /**
    * Sampul dan galeri jadi satu deret di etalase. Di-dedup karena sampul
@@ -130,17 +135,12 @@ export default async function ProductDetailPage({
           ← {t.backBtn}
         </Button>
 
-        <h1 className="font-hand m-center mt-1.5 mb-4 text-[clamp(2.4rem,5.6vw,4.2rem)] leading-none">
-          {product.title}
-        </h1>
-        <p className="m-justify mb-[34px] max-w-[680px] text-[17px] leading-[1.65] text-(--soft)">
-          {product.summary}
-        </p>
-
         {/* Etalase dan kartu beli berdampingan, bukan spanduk lebar di atas
             aside sempit. Inilah susunan yang membedakan halaman jualan dari
             halaman tulisan: gambar barangnya dan cara membelinya terlihat
-            bersamaan, tanpa perlu menggulir sedikit pun. */}
+            bersamaan, tanpa perlu menggulir sedikit pun.
+            Judul dan ringkasan hidup di dalam kartu beli, bukan sebagai kepala
+            halaman — `<h1>`-nya ada di sana. */}
         <div className="grid grid-cols-1 items-start gap-9 lg:grid-cols-[1fr_360px]">
           <ProductShowcase
             images={showcaseImages}
@@ -150,7 +150,7 @@ export default async function ProductDetailPage({
           <BuyBox product={product} locale={validLocale} ui={dict.ui} />
         </div>
 
-        <ProductAnchorNav landing={product.landing} label={t.anchorNav} />
+        <ProductAnchorNav blocks={product.blocks} label={t.anchorNav} />
 
         {product.body.trim() !== "" && (
           <div className="mt-9 min-w-0">
@@ -158,7 +158,7 @@ export default async function ProductDetailPage({
           </div>
         )}
 
-        <ProductLanding landing={product.landing} ui={dict.ui} />
+        <ProductLanding blocks={product.blocks} ui={dict.ui} />
 
         {isBuyable && (
           <ClosingCta

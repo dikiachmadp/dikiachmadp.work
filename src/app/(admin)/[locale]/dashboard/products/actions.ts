@@ -17,10 +17,16 @@ import {
   type DigitalProductInput,
 } from "@/lib/db/products";
 import { revalidateProductPaths } from "@/lib/db/revalidate";
-import { LANDING_SLOTS, type ProductLanding } from "@/schemas/product-landing";
+import { BLOCK_KIND_SPECS, type ProductBlocks } from "@/schemas/product-blocks";
 import { pageQuery } from "@/lib/pagination";
 
-const UPLOAD_PLACEHOLDER = "__upload__";
+/**
+ * Penanda sementara supaya cover yang baru dipilih lolos `min(1)`; ditimpa URL
+ * hasil unggahan beberapa baris kemudian. Diawali "/" karena `coverImage`
+ * sekarang juga harus lolos `isSafeImageUrl` — path relatif diterima, string
+ * bebas tidak.
+ */
+const UPLOAD_PLACEHOLDER = "/__upload__";
 const LOCALES = ["en", "id"] as const;
 
 /**
@@ -39,31 +45,30 @@ function fileFrom(formData: FormData, name: string): File | null {
 }
 
 /**
- * Gambar di dalam seksi halaman jualan. Field URL-nya kosong untuk gambar yang
+ * Gambar di dalam blok halaman jualan. Field URL-nya kosong untuk gambar yang
  * baru dipilih; berkasnya datang lewat input tersembunyi bersebelahan
  * (`…beforeImageFile`), lalu URL hasil unggahan ditulis balik ke itemnya.
  *
- * Daftar field gambarnya dibaca dari `LANDING_SLOTS`, bukan ditulis ulang —
+ * Daftar field gambarnya dibaca dari `BLOCK_KIND_SPECS`, bukan ditulis ulang —
  * menambah field gambar baru di satu tabel otomatis ikut terunggah di sini.
  */
-async function uploadLandingImages(
-  landing: ProductLanding,
+async function uploadBlockImages(
+  blocks: ProductBlocks,
   formData: FormData,
   pathPrefix: string,
 ) {
-  for (const spec of LANDING_SLOTS) {
-    const section = landing[spec.slot];
-    if (!section) continue;
-
-    const imageFields = spec.fields.filter((field) => field.kind === "image");
+  for (const [blockIndex, block] of blocks.entries()) {
+    const imageFields = BLOCK_KIND_SPECS[block.kind].fields.filter(
+      (field) => field.kind === "image",
+    );
     if (imageFields.length === 0) continue;
 
-    const items = section.items as Record<string, unknown>[];
+    const items = block.items as Record<string, unknown>[];
     for (const [index, item] of items.entries()) {
       for (const field of imageFields) {
         const file = fileFrom(
           formData,
-          `landing.${spec.slot}.items.${index}.${field.name}File`,
+          `blocks.${blockIndex}.items.${index}.${field.name}File`,
         );
         if (file) item[field.name] = await uploadImage(file, pathPrefix);
       }
@@ -117,7 +122,7 @@ async function parseAndUpload(
     for (const file of galleryFiles) {
       data.gallery.push(await uploadImage(file, `products/${slugPrefix}`));
     }
-    await uploadLandingImages(data.landing, formData, `products/${slugPrefix}`);
+    await uploadBlockImages(data.blocks, formData, `products/${slugPrefix}`);
     return { ok: true, data };
   } catch (error) {
     return {

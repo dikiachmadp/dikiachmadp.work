@@ -151,6 +151,7 @@ export default async function StudioPage({ params }: PageProps) {
                   key={product.id}
                   product={product}
                   locale={validLocale}
+                  ui={dict.ui}
                 />
               ))}
             </div>

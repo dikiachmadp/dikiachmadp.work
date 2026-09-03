@@ -4,116 +4,78 @@ import GallerySection from "./GallerySection";
 import ListSection from "./ListSection";
 import TiersSection from "./TiersSection";
 import VariantsSection from "./VariantsSection";
-import {
-  LANDING_SLOTS,
-  isLandingEmpty,
-  type LocalizedProductLanding,
-} from "@/schemas/product-landing";
+import type { SectionTone } from "./SectionShell";
+import type { LocalizedBlock } from "@/schemas/product-blocks";
 import type { UiLabels } from "@/types/content";
 
 /**
- * Delapan seksi halaman jualan, urutannya diambil dari `LANDING_SLOTS` —
- * satu-satunya tempat urutan itu ditulis. Seksi yang kosong di bahasa ini
- * sudah dibuang lebih dulu oleh `localizeLanding`, jadi di sini cukup dilewati.
+ * Blok halaman jualan, dirender dalam urutan yang dipilih pemiliknya.
  *
- * Urutannya bukan sembarang: kail → bantahan keberatan → bukti → kelengkapan →
- * pilihan → sisa keraguan. Menaruh harga sebelum bukti adalah kesalahan yang
- * paling sering merusak halaman semacam ini, dan karena urutannya di kode,
- * tidak ada produk yang bisa salah menyusunnya.
+ * Pendahulunya merender delapan slot bernama dengan urutan yang dikunci kode.
+ * Urutan itu memang menjamin halaman tersusun masuk akal, tapi juga berarti
+ * produk yang punya sesuatu lain untuk dikatakan tidak punya tempat untuk
+ * mengatakannya. Sekarang urutannya data, dan itu memang pertukaran yang
+ * disengaja.
+ *
+ * Yang tetap milik kode adalah rupanya. Nada latar berselang-seling dihitung
+ * dari indeks blok, bukan disimpan: bagaimanapun pemilik menyusun ulang
+ * blok-baloknya, selang-selingnya tetap benar dan halaman tidak pernah terbaca
+ * sebagai satu kolom artikel panjang.
+ *
+ * Blok yang kosong di bahasa ini sudah dibuang lebih dulu oleh
+ * `localizeBlocks()` di lapisan akses data, jadi di sini tidak ada yang perlu
+ * disaring lagi.
  */
 export default function ProductLanding({
-  landing,
+  blocks,
   ui,
 }: {
-  landing: LocalizedProductLanding;
+  blocks: LocalizedBlock[];
   ui: UiLabels;
 }) {
-  if (isLandingEmpty(landing)) return null;
+  if (blocks.length === 0) return null;
 
   return (
     <div className="mt-2">
-      {LANDING_SLOTS.map((spec) => {
-        const slot = spec.slot;
+      {blocks.map((block, index) => {
+        const tone: SectionTone = index % 2 === 0 ? "plain" : "wash";
 
-        switch (slot) {
-          case "positioning":
-          case "features":
-          case "specs": {
-            const section = landing[slot];
-            return section ? (
-              <ListSection
-                key={slot}
-                id={slot}
-                section={section}
-                layout={spec.layout ?? "points"}
-                tone={spec.tone}
-              />
-            ) : null;
-          }
-
-          case "proof": {
-            const section = landing[slot];
-            return section ? (
+        switch (block.kind) {
+          case "list":
+            return <ListSection key={block.id} block={block} tone={tone} />;
+          case "comparison":
+            return (
               <ComparisonsSection
-                key={slot}
-                id={slot}
-                section={section}
+                key={block.id}
+                block={block}
                 ui={ui}
-                tone={spec.tone}
+                tone={tone}
               />
-            ) : null;
-          }
-
-          case "variants": {
-            const section = landing[slot];
-            return section ? (
+            );
+          case "variants":
+            return (
               <VariantsSection
-                key={slot}
-                id={slot}
-                section={section}
+                key={block.id}
+                block={block}
                 demoLabel={ui.products.demoBtn}
-                tone={spec.tone}
+                tone={tone}
               />
-            ) : null;
-          }
-
-          case "tiers": {
-            const section = landing[slot];
-            return section ? (
-              <TiersSection
-                key={slot}
-                id={slot}
-                section={section}
-                ui={ui}
-                tone={spec.tone}
-              />
-            ) : null;
-          }
-
-          case "faq": {
-            const section = landing[slot];
-            return section ? (
-              <FaqSection
-                key={slot}
-                id={slot}
-                section={section}
-                tone={spec.tone}
-              />
-            ) : null;
-          }
-
-          case "gallery": {
-            const section = landing[slot];
-            return section ? (
+            );
+          case "tiers":
+            return (
+              <TiersSection key={block.id} block={block} ui={ui} tone={tone} />
+            );
+          case "faq":
+            return <FaqSection key={block.id} block={block} tone={tone} />;
+          case "gallery":
+            return (
               <GallerySection
-                key={slot}
-                id={slot}
-                section={section}
+                key={block.id}
+                block={block}
                 ui={ui}
-                tone={spec.tone}
+                tone={tone}
               />
-            ) : null;
-          }
+            );
         }
       })}
     </div>
