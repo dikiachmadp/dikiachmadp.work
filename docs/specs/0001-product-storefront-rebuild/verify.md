@@ -14,6 +14,18 @@ buy button called every fixed price product free, array errors reached no field
 at all, `status` fell back to DRAFT after any rejected submit, and the block
 layout select desynced from its own state._
 
+_Run 2026-09-06 by `/check verify`: re-run end to end against a live dev server
+and the real database. Twelve of the thirteen acceptance criteria were proved by
+running the app: a product was created from an empty form, all six block kinds
+were added, reordered, restyled and deleted, and the three price states were
+rendered in both locales. Three test products were seeded and removed again, so
+the database ends where it started (zero products, one order). Two things were
+not re-run here. AC-11 could not be observed, because cache revalidation has no
+visible effect under `next dev`; its three call sites were read and the suite
+asserts them, so it rests on that rather than on runtime proof. The block image
+fields were filled by writing the URL into the row, because the uploader needs a
+real file picker. No defect was found._
+
 ## UI / manual
 
 ### The simple product, end to end

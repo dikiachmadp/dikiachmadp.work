@@ -131,7 +131,7 @@ spec [0001](../specs/0001-product-storefront-rebuild/index.md) · code in `src/s
 - [x] Build it: `/develop product storefront rebuild`
   - [x] Thin thread through every layer for a simple product: migration, block contract, data access layer, Product tab, new buy card - AC-1 to AC-4, AC-6 to AC-9, AC-11 to AC-13
   - [x] Thicken it: block builder, the six block renderers, anchor nav, catalog card - AC-5, AC-10
-- [ ] Verify it: `/check verify product storefront rebuild`
+- [x] Verify it: `/check verify product storefront rebuild`
 - [ ] Test it: `/test product storefront rebuild`
 
 ## Slice 2: Observability
