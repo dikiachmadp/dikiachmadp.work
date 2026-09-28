@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import type { Locale, UiLabels } from "@/types/content";
-import { cn, formatPrice } from "@/lib/utils";
+import { cn, formatPrice, isFreePrice } from "@/lib/utils";
 
 /** Sen. Sengaja dijaga sama dengan TIP_PRESETS di src/lib/polar.ts. */
 const PRESETS = [0, 300, 500, 1000];
@@ -18,6 +18,11 @@ interface BuyPanelProps {
   /** `null` berarti produk ini belum dijual lewat Polar. */
   polarProductId: string | null;
   buyUrl: string | null;
+  /**
+   * Harga katalog apa adanya dari DAL. Tanpa ini label tombol tidak punya cara
+   * membedakan produk gratis dari produk berbayar.
+   */
+  price: string | null;
   pwywEnabled: boolean;
   /** Sen. */
   pwywMinAmount: number;
@@ -29,6 +34,7 @@ export default function BuyPanel({
   labels,
   polarProductId,
   buyUrl,
+  price,
   pwywEnabled,
   pwywMinAmount,
 }: BuyPanelProps) {
@@ -104,10 +110,19 @@ export default function BuyPanel({
     }
   };
 
-  const label =
-    pwywEnabled && amount > 0
+  /**
+   * Tiga keadaan, tiga label. Sebelumnya cabang `else`-nya tunggal, jadi setiap
+   * produk berharga tetap — berapa pun harganya — menawarkan dirinya sebagai
+   * gratis di tombol utamanya. Yang menentukan bukan `pwywMinAmount`, melainkan
+   * harga produk itu sendiri.
+   */
+  const label = pwywEnabled
+    ? amount > 0
       ? `${labels.payBtn} ${formatPrice((amount / 100).toString(), "USD", locale)}`
-      : labels.getFreeBtn;
+      : labels.getFreeBtn
+    : isFreePrice(price)
+      ? labels.getFreeBtn
+      : labels.buyBtn;
 
   return (
     <div className="flex flex-col gap-3">

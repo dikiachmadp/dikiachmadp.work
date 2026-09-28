@@ -118,25 +118,27 @@ Six stage CI, ESLint with the DAL import ban, Prettier, husky pre commit, and th
 
 The store moves out of this repo into a project of its own, on its own domain, linked
 from the Studio page. So this slice removes rather than builds: every product, checkout,
-order, and receipt surface comes out, and the three tables go with them. The database
-holds zero products and one zero value test order, so nothing real is at stake.
+order, and receipt surface comes out, and the three tables go with them. It is removing
+working code, not abandoned code, which is what makes the teardown a deliberate pass
+with a spec rather than a cleanup.
 
 ### 3. Digital product storefront rebuild · dropped
 
-Superseded. The store leaves this repo, and this spec's core decision, replacing the
-eight fixed landing slots with a free block builder, is reversed by a design whose
-product page has a fixed anatomy instead. Nothing was built, so nothing is lost. Kept
-for history.
+Built and verified, then superseded. The block list shipped in #59 and passed all 33
+verify steps; only `/test` was left. What retires it is not a defect but a change of
+address: the store becomes its own project, so this code leaves the repo either way.
+The four defects that build surfaced, and the invariants behind them, are carried into
+the store's own operations notes. Kept here for history.
 
-spec [0001](../specs/0001-product-storefront-rebuild/index.md) · superseded, deleted by feature 4
+spec [0001](../specs/0001-product-storefront-rebuild/index.md) · built, verified, superseded · deleted by feature 4
 
 ### 4. Store teardown · needs a decision · GA
 
-Everything the store left behind comes out: public pages, components, schemas, the data
-access layer, admin screens, API routes, copy keys, config, and the three tables. Left
-half done this is worse than either state, so it is one deliberate pass rather than a
-trickle.
-**Done when:** no product, order, checkout, or receipt code remains anywhere, an applied migration has dropped the three tables and their sequence, the CSP and the env no longer mention a payment provider, and `npm run build` plus `npm test` pass clean.
+Everything the store owns comes out: public pages, components, schemas, the data access
+layer, admin screens, API routes, copy keys, config, and the three tables. Roughly 2,400
+lines of shipped and verified code, so the risk is not what it deletes but what it
+catches on the way out.
+**Done when:** no product, order, checkout, or receipt code remains anywhere, an applied migration has dropped the three tables and their sequence, the CSP and the env no longer mention a payment provider, every copy key and schema entry the store owned is gone from both locales, and `npm run build` plus `npm test` pass clean.
 
 - [ ] Design it (spec): `/architect store teardown`
 

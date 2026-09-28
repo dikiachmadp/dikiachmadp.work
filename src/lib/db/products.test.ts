@@ -38,15 +38,17 @@ function translation(locale: string) {
     title: `Title ${locale}`,
     summary: `Summary ${locale}`,
     body: `Body ${locale}`,
+    deliverables: [] as string[],
   };
 }
 
 function product(
   translations: ReturnType<typeof translation>[],
-  landing: unknown = {},
+  blocks: unknown = [],
 ) {
   return {
-    landing,
+    blocks,
+    demoUrl: null,
     id: "p1",
     status: "PUBLISHED" as const,
     publishedAt,
@@ -280,13 +282,15 @@ function input(
     coverImage: "/covers/a.webp",
     gallery: [],
     tags: ["OJS"],
-    landing: {},
+    demoUrl: null,
+    blocks: [],
     translations: {
       en: {
         slug: "new-en",
         title: "T",
         summary: "S",
         body: "B",
+        deliverables: ["Satu berkas"],
       },
       id: null,
     },
@@ -324,14 +328,16 @@ describe("updateProductWithTranslations", () => {
   });
 });
 
-// --- Landing ---
+// --- Blok ---
 
 const bucket =
   "https://dwkzfyiqtbminddhmqra.supabase.co/storage/v1/object/public/project-images";
 
-function faqLanding(headingId: string) {
-  return {
-    faq: {
+function faqBlocks(headingId: string) {
+  return [
+    {
+      id: "block-faq",
+      kind: "faq",
       heading: { en: "FAQ", id: headingId },
       intro: { en: "", id: "" },
       items: [
@@ -341,54 +347,96 @@ function faqLanding(headingId: string) {
         },
       ],
     },
-  };
+  ];
 }
 
-describe("landing", () => {
+describe("blocks", () => {
   it("flattens the stored {en, id} pairs down to the requested locale", async () => {
     vi.mocked(prisma.digitalProduct.findFirst).mockResolvedValue(
-      product([translation("id")], faqLanding("Tanya jawab")) as never,
+      product([translation("id")], faqBlocks("Tanya jawab")) as never,
     );
 
     const result = await getProductBySlug("id", "slug-id");
 
-    expect(result?.landing.faq?.heading).toBe("Tanya jawab");
-    expect(result?.landing.faq?.items[0].question).toBe("Apa?");
+    expect(result?.blocks[0].heading).toBe("Tanya jawab");
+    expect(result?.blocks[0].items[0]).toMatchObject({ question: "Apa?" });
   });
 
-  it("drops a section that has no heading in this locale", async () => {
+  it("keeps the owner's order rather than a fixed one", async () => {
+    const blocks = [
+      {
+        id: "block-faq",
+        kind: "faq",
+        heading: { en: "FAQ", id: "Tanya jawab" },
+        intro: { en: "", id: "" },
+        items: [
+          {
+            question: { en: "What?", id: "Apa?" },
+            answer: { en: "This.", id: "Ini." },
+          },
+        ],
+      },
+      {
+        id: "block-list",
+        kind: "list",
+        style: "cards",
+        heading: { en: "Features", id: "Fitur" },
+        intro: { en: "", id: "" },
+        items: [
+          {
+            label: { en: "Fast", id: "Cepat" },
+            detail: { en: "Very", id: "Sangat" },
+          },
+        ],
+      },
+    ];
     vi.mocked(prisma.digitalProduct.findFirst).mockResolvedValue(
-      product([translation("id")], faqLanding("")) as never,
+      product([translation("id")], blocks) as never,
     );
 
     const result = await getProductBySlug("id", "slug-id");
 
-    expect(result?.landing.faq).toBeUndefined();
+    expect(result?.blocks.map((block) => block.id)).toEqual([
+      "block-faq",
+      "block-list",
+    ]);
   });
 
-  it("survives a malformed landing column instead of throwing", async () => {
+  it("drops a block that has no heading in this locale", async () => {
+    vi.mocked(prisma.digitalProduct.findFirst).mockResolvedValue(
+      product([translation("id")], faqBlocks("")) as never,
+    );
+
+    const result = await getProductBySlug("id", "slug-id");
+
+    expect(result?.blocks).toEqual([]);
+  });
+
+  it("survives a malformed blocks column instead of throwing", async () => {
     const error = vi.spyOn(console, "error").mockImplementation(() => {});
     vi.mocked(prisma.digitalProduct.findFirst).mockResolvedValue(
-      product([translation("id")], { faq: "bukan objek" }) as never,
+      product([translation("id")], { faq: "bukan larik" }) as never,
     );
 
     const result = await getProductBySlug("id", "slug-id");
 
-    // Halaman produk tetap tayang; hanya seksinya yang hilang.
+    // Halaman produk tetap tayang; hanya bloknya yang hilang.
     expect(result?.title).toBe("Title id");
-    expect(result?.landing).toEqual({});
+    expect(result?.blocks).toEqual([]);
     expect(error).toHaveBeenCalled();
     error.mockRestore();
   });
 });
 
 describe("deleteProductById", () => {
-  it("collects section images too, not just the cover and gallery", async () => {
+  it("collects block images too, not just the cover and gallery", async () => {
     fakeTx([], {
       coverImage: `${bucket}/cover.webp`,
       gallery: [`${bucket}/g1.webp`],
-      landing: {
-        proof: {
+      blocks: [
+        {
+          id: "block-comparison",
+          kind: "comparison",
           heading: { en: "Proof", id: "Bukti" },
           intro: { en: "", id: "" },
           items: [
@@ -402,7 +450,7 @@ describe("deleteProductById", () => {
             },
           ],
         },
-      },
+      ],
     });
 
     const deleted = await deleteProductById("p1");
@@ -411,6 +459,72 @@ describe("deleteProductById", () => {
       `${bucket}/cover.webp`,
       `${bucket}/g1.webp`,
       `${bucket}/before.webp`,
+    ]);
+  });
+
+  /**
+   * Ketiga jenis blok yang menyimpan gambar sekaligus. Daftarnya dibaca dari
+   * `BLOCK_KIND_SPECS`, jadi jenis yang terlewat di sini adalah berkas yatim
+   * yang tertinggal di bucket setiap kali produknya dihapus.
+   */
+  it("mengumpulkan gambar dari setiap jenis blok yang punya gambar", async () => {
+    fakeTx([], {
+      coverImage: `${bucket}/cover.webp`,
+      gallery: [`${bucket}/g1.webp`],
+      blocks: [
+        {
+          id: "block-gallery",
+          kind: "gallery",
+          heading: { en: "Shots", id: "Cuplikan" },
+          intro: { en: "", id: "" },
+          items: [
+            { image: `${bucket}/shot-1.webp`, caption: { en: "", id: "" } },
+            { image: "", caption: { en: "tanpa gambar", id: "tanpa gambar" } },
+          ],
+        },
+        {
+          id: "block-variants",
+          kind: "variants",
+          heading: { en: "Colours", id: "Warna" },
+          intro: { en: "", id: "" },
+          items: [
+            {
+              name: { en: "Teal", id: "Tosca" },
+              hex: "",
+              description: { en: "", id: "" },
+              image: `${bucket}/variant-1.webp`,
+              linkUrl: "",
+            },
+          ],
+        },
+        {
+          id: "block-comparison",
+          kind: "comparison",
+          heading: { en: "Proof", id: "Bukti" },
+          intro: { en: "", id: "" },
+          items: [
+            {
+              title: { en: "x", id: "x" },
+              detail: { en: "", id: "" },
+              beforeImage: `${bucket}/before.webp`,
+              beforeLabel: { en: "", id: "" },
+              afterImage: `${bucket}/after.webp`,
+              afterLabel: { en: "", id: "" },
+            },
+          ],
+        },
+      ],
+    });
+
+    const deleted = await deleteProductById("p1");
+
+    expect(deleted.imageUrls).toEqual([
+      `${bucket}/cover.webp`,
+      `${bucket}/g1.webp`,
+      `${bucket}/shot-1.webp`,
+      `${bucket}/variant-1.webp`,
+      `${bucket}/before.webp`,
+      `${bucket}/after.webp`,
     ]);
   });
 });

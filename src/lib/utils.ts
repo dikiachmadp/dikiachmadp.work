@@ -85,3 +85,40 @@ export function formatCents(
     currency: currency.toUpperCase(),
   }).format(amount / 100);
 }
+
+/**
+ * Gratis sungguhan, bukan sekadar tidak berharga.
+ *
+ * Angka, bukan perbandingan string: Decimal(10,2) bisa datang sebagai "0"
+ * maupun "0.00", dan keduanya sama-sama gratis. Harga yang belum ditetapkan
+ * (`null`) **bukan** gratis — itu keadaan ketiga, dan menyamakan keduanya
+ * adalah persis cara tombol beli berakhir menawarkan produk berbayar secara
+ * cuma-cuma. Satu tempat yang memutuskannya, dibaca lencana katalog, kartu
+ * beli, dan label tombolnya.
+ */
+export function isFreePrice(price: string | null): boolean {
+  if (price === null || price === "") return false;
+  const amount = Number(price);
+  return Number.isFinite(amount) && amount === 0;
+}
+
+/**
+ * Label harga sebagaimana pembeli membacanya, bukan sekadar angka terformat.
+ *
+ * Tiga keadaan yang berbeda dan harus tetap berbeda: harga belum ditetapkan
+ * (`null`, tidak ada label sama sekali), gratis sungguhan (nol, yang dibaca
+ * "Free" — "$0" terbaca seperti galat), dan harga biasa. Dipakai kartu beli
+ * maupun kartu katalog supaya keduanya mustahil berbeda pendapat.
+ */
+export function priceLabel(
+  price: string | null,
+  currency: string,
+  locale: "en" | "id",
+  freeLabel: string,
+): string | null {
+  if (price === null || price === "") return null;
+  const amount = Number(price);
+  if (!Number.isFinite(amount)) return null;
+  if (isFreePrice(price)) return freeLabel;
+  return formatPrice(price, currency, locale);
+}

@@ -1,10 +1,14 @@
 import { z } from "zod";
 import { projectCategories } from "@/lib/categories";
 import {
-  LANDING_SLOTS,
-  ProductLandingSchema,
-  type LandingSlotSpec,
-} from "@/schemas/product-landing";
+  BLOCK_KIND_SPECS,
+  MAX_LIST_ENTRIES,
+  isSafeImageUrl,
+  isSafeLinkUrl,
+  productBlocksSchema,
+  type BlockKind,
+  type BlockKindSpec,
+} from "@/schemas/product-blocks";
 
 // Schema validasi form admin. Dipakai server action lewat safeParse;
 // error per field dikembalikan ke client melalui FormState.
@@ -173,15 +177,43 @@ export function toDateTimeLocalUtc(date: Date | null | undefined): string {
 
 export type LogbookFormParsed = z.infer<typeof logbookFormSchema>;
 
-// Ubah daftar isu Zod menjadi peta "path.bertitik" → pesan pertama.
+/**
+ * Ubah daftar isu Zod menjadi peta "path.bertitik" → pesan pertama.
+ *
+ * Sebagian larik disunting sebagai **satu** kontrol: galeri dan "apa yang kamu
+ * dapat" adalah textarea satu butir per baris, begitu juga skills dan cvItems
+ * di form About. Zod menunjuk elemennya (`gallery.1`,
+ * `translations.en.skills.0.category`), padahal tidak ada input bernama itu —
+ * yang dirender bernama `gallery` dan `translations.en.skills`. Tanpa alias di
+ * bawah, isian ditolak tanpa satu pun pesan yang bisa ditemukan pemiliknya:
+ * formnya cuma berkata "periksa isian yang ditandai" sambil tidak menandai apa
+ * pun.
+ *
+ * Alias-nya adalah potongan path sampai sebelum angka terakhir, yaitu nama
+ * larik itu sendiri, dengan nomor barisnya ikut disebut karena satu textarea
+ * bisa memuat dua puluh baris. Galat yang benar-benar menunjuk sebuah field
+ * selalu menang atas alias, dan alias yang tidak cocok dengan input mana pun
+ * memang tidak pernah dibaca.
+ */
 export function toFieldErrors(error: z.ZodError): Record<string, string> {
   const fieldErrors: Record<string, string> = {};
+  const put = (key: string, message: string) => {
+    if (!(key in fieldErrors)) fieldErrors[key] = message;
+  };
+
   for (const issue of error.issues) {
-    const key = issue.path.join(".");
-    if (!(key in fieldErrors)) {
-      fieldErrors[key] = issue.message;
-    }
+    put(issue.path.join("."), issue.message);
   }
+  // Pass kedua, supaya alias tidak pernah mendahului galat yang tepat sasaran.
+  for (const issue of error.issues) {
+    const at = issue.path.findLastIndex((part) => typeof part === "number");
+    if (at < 1) continue;
+    put(
+      issue.path.slice(0, at).join("."),
+      `Baris ${(issue.path[at] as number) + 1}: ${issue.message}`,
+    );
+  }
+
   return fieldErrors;
 }
 
@@ -465,9 +497,13 @@ export function aboutEntryInputFromForm(formData: FormData) {
 
 // --- Digital Products ---
 
+/**
+ * Boleh kosong. Dulu wajib, yang memaksa tiap produk mengarang prosa walau
+ * seluruh ceritanya sudah diceritakan blok halaman jualan dan daftar "apa yang
+ * kamu dapat". Batas ukurannya tetap.
+ */
 const digitalProductBodySchema = z
   .string()
-  .min(1, "Isi wajib diisi")
   .refine(
     (value) => new TextEncoder().encode(value).length <= MAX_BODY_BYTES,
     `Isi maksimal ${MAX_BODY_BYTES / 1024} kB.`,
@@ -481,6 +517,12 @@ const digitalProductTranslationSchema = z.object({
   title: z.string().min(1, "Judul wajib diisi"),
   summary: z.string().min(1, "Ringkasan wajib diisi"),
   body: digitalProductBodySchema,
+  /**
+   * "Apa yang kamu dapat". Melekat di produk, bukan pada paket yang ditandai
+   * `recommended` seperti dulu — produk satu berkas tidak perlu mengarang
+   * tabel paket hanya supaya kartu belinya terisi.
+   */
+  deliverables: z.array(z.string().max(300)).max(MAX_LIST_ENTRIES),
 });
 
 // Harga kosong berarti "belum ditetapkan", bukan gratis — dibedakan dari
@@ -506,10 +548,32 @@ export const digitalProductFormSchema = z
     pwywEnabled: z.boolean(),
     // Sen. Angka, bukan dolar, supaya tidak ada pembulatan biner di jalan.
     pwywMinAmount: z.coerce.number().int().min(0),
-    coverImage: z.string().min(1, "Gambar cover wajib diisi (URL atau upload)"),
-    gallery: z.array(z.string()),
+    // Cover dan galeri kini lewat aturan aman yang sama dengan gambar di
+    // dalam blok. Sebelumnya hanya gambar blok yang diperiksa — inkonsistensi
+    // yang membuat URL host asing bisa masuk lewat pintu depan.
+    coverImage: z
+      .string()
+      .min(1, "Gambar cover wajib diisi (URL atau upload)")
+      .refine(
+        isSafeImageUrl,
+        "Gambar harus hasil unggahan atau path yang diawali /",
+      ),
+    gallery: z.array(
+      z
+        .string()
+        .max(500)
+        .refine(
+          isSafeImageUrl,
+          "Gambar harus hasil unggahan atau path yang diawali /",
+        ),
+    ),
     tags: z.array(z.string()),
-    landing: ProductLandingSchema,
+    // Kosong -> tombol demo tidak dirender sama sekali.
+    demoUrl: z
+      .string()
+      .max(500)
+      .refine(isSafeLinkUrl, "Tautan harus https:// atau path yang diawali /"),
+    blocks: productBlocksSchema,
     translations: z.object({
       // Terjemahan opsional per produk — sama seperti Logbook: blok bahasa
       // yang dikosongkan seluruhnya berarti produk itu tidak ada di bahasa
@@ -537,6 +601,7 @@ export const digitalProductFormSchema = z
     ...data,
     price: data.price === "" ? null : data.price,
     buyUrl: data.buyUrl === "" ? null : data.buyUrl,
+    demoUrl: data.demoUrl === "" ? null : data.demoUrl,
     polarProductId: data.polarProductId === "" ? null : data.polarProductId,
     // Draf tidak punya tanggal terbit. Produk terbit tanpa tanggal eksplisit
     // dianggap terbit sekarang — sama seperti Logbook.
@@ -560,25 +625,30 @@ function digitalProductTranslationFromForm(
     title: text(formData, p("title")),
     summary: text(formData, p("summary")),
     body: text(formData, p("body")),
+    deliverables: splitLines(formData.get(p("deliverables"))),
   };
 
+  // `deliverables` ikut dihitung: kalau tidak, mengisi daftar "apa yang kamu
+  // dapat" tanpa slug akan menghilang tanpa satu pun pesan galat.
   const isEmpty =
     !translation.slug &&
     !translation.title &&
     !translation.summary &&
-    !translation.body;
+    !translation.body &&
+    translation.deliverables.length === 0;
 
   return isEmpty ? null : translation;
 }
 
 /**
- * Seksi halaman jualan. Sama seperti `imagesFromForm`, isinya dikirim sebagai
- * field berindeks (`landing.faq.items.0.question.id`) supaya urutannya adalah
- * urutan di form dan path galat Zod langsung cocok dengan nama input tanpa
- * pemetaan manual di `toFieldErrors`.
+ * Blok halaman jualan. Sama seperti `imagesFromForm`, isinya dikirim sebagai
+ * field berindeks (`blocks.2.items.0.label.id`) supaya urutan di layar adalah
+ * urutan yang tersimpan dan path galat Zod langsung cocok dengan nama input
+ * tanpa pemetaan manual di `toFieldErrors`.
  *
- * Daftar field-nya tidak ditulis ulang di sini — dibaca dari `LANDING_SLOTS`
- * di product-landing.ts, jadi menambah field cukup menyunting satu tabel.
+ * Daftar field-nya tidak ditulis ulang di sini — dibaca dari
+ * `BLOCK_KIND_SPECS` di product-blocks.ts, jadi menambah field cukup menyunting
+ * satu tabel.
  */
 function localizedTextFromForm(formData: FormData, prefix: string) {
   return {
@@ -587,9 +657,9 @@ function localizedTextFromForm(formData: FormData, prefix: string) {
   };
 }
 
-function landingItemFromForm(
+function blockItemFromForm(
   formData: FormData,
-  spec: LandingSlotSpec,
+  spec: BlockKindSpec,
   prefix: string,
 ) {
   const item: Record<string, unknown> = {};
@@ -611,32 +681,61 @@ function landingItemFromForm(
   return item;
 }
 
-export function landingFromForm(formData: FormData) {
-  const landing: Record<string, unknown> = {};
+/**
+ * Blok itu posisional, jadi kuncinya sendiri tidak lagi memberi tahu apa yang
+ * sedang dibaca. Tiga input tersembunyi per blok yang menutupinya: `present`
+ * menandai indeks itu terpakai (penanda yang sama dipakai daftar item),
+ * `kind` memilih skema item mana yang berlaku, dan `id` membawa uuid yang
+ * dicetak penyunting supaya jangkar blok tidak berganti tiap kali disimpan.
+ */
+export function blocksFromForm(formData: FormData) {
+  const blocks: Record<string, unknown>[] = [];
 
-  for (const spec of LANDING_SLOTS) {
-    const prefix = `landing.${spec.slot}`;
-    const heading = localizedTextFromForm(formData, `${prefix}.heading`);
-    const intro = localizedTextFromForm(formData, `${prefix}.intro`);
-    const items: Record<string, unknown>[] = [];
+  for (let index = 0; ; index++) {
+    const prefix = `blocks.${index}`;
+    if (formData.get(`${prefix}.present`) === null) break;
 
-    for (let index = 0; ; index++) {
-      // Penanda tersembunyi yang selalu dirender tiap item; ketiadaannya
-      // menandai akhir daftar. Tidak bisa memakai field biasa — checkbox yang
-      // tidak dicentang dan gambar yang belum diunggah sama-sama absen.
-      if (formData.get(`${prefix}.items.${index}.present`) === null) break;
-      items.push(
-        landingItemFromForm(formData, spec, `${prefix}.items.${index}`),
-      );
+    const kind = text(formData, `${prefix}.kind`);
+    const spec = BLOCK_KIND_SPECS[kind as BlockKind] as
+      BlockKindSpec | undefined;
+
+    const block: Record<string, unknown> = {
+      id: text(formData, `${prefix}.id`),
+      kind,
+      heading: localizedTextFromForm(formData, `${prefix}.heading`),
+      intro: localizedTextFromForm(formData, `${prefix}.intro`),
+      items: [] as Record<string, unknown>[],
+    };
+
+    // Jenis yang tidak dikenal tetap didorong apa adanya, bukan dilewati:
+    // melewatinya menggeser indeks sisanya dan membuat setiap path galat Zod
+    // menunjuk input yang salah. Biar skema yang menolaknya.
+    if (spec) {
+      if (spec.styles) {
+        const style = text(formData, `${prefix}.style`);
+        // Kosong berarti "pakai bawaan"; skema yang mengisinya.
+        if (style !== "") block.style = style;
+      }
+
+      const items: Record<string, unknown>[] = [];
+      for (let itemIndex = 0; ; itemIndex++) {
+        // Penanda tersembunyi yang selalu dirender tiap item; ketiadaannya
+        // menandai akhir daftar. Tidak bisa memakai field biasa — checkbox
+        // yang tidak dicentang dan gambar yang belum diunggah sama-sama absen.
+        if (formData.get(`${prefix}.items.${itemIndex}.present`) === null) {
+          break;
+        }
+        items.push(
+          blockItemFromForm(formData, spec, `${prefix}.items.${itemIndex}`),
+        );
+      }
+      block.items = items;
     }
 
-    // Seksi tanpa judul dan tanpa item tidak disimpan sama sekali, jadi
-    // mengosongkannya di form benar-benar menghapusnya dari halaman.
-    if (heading.en === "" && heading.id === "" && items.length === 0) continue;
-    landing[spec.slot] = { heading, intro, items };
+    blocks.push(block);
   }
 
-  return landing;
+  return blocks;
 }
 
 export function digitalProductInputFromForm(formData: FormData) {
@@ -654,7 +753,8 @@ export function digitalProductInputFromForm(formData: FormData) {
     coverImage: text(formData, "coverImage"),
     gallery: splitLines(formData.get("gallery")),
     tags: splitList(formData.get("tags")),
-    landing: landingFromForm(formData),
+    demoUrl: text(formData, "demoUrl"),
+    blocks: blocksFromForm(formData),
     translations: {
       en: digitalProductTranslationFromForm(formData, "en"),
       id: digitalProductTranslationFromForm(formData, "id"),

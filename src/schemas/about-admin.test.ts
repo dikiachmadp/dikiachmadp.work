@@ -207,3 +207,29 @@ describe("aboutEntryInputFromForm + aboutEntryFormSchema", () => {
     expect(result.success).toBe(false);
   });
 });
+
+/**
+ * Skills dan cvItems disunting sebagai satu textarea, jadi galat Zod yang
+ * menunjuk elemennya (`translations.en.cvItems.0.href`) tidak pernah cocok
+ * dengan nama input yang dirender (`translations.en.cvItems`). Tanpa alias di
+ * `toFieldErrors`, simpanan ditolak tanpa pesan yang bisa ditemukan.
+ */
+describe("galat larik mendarat di textarea yang benar-benar dirender", () => {
+  it("menandai textarea cvItems ketika satu baris kehilangan tautannya", () => {
+    const result = parseProfile({
+      "translations.en.cvItems": "CV tanpa tautan",
+    });
+    const fieldErrors = result.success ? {} : toFieldErrors(result.error);
+
+    expect(fieldErrors).toHaveProperty("translations.en.cvItems");
+    expect(fieldErrors["translations.en.cvItems"]).toContain("Baris 1");
+  });
+
+  it("menandai textarea skills ketika satu baris tidak punya item", () => {
+    const result = parseProfile({ "translations.en.skills": "Desain:" });
+    const fieldErrors = result.success ? {} : toFieldErrors(result.error);
+
+    expect(fieldErrors).toHaveProperty("translations.en.skills");
+    expect(fieldErrors["translations.en.skills"]).toContain("Baris 1");
+  });
+});

@@ -402,7 +402,13 @@ export const UiSchema = z.object({
     afterLabel: z.string(),
     // Label khusus etalase halaman detail produk (src/components/product/*).
     whatYouGet: z.string(),
+    // Satu baris di kartu katalog: "{count} butir disertakan".
+    // Bentuk tunggal punya kuncinya sendiri: Inggris membedakan "1 item" dari
+    // "2 items", dan tidak ada aturan jamak yang bisa ditebak dari kunci.
+    deliverablesCount: z.string(),
+    deliverablesCountOne: z.string(),
     imagesCount: z.string(),
+    imagesCountOne: z.string(),
     compareHint: z.string(),
     compareSlider: z.string(),
     anchorNav: z.string(),

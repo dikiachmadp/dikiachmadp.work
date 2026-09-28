@@ -176,3 +176,40 @@ describe("digitalProductFormSchema", () => {
     }
   });
 });
+
+/**
+ * Larik yang disunting sebagai satu textarea: galeri dan "apa yang kamu
+ * dapat". Zod menunjuk elemennya (`gallery.1`), sedangkan input yang benar
+ * benar dirender bernama `gallery` — tanpa alias di `toFieldErrors`, isian
+ * ditolak tanpa satu pun pesan yang bisa ditemukan pemiliknya.
+ */
+describe("galat larik mendarat di nama input yang benar-benar dirender", () => {
+  it("menandai textarea galeri, bukan hanya elemennya", () => {
+    const fieldErrors = errors(
+      parse({ gallery: "/ok.webp\nhttps://evil.example.com/x.png" }),
+    );
+
+    expect(fieldErrors).toHaveProperty("gallery");
+    expect(fieldErrors.gallery).toContain("Baris 2");
+  });
+
+  it("menandai textarea “apa yang kamu dapat”, bukan hanya barisnya", () => {
+    const fieldErrors = errors(
+      parse({
+        "translations.en.deliverables": `Berkas Figma\n${"x".repeat(400)}`,
+      }),
+    );
+
+    expect(fieldErrors).toHaveProperty("translations.en.deliverables");
+    expect(fieldErrors["translations.en.deliverables"]).toContain("Baris 2");
+  });
+
+  it("tidak melebarkan galat field bersarang ke induknya", () => {
+    const fieldErrors = errors(
+      parse({ coverImage: "https://evil.example.com/x.png" }),
+    );
+
+    // `coverImage` bukan larik: satu kunci saja, tanpa induk karangan.
+    expect(Object.keys(fieldErrors)).toEqual(["coverImage"]);
+  });
+});

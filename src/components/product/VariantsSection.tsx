@@ -5,9 +5,7 @@ import { useState } from "react";
 import Button from "@/components/ui/Button";
 import SectionShell, { type SectionTone } from "./SectionShell";
 import { cn } from "@/lib/utils";
-import type { LocalizedLandingSection } from "@/schemas/product-landing";
-
-type VariantsData = LocalizedLandingSection<"variants">;
+import type { LocalizedBlockOf } from "@/schemas/product-blocks";
 
 /**
  * Pemilih varian. Satu-satunya komponen klien di halaman ini: mengganti
@@ -17,34 +15,36 @@ type VariantsData = LocalizedLandingSection<"variants">;
  * Tombol demo hanya dirender untuk varian yang `linkUrl`-nya terisi. Varian
  * tanpa demo tidak menampilkan tombol mati — pembaca tidak pernah mengklik
  * sesuatu yang tidak ke mana-mana.
+ *
+ * Aturan yang sama berlaku untuk warnanya: `hex` boleh kosong, dan varian yang
+ * mengosongkannya tidak mendapat kotak warna sama sekali — bukan kotak hitam
+ * bawaan yang berbohong. Nama, keterangan, dan gambarnya yang membawanya.
  */
 export default function VariantsSection({
-  id,
-  section,
+  block,
   demoLabel,
   tone,
 }: {
-  id: string;
-  section: VariantsData;
+  block: LocalizedBlockOf<"variants">;
   demoLabel: string;
   tone?: SectionTone;
 }) {
   const [active, setActive] = useState(0);
-  const variant = section.items[active] ?? section.items[0];
+  const variant = block.items[active] ?? block.items[0];
 
   return (
     <SectionShell
-      id={id}
-      heading={section.heading}
-      intro={section.intro}
+      id={block.id}
+      heading={block.heading}
+      intro={block.intro}
       tone={tone}
     >
       <div
         role="tablist"
-        aria-label={section.heading}
+        aria-label={block.heading}
         className="mb-5 flex flex-wrap gap-2.5"
       >
-        {section.items.map((item, index) => (
+        {block.items.map((item, index) => (
           <button
             key={item.name}
             type="button"
@@ -56,11 +56,13 @@ export default function VariantsSection({
               index === active && "flat-3",
             )}
           >
-            <span
-              aria-hidden="true"
-              style={{ backgroundColor: item.hex }}
-              className="ink-border h-4 w-4 shrink-0 rounded-full"
-            />
+            {item.hex !== "" && (
+              <span
+                aria-hidden="true"
+                style={{ backgroundColor: item.hex }}
+                className="ink-border h-4 w-4 shrink-0 rounded-full"
+              />
+            )}
             {item.name}
           </button>
         ))}
@@ -77,18 +79,24 @@ export default function VariantsSection({
                 sizes="(max-width: 1024px) 100vw, 700px"
                 className="object-contain"
               />
-            ) : (
+            ) : variant.hex !== "" ? (
               <span
                 style={{ backgroundColor: variant.hex }}
                 className="block h-full w-full"
               />
+            ) : (
+              // Tanpa gambar dan tanpa warna, panel arsir yang sama dengan
+              // penampung kosong lain di situs ini.
+              <span className="crosshatch block h-full w-full" />
             )}
           </div>
         </div>
 
         <div className="flex flex-col gap-3.5">
           <div>
-            <div className="micro text-(--soft)">{variant.hex}</div>
+            {variant.hex !== "" && (
+              <div className="micro text-(--soft)">{variant.hex}</div>
+            )}
             <h3 className="font-hand mt-0.5 mb-0 text-[24px] leading-[1.15]">
               {variant.name}
             </h3>

@@ -82,6 +82,9 @@ export default function MarkdownEditor({
   label,
   context,
   defaultValue,
+  value: controlledValue,
+  onValueChange,
+  required = true,
   error,
   rows = 14,
 }: {
@@ -93,11 +96,26 @@ export default function MarkdownEditor({
    * bernama sama persis — pembaca layar tidak punya cara membedakannya.
    */
   context: string;
-  defaultValue: string;
+  /** Jalur tak terkendali: nilai awal dipegang komponen ini sendiri. */
+  defaultValue?: string;
+  /**
+   * Jalur terkendali. Dipakai form yang perlu menulis isi textarea ini dari
+   * luar — tombol "salin ke bahasa lain" di ProductForm tidak bisa melakukan
+   * itu lewat DOM, karena React akan menimpanya lagi di render berikutnya.
+   */
+  value?: string;
+  onValueChange?: (next: string) => void;
+  /** Body produk boleh kosong; body logbook tidak. */
+  required?: boolean;
   error?: string;
   rows?: number;
 }) {
-  const [value, setValue] = useState(defaultValue);
+  const [internalValue, setInternalValue] = useState(defaultValue ?? "");
+  const value = controlledValue ?? internalValue;
+  const setValue = (next: string) => {
+    if (onValueChange) onValueChange(next);
+    else setInternalValue(next);
+  };
   const [showPreview, setShowPreview] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const pendingSelection = useRef<[number, number] | null>(null);
@@ -136,7 +154,7 @@ export default function MarkdownEditor({
       <div className="flex flex-wrap items-center justify-between gap-2">
         <label htmlFor={fieldId} className="micro">
           {label}
-          <span className="text-(--accent-ink)"> *</span>
+          {required && <span className="text-(--accent-ink)"> *</span>}
         </label>
         <button
           type="button"

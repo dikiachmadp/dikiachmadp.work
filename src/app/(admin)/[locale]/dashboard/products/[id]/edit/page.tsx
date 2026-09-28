@@ -7,7 +7,7 @@ import ProductForm, {
 } from "@/components/admin/ProductForm";
 import { getProductForEdit } from "@/lib/db/products";
 import { toDateTimeLocalUtc } from "@/schemas/admin";
-import { ProductLandingSchema } from "@/schemas/product-landing";
+import { productBlocksSchema } from "@/schemas/product-blocks";
 import { requireUser } from "@/lib/supabase/auth";
 
 export default async function EditProductPage({
@@ -23,12 +23,17 @@ export default async function EditProductPage({
 
   const translationFor = (lang: "en" | "id"): ProductTranslationValues => {
     const tr = product.translations.find((t) => t.locale === lang);
-    if (!tr) return { slug: "", title: "", summary: "", body: "" };
+    if (!tr) {
+      return { slug: "", title: "", summary: "", body: "", deliverables: "" };
+    }
     return {
       slug: tr.slug,
       title: tr.title,
       summary: tr.summary,
       body: tr.body,
+      // Disunting sebagai textarea satu butir per baris; server memecahnya
+      // lagi dengan splitLines.
+      deliverables: tr.deliverables.join("\n"),
     };
   };
 
@@ -47,9 +52,10 @@ export default async function EditProductPage({
     coverImage: product.coverImage,
     gallery: product.gallery.join("\n"),
     tags: product.tags.join(", "),
-    // Kolom Json bertipe bebas; bentuk yang tidak dikenali dibuka sebagai
-    // seksi kosong supaya form tetap bisa dibuka dan diperbaiki.
-    landing: ProductLandingSchema.safeParse(product.landing ?? {}).data ?? {},
+    demoUrl: product.demoUrl ?? "",
+    // Kolom Json bertipe bebas; bentuk yang tidak dikenali dibuka tanpa blok
+    // sama sekali supaya form tetap bisa dibuka dan diperbaiki.
+    blocks: productBlocksSchema.safeParse(product.blocks ?? []).data ?? [],
     translations: { en: translationFor("en"), id: translationFor("id") },
   };
 

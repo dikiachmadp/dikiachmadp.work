@@ -1,35 +1,31 @@
 import Markdown from "@/components/logbook/Markdown";
 import SectionShell, { type SectionTone } from "./SectionShell";
-import type { LocalizedLandingSection } from "@/schemas/product-landing";
-
-type ListSectionData = LocalizedLandingSection<"features">;
+import type { LocalizedBlockOf } from "@/schemas/product-blocks";
 
 /**
- * Satu bentuk data, tiga tata letak. Tata letaknya datang dari `LANDING_SLOTS`
- * di kode, bukan dari data — jadi admin tidak pernah bisa memilih tampilan
- * yang tidak cocok dengan isinya.
+ * Satu bentuk data, tiga tata letak. `positioning`, `features`, dan `specs`
+ * dulunya tiga seksi terpisah yang datanya identik; kini satu jenis blok yang
+ * tata letaknya dipilih pemilik lewat `style`.
  */
 export default function ListSection({
-  id,
-  section,
-  layout,
+  block,
   tone,
 }: {
-  id: string;
-  section: ListSectionData;
-  layout: "points" | "cards" | "specs";
+  block: LocalizedBlockOf<"list">;
   tone?: SectionTone;
 }) {
+  const layout = block.style;
+
   return (
     <SectionShell
-      id={id}
-      heading={section.heading}
-      intro={section.intro}
+      id={block.id}
+      heading={block.heading}
+      intro={block.intro}
       tone={tone}
     >
       {layout === "specs" ? (
         <dl className="ink-border r-card m-0 grid grid-cols-1 gap-px overflow-hidden bg-(--line) sm:grid-cols-2">
-          {section.items.map((item) => (
+          {block.items.map((item) => (
             <div key={item.label} className="bg-(--paper) px-5 py-4">
               <dt className="micro text-(--soft)">{item.label}</dt>
               <dd className="m-0 mt-1 text-[15px] leading-[1.6]">
@@ -40,7 +36,7 @@ export default function ListSection({
         </dl>
       ) : layout === "cards" ? (
         <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2">
-          {section.items.map((item) => (
+          {block.items.map((item) => (
             <div
               key={item.label}
               className="r-card ink-border flat-3 bg-(--paper) px-5 py-[18px]"
@@ -56,7 +52,7 @@ export default function ListSection({
         </div>
       ) : (
         <ol className="m-0 flex list-none flex-col gap-4 p-0">
-          {section.items.map((item, index) => (
+          {block.items.map((item, index) => (
             <li key={item.label} className="flex items-start gap-4">
               <span
                 aria-hidden="true"

@@ -1,9 +1,7 @@
 import SectionShell, { type SectionTone } from "./SectionShell";
 import ProductGalleryShowcase from "./ProductGalleryShowcase";
-import type { LocalizedLandingSection } from "@/schemas/product-landing";
+import type { LocalizedBlockOf } from "@/schemas/product-blocks";
 import type { UiLabels } from "@/types/content";
-
-type GalleryData = LocalizedLandingSection<"gallery">;
 
 /**
  * Dulu seksi ini memakai ulang `ui/Gallery` milik Logbook dan Project apa
@@ -18,31 +16,29 @@ type GalleryData = LocalizedLandingSection<"gallery">;
  * tidak tersentuh untuk Logbook dan Project.
  */
 export default function GallerySection({
-  id,
-  section,
+  block,
   ui,
   tone,
 }: {
-  id: string;
-  section: GalleryData;
+  block: LocalizedBlockOf<"gallery">;
   ui: UiLabels;
   tone?: SectionTone;
 }) {
-  const images = section.items.map((item, index) => ({
+  const images = block.items.map((item, index) => ({
     id: item.image,
     url: item.image,
-    alt: item.caption || `${section.heading} — ${index + 1}`,
+    alt: item.caption || `${block.heading} — ${index + 1}`,
     caption: item.caption || undefined,
   }));
 
   return (
     <SectionShell
-      id={id}
-      heading={section.heading}
-      intro={section.intro}
+      id={block.id}
+      heading={block.heading}
+      intro={block.intro}
       tone={tone}
     >
-      <ProductGalleryShowcase images={images} title={section.heading} ui={ui} />
+      <ProductGalleryShowcase images={images} title={block.heading} ui={ui} />
     </SectionShell>
   );
 }
