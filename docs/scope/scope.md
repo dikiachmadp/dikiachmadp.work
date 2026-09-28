@@ -11,29 +11,31 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 ## At a glance
 
-| #   | Feature                                   | Phase   | Status      |
-| --- | ----------------------------------------- | ------- | ----------- |
-| A   | Bilingual routing & locale copy           | Shipped | existing    |
-| B   | Design system & theme                     | Shipped | existing    |
-| C   | Data model & migrations                   | Shipped | existing    |
-| D   | Data access layer                         | Shipped | existing    |
-| E   | Admin auth & allowlist                    | Shipped | existing    |
-| F   | Admin dashboard                           | Shipped | existing    |
-| G   | Portfolio projects                        | Shipped | existing    |
-| H   | Logbook                                   | Shipped | existing    |
-| I   | About page                                | Shipped | existing    |
-| J   | Digital product catalog & landing builder | Shipped | existing    |
-| K   | On site checkout & pay what you want      | Shipped | existing    |
-| L   | Orders, receipts & Polar webhook          | Shipped | existing    |
-| M   | Contact form & submissions inbox          | Shipped | existing    |
-| N   | Testimonials                              | Shipped | existing    |
-| O   | Marketing & legal pages                   | Shipped | existing    |
-| P   | SEO & structured data                     | Shipped | existing    |
-| Q   | Security headers & rate limiting          | Shipped | existing    |
-| R   | Coding standards & tooling                | Shipped | existing    |
-| 3   | Digital product storefront rebuild        | Slice 1 | in-progress |
-| 1   | Product analytics                         | Slice 2 | planned     |
-| 2   | Error monitoring                          | Slice 2 | planned     |
+| #   | Feature                                   | Phase   | Status   |
+| --- | ----------------------------------------- | ------- | -------- |
+| A   | Bilingual routing & locale copy           | Shipped | existing |
+| B   | Design system & theme                     | Shipped | existing |
+| C   | Data model & migrations                   | Shipped | existing |
+| D   | Data access layer                         | Shipped | existing |
+| E   | Admin auth & allowlist                    | Shipped | existing |
+| F   | Admin dashboard                           | Shipped | existing |
+| G   | Portfolio projects                        | Shipped | existing |
+| H   | Logbook                                   | Shipped | existing |
+| I   | About page                                | Shipped | existing |
+| J   | Digital product catalog & landing builder | Shipped | existing |
+| K   | On site checkout & pay what you want      | Shipped | existing |
+| L   | Orders, receipts & Polar webhook          | Shipped | existing |
+| M   | Contact form & submissions inbox          | Shipped | existing |
+| N   | Testimonials                              | Shipped | existing |
+| O   | Marketing & legal pages                   | Shipped | existing |
+| P   | SEO & structured data                     | Shipped | existing |
+| Q   | Security headers & rate limiting          | Shipped | existing |
+| R   | Coding standards & tooling                | Shipped | existing |
+| 3   | Digital product storefront rebuild        | Slice 1 | dropped  |
+| 4   | Store teardown                            | Slice 1 | planned  |
+| 5   | Studio links out to the store             | Slice 1 | planned  |
+| 1   | Product analytics                         | Slice 2 | planned  |
+| 2   | Error monitoring                          | Slice 2 | planned  |
 
 ## Shipped
 
@@ -78,15 +80,15 @@ Database backed bio, skills, experience, and certifications with a dedicated edi
 
 ### J. Digital product catalog & landing builder · existing
 
-Product listing plus a detail page whose landing sections are configured from the dashboard. code in `src/app/[locale]/products/`, `src/components/product/`
+Product listing plus a detail page whose landing sections are configured from the dashboard. Being removed by feature 4. code in `src/app/[locale]/products/`, `src/components/product/`
 
 ### K. On site checkout & pay what you want · existing
 
-Embedded Polar checkout with tip presets, guarded by rate limiting and a server side product lookup. code in `src/app/api/checkout/`
+Embedded Polar checkout with tip presets, guarded by rate limiting and a server side product lookup. Being removed by feature 4. code in `src/app/api/checkout/`
 
 ### L. Orders, receipts & Polar webhook · existing
 
-Signed `order.paid` webhook that records the order, notifies the owner, and emails a branded receipt exactly once. code in `src/app/api/polar/`, `src/app/[locale]/orders/`
+Signed `order.paid` webhook that records the order, notifies the owner, and emails a branded receipt exactly once. Being removed by feature 4. code in `src/app/api/polar/`, `src/app/[locale]/orders/`
 
 ### M. Contact form & submissions inbox · existing
 
@@ -112,27 +114,39 @@ Enforced CSP with the reasoning recorded, plus four Upstash limiters keyed on th
 
 Six stage CI, ESLint with the DAL import ban, Prettier, husky pre commit, and the `AGENTS.md` context files. code in `.github/workflows/ci.yml`, `eslint.config.mjs`
 
-## Slice 1: Storefront rebuild
+## Slice 1: Store teardown
 
-The store already sells, but its content model works against it. The buy card's
-"what you get" list is read from whichever pricing tier is flagged recommended,
-so a product with one file and one price cannot look worth buying without
-inventing a tier table it does not have. One vertical pass through the schema,
-the admin form, and the public page.
+The store moves out of this repo into a project of its own, on its own domain, linked
+from the Studio page. So this slice removes rather than builds: every product, checkout,
+order, and receipt surface comes out, and the three tables go with them. The database
+holds zero products and one zero value test order, so nothing real is at stake.
 
-### 3. Digital product storefront rebuild · in-progress
+### 3. Digital product storefront rebuild · dropped
 
-Publishing a simple product costs 55 form inputs and a pricing tier it does not need, and the detail page reads as an article rather than a shop. Make the typing proportional to the product, and put the purchase decision first.
-**Done when:** a product with a cover, a price, one language, and a list of what the buyer gets can be published without opening the sales page tab at all, and a complex product can order its own sections.
+Superseded. The store leaves this repo, and this spec's core decision, replacing the
+eight fixed landing slots with a free block builder, is reversed by a design whose
+product page has a fixed anatomy instead. Nothing was built, so nothing is lost. Kept
+for history.
 
-spec [0001](../specs/0001-product-storefront-rebuild/index.md)
+spec [0001](../specs/0001-product-storefront-rebuild/index.md) · superseded, deleted by feature 4
 
-- [x] Design it (spec): `/architect product storefront rebuild`
-- [ ] Build it: `/develop product storefront rebuild`
-  - [ ] Thin thread through every layer for a simple product: migration, block contract, data access layer, Product tab, new buy card - AC-1 to AC-4, AC-6 to AC-9, AC-11 to AC-13
-  - [ ] Thicken it: block builder, the six block renderers, anchor nav, catalog card - AC-5, AC-10
-- [ ] Verify it: `/check verify product storefront rebuild`
-- [ ] Test it: `/test product storefront rebuild`
+### 4. Store teardown · needs a decision · GA
+
+Everything the store left behind comes out: public pages, components, schemas, the data
+access layer, admin screens, API routes, copy keys, config, and the three tables. Left
+half done this is worse than either state, so it is one deliberate pass rather than a
+trickle.
+**Done when:** no product, order, checkout, or receipt code remains anywhere, an applied migration has dropped the three tables and their sequence, the CSP and the env no longer mention a payment provider, and `npm run build` plus `npm test` pass clean.
+
+- [ ] Design it (spec): `/architect store teardown`
+
+### 5. Studio links out to the store
+
+The Studio page's store section was the only route into the store from this site. It
+becomes an outbound link to the store's own domain instead of an internal path.
+**Done when:** the Studio store section links out in both locales, no internal product link survives anywhere in the app, and the sitemap no longer lists product paths.
+
+- [ ] Build it: `/develop studio links out to the store`
 
 ## Slice 2: Observability
 
@@ -163,8 +177,8 @@ Out of scope for this pass, kept so the plan stays honest.
 - **Performance budget**: written Core Web Vitals targets and something that keeps them from slipping · needs a decision
 - **Lead capture**: a service enquiry path sharper than the general contact form, and a newsletter · needs a decision
 - **Content discovery**: category filters on projects, search on the logbook, indexable category pages · needs a decision
-- **Store expansion**: buyer library, coupons, bundles, product reviews · needs a decision
-- **Product page depth**: related products and cross recommendations, clickable tags (`getPublishedProducts` already takes a `tag` parameter that no UI sends), reviews and ratings, release and updated dates, a visible breadcrumb · from spec 0001 · needs a decision
+- **Store expansion**: buyer library, coupons, bundles, product reviews · moved to the store's own scope
+- **Product page depth**: related products and cross recommendations, clickable tags (`getPublishedProducts` already takes a `tag` parameter that no UI sends), reviews and ratings, release and updated dates, a visible breadcrumb · moved to the store's own scope
 
 ## Legend
 
