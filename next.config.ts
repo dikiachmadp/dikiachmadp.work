@@ -66,7 +66,9 @@ const securityHeaders = [
   // src/app/(admin)/[locale]/auth/callback/route.ts), bukan popup.
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   // Menutup pembacaan lintas-domain gaya Flash/PDF reader lama. Relevan
-  // karena /CV_Diki.pdf dilayani dari origin ini.
+  // karena berkas CV berformat PDF dilayani dari origin ini (lihat `public/`;
+  // tautannya sendiri tersimpan di `cvItems` per bahasa, jadi nama berkasnya
+  // bisa berubah tanpa menyentuh berkas ini).
   { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
 ];
 
