@@ -119,6 +119,41 @@ clear. Checking new passwords against HaveIBeenPwned is a paid-plan feature and
 this project is on the free tier, so there is nothing to enable. Treat it as
 accepted, not outstanding.
 
+## The npm audit gate
+
+CI runs `npm audit --audit-level=high --omit=dev`, not the plain
+`--audit-level=high` it ran until October 2026. The `--omit=dev` is the whole
+decision, so it is written down here rather than left as a flag in the
+workflow.
+
+Why it changed. The gate reads a live advisory database, so the repository can
+turn red without a commit, and on 3 October 2026 it did: six high advisories
+landed against the ESLint toolchain, every one of them a dev dependency.
+
+```
+eslint-config-next -> @next/eslint-plugin-next -> fast-glob -> micromatch -> braces
+eslint -> minimatch -> brace-expansion
+```
+
+Neither usual remedy worked. An override in `package.json`, the pattern that
+cleared `js-yaml` and `fast-uri` earlier, needs a patched version to point at,
+and the `braces` advisory carries the range `*` while `3.0.3` is still the
+newest release: nothing to point at. And `npm audit fix --force` proposed
+`eslint-config-next@14.2.35`, a downgrade across two majors on a project
+running Next 16.
+
+What it costs. A vulnerability in the build and test toolchain no longer turns
+CI red. That is a real gap, and it is accepted on the grounds that these
+packages never reach a user: they run in CI and on a developer's machine,
+never in the deployed application. Shipped dependencies are still gated at the
+same `high` threshold, which is where a vulnerability can actually reach a
+visitor.
+
+What to watch. Run `npm audit --audit-level=high` by hand, without the flag,
+before a dependency bump, and read what it says rather than assuming the gate
+covers it. When `braces` ships a patched release, consider putting the plain
+gate back.
+
 ## Auth hardening
 
 Who counts as an admin is decided by `ADMIN_EMAILS`, not by Supabase. The anon

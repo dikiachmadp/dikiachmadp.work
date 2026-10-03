@@ -36,8 +36,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Production dependencies only. See docs/operations.md, "The npm audit
+      # gate", for why the dev toolchain is out of scope here.
       - name: Audit
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=high --omit=dev
 
       - name: Lint
         run: npm run lint
