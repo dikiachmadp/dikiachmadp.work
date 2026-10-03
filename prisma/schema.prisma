@@ -182,7 +182,8 @@ model AboutEntry {
   title    String
   // Tempat kerja (EXPERIENCE) atau penerbit (CERTIFICATION).
   subtitle String
-  // Tautan verifikasi sertifikat; tidak berlaku untuk EXPERIENCE.
+  // Tautan opsional: verifikasi sertifikat (CERTIFICATION) atau rujukan
+  // tempat kerja (EXPERIENCE). Terisi berarti barisnya bisa diklik.
   url      String?
 
   @@index([kind, locale, order])
