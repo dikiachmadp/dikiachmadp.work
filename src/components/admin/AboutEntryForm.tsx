@@ -115,8 +115,8 @@ export default function AboutEntryForm({
 
         <AdminField
           name="url"
-          label="Verification URL"
-          hint="Certification only — leave empty for Experience."
+          label="Link URL"
+          hint="Optional. Verification link for Certification, reference link for Experience. Filling it makes the row clickable."
           placeholder="https://…"
           defaultValue={v("url", values.url)}
           error={err("url")}

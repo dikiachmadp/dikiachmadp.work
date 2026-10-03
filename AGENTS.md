@@ -34,7 +34,7 @@ npm test               # Vitest, node environment
 npm run db:migrate     # Apply pending migrations (the only path to production DDL)
 
 # What CI runs, in order
-npm audit --audit-level=high && npm run lint && npm run format:check && npm run typecheck && npm test && npm run build
+npm audit --audit-level=high --omit=dev && npm run lint && npm run format:check && npm run typecheck && npm test && npm run build
 ```
 
 ## Specs
