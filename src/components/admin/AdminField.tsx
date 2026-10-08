@@ -107,6 +107,12 @@ export function AdminSelect({
   return (
     <Shell {...props}>
       <select
+        // React tidak pernah memasang ulang `defaultValue` ke <select> yang
+        // sudah ter-mount, jadi `form.reset()` setelah server action gagal
+        // akan mengembalikan opsi yang terpilih saat mount — bukan nilai yang
+        // barusan dikirim. Kunci berbasis nilai memaksa remount supaya
+        // `defaultValue` yang baru benar-benar sampai ke DOM.
+        key={value === undefined ? props.defaultValue : undefined}
         name={props.name}
         value={value}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
