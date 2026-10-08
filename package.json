@@ -28,7 +28,7 @@
     "@upstash/redis": "^1.38.2",
     "clsx": "^2.1.1",
     "lucide-react": "^1.31.0",
-    "next": "^16.3.3",
+    "next": "^16.3.8",
     "next-themes": "^0.4.6",
     "react": "19.2.8",
     "react-dom": "19.2.8",
@@ -71,6 +71,7 @@
     "browserslist": "^4.28.8",
     "mysql2": "^3.24.3",
     "fast-uri": "^3.1.6",
-    "js-yaml": "^4.3.2"
+    "js-yaml": "^4.3.2",
+    "source-map-js": "^1.2.2"
   }
 }

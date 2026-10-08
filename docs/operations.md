@@ -154,6 +154,27 @@ before a dependency bump, and read what it says rather than assuming the gate
 covers it. When `braces` ships a patched release, consider putting the plain
 gate back.
 
+### 8 October 2026: next 16.3.8 and a source-map-js override
+
+The gate turned red again, this time on shipped dependencies, so `--omit=dev`
+offered no cover. Six high advisories hit `next@16.3.6` — among them cache
+poisoning of SSG and ISR pages, which this site serves, and Server-Side
+Request Forgery in Image Optimization — and a seventh hit `source-map-js`,
+reached through `next -> postcss`.
+
+Both had a patched release to point at, so the usual remedies applied and no
+new exception was needed:
+
+- `next` moved from `^16.3.3` to `^16.3.8`. The advisories cover
+  `16.0.0 - 16.3.7`, and 16.3.8 is a patch inside the minor already in use.
+- `source-map-js` got an override at `^1.2.2`. It is not a direct dependency:
+  `next` pins `postcss@8.5.23`, which pins `source-map-js@1.2.1`, so an
+  override is the only way to reach it without waiting for a `next` release
+  that bumps postcss. Same pattern as `js-yaml` and `fast-uri`.
+
+The `fast-uri` advisory that surfaced in the same run is moderate and sits
+below the gate's threshold; the existing override already covers it.
+
 ## Auth hardening
 
 Who counts as an admin is decided by `ADMIN_EMAILS`, not by Supabase. The anon
