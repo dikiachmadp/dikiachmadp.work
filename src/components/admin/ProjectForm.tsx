@@ -220,12 +220,20 @@ export default function ProjectForm({
             <AdminCheckbox
               name="featured"
               label="Featured"
-              defaultChecked={values.featured}
+              // Checkbox yang tidak dicentang tidak ada di FormData, jadi
+              // keadaan pulihnya datang dari `state.values`, bukan dari record.
+              defaultChecked={
+                state.values ? state.values.featured === "on" : values.featured
+              }
             />
             <AdminCheckbox
               name="isLivePreview"
               label="Live preview"
-              defaultChecked={values.isLivePreview}
+              defaultChecked={
+                state.values
+                  ? state.values.isLivePreview === "on"
+                  : values.isLivePreview
+              }
             />
           </div>
         </div>
