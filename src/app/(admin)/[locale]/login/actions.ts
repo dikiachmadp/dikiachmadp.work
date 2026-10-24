@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isAdminEmail } from "@/lib/admin-allowlist";
 import { env } from "@/lib/env";
 import {
+  allowRequest,
   clientIp,
   getLoginEmailLimiter,
   getLoginLimiter,
@@ -22,13 +23,14 @@ export async function login(formData: FormData) {
     redirect(`/${locale}/login?error=${encodeURIComponent(THROTTLED)}`);
 
   const ip = clientIp(await headers());
-  const { success: ipAllowed } = await getLoginLimiter().limit(ip);
+  const { allowed: ipAllowed } = await allowRequest(getLoginLimiter(), ip);
   if (!ipAllowed) throttled();
 
   // Batas kedua per akun. Tanpa ini penebak password cukup berpindah IP untuk
   // menghabiskan percobaan sebanyak yang dia mau terhadap satu email.
   if (email) {
-    const { success: emailAllowed } = await getLoginEmailLimiter().limit(
+    const { allowed: emailAllowed } = await allowRequest(
+      getLoginEmailLimiter(),
       email.toLowerCase(),
     );
     if (!emailAllowed) throttled();

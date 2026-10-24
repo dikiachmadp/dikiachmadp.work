@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { env } from "@/lib/env";
 import { createContactSubmission } from "@/lib/db/contact";
-import { clientIp, getContactLimiter } from "@/lib/ratelimit";
+import { allowRequest, clientIp, getContactLimiter } from "@/lib/ratelimit";
 
 const ContactRequestSchema = z.object({
   name: z.string().min(1, "Name is required").max(200),
@@ -56,14 +56,28 @@ function sanitizeHtml(str: string): string {
 }
 
 export async function POST(request: Request) {
-  const { success } = await getContactLimiter().limit(
+  // Satu-satunya limiter yang fail-closed. Di belakangnya cuma honeypot, yang
+  // hanya menangkap bot naif — jadi meloloskan request saat limiter mati berarti
+  // spam tanpa batas masuk ke inbox, ke tabel, dan ke kuota Resend. Reputasi
+  // domain pengirim yang terbakar hidup lebih lama dari gangguannya.
+  const { allowed, degraded } = await allowRequest(
+    getContactLimiter(),
     clientIp(request.headers),
+    { failOpen: false },
   );
-  if (!success) {
-    return NextResponse.json(
-      { error: "Too many requests. Please try again later." },
-      { status: 429 },
-    );
+  if (!allowed) {
+    // 503, bukan 429, ketika yang terjadi bukan "kamu terlalu sering" tapi
+    // "penjaganya sedang tidak bisa dihubungi". 429 akan menyuruh pengirim
+    // menunggu satu jam yang tidak ada artinya.
+    return degraded
+      ? NextResponse.json(
+          { error: "Service temporarily unavailable." },
+          { status: 503 },
+        )
+      : NextResponse.json(
+          { error: "Too many requests. Please try again later." },
+          { status: 429 },
+        );
   }
 
   if (isBodyTooLarge(request.headers)) {

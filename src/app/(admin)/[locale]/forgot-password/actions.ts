@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { clientIp, getLoginLimiter } from "@/lib/ratelimit";
+import { allowRequest, clientIp, getLoginLimiter } from "@/lib/ratelimit";
 import { SITE_URL } from "@/lib/site-url";
 
 export async function requestPasswordReset(formData: FormData) {
@@ -11,10 +11,14 @@ export async function requestPasswordReset(formData: FormData) {
   const locale = String(formData.get("locale") ?? "en");
 
   const headerList = await headers();
-  const { success } = await getLoginLimiter().limit(
+  // Jalur ini justru satu-satunya jalan keluar ketika password memang terlupa,
+  // jadi ia ikut fail-open: menutupnya saat limiter mati berarti mencabut
+  // pintu darurat tepat ketika dibutuhkan.
+  const { allowed } = await allowRequest(
+    getLoginLimiter(),
     `reset:${clientIp(headerList)}`,
   );
-  if (!success) {
+  if (!allowed) {
     redirect(
       `/${locale}/forgot-password?error=${encodeURIComponent(
         "Too many attempts. Try again in a few minutes.",
