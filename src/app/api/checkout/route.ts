@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getProductBySlug } from "@/lib/db/products";
 import { getPolar, isPolarConfigured, MAX_TIP_AMOUNT } from "@/lib/polar";
-import { clientIp, getCheckoutLimiter } from "@/lib/ratelimit";
+import { allowRequest, clientIp, getCheckoutLimiter } from "@/lib/ratelimit";
 import { SITE_URL } from "@/lib/site-url";
 
 const CheckoutRequestSchema = z.object({
@@ -39,10 +39,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const { success } = await getCheckoutLimiter().limit(
+  const { allowed } = await allowRequest(
+    getCheckoutLimiter(),
     clientIp(request.headers),
   );
-  if (!success) {
+  if (!allowed) {
     return NextResponse.json(
       { error: "Too many requests. Please try again later." },
       { status: 429 },
